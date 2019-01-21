@@ -28,6 +28,20 @@ class Usuario(db.Model):
     instituicao = Column(String(45), nullable=False)
     token_email = Column(String(90), nullable=False)
     data_nasc = Column(DateTime, nullable=False)
+    autenticado = Column(Boolean, default=False)
+
+
+    def is_active(self):
+        return True
+
+    def get_id(self):
+        return self.id
+
+    def is_authenticated(self):
+        return self.autenticado
+
+    def is_anonymous(self):
+        return False
 
 class Participante(db.Model):
     __tablename__ = 'participante'
@@ -39,5 +53,5 @@ class Participante(db.Model):
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
 
-if __name__ == "__main__":
-	db.create_all()
+#if __name__ == "__main__":
+#	db.create_all()
