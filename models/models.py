@@ -1,9 +1,15 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+SENHA = os.getenv("SENHA")
+IP_DB = os.getenv("IP_DB")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:<senha>@187.180.88.5/db' #colocar a senha no lugar de senha
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://root:{SENHA}@{IP_DB}/db'
 db = SQLAlchemy(app)
 
 class Usuario(db.Model):
