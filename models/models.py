@@ -39,3 +39,5 @@ class Participante(db.Model):
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
 
+if __name__ == "__main__":
+	db.create_all()
