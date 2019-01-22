@@ -1,9 +1,9 @@
 from flask import flash, render_template, request, redirect, url_for, session
-from models.models import Usuario
-from controllers.forms import LoginForm
-from controllers.functions import check_password
+from app.models.models import Usuario
+from app.controllers.forms import LoginForm
+from app.controllers.functions import check_password
 from flask_login import login_manager, login_required, login_user, logout_user, current_user
-from flask_app import app
+from app import app
 
 @app.route('/')
 def index():
