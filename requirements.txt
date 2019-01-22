@@ -2,3 +2,4 @@ python-dotenv==0.10.1
 Flask==1.0.2
 flask_sqlalchemy==2.3.2
 SQLAlchemy==1.2.16
+mysqlclient==1.4.1
