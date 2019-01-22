@@ -18,7 +18,7 @@ class Usuario(db.Model):
     participantes_associados = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(45), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
-    ultimo_login = Column(String(45), nullable=False)
+    ultimo_login = Column(DateTime, nullable=False)
     data_cadastro = Column(DateTime, nullable=False)
     permissao = Column(Integer, nullable=False)
     primeiro_nome = Column(String(45), nullable=False)
