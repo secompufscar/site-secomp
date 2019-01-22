@@ -29,6 +29,7 @@ class Usuario(db.Model):
     token_email = Column(String(90), nullable=False)
     data_nasc = Column(DateTime, nullable=False)
     autenticado = Column(Boolean, default=False)
+    email_verificado = Column(Boolean, default=False)
 
 
     def is_active(self):
