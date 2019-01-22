@@ -6,6 +6,8 @@ from app import app
 from passlib.hash import pbkdf2_sha256
 import datetime
 import os
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from functions import enviarEmailConfirmacao
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 app.config['SECRET_KEY'] = SECRET_KEY
@@ -43,19 +45,25 @@ def logout():
 
 @app.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    
     form = CadastroForm(request.form)
+    email = form.email.data
+    token = serializer.dumps(email, salt='confirmacao_email')
+    
     if form.validate_on_submit():
-        usuario = db.session.query(Usuario).filter_by(email=form.email.data).first()
+        usuario = db.session.query(Usuario).filter_by(email=email).first()
         if usuario != None:
             return "Este email já está sendo usado!"
         else:
             agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=8000, salt_size=15)
-            usuario = Usuario(email=form.email.data, senha=hash, ultimo_login=agora,
-            data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
-            ult_nome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
-            cidade=form.cidade.data, data_nasc=form.data_nasc.data,
-            token_email="asdfghjhtrgdfsda", autenticado=True)
+            usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
+                              data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
+                              ult_nome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
+                              cidade=form.cidade.data, data_nasc=form.data_nasc.data,
+                              token_email=token, autenticado=True)
+            enviarEmailConfirmacao(app, email, token)
             db.session.add(usuario)
             db.session.commit()
             login_user(usuario, remember=True)
@@ -65,20 +73,23 @@ def cadastro():
 @login_manager.user_loader
 def user_loader(user_id):
         return Usuario.query.get(user_id)
-		
+        
 #Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
 def verificacao(token):
-	from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-	
 	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 	
 	try:
-		email = serializer.loads(token, salt='confirmacao_email', max_age=3600) #Gera um email a partir do token do link
-		user = User.query.filter_by(email = email).first() #Acha o usuário que possui o email
-		user.email_verificado = True #Valida o email
-		bd.session.commit()		
-	except SignatureExpired: #Tempo definido no max_age
+		#Gera um email a partir do token do link
+		email = serializer.loads(token, salt='confirmacao_email', max_age=3600) 
+		#Acha o usuário que possui o email
+		user = User.query.filter_by(email = email).first() 
+		#Valida o email
+		user.email_verificado = True 
+		db.session.commit()
+		
+	#Tempo definido no max_age
+	except SignatureExpired: 
 		return 'O link de ativação expirou.'
 	except Exception as e:
 		return 'Falha na ativação.'
