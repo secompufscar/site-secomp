@@ -8,3 +8,4 @@ passlib==1.7.1
 mysqlclient==1.4.1
 SQLAlchemy==1.2.16
 WTForms==2.2.1
+pyOpenSSL==19.0.0
