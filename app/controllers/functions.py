@@ -4,10 +4,8 @@ def check_password(x, y):
 
 def enviarEmailConfirmacao(app, email, token): #Envia email para validação do email
 	from flask_mail import Mail, Message
-	from itsdangerous import URLSafeTimedSerializer
 	
 	mail = Mail(app)
-	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 	
 	#Cria a msg, Assunto, De, Para
 	msg = Message('Confirmação do Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
