@@ -65,3 +65,22 @@ def cadastro():
 @login_manager.user_loader
 def user_loader(user_id):
         return Usuario.query.get(user_id)
+		
+#Página do link enviado para o usuário
+@app.route('/verificacao/<token>')
+def verificacao(token):
+	from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+	
+	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+	
+	try:
+		email = serializer.loads(token, salt='confirmacao_email', max_age=3600) #Gera um email a partir do token do link
+		user = User.query.filter_by(email = email).first() #Acha o usuário que possui o email
+		user.email_verificado = True #Valida o email
+		bd.session.commit()		
+	except SignatureExpired: #Tempo definido no max_age
+		return 'O link de ativação expirou.'
+	except Exception as e:
+		return 'Falha na ativação.'
+	
+	return 'Email confirmado.'
