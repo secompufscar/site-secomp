@@ -5,6 +5,10 @@ from flask_login import LoginManager, login_manager, login_required, login_user,
 from app import app
 from passlib.hash import pbkdf2_sha256
 import datetime
+import os
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = SECRET_KEY
 
 login_manager = LoginManager(app)
 @app.route('/')
@@ -13,7 +17,7 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    form = LoginForm(csrf_enabled=False)
+    form = LoginForm(request.form)
     if form.validate_on_submit():
         usuario = db.session.query(Usuario).filter_by(email=form.email.data).first()
         if usuario:
@@ -39,7 +43,7 @@ def logout():
 
 @app.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
-    form = CadastroForm(csrf_enabled=False)
+    form = CadastroForm(request.form)
     if form.validate_on_submit():
         usuario = db.session.query(Usuario).filter_by(email=form.email.data).first()
         if usuario != None:

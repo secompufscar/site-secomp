@@ -1,15 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
-from dotenv import load_dotenv
 import os
 
-load_dotenv()
-SENHA = os.getenv("SENHA")
+SENHA_DB = os.getenv("SENHA_DB")
 IP_DB = os.getenv("IP_DB")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:%s@%s/db' % (SENHA, IP_DB)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:%s@%s/db' % (SENHA_DB, IP_DB)
 db = SQLAlchemy(app)
 
 class Usuario(db.Model):
@@ -30,7 +28,6 @@ class Usuario(db.Model):
     data_nasc = Column(DateTime, nullable=False)
     autenticado = Column(Boolean, default=False)
 
-
     def is_active(self):
         return True
 
@@ -43,6 +40,7 @@ class Usuario(db.Model):
     def is_anonymous(self):
         return False
 
+
 class Participante(db.Model):
     __tablename__ = 'participante'
     id = Column(Integer, db.ForeignKey('usuario.id'), primary_key=True)
@@ -54,4 +52,4 @@ class Participante(db.Model):
     credenciado = Column(Boolean, nullable=False)
 
 #if __name__ == "__main__":
-#	db.create_all()
+#    db.create_all()
