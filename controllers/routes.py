@@ -7,7 +7,7 @@ from flask_login import *
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Página inciial')
+    return render_template('index.html', title='Página inicial')
 
 
 @app.route("/login", methods=["GET", "POST"])
