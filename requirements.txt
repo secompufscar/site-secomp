@@ -1,5 +1,10 @@
 python-dotenv==0.10.1
 Flask==1.0.2
+flask_login==0.4.1
+flask_script==2.0.6
 flask_sqlalchemy==2.3.2
-SQLAlchemy==1.2.16
+flask_wtf==0.14.2
+passlib==1.7.1
 mysqlclient==1.4.1
+SQLAlchemy==1.2.16
+WTForms==2.2.1
