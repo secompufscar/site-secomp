@@ -6,3 +6,4 @@ app = Flask(__name__)
 from app.controllers import routes
 
 manager = Manager(app)
+
