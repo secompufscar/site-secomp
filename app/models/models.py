@@ -9,7 +9,7 @@ SENHA = os.getenv("SENHA")
 IP_DB = os.getenv("IP_DB")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://root:{SENHA}@{IP_DB}/db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:%s@%s/db' % (SENHA, IP_DB)
 db = SQLAlchemy(app)
 
 class Usuario(db.Model):
