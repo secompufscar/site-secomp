@@ -3,6 +3,7 @@
 
 {% block content %}
 <form action="/login" method="POST">
+  {{ form.hidden_tag() }}
   {{ wtf.form_field(form.email) }}
   {{ wtf.form_field(form.senha) }}
   {{form.errors}}
