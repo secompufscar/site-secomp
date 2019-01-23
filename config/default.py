@@ -1,3 +1,11 @@
+import os
+
+# FLASK
 DEBUG = True
+
+# FLASK WTF
+SECRET_KEY = os.urandom(32)
+
+# SQL ALCHEMY
 SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
