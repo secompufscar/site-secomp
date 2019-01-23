@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
 import os
+from app import app
 
 SENHA_DB = os.getenv("SENHA_DB")
 IP_DB = os.getenv("IP_DB")
