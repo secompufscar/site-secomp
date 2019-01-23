@@ -1,13 +1,15 @@
-from flask import flash, render_template, request, redirect, url_for, session
-from app.models.models import Usuario
+from flask import render_template, request, redirect, url_for, session
+from app.models.usuario import Usuario
 from app.controllers.forms import LoginForm
 from app.controllers.functions import check_password
-from flask_login import login_manager, login_required, login_user, logout_user, current_user
+from flask_login import login_required, login_user, logout_user, current_user
 from app import app
+
 
 @app.route('/')
 def index():
     return render_template('index.html', title='Página inicial')
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -23,6 +25,7 @@ def login():
                 return redirect(url_for('index_usuario'))
     return render_template('login.html', form=form)
 
+
 @app.route("/logout", methods=["GET"])
 @login_required
 def logout():
@@ -32,8 +35,3 @@ def logout():
     session.commit()
     logout_user()
     return redirect(url_for('index'))
-
-#@login_manager.user_loader
-#def user_loader(user_id):
-#    return Usuario.query.get(user_id)
-
