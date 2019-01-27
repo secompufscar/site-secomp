@@ -1,7 +1,8 @@
 from flask import flash, render_template, request, redirect, url_for, session
 from app.models.models import *
 from app.controllers.forms import LoginForm, CadastroForm
-from flask_login import LoginManager, login_manager, login_required, login_user, logout_user, current_user
+from flask_login import (LoginManager, login_manager, login_required, 
+        login_user, logout_user, current_user)
 from app import app
 from passlib.hash import pbkdf2_sha256
 import datetime

@@ -4,5 +4,8 @@
 
 ## Dependências
 Antes de rodar o servidor, instalar as seguintes dependências:
+### Debian Based
 - `sudo apt install libmysqlclient-dev libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev`
+### Arch Based
+- `sudo pacman -S mariadb libxml2 libxslt zlib libffi openssl`
 - `pip install -r requirements.txt`
