@@ -117,3 +117,7 @@ dmypy.json
 
 # PyCharm project settings
 .idea/
+
+# Migrate
+migrations/
+app.db
