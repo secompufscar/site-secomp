@@ -18,7 +18,7 @@ def index():
 def login():
 	form = LoginForm(request.form)
 	if form.validate_on_submit():
-		user = Usuario.query.get(form.email.data)
+		user = db.session.query(Usuario).filter_by(email = form.email.data).first()
 		if user:
 			if pbkdf2_sha256.verify(form.senha.data, user.senha):
 				user.autenticado = True
@@ -80,22 +80,19 @@ def user_loader(user_id):
 @app.route('/verificacao/<token>')
 def verificacao(token):
 	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-
 	try:
 		#Gera um email a partir do token do link
 		email = serializer.loads(token, salt='confirmacao_email', max_age=3600)
 		#Acha o usuário que possui o email
 		user = db.session.query(Usuario).filter_by(email = email).first()
-		print(email)
 		#Valida o email
 		user.email_verificado = True
+               db.session.add(user)
 		db.session.commit()
-
 	#Tempo definido no max_age
 	except SignatureExpired:
 		return 'O link de ativação expirou.'
 	except Exception as e:
 		return 'Falha na ativação.'
-
 	return 'Email confirmado.'
 
