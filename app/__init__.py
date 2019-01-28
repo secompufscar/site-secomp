@@ -6,7 +6,7 @@ from flask_login import LoginManager
 import os
 
 config = {
-    "development": 'config.default',
+    "development": 'config.development',
     'production': 'config.production',
     'default': 'config.default'
 }
