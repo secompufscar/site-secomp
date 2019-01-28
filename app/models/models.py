@@ -20,6 +20,7 @@ class Usuario(db.Model):
     data_nasc = Column(DateTime, nullable=False)
     autenticado = Column(Boolean, default=False)
     email_verificado = Column(Boolean, default=False)
+    salt = Column(String(30), nullable=False)
 
     def is_active(self):
         return True

@@ -7,6 +7,7 @@ from passlib.hash import pbkdf2_sha256
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import datetime
 import os
+from bcrypt import gensalt
 
 
 @app.route('/')
@@ -46,7 +47,8 @@ def cadastro():
 
 	form = CadastroForm(request.form)
 	email = form.email.data
-	token = serializer.dumps(email, salt='confirmacao_email')
+	salt = gensalt().decode('utf-8')
+	token = serializer.dumps(email, salt=salt)
 
 	if form.validate_on_submit():
 		usuario = db.session.query(Usuario).filter_by(email=email).first()
@@ -59,7 +61,7 @@ def cadastro():
 							  data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
 							  ult_nome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
 							  cidade=form.cidade.data, data_nasc=form.data_nasc.data,
-							  token_email=token, autenticado=True)
+							  token_email=token, autenticado=True, salt=salt)
 			#TODO Quando pronto o modelo de evento implementar função get_id_edicao()
 			db.session.add(usuario)
 			db.session.flush()
@@ -81,18 +83,21 @@ def user_loader(user_id):
 def verificacao(token):
 	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 	try:
-		#Gera um email a partir do token do link
-		email = serializer.loads(token, salt='confirmacao_email', max_age=3600)
-		#Acha o usuário que possui o email
-		user = db.session.query(Usuario).filter_by(email = email).first()
+		#Acha o usuário que possui o token
+		user = db.session.query(Usuario).filter_by(token_email = token).first()
+		salt = user.salt
+		
+		#Gera um email a partir do token do link e do salt do db
+		email = serializer.loads(token, salt=salt, max_age=3600)
+		
 		#Valida o email
 		user.email_verificado = True
-               db.session.add(user)
+		db.session.add(user)
 		db.session.commit()
 	#Tempo definido no max_age
 	except SignatureExpired:
-		return 'O link de ativação expirou.'
+		return render_template('cadastro.html', resultado='O link de ativação expirou.')
 	except Exception as e:
-		return 'Falha na ativação.'
-	return 'Email confirmado.'
+		return render_template('cadastro.html', resultado='Falha na ativação.')
+	return render_template('cadastro.html', resultado='Email confirmado.')
 
