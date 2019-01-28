@@ -11,7 +11,7 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from app.controllers.functions import enviarEmailConfirmacao
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECRET_KEY'] = os.urandom(32).hex()
 
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
