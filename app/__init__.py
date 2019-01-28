@@ -1,28 +1,21 @@
 from flask import Flask
 from flask_script import Manager
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, MigrateCommand
-from flask_login import LoginManager
+from dotenv import load_dotenv
 import os
 
-config = {
-    "development": 'config.default',
-    'production': 'config.production',
-    'default': 'config.default'
-}
-
-config_name = os.getenv('FLASK_CONFIGURATION', 'default')
-
+load_dotenv()
 app = Flask(__name__)
-app.config.from_object(config[config_name])
+app.config.update(
+	#EMAIL SETTINGS
+	MAIL_SERVER='smtp.zoho.com',
+	MAIL_PORT=465,
+	MAIL_USE_SSL=True,
+	MAIL_USERNAME = os.getenv('MAIL_USERNAME'),
+	MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+	)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 from app.controllers import routes
 
 manager = Manager(app)
-manager.add_command('db', MigrateCommand)
