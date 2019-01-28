@@ -14,6 +14,8 @@ app.config.update(
 	MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
 	)
 
+
+
 from app.controllers import routes
 
 manager = Manager(app)
