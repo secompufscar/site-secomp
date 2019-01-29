@@ -72,9 +72,11 @@ def cadastro():
 			return redirect(url_for('index_usuario'))
 	return render_template('cadastro.html', form=form)
 
-@login_manager.user_loader
+
+@app.login_manager.user_loader
 def user_loader(user_id):
 		return Usuario.query.get(user_id)
+
 
 #Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
@@ -87,7 +89,7 @@ def verificacao(token):
 		user = db.session.query(Usuario).filter_by(email = email).first()
 		#Valida o email
 		user.email_verificado = True
-               db.session.add(user)
+		db.session.add(user)
 		db.session.commit()
 	#Tempo definido no max_age
 	except SignatureExpired:
