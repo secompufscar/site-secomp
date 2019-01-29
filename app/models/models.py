@@ -1,9 +1,10 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
-from app import db
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
+from app import app
 
+db = SQLAlchemy(app)
 
 class Usuario(db.Model):
-    __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True)
     participantes_associados = db.relationship('participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
@@ -35,7 +36,6 @@ class Usuario(db.Model):
 
 
 class Participante(db.Model):
-    __tablename__ = 'participante'
     id = Column(Integer, db.ForeignKey('usuario.id'), primary_key=True)
     edicao = Column(Integer, nullable=False)
     pacote = Column(Boolean, nullable=False)
@@ -46,8 +46,7 @@ class Participante(db.Model):
 
 
 class Ministrante(db.Model):
-    __tablename__ = 'ministrante'
-    id = Column(Integer, db.ForeignKey('ministrante.id'), primary_key=True)
+    id = Column(Integer, primary_key=True)
     pagar_gastos = Column(Boolean, nullable=False)
     data_chegada_sanca = Column(Date, nullable=False)
     data_saida_sanca = Column(Date, nullable=False)
@@ -67,9 +66,13 @@ class Ministrante(db.Model):
     github = Column(String(64))
 
 
+relacao_atividade_participante = db.Table('relacao_atividade_participante',
+				Column('id_atividade', Integer, db.ForeignKey('atividade.id'), primary_key=True),
+                                Column('id_participante', Integer, db.ForeignKey('participante.id'), primary_key=True))
+
+
 class Atividade(db.Model):
-    __tablename__ = 'atividade'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, db.ForeignKey('ministrante.id'), primary_key=True)
     vagas_totais = Column(Integer, nullable=False)
     vagas_disponiveis = Column(Integer, nullable=False)
     pre_requisitos = Column(String(512), nullable=False)
@@ -82,15 +85,7 @@ class Atividade(db.Model):
     descricao = Column(String(1024), nullable=False)
     recursos_necessarios = Column(String(512), nullable=False)
     observacoes = Column(String(512), nullable=False)
-    ministrante = db.relationship('ministrante', backref='ministrante', lazy=True)
-    inscritos = db.relationship('participante', secondary=relacao_atividade_participante, lazy=True,
-        backref=db.backref('atividade', lazy='subquery'))
-
-
-relacao_atividade_participante = db.Table('relacao_atividade_participante',
-                                       Column('id_atividade', Integer, db.ForeignKey('atividade.id'), primary_key=True),
-                                       Column('id_participante', Integer, db.ForeignKey('participante.id'), primary_key=True))
-
-#if __name__ == "__main__":
-#    db.create_all()
+    ministrante = db.relationship('Ministrante', backref='ministrante', lazy=True)
+    inscritos = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True, 
+	backref=db.backref('atividade', lazy='subquery'))
 
