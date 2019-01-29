@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_script import Server, Manager, prompt_bool
-#from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
 import os
@@ -18,7 +17,6 @@ app.config.from_pyfile(configs[config_name])
 
 from app.models.models import *
 
-#db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 login_manager = LoginManager()
