@@ -2,6 +2,8 @@ from flask import Flask
 from flask_script import Server, Manager, prompt_bool
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 import os
 
 configs = {
@@ -18,6 +20,12 @@ app.config.from_pyfile(configs[config_name])
 from app.models.models import *
 
 migrate = Migrate(app, db)
+
+admin = Admin(app, template_mode='bootstrap3')
+admin.add_view(ModelView(Usuario, db.session))
+admin.add_view(ModelView(Participante, db.session))
+admin.add_view(ModelView(Ministrante, db.session))
+admin.add_view(ModelView(Atividade, db.session))
 
 login_manager = LoginManager()
 login_manager.init_app(app)

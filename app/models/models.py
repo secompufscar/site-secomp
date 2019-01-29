@@ -6,7 +6,7 @@ db = SQLAlchemy(app)
 
 class Usuario(db.Model):
     id = Column(Integer, primary_key=True)
-    participantes_associados = db.relationship('participante', backref='usuario', lazy=True)
+    participantes_associados = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
     ultimo_login = Column(DateTime, nullable=False)
@@ -43,6 +43,7 @@ class Participante(db.Model):
     camiseta = Column(String(3))
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
+    atividades = db.relationship('Atividade', secondary='participante_em_atividade', lazy=True)
 
 
 class Ministrante(db.Model):
@@ -66,9 +67,9 @@ class Ministrante(db.Model):
     github = Column(String(64))
 
 
-relacao_atividade_participante = db.Table('relacao_atividade_participante',
-				Column('id_atividade', Integer, db.ForeignKey('atividade.id'), primary_key=True),
-                                Column('id_participante', Integer, db.ForeignKey('participante.id'), primary_key=True))
+class ParticipanteEmAtividade (db.Model):
+    id_atividade = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
+    id_participante = Column(Integer, db.ForeignKey('participante.id'), primary_key=True)
 
 
 class Atividade(db.Model):
@@ -85,7 +86,7 @@ class Atividade(db.Model):
     descricao = Column(String(1024), nullable=False)
     recursos_necessarios = Column(String(512), nullable=False)
     observacoes = Column(String(512), nullable=False)
-    ministrante = db.relationship('Ministrante', backref='ministrante', lazy=True)
-    inscritos = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True, 
-	backref=db.backref('atividade', lazy='subquery'))
+    ministrante = db.relationship('Ministrante', backref='atividade', lazy=True)
+    inscritos = db.relationship('Participante', secondary='participante_em_atividade', lazy='subquery', 
+	backref=db.backref('atividade', lazy=True))
 
