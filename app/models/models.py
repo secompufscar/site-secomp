@@ -75,7 +75,7 @@ class Atividade(db.Model):
     vagas_disponiveis = Column(Integer, nullable=False)
     pre_requisitos = Column(String(512), nullable=False)
     pre_requisitos_recomendados = Column(String(512), nullable=False)
-    ativo = Column(Boolean, nullable=False)
+    ativo = Column(Boolean, nullable=False, default=True)
     tipo = Column(Integer, nullable=False)
     data_hora = Column(DateTime, nullable=False)
     local = Column(String(64), nullable=False)
