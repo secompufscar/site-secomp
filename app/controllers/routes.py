@@ -101,3 +101,26 @@ def verificacao(token):
 		return render_template('cadastro.html', resultado='Falha na ativação.')
 	return render_template('cadastro.html', resultado='Email confirmado.')
 
+@app.route('/cadastro-atividade', methods=['POST', 'GET'])
+def cadastroAtividade(token):
+	form = CadastroAtividadeForm(request.form)
+	dataTemp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+	
+	if form.validate_on_submit():
+		atividade = Atividade(vagas_totais=42,
+							  vagas_disponiveis=42,
+							  pre_requisitos='temp',
+							  pre_requisitos_recomendados='temp',
+							  tipo=0,
+							  data_hora=dataTemp,
+							  local='temp',
+							  titulo=form.titulo.data,
+							  descricao='temp',
+							  recursos_necessarios='temp',
+							  observacoes='temp')
+		db.session.add(atividade)
+		db.session.commit()
+		
+		return redirect(url_for('/'))
+		
+	return render_template('cadastro-atividade.html', form=form)
