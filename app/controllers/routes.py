@@ -123,4 +123,4 @@ def cadastroAtividade(token):
 		
 		return redirect(url_for('/'))
 		
-	return render_template('cadastro-atividade.html', form=form)
+	return render_template('cadastro_atividade.html', form=form)
