@@ -74,9 +74,11 @@ def cadastro():
 			return redirect(url_for('index_usuario'))
 	return render_template('cadastro.html', form=form)
 
-@login_manager.user_loader
+
+@app.login_manager.user_loader
 def user_loader(user_id):
 		return Usuario.query.get(user_id)
+
 
 #Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
