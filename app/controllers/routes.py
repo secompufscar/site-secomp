@@ -7,6 +7,7 @@ from passlib.hash import pbkdf2_sha256
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import datetime
 import os
+from app.models.models import *
 from bcrypt import gensalt
 
 
@@ -88,10 +89,10 @@ def verificacao(token):
 		#Acha o usuário que possui o token
 		user = db.session.query(Usuario).filter_by(token_email = token).first()
 		salt = user.salt
-		
+
 		#Gera um email a partir do token do link e do salt do db
 		email = serializer.loads(token, salt=salt, max_age=3600)
-		
+
 		#Valida o email
 		user.email_verificado = True
 		db.session.add(user)
@@ -102,4 +103,3 @@ def verificacao(token):
 	except Exception as e:
 		return render_template('cadastro.html', resultado='Falha na ativação.')
 	return render_template('cadastro.html', resultado='Email confirmado.')
-

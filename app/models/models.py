@@ -6,7 +6,7 @@ db = SQLAlchemy(app)
 
 class Usuario(db.Model):
     id = Column(Integer, primary_key=True)
-    participantes_associados = db.relationship('participante', backref='usuario', lazy=True)
+    participantes_associados = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
     ultimo_login = Column(DateTime, nullable=False)
@@ -87,6 +87,5 @@ class Atividade(db.Model):
     recursos_necessarios = Column(String(512), nullable=False)
     observacoes = Column(String(512), nullable=False)
     ministrante = db.relationship('Ministrante', backref='ministrante', lazy=True)
-    inscritos = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True, 
+    inscritos = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
 	backref=db.backref('atividade', lazy='subquery'))
-
