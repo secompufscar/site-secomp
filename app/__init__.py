@@ -15,7 +15,7 @@ config_name = os.getenv('FLASK_CONFIGURATION', 'default')
 app = Flask(__name__)
 app.config.from_pyfile(configs[config_name])
 
-from app.models.models import db 
+from app.models.models import db, Usuario 
 
 migrate = Migrate(app, db)
 

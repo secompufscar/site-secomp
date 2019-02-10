@@ -1,5 +1,5 @@
 from flask import url_for, redirect 
-from flask_admin import Admin, AdminIndexView, 
+from flask_admin import Admin, AdminIndexView, expose 
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from app import app
@@ -9,14 +9,14 @@ from app.models.models import *
 class AppIndexView(AdminIndexView):
     @expose('/')
     def index(self):
-        if current_user.is_authenticated and current_user.permissao.value > Permissao.USUARIO.value:
+        if current_user.is_authenticated and current_user.permissao > Permissao.USUARIO.value:
             return super(AppIndexView, self).index()
         return redirect(url_for('index'))
 
 
 class AppModelView(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.permissao.value > Permissao.USUARIO.value
+        return current_user.is_authenticated and current_user.permissao > Permissao.USUARIO.value
 
 
 def init_admin(app):
