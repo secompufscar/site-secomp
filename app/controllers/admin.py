@@ -15,9 +15,12 @@ class AppIndexView(AdminIndexView):
 
 
 class AppModelView(ModelView):
+    can_view_details = True
+    column_exclude_list = ['senha', ]
+
     def is_accessible(self):
         return current_user.is_authenticated and current_user.permissao > Permissao.USUARIO.value
-
+    
 
 def init_admin(app):
     admin = Admin(app, index_view=AppIndexView(), template_mode='bootstrap3')
