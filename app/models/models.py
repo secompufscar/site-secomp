@@ -18,7 +18,7 @@ class Usuario(db.Model):
     cidade = Column(String(64), nullable=False)
     instituicao = Column(String(64), nullable=False)
     token_email = Column(String(90), nullable=False)
-    data_nasc = Column(DateTime, nullable=False)
+    data_nasc = Column(Date, nullable=False)
     autenticado = Column(Boolean, default=False)
     email_verificado = Column(Boolean, default=False)
     salt = Column(String(30), nullable=False)

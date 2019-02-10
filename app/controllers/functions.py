@@ -13,7 +13,7 @@ def enviarEmailConfirmacao(app, email, token): #Envia email para validação do 
 
 	#Cria a msg, Assunto, De, Para
 	msg = Message('Confirmação do Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
-	#Str com o link da verificação + tokmethods=['POST', 'GET']en
+	#Str com o link da verificação + tokmethods=['POST', 'GET']
 	link = url_for('verificacao', token=token, _external=True)
 	msg.body = '{}'.format(link)
 
