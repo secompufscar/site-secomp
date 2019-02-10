@@ -3,6 +3,7 @@ from flask_login import login_required, login_user, logout_user, current_user
 from app import app
 from app.controllers.forms import LoginForm, CadastroForm
 from app.controllers.functions import enviarEmailConfirmacao
+from app.models.models import *
 from passlib.hash import pbkdf2_sha256
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import datetime
@@ -73,9 +74,9 @@ def cadastro():
 	return render_template('cadastro.html', form=form)
 
 
-@app.login_manager.user_loader
-def user_loader(user_id):
-		return Usuario.query.get(user_id)
+#@app.login_manager.user_loader
+#def user_loader(user_id):
+#    return Usuario.query.get(user_id)
 
 
 #Página do link enviado para o usuário
