@@ -26,7 +26,8 @@ def login():
 				db.session.add(user)
 				db.session.commit()
 				login_user(user, remember=True)
-				return redirect(url_for('index_usuario'))
+				return "olá, {}".format(user.primeiro_nome)
+				#return redirect(url_for('index_usuario'))
 	return render_template('login.html', form=form)
 
 
@@ -58,8 +59,8 @@ def cadastro():
 			hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
 			usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
 							  data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
-							  ult_nome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
-							  cidade=form.cidade.data, data_nasc=form.data_nasc.data,
+							  sobrenome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
+							  cidade=form.cidade.data, data_nascimento=form.data_nasc.data,
 							  token_email=token, autenticado=True)
 			#TODO Quando pronto o modelo de evento implementar função get_id_edicao()
 			db.session.add(usuario)
@@ -72,11 +73,6 @@ def cadastro():
 			login_user(usuario, remember=True)
 			return redirect(url_for('index_usuario'))
 	return render_template('cadastro.html', form=form)
-
-
-#@app.login_manager.user_loader
-#def user_loader(user_id):
-#    return Usuario.query.get(user_id)
 
 
 #Página do link enviado para o usuário

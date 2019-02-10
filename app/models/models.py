@@ -15,11 +15,10 @@ class Permissao(Enum):
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
-    participantes_associados = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
     primeiro_nome = Column(String(64), nullable=False)
-    ultimo_nome = Column(String(64), nullable=False)
+    sobrenome = Column(String(64), nullable=False)
     curso = Column(String(64), nullable=False)
     cidade = Column(String(64), nullable=False)
     instituicao = Column(String(64), nullable=False)
@@ -30,6 +29,7 @@ class Usuario(db.Model):
     email_verificado = Column(Boolean, default=False)
     ultimo_login = Column(DateTime, default=datetime.now())
     data_cadastro = Column(DateTime, nullable=False)
+    participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
 
     def is_active(self):
         return True
@@ -46,14 +46,15 @@ class Usuario(db.Model):
 
 class Participante(db.Model):
     __tablename__ = 'participantes'
-    id = Column(Integer, db.ForeignKey('usuario.id'), primary_key=True)
+    id = Column(Integer, db.ForeignKey(Usuario.id), primary_key=True)
     edicao = Column(Integer, nullable=False)
     pacote = Column(Boolean, nullable=False)
     pagamento = Column(Boolean, nullable=False)
     camiseta = Column(String(3))
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
-    atividades = db.relationship('Atividade', secondary='participante_em_atividade', lazy=True)
+    atividades = db.relationship('Atividade', secondary='participante_em_atividade', back_populates='inscritos', lazy=True)
+    usuario = db.relationship('Usuario', back_populates='participantes_associados')
 
 
 class Ministrante(db.Model):
@@ -76,17 +77,17 @@ class Ministrante(db.Model):
     twitter = Column(String(64))
     linkedin = Column(String(64))
     github = Column(String(64))
+    atividade = db.relationship('Atividade', back_populates='ministrante')
 
 
-class ParticipanteEmAtividade (db.Model):
-    __tablename__ = 'participante_em_atividade'
-    id_atividade = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
-    id_participante = Column(Integer, db.ForeignKey('participante.id'), primary_key=True)
+participante_em_atividade = db.Table('participante_em_atividade', 
+    Column('id_atividade', Integer, db.ForeignKey('atividades.id'), primary_key=True),
+    Column('id_participante', Integer, db.ForeignKey('participantes.id'), primary_key=True))
 
 
 class Atividade(db.Model):
     __tablename__ = 'atividades'
-    id = Column(Integer, db.ForeignKey('ministrante.id'), primary_key=True)
+    id = Column(Integer, db.ForeignKey(Ministrante.id), primary_key=True)
     vagas_totais = Column(Integer, nullable=False)
     vagas_disponiveis = Column(Integer, nullable=False)
     pre_requisitos = Column(String(512), nullable=False)
@@ -99,7 +100,8 @@ class Atividade(db.Model):
     descricao = Column(String(1024), nullable=False)
     recursos_necessarios = Column(String(512), nullable=False)
     observacoes = Column(String(512), nullable=False)
-    ministrante = db.relationship('Ministrante', backref='atividade', lazy=True)
-    inscritos = db.relationship('Participante', secondary='participante_em_atividade', lazy='subquery', 
-	backref=db.backref('atividade', lazy=True))
+    ministrante = db.relationship('Ministrante', back_populates='atividade', lazy=True)
+    inscritos = db.relationship('Participante', secondary='participante_em_atividade', 
+	lazy='subquery', back_populates='atividades')
+
 
