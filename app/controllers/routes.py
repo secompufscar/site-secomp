@@ -40,7 +40,7 @@ def logout():
 	db.session.add(user)
 	db.session.commit()
 	logout_user()
-	return redirect(url_for('index'))
+	return redirect(url_for('login'))
 
 
 @app.route('/cadastro', methods=['POST', 'GET'])
@@ -120,7 +120,7 @@ def dashboard_usuario():
 		return render_template('dashboard_usuario.html', eventos=dicionario_eventos, inscricao=inscricao,
 		edicao_atual=EDICAO_ATUAL, info_usuario=get_dicionario_usuario(current_user))
 	else:
-		redirect(url_for('verificar_email'))
+		return redirect(url_for('verificar_email'))
 
 @app.login_manager.user_loader
 def user_loader(user_id):
