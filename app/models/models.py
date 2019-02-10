@@ -37,8 +37,9 @@ class Usuario(db.Model):
 
 
 class Participante(db.Model):
-    id = Column(Integer, db.ForeignKey('usuario.id'), primary_key=True)
-    edicao = Column(Integer, nullable=False)
+    id = Column(Integer, primary_key=True)
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=False)
+    id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     pacote = Column(Boolean, nullable=False)
     pagamento = Column(Boolean, nullable=False)
     camiseta = Column(String(20))
@@ -90,3 +91,13 @@ class Atividade(db.Model):
     ministrante = db.relationship('Ministrante', backref='ministrante', lazy=True)
     inscritos = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
 	backref=db.backref('atividade', lazy='subquery'))
+
+class Evento(db.Model):
+    id = Column(Integer, primary_key=True)
+    edicao = Column(Integer, nullable=False)
+    data_hora_inicio = Column(DateTime, nullable=False)
+    data_hora_fim = Column(DateTime, nullable=False)
+    inicio_inscricoes_evento = Column(DateTime, nullable=False)
+    fim_inscricoes_evento = Column(DateTime, nullable=False)
+    ano = Column(Integer, nullable=False)
+    participantes = db.relationship('Participante', backref='evento', lazy=True)

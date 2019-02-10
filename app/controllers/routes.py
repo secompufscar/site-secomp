@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, session
 from flask_login import login_required, login_user, logout_user, current_user
 from app import app
 from app.controllers.forms import LoginForm, CadastroForm, ParticipanteForm
-from app.controllers.functions import enviarEmailConfirmacao, email_confirmado, get_dicionario_usuario
+from app.controllers.functions import enviarEmailConfirmacao, email_confirmado, get_dicionario_usuario, get_dicionario_info_evento
 from passlib.hash import pbkdf2_sha256
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import datetime
@@ -54,7 +54,7 @@ def cadastro():
 
 	if form.validate_on_submit():
 		usuario = db.session.query(Usuario).filter_by(email=email).first()
-		if usuario != None:
+		if usuario is not None:
 			return "Este email já está sendo usado!"
 		else:
 			agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -88,13 +88,13 @@ def verificar_email():
 @login_required
 def cadastro_participante():
 	if email_confirmado() == True:
-		participante = db.session.query(Participante).filter_by(id=current_user.id, edicao=EDICAO_ATUAL).first()
+		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id).first()
 		if participante is None:
 			form = ParticipanteForm(request.form)
 			if form.validate_on_submit():
 				agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 				usuario = current_user
-				participante = Participante(id=usuario.id, edicao=EDICAO_ATUAL, pacote=form.kit.data,
+				participante = Participante(id_usuario=usuario.id, id_evento=1, pacote=form.kit.data,
 				pagamento=False, camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
 				opcao_coffee=form.restricao_coffee.data)
 				db.session.add(participante)
@@ -112,7 +112,7 @@ def cadastro_participante():
 @login_required
 def dashboard_usuario():
 	if email_confirmado() == True:
-		participante = db.session.query(Participante).filter_by(id=current_user.id, edicao=EDICAO_ATUAL).first()
+		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=1).first()
 		if participante is not None:
 			inscricao=False
 		else:
@@ -122,6 +122,10 @@ def dashboard_usuario():
 	else:
 		return redirect(url_for('verificar_email'))
 
+@app.route('/dashboard-usuario/evento/<edicao>')
+@login_required
+def info_participante_evento(edicao):
+	return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
 @app.login_manager.user_loader
 def user_loader(user_id):
 		return Usuario.query.get(user_id)

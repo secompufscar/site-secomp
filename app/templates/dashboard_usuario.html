@@ -15,6 +15,11 @@
   .navbar-brand{
     color:black;
   }
+  .inscrever{
+    background-color:#00cc00;
+    color:white;
+  }
+
 }
 </style>
 <nav class="navbar navbar-expand-lg">
@@ -28,7 +33,7 @@
   <div>
     <div>{{evento.titulo}}</div>
     {% if evento.edicao == edicao_atual and inscricao==True: %}
-      <button onclick="location.href='https://0.0.0.0:5000/cadastro-participante'">Inscrever-se</button>
+      <button class="inscrever" onclick="location.href='https://0.0.0.0:5000/cadastro-participante'">Inscrever-se</button>
     {% else: %}
       <button onclick="location.href='{{evento.url}}'">Ver Informações</button>
     {% endif %}
