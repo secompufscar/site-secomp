@@ -22,8 +22,8 @@ def login():
 		user = db.session.query(Usuario).filter_by(email = form.email.data).first()
 		if user:
 			if pbkdf2_sha256.verify(form.senha.data, user.senha):
-				user.autenticado = True
-                                user.ultimo_login = datetime.datetime.now()
+			        user.autenticado = True
+                               user.ultimo_login = datetime.datetime.now()
 				db.session.add(user)
 				db.session.commit()
 				login_user(user, remember=True)
