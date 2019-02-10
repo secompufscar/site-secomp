@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+{% block content %}
+<h2>Preencha com as informações do participante</h2><br>
+<form method="POST" action="/cadastro-participante">
+  {{ form.hidden_tag() }}
+  {{ wtf.form_field(form.kit) }}
+  {{ wtf.form_field(form.camiseta) }}
+  {{ wtf.form_field(form.restricao_coffee) }}
+
+  <button type="submit" class="btn btn-primary">Inscrever-se</button>
+</form>
+{% endblock %}
