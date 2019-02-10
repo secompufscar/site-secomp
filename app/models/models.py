@@ -41,9 +41,10 @@ class Participante(db.Model):
     edicao = Column(Integer, nullable=False)
     pacote = Column(Boolean, nullable=False)
     pagamento = Column(Boolean, nullable=False)
-    camiseta = Column(String(3))
+    camiseta = Column(String(20))
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
+    opcao_coffee = Column(Integer, nullable=False)
 
 
 class Ministrante(db.Model):
