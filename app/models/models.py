@@ -1,9 +1,24 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
 from app import app
-from app.models.relationships import *
 
 db = SQLAlchemy(app)
+
+relacao_atividade_participante = db.Table('relacao_atividade_participante',
+Column('id', Integer, primary_key=True),
+Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+Column('id_participante', Integer, db.ForeignKey('participante.id')))
+
+relacao_atividade_ministrante = db.Table('relacao_atividade_ministrante',
+Column('id', Integer, primary_key=True),
+Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
+
+
+relacao_patrocinador_evento = db.Table('relacao_patrocinador_evento',
+Column('id', Integer, primary_key=True),
+Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')),
+Column('id_evento', Integer, db.ForeignKey('evento.id')))
 
 class Usuario(db.Model):
     id = Column(Integer, primary_key=True)
@@ -38,6 +53,7 @@ class Usuario(db.Model):
 
 
 class Participante(db.Model):
+    __tablename__ = 'participante'
     id = Column(Integer, primary_key=True)
     id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
@@ -53,6 +69,7 @@ class Participante(db.Model):
 
 
 class Ministrante(db.Model):
+    __tablename__ = 'ministrante'
     id = Column(Integer, primary_key=True)
     pagar_gastos = Column(Boolean, nullable=False)
     data_chegada_sanca = Column(Date, nullable=False)
@@ -75,6 +92,7 @@ class Ministrante(db.Model):
     back_populates='ministrantes')
 
 class Atividade(db.Model):
+    __tablename__ = 'atividade'
     id = Column(Integer, primary_key=True)
     id_ministrante = Column(Integer, db.ForeignKey('ministrante.id'))
     id_evento = Column(Integer, db.ForeignKey('evento.id'))
@@ -99,6 +117,7 @@ class Atividade(db.Model):
     presencas = db.relationship('Presenca', backref='atividade')
 
 class Evento(db.Model):
+    __tablename__ = 'evento'
     id = Column(Integer, primary_key=True)
     edicao = Column(Integer, nullable=False)
     data_hora_inicio = Column(DateTime, nullable=False)
@@ -110,7 +129,7 @@ class Evento(db.Model):
     presencas = db.relationship('Presenca', backref='evento', lazy=True)
     atividades = db.relationship('Atividade', backref='evento', lazy=True)
     membros_equipe = db.relationship('MembroDeEquipe', backref='evento', lazy=True)
-    patrocinadores = db.relationship('Patrocinadores', secondary=relacao_patrocinador_evento, lazy=True,
+    patrocinadores = db.relationship('Patrocinador', secondary=relacao_patrocinador_evento, lazy=True,
     back_populates='eventos')
 
 class Presenca(db.Model):
@@ -150,7 +169,7 @@ class Patrocinador(db.Model):
     ordem_site = Column(Integer, primary_key=True)
     link_website = Column(String(200), nullable=True)
     ultima_atualizacao_em = Column(DateTime, nullable=False)
-    evento = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
+    eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
     back_populates='patrocinadores')
 
 class CotaPatrocinio(db.Model):
