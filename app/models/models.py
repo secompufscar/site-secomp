@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
 from app import app
+from app.models.relationships import *
 
 db = SQLAlchemy(app)
 
@@ -47,6 +48,9 @@ class Participante(db.Model):
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
     presencas = db.relationship('Presenca', backref='participante')
+    atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
+    back_populates='participantes')
+
 
 class Ministrante(db.Model):
     id = Column(Integer, primary_key=True)
@@ -67,12 +71,8 @@ class Ministrante(db.Model):
     twitter = Column(String(64))
     linkedin = Column(String(64))
     github = Column(String(64))
-
-
-relacao_atividade_participante = db.Table('relacao_atividade_participante',
-				Column('id_atividade', Integer, db.ForeignKey('atividade.id'), primary_key=True),
-                                Column('id_participante', Integer, db.ForeignKey('participante.id'), primary_key=True))
-
+    atividades = db.relationship('Atividade', secondary=relacao_atividade_ministrante, lazy=True,
+    back_populates='ministrantes')
 
 class Atividade(db.Model):
     id = Column(Integer, primary_key=True)
@@ -90,15 +90,13 @@ class Atividade(db.Model):
     descricao = Column(String(1024), nullable=False)
     recursos_necessarios = Column(String(512), nullable=False)
     observacoes = Column(String(512), nullable=False)
-    ministrante = db.relationship('Ministrante', backref='ministrante', lazy=True)
-    inscritos = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
-	backref=db.backref('atividade', lazy='subquery'))
-    presencas = db.relationship('Presenca', backref='atividade')
+    ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
+    back_populates='atividades')
 
-relacao_patrocinador_evento = db.Table('relacao_patrocinador_evento',
-Column('id', Integer, primary_key=True),
-Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')),
-Column('id_evento', Integer, db.ForeignKey('evento.id')))
+    participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
+    back_populates='atividades')
+
+    presencas = db.relationship('Presenca', backref='atividade')
 
 class Evento(db.Model):
     id = Column(Integer, primary_key=True)
