@@ -95,6 +95,11 @@ class Atividade(db.Model):
 	backref=db.backref('atividade', lazy='subquery'))
     presencas = db.relationship('Presenca', backref='atividade')
 
+relacao_patrocinador_evento = db.Table('relacao_patrocinador_evento',
+Column('id', Integer, primary_key=True),
+Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')),
+Column('id_evento', Integer, db.ForeignKey('evento.id')))
+
 class Evento(db.Model):
     id = Column(Integer, primary_key=True)
     edicao = Column(Integer, nullable=False)
@@ -106,6 +111,9 @@ class Evento(db.Model):
     participantes = db.relationship('Participante', backref='evento', lazy=True)
     presencas = db.relationship('Presenca', backref='evento', lazy=True)
     atividades = db.relationship('Atividade', backref='evento', lazy=True)
+    membros_equipe = db.relationship('MembroDeEquipe', backref='evento', lazy=True)
+    patrocinadores = db.relationship('Patrocinadores', secondary=relacao_patrocinador_evento, lazy=True,
+    back_populates='eventos')
 
 class Presenca(db.Model):
     id = Column(Integer, primary_key=True)
@@ -114,3 +122,41 @@ class Presenca(db.Model):
     id_participante = Column(Integer, db.ForeignKey('participante.id'), nullable=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     inscrito = Column(Boolean, nullable=False)
+
+class MembroDeEquipe(db.Model):
+    id = Column(Integer, primary_key=True)
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), nullable=False)
+    foto = Column(String(100), nullable=True)
+    email_secomp = Column(String(254), nullable=True)
+    id_cargo = Column(Integer, db.ForeignKey('cargo.id'), nullable=False)
+    id_diretoria = Column(Integer, db.ForeignKey('diretoria.id'), nullable=False)
+    id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
+
+class Cargo(db.Model):
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+    membros = db.relationship('MembroDeEquipe', backref='cargo', lazy=True)
+
+class Diretoria(db.Model):
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+    ordem = Column(Integer, nullable=False)
+    membros = db.relationship('MembroDeEquipe', backref='diretoria', lazy=True)
+
+class Patrocinador(db.Model):
+    id = Column(Integer, primary_key=True)
+    nome_empresa = Column(String(100), nullable=False)
+    logo = Column(String(100), nullable=False)
+    ativo_site = Column(Boolean, nullable=False)
+    id_cota = Column(Integer, db.ForeignKey('cotapatrocinio.id'), nullable=False)
+    ordem_site = Column(Integer, primary_key=True)
+    link_website = Column(String(200), nullable=True)
+    ultima_atualizacao_em = Column(DateTime, nullable=False)
+    evento = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
+    back_populates='patrocinadores')
+
+class CotaPatrocinio(db.Model):
+    __tablename__ = 'cotapatrocinio'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(50), nullable=False)
+    patrocinadores = db.relationship('Patrocinador', backref='cota_patrocinio', lazy=True)
