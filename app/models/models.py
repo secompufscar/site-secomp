@@ -6,7 +6,7 @@ db = SQLAlchemy(app)
 
 class Usuario(db.Model):
     id = Column(Integer, primary_key=True)
-    participantes_associados = db.relationship('Participante', backref='usuario', lazy=True)
+    participantes = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
     ultimo_login = Column(DateTime, nullable=False)
@@ -46,7 +46,7 @@ class Participante(db.Model):
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
-
+    presencas = db.relationship('Presenca', backref='participante')
 
 class Ministrante(db.Model):
     id = Column(Integer, primary_key=True)
@@ -75,7 +75,9 @@ relacao_atividade_participante = db.Table('relacao_atividade_participante',
 
 
 class Atividade(db.Model):
-    id = Column(Integer, db.ForeignKey('ministrante.id'), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    id_ministrante = Column(Integer, db.ForeignKey('ministrante.id'))
+    id_evento = Column(Integer, db.ForeignKey('evento.id'))
     vagas_totais = Column(Integer, nullable=False)
     vagas_disponiveis = Column(Integer, nullable=False)
     pre_requisitos = Column(String(512), nullable=False)
@@ -91,6 +93,7 @@ class Atividade(db.Model):
     ministrante = db.relationship('Ministrante', backref='ministrante', lazy=True)
     inscritos = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
 	backref=db.backref('atividade', lazy='subquery'))
+    presencas = db.relationship('Presenca', backref='atividade')
 
 class Evento(db.Model):
     id = Column(Integer, primary_key=True)
@@ -101,3 +104,13 @@ class Evento(db.Model):
     fim_inscricoes_evento = Column(DateTime, nullable=False)
     ano = Column(Integer, nullable=False)
     participantes = db.relationship('Participante', backref='evento', lazy=True)
+    presencas = db.relationship('Presenca', backref='evento', lazy=True)
+    atividades = db.relationship('Atividade', backref='evento', lazy=True)
+
+class Presenca(db.Model):
+    id = Column(Integer, primary_key=True)
+    data_hora_registro = Column(DateTime, nullable=False)
+    id_atividade = Column(Integer, db.ForeignKey('atividade.id'), nullable=False)
+    id_participante = Column(Integer, db.ForeignKey('participante.id'), nullable=False)
+    id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
+    inscrito = Column(Boolean, nullable=False)
