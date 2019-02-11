@@ -126,6 +126,7 @@ def dashboard_usuario():
 @login_required
 def info_participante_evento(edicao):
 	return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
+
 @app.login_manager.user_loader
 def user_loader(user_id):
 		return Usuario.query.get(user_id)
