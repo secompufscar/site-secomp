@@ -40,19 +40,25 @@ def get_dicionario_usuario(usuario):
 		"data_nasc": usuario.data_nasc
 	}
 	return info
-	
+
+def get_score_evento(edicao):
+	return 10000
+
 def get_dicionario_info_evento(edicao):
-	#TODO: Quando pronto o model de evento, completar com todas as informações
 	evento = db.session.query(Evento).filter_by(edicao=edicao).first()
 	participante = db.session.query(Participante).filter_by(id_evento=evento.id, id_usuario=current_user.id).first()
+	presencas = participante.presencas
+	atividades = []
+	for presenca in presencas:
+		atividades.append(presenca.atividades.titulo)
+
 	info = {
 		"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
 		"data_inscricao" : participante.data_inscricao,
-		"presencas": ["Credenciamento", "Abertura"],
+		"presencas": atividades,
 		"kit_pago": participante.pagamento,
 		"camiseta": participante.camiseta,
 		"opcao_coffee": participante.opcao_coffee,
-		"score_geral": 10000
-
+		"score_geral": get_score_evento(edicao)
 	}
 	return info
