@@ -15,14 +15,20 @@ config_name = os.getenv('FLASK_CONFIGURATION', 'default')
 app = Flask(__name__)
 app.config.from_pyfile(configs[config_name])
 
-from app.models.models import *
+from app.models.models import db, Usuario 
 
 migrate = Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-from app.controllers import routes
+@login_manager.user_loader
+def user_loader(user_id):
+    return db.session.query(Usuario).filter_by(id = user_id).first()
+
+from app.controllers import routes, admin
+
+adm = admin.init_admin(app)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
