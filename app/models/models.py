@@ -30,6 +30,7 @@ class Usuario(db.Model):
     ultimo_login = Column(DateTime, default=datetime.now())
     data_cadastro = Column(DateTime, nullable=False)
     participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
+    salt = Column(String(30), nullable=False)
 
     def is_active(self):
         return True
