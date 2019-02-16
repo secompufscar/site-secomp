@@ -30,18 +30,3 @@ escolhas_restricao = [
     (3, "Vegano")]
 
 URL_DEV = "https://0.0.0.0:5000"
-
-dicionario_eventos = [
-    {
-        "titulo": "9ª SECOMP UFSCar",
-        "edicao": 9,
-        "participantes": 570,
-        "url": "https://0.0.0.0:5000/dashboard-usuario/evento/9"
-    },
-    {
-        "titulo": "10ª SECOMP UFSCar",
-        "edicao": 10,
-        "participantes": 100,
-        "url": "https://0.0.0.0:5000/dashboard-usuario/evento/10"
-    }
-]
