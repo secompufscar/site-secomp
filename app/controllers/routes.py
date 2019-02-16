@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, session
 from flask_login import login_required, login_user, logout_user, current_user
 from app import app
 from app.controllers.forms import LoginForm, CadastroForm, ParticipanteForm
-from app.controllers.functions import enviarEmailConfirmacao, email_confirmado, get_dicionario_usuario, get_dicionario_info_evento
+from app.controllers.functions import *
 from passlib.hash import pbkdf2_sha256
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import datetime
@@ -117,8 +117,8 @@ def dashboard_usuario():
 			inscricao=False
 		else:
 			inscricao=True
-		return render_template('dashboard_usuario.html', eventos=dicionario_eventos, inscricao=inscricao,
-		edicao_atual=EDICAO_ATUAL, info_usuario=get_dicionario_usuario(current_user))
+		return render_template('dashboard_usuario.html', eventos=get_dicionario_eventos_participante(),
+		info_usuario=get_dicionario_usuario(current_user))
 	else:
 		return redirect(url_for('verificar_email'))
 

@@ -32,10 +32,12 @@
 {% for evento in eventos: %}
   <div>
     <div>{{evento.titulo}}</div>
-    {% if evento.edicao == edicao_atual and inscricao==True: %}
+    {% if evento.inscricao == 1: %}
       <button class="inscrever" onclick="location.href='https://0.0.0.0:5000/cadastro-participante'">Inscrever-se</button>
-    {% else: %}
+    {% elif evento.inscricao == 0: %}
       <button onclick="location.href='{{evento.url}}'">Ver Informações</button>
+    {% else: %}
+      <div>Inscrições não abertas</div>
     {% endif %}
   </div><hr>
 {% endfor %}

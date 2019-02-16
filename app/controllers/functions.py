@@ -1,6 +1,8 @@
 from flask import url_for
 from flask_login import login_required, login_user, logout_user, current_user
 from app.models.models import *
+from app.controllers.constants import *
+import datetime
 
 def check_password(x, y):
 	#Esperar criptografia para programar a função que verificará a integridade da senha
@@ -43,6 +45,42 @@ def get_dicionario_usuario(usuario):
 
 def get_score_evento(edicao):
 	return 10000
+
+def get_dicionario_eventos_participante():
+	info_eventos = []
+	agora = datetime.datetime.now()
+	participantes = db.session.query(Participante).filter_by(id_usuario=current_user.id).all()
+	ja_participa = False
+	for participante in participantes:
+		evento = participante.evento
+		if evento.edicao != EDICAO_ATUAL:
+			info = {
+				"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
+				"edicao": evento.edicao,
+				"participantes": len(evento.participantes),
+				"url": "https://0.0.0.0:5000/dashboard-usuario/evento/" + str(evento.edicao),
+				"inscricao": 0
+			}
+			info_eventos.append(info)
+		else:
+			ja_participa = True
+	evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
+	if ja_participa == False:
+		if agora >= evento.inicio_inscricoes_evento and agora < evento.fim_inscricoes_evento:
+			inscricao = 1
+		else:
+			inscricao = 2
+	else:
+		inscricao = 0
+	info = {
+		"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
+		"edicao": evento.edicao,
+		"participantes": len(evento.participantes),
+		"url": "https://0.0.0.0:5000/dashboard-usuario/evento/" + str(evento.edicao),
+		"inscricao": inscricao
+	}
+	info_eventos.append(info)
+	return info_eventos
 
 def get_dicionario_info_evento(edicao):
 	evento = db.session.query(Evento).filter_by(edicao=edicao).first()
