@@ -14,7 +14,7 @@ from bcrypt import gensalt
 
 @app.route('/')
 def index():
-	return render_template('index.html', title='Página inicial')
+    return render_template('index.html', title='Página inicial')
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -45,12 +45,12 @@ def logout():
 
 @app.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
-	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
-	form = CadastroForm(request.form)
-	email = form.email.data
-	salt = gensalt().decode('utf-8')
-	token = serializer.dumps(email, salt=salt)
+    form = CadastroForm(request.form)
+    email = form.email.data
+    token = serializer.dumps(email, salt='confirmacao_email')
+    salt = gensalt().decode('utf-8')
 
 	if form.validate_on_submit():
 		usuario = db.session.query(Usuario).filter_by(email=email).first()
@@ -124,12 +124,8 @@ def dashboard_usuario():
 def info_participante_evento(edicao):
 	return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
 
-@app.login_manager.user_loader
-def user_loader(user_id):
-		return Usuario.query.get(user_id)
 
-
-#Página do link enviado para o usuário
+# Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
 def verificacao(token):
 	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
