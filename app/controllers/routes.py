@@ -45,38 +45,36 @@ def logout():
     return redirect(url_for('index'))
 
 
+
 @app.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
-    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-    
-    form = CadastroForm(request.form)
-    email = form.email.data
-    token = serializer.dumps(email, salt='confirmacao_email')
+	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
-    if form.validate_on_submit():
-        usuario = db.session.query(Usuario).filter_by(email=email).first()
-        if usuario != None:
-            return "Este email já está sendo usado!"
-        else:
-            agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            hash = pbkdf2_sha256.encrypt(
-                form.senha.data, rounds=10000, salt_size=15)
-            usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
-                              data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
-                              sobrenome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
-                              cidade=form.cidade.data, data_nascimento=form.data_nasc.data,
-                              token_email=token, autenticado=True)
-            # TODO Quando pronto o modelo de evento implementar função get_id_edicao()
-            db.session.add(usuario)
-            db.session.flush()
-            participante = Participante(id=usuario.id, edicao=1, pacote=False, pagamento=False,
-                                        camiseta=' ', data_inscricao=agora, credenciado=False)
-            enviarEmailConfirmacao(app, email, token)
-            db.session.add(participante)
-            db.session.commit()
-            login_user(usuario, remember=True)
-            return redirect(url_for('index_usuario'))
-    return render_template('cadastro.html', form=form)
+	form = CadastroForm(request.form)
+	email = form.email.data
+	salt = gensalt().decode('utf-8')
+	token = serializer.dumps(email, salt=salt)
+
+	if form.validate_on_submit():
+		usuario = db.session.query(Usuario).filter_by(email=email).first()
+		if usuario is not None:
+			return "Este email já está sendo usado!"
+		else:
+			agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+			hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
+			usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
+							  data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
+							  sobrenome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
+							  cidade=form.cidade.data, data_nascimento=form.data_nasc.data,
+							  token_email=token, autenticado=True, salt=salt)
+			#TODO Quando pronto o modelo de evento implementar função get_id_edicao()
+			db.session.add(usuario)
+			db.session.flush()
+			db.session.commit()
+			enviarEmailConfirmacao(app, email, token)
+			login_user(usuario, remember=True)
+			return redirect(url_for('verificar_email'))
+	return render_template('cadastro.html', form=form)
 
 
 # Página do link enviado para o usuário
@@ -95,10 +93,10 @@ def verificacao(token):
     # Tempo definido no max_age
     except SignatureExpired:
         return 'O link de ativação expirou.'
-        #return render_template('cadastro.html', resultado='O link de ativação expirou.')
+        # return render_template('cadastro.html', resultado='O link de ativação expirou.')
     except Exception as e:
         return 'Falha na ativação.'
-        #return render_template('cadastro.html', resultado='Falha na ativação.')
+        # return render_template('cadastro.html', resultado='Falha na ativação.')
     return 'Email confirmado.'
-    #return render_template('cadastro.html', resultado='Email confirmado.')
+    # return render_template('cadastro.html', resultado='Email confirmado.')
 

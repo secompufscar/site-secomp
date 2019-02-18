@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_bootstrap import Bootstrap
 from flask_script import Server, Manager, prompt_bool
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
@@ -14,7 +13,6 @@ configs = {
 config_name = os.getenv('FLASK_CONFIGURATION', 'default')
 
 app = Flask(__name__)
-Bootstrap(app)
 app.config.from_pyfile(configs[config_name])
 
 from app.models.models import db, Usuario 
@@ -34,7 +32,7 @@ adm = admin.init_admin(app)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-manager.add_command('runserver', Server(host='0.0.0.0', ssl_crt='ssl/server.crt', ssl_key='ssl/server.key'))
+manager.add_command('runserver', Server(host='0.0.0.0'))
 
 @manager.command
 def create():
