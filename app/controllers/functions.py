@@ -30,6 +30,40 @@ def email_confirmado():
 	usuario = db.session.query(Usuario).filter_by(email=usuario.email).first()
 	return usuario.email_verificado
 
+def get_opcoes_cidades():
+	cidades = db.session.query(Cidade).filter_by().all()
+	info_cidades = []
+	for cidade in cidades:
+		info = (cidade.id, cidade.nome)
+		info_cidades.append(info)
+	return info_cidades
+
+def get_opcoes_instituicoes():
+	instituicoes = db.session.query(Instituicao).filter_by().all()
+	info_instituicoes = []
+	for instituicao in instituicoes:
+		info = (instituicao.id, instituicao.nome)
+		info_instituicoes.append(info)
+	return info_instituicoes
+
+def get_opcoes_cursos():
+	cursos = db.session.query(Curso).filter_by().all()
+	info_cursos = []
+	for curso in cursos:
+		info = (curso.id, curso.nome)
+		info_cursos.append(info)
+	return info_cursos
+
+def get_opcoes_camisetas():
+	camisetas = db.session.query(Camiseta).filter_by().order_by(Camiseta.ordem_site).all()
+	info_camisetas = []
+	for camiseta in camisetas:
+		if camiseta.quantidade_restante > 0:
+			info = (camiseta.id, camiseta.tamanho)
+			info_camisetas.append(info)
+
+	return info_camisetas
+
 def get_dicionario_usuario(usuario):
 	info = {
 		"nome": usuario.primeiro_nome + ' ' + usuario.ult_nome,

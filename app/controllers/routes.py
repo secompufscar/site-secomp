@@ -61,8 +61,8 @@ def cadastro():
 			hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
 			usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
 							  data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
-							  ult_nome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
-							  cidade=form.cidade.data, data_nasc=form.data_nasc.data,
+							  ult_nome=form.sobrenome.data, id_curso=form.curso.data, id_instituicao=form.instituicao.data,
+							  id_cidade=form.cidade.data, data_nasc=form.data_nasc.data,
 							  token_email=token, autenticado=True, salt=salt)
 			#TODO Quando pronto o modelo de evento implementar função get_id_edicao()
 			db.session.add(usuario)
@@ -92,11 +92,12 @@ def cadastro_participante():
 		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
 		if participante is None:
 			form = ParticipanteForm(request.form)
-			if form.validate_on_submit():
+			participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+			if form.validate_on_submit() and participante is None:
 				agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 				usuario = current_user
 				participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
-				pagamento=False, camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
+				pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
 				opcao_coffee=form.restricao_coffee.data)
 				db.session.add(participante)
 				db.session.flush()
