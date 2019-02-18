@@ -7,7 +7,7 @@ from passlib.hash import pbkdf2_sha256
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 import datetime
 import os
-from app.controllers.constants import dicionario_eventos, EDICAO_ATUAL
+from app.controllers.constants import EDICAO_ATUAL
 from app.models.models import *
 from bcrypt import gensalt
 
@@ -87,14 +87,15 @@ def verificar_email():
 @app.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
+	id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
 	if email_confirmado() == True:
-		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id).first()
+		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
 		if participante is None:
 			form = ParticipanteForm(request.form)
 			if form.validate_on_submit():
 				agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 				usuario = current_user
-				participante = Participante(id_usuario=usuario.id, id_evento=1, pacote=form.kit.data,
+				participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
 				pagamento=False, camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
 				opcao_coffee=form.restricao_coffee.data)
 				db.session.add(participante)
