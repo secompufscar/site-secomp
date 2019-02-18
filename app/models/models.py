@@ -31,9 +31,9 @@ class Usuario(db.Model):
     permissao = Column(Integer, nullable=False)
     primeiro_nome = Column(String(64), nullable=False)
     ult_nome = Column(String(64), nullable=False)
-    curso = Column(String(64), nullable=False)
-    cidade = Column(String(64), nullable=False)
-    instituicao = Column(String(64), nullable=False)
+    id_curso = Column(Integer, db.ForeignKey('curso.id'), nullable=False)
+    id_cidade = Column(Integer, db.ForeignKey('cidade.id'), nullable=False)
+    id_instituicao = Column(Integer, db.ForeignKey('instituicao.id'), nullable=False)
     token_email = Column(String(90), nullable=False)
     data_nasc = Column(Date, nullable=False)
     autenticado = Column(Boolean, default=False)
@@ -189,16 +189,19 @@ class Curso(db.Model):
     __tablename__ = 'curso'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
+    usuarios = db.relationship('Usuario', backref='curso', lazy=True)
 
 class Instituicao(db.Model):
     __tablename__ = 'instituicao'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
+    usuarios = db.relationship('Usuario', backref='instituicao', lazy=True)
 
 class Cidade(db.Model):
     __tablename__ = 'cidade'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
+    usuarios = db.relationship('Usuario', backref='cidade', lazy=True)
 
 class Camiseta(db.Model):
     __tablename__ = 'camiseta'
