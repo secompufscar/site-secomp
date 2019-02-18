@@ -32,7 +32,7 @@ adm = admin.init_admin(app)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-manager.add_command('runserver', Server(host='0.0.0.0', ssl_crt='ssl/server.crt', ssl_key='ssl/server.key'))
+manager.add_command('runserver', Server(host='0.0.0.0'))
 
 @manager.command
 def create():

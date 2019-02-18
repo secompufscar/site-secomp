@@ -48,7 +48,7 @@ def logout():
 @app.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-    
+
     form = CadastroForm(request.form)
     email = form.email.data
     token = serializer.dumps(email, salt='confirmacao_email')
@@ -95,10 +95,10 @@ def verificacao(token):
     # Tempo definido no max_age
     except SignatureExpired:
         return 'O link de ativação expirou.'
-        #return render_template('cadastro.html', resultado='O link de ativação expirou.')
+        # return render_template('cadastro.html', resultado='O link de ativação expirou.')
     except Exception as e:
         return 'Falha na ativação.'
-        #return render_template('cadastro.html', resultado='Falha na ativação.')
+        # return render_template('cadastro.html', resultado='Falha na ativação.')
     return 'Email confirmado.'
-    #return render_template('cadastro.html', resultado='Email confirmado.')
+    # return render_template('cadastro.html', resultado='Email confirmado.')
 
