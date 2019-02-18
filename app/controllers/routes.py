@@ -113,12 +113,7 @@ def cadastro_participante():
 @login_required
 def dashboard_usuario():
 	if email_confirmado() == True:
-		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=1).first()
-		if participante is not None:
-			inscricao=False
-		else:
-			inscricao=True
-		return render_template('dashboard_usuario.html', eventos=get_dicionario_eventos_participante(),
+		return render_template('dashboard_usuario.html', eventos=get_dicionario_eventos_participante(request.base_url),
 		info_usuario=get_dicionario_usuario(current_user))
 	else:
 		return redirect(url_for('verificar_email'))
