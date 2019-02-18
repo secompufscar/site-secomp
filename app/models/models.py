@@ -183,3 +183,26 @@ class CotaPatrocinio(db.Model):
     id = Column(Integer, primary_key=True)
     nome = Column(String(50), nullable=False)
     patrocinadores = db.relationship('Patrocinador', backref='cota_patrocinio', lazy=True)
+
+class Curso(db.Model):
+    __tablename__ = 'curso'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+
+class Instituicao(db.Model):
+    __tablename__ = 'instituicao'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+
+class Cidade(db.Model):
+    __tablename__ = 'cidade'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+
+class Camiseta(db.Model):
+    __tablename__ = 'camiseta'
+    id = Column(Integer, primary_key=True)
+    tamanho = Column(String(30), nullable=False)
+    quantidade = Column(Integer, nullable=False)
+    ordem_site = Column(Integer, nullable=False)
+    quantidade_restante = Column(Integer, nullable=False)
