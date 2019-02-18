@@ -1,22 +1,22 @@
 import os
 
 # FLASK
-DEBUG = True
+DEBUG = None
 
 # FLASK WTF
 SECRET_KEY = os.urandom(32)
 
 # FLASK MAIL
-MAIL_SERVER = 'smtp.gmail.com'
+MAIL_SERVER = 'smtp.zoho.com'
 MAIL_PORT = 465
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
-MAIL_USERNAME = '@gmail.com'
-MAIL_PASSWORD = ''
+MAIL_USERNAME = 'noreply@secompufscar.com.br'
+MAIL_PASSWORD= 'passmail'
 
 # FLASK ADMIN
 FLASK_ADMIN_SWATCH = 'darkly'
 
-# SQL ALCHEMY
-SQLALCHEMY_DATABASE_URI = 'mysql://root:root@localhost/db'
+# SQLALCHEMY
+SQLALCHEMY_DATABASE_URI = 'mysql://../db'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
