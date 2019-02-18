@@ -60,7 +60,7 @@ class Participante(db.Model):
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     pacote = Column(Boolean, nullable=False)
     pagamento = Column(Boolean, nullable=False)
-    camiseta = Column(String(20))
+    id_camiseta = Column(Integer, db.ForeignKey('camiseta.id'), primary_key=False)
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
@@ -132,6 +132,7 @@ class Evento(db.Model):
     membros_equipe = db.relationship('MembroDeEquipe', backref='evento', lazy=True)
     patrocinadores = db.relationship('Patrocinador', secondary=relacao_patrocinador_evento, lazy=True,
     back_populates='eventos')
+    camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
 
 class Presenca(db.Model):
     __tablename__ = 'presenca'
@@ -202,6 +203,8 @@ class Cidade(db.Model):
 class Camiseta(db.Model):
     __tablename__ = 'camiseta'
     id = Column(Integer, primary_key=True)
+    id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
+    participantes = db.relationship('Participante', backref='camiseta', lazy=True)
     tamanho = Column(String(30), nullable=False)
     quantidade = Column(Integer, nullable=False)
     ordem_site = Column(Integer, nullable=False)
