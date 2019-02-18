@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
+from datetime import datetime
+from enum import Enum
 from app import app
 
 db = SQLAlchemy(app)
@@ -26,9 +28,6 @@ class Usuario(db.Model):
     participantes = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
-    ultimo_login = Column(DateTime, nullable=False)
-    data_cadastro = Column(DateTime, nullable=False)
-    permissao = Column(Integer, nullable=False)
     primeiro_nome = Column(String(64), nullable=False)
     ult_nome = Column(String(64), nullable=False)
     id_curso = Column(Integer, db.ForeignKey('curso.id'), nullable=False)
@@ -37,7 +36,11 @@ class Usuario(db.Model):
     token_email = Column(String(90), nullable=False)
     data_nasc = Column(Date, nullable=False)
     autenticado = Column(Boolean, default=False)
+    token_email = Column(String(90), nullable=False)
     email_verificado = Column(Boolean, default=False)
+    ultimo_login = Column(DateTime, default=datetime.now())
+    data_cadastro = Column(DateTime, nullable=False)
+    participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
     salt = Column(String(30), nullable=False)
 
     def is_active(self):
@@ -79,7 +82,7 @@ class Ministrante(db.Model):
     observacoes = Column(String(512))
     nome = Column(String(64), nullable=False)
     email = Column(String(64), nullable=False)
-    tel = Column(String(64), nullable=False)
+    telefone = Column(String(64), nullable=False)
     profissao = Column(String(64), nullable=False)
     empresa_univ = Column(String(64), nullable=False)
     biografia = Column(String(1024), nullable=False)

@@ -5,6 +5,7 @@ flask_migrate==2.3.1
 flask_script==2.0.6
 flask_sqlalchemy==2.3.2
 flask_wtf==0.14.2
+flask-admin==1.5.3
 itsdangerous==1.1.0
 passlib==1.7.1
 mysqlclient==1.4.1
