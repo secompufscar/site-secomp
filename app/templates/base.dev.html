@@ -1,0 +1,24 @@
+{{## TODO }}
+{{## Adicionar suporte à flask_bootstrap }}
+{{## Base.html }}
+
+{% block html_attribs %}lang="pt-br"{% endblock %}
+{% block metas %}{{ super() }}{% endblock %}
+
+{{## Blocos Personalizados }}
+{{## Rascunho de rodapé }}
+{% block fotter %}
+    <fotter>
+	{{## Expandir variável secomp com nome dos membros }}
+	<p>Desenvolvido por {{ secomp }}<br/></p>
+	{{## Expandir variável para o email da secomp }}
+	<a href="mailto:{{ secomp_email }}">{{ secomp_email }}</a><br/>
+	{{## Expandir variável para mantenedores atuais }}
+	<p>Atualmente mantido por {{ secomp_now }}</p><br/>
+	<hr/><br/>
+	<p>Universidade Federal de São Carlos</p><br/>
+	<p>Departamento de Computação</p></br>
+	<p>Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara 
+	    - São Carlos/SP - CEP 13565-905</p><br/>
+    </fotter>
+{% endblock %}
