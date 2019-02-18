@@ -46,7 +46,7 @@ def get_dicionario_usuario(usuario):
 def get_score_evento(edicao):
 	return 10000
 
-def get_dicionario_eventos_participante():
+def get_dicionario_eventos_participante(base_url):
 	info_eventos = []
 	agora = datetime.datetime.now()
 	participantes = db.session.query(Participante).filter_by(id_usuario=current_user.id).all()
@@ -58,7 +58,7 @@ def get_dicionario_eventos_participante():
 				"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
 				"edicao": evento.edicao,
 				"participantes": len(evento.participantes),
-				"url": "https://0.0.0.0:5000/dashboard-usuario/evento/" + str(evento.edicao),
+				"url": base_url + "/evento/" + str(evento.edicao),
 				"inscricao": 0
 			}
 			info_eventos.append(info)
@@ -76,7 +76,7 @@ def get_dicionario_eventos_participante():
 		"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
 		"edicao": evento.edicao,
 		"participantes": len(evento.participantes),
-		"url": "https://0.0.0.0:5000/dashboard-usuario/evento/" + str(evento.edicao),
+		"url": base_url + "/evento/" + str(evento.edicao),
 		"inscricao": inscricao
 	}
 	info_eventos.append(info)
