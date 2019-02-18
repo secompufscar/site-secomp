@@ -76,16 +76,6 @@ def cadastro():
 			return redirect(url_for('verificar_email'))
 	return render_template('cadastro.html', form=form)
 
-@app.route('/verificar-email')
-@login_required
-def verificar_email():
-	if email_confirmado() == 	True:
-		msg = 'Seu email foi verificado com sucesso!'
-		status = True
-	else:
-		msg = 'Confirme o email de verificação que foi enviado ao endereço de email fornecido'
-		status = False
-	return render_template('confirma_email.html', resultado=msg, status=status)
 
 # Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
