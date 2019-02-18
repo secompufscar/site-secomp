@@ -28,5 +28,3 @@ escolhas_restricao = [
     (1, "Nenhum"),
     (2, "Vegetariano"),
     (3, "Vegano")]
-
-URL_DEV = "https://0.0.0.0:5000"

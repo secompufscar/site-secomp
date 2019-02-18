@@ -4,10 +4,6 @@ from app.models.models import *
 from app.controllers.constants import *
 import datetime
 
-def check_password(x, y):
-	#Esperar criptografia para programar a função que verificará a integridade da senha
-	return True
-
 def enviarEmailConfirmacao(app, email, token): #Envia email para validação do email
 	from flask_mail import Mail, Message
 
@@ -28,6 +24,7 @@ def enviarEmailConfirmacao(app, email, token): #Envia email para validação do 
 			log.close()
 		except:
 			pass
+
 def email_confirmado():
 	usuario = current_user
 	usuario = db.session.query(Usuario).filter_by(email=usuario.email).first()
@@ -46,6 +43,7 @@ def get_dicionario_usuario(usuario):
 def get_score_evento(edicao):
 	return 10000
 
+#Função usada na dashboard do usuário
 def get_dicionario_eventos_participante(base_url):
 	info_eventos = []
 	agora = datetime.datetime.now()
@@ -82,6 +80,7 @@ def get_dicionario_eventos_participante(base_url):
 	info_eventos.append(info)
 	return info_eventos
 
+#Função usada na página de informações de um determinado evento
 def get_dicionario_info_evento(edicao):
 	evento = db.session.query(Evento).filter_by(edicao=edicao).first()
 	participante = db.session.query(Participante).filter_by(id_evento=evento.id, id_usuario=current_user.id).first()
