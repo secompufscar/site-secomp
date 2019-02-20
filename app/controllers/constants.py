@@ -1,3 +1,40 @@
+"""
+Armazena variáveis auxiliares
+para serem utilizadas pelo
+grupo de front-end e back-end
+"""
+# TODO corrigir possíveis nomes errados
+# Nomes dos participantes atuais
+secomp_now = [(
+        "Marcos Felipe"
+        "Alcides Mignoso"
+        "Gabriel Alves"
+        "Igor Lúcio"
+        "Matheus Victorello"
+        "Daniel Moura"
+        "Karina Mayumi"
+        "Nathan Oliveira"
+        "Victoria de Martini"
+        "Lucas Cruz dos Reis"
+        )]
+
+# Mantenedores originais
+secomp = [(
+        "Marcos Felipe"
+        "Alcides Mignoso"
+        "Gabriel Alves"
+        "Igor Lúcio"
+        "Matheus Victorello"
+        "Daniel Moura"
+        "Karina Mayumi"
+        "Nathan Oliveira"
+        "Victoria de Martini"
+        "Lucas Cruz dos Reis"
+        )]
+
+# TODO colocar o e-mail da secomp
+secomp_email = "#"
+
 #Variáveis usadas nas mensagens de erro no Formulário
 ERRO_INPUT_REQUIRED = "Preencha esse campo"
 ERRO_EMAIL = "Entre com um endereço de email válido"
