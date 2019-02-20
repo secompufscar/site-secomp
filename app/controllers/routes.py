@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, session
 from flask_login import login_required, login_user, logout_user, current_user
+from app.controllers.constants import secomp_now, secomp, secomp_email
 from app import app
 from app.controllers.forms import LoginForm, CadastroForm
 from app.controllers.functions import enviarEmailConfirmacao
@@ -13,11 +14,22 @@ from bcrypt import gensalt
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Página inicial')
+    """
+    Renderiza a página inicial do projeto
+    """
+    return render_template('index.html', title='Página inicial', 
+            secomp_now=secomp_now, secomp=secomp, 
+            secomp_email=secomp_email)
 
+@app.route('/dev')
+def dev():
+    return render_template('index.dev.html')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """
+    Renderiza a página de login do projeto
+    """
     form = LoginForm(request.form)
     if form.validate_on_submit():
         user = db.session.query(Usuario).filter_by(
@@ -37,6 +49,9 @@ def login():
 @app.route("/logout", methods=["GET"])
 @login_required
 def logout():
+    """
+    Renderiza a página de logout do projeto
+    """
     user = current_user
     user.autenticado = False
     db.session.add(user)
