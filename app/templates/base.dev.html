@@ -15,10 +15,10 @@
 <title>{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}</title>
 {# styles globais #}
 {% block styles %}
-<link href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ url_for('.static', filename='bootstrap/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ url_for('.static', filename='bootstrap/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='bs/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='bs/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
+<!--link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" type="text/css"/-->
 {% endblock %}
 
 {% block favicon %}
@@ -32,7 +32,7 @@
 	<div class="container">
 	    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		{# Marca d'água para a home  #}
-		<a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="" width="" height="" alt="Logo atual da SECOMP"/></a>
+		<a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
 		{# TODO mudar o aria #}
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
