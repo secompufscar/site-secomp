@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, session
 from flask_login import login_required, login_user, logout_user, current_user
-from app.controllers.constants import secomp_now, secomp, secomp_email
+from app.controllers.constants import secomp_now, secomp, secomp_email, secomp_edition
 from app import app
 from app.controllers.forms import LoginForm, CadastroForm
 from app.controllers.functions import enviarEmailConfirmacao
@@ -19,7 +19,8 @@ def index():
     """
     return render_template('index.html', title='Página inicial', 
             secomp_now=secomp_now, secomp=secomp, 
-            secomp_email=secomp_email)
+            secomp_email=secomp_email, 
+            secompEdition = secomp_edition)
 
 @app.route('/dev')
 def dev():

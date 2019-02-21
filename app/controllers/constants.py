@@ -33,7 +33,10 @@ secomp = [(
         )]
 
 # TODO colocar o e-mail da secomp
-secomp_email = "#"
+secomp_email = "ti@secompufscar.com.br"
+
+# Edição atual da secomp
+secomp_edition = "X"
 
 #Variáveis usadas nas mensagens de erro no Formulário
 ERRO_INPUT_REQUIRED = "Preencha esse campo"

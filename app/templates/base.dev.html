@@ -12,10 +12,9 @@
 <meta name="organization" content="SECOMP UFSCar"/>
 {% endblock %}
 
-{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}
+<title>{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}</title>
 {# styles globais #}
 {% block styles %}
-{# Super block isn't working for the extention #}
 <link href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('.static', filename='bootstrap/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('.static', filename='bootstrap/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
@@ -28,47 +27,44 @@
 {% endblock %}
 
 {% block body %}
-<div class="container">
     {% block navbar %}
     <header>
 	<div class="container">
-	    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		{# Marca d'água para a home  #}
-		<a class="navbar-brand mr-auto" href="{{ url_for('index') }}"><img src="" width="" height="" alt="Logo atual da SECOMP"/></a>
-		{# TODO mudar o aria label#}
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation"></button>
-		<div class="collapse navbar-collapse" id="navbarItens">
+		<a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="" width="" height="" alt="Logo atual da SECOMP"/></a>
+		{# TODO mudar o aria #}
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse mr-auto navbar-collapse" id="navbarItens">
 		    {# TODO colocar uma lógica Jinja para active...? #}
 		    {# TODO colocar uma lógica Jinja para usuário logado? #}
 		    <ul class="navbar-nav">
 			<li class="nav-item">
 			    <a class="nav-link" href="{{ url_for('index') }}">HOME</a>
 			</li>
-			<li class="nav-item">
-			    <div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    Secomp
-				</button>
-				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-				    <a class="dropdown-item" href="#">Sobre o Evento</a>
-				    <a class="dropdown-item" href="#">Equipe</a>
-				    {# Colocar como um link separado? #}
-				    <a class="dropdown-item" href="#">Contato</a>
-				    <a class="dropdown-item" href="#">Gameficação</a>
-				</div>
+			<li class="nav-item dropdown">
+			    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
+				Secomp
+			    </a>
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<a class="dropdown-item" href="#">Sobre o Evento</a>
+				<a class="dropdown-item" href="#">Equipe</a>
+				{# Colocar como um link separado? #}
+				<a class="dropdown-item" href="#">Contato</a>
+				<a class="dropdown-item" href="#">Gameficação</a>
 			    </div>
 			</li>
-			<li class="nav-item">
-			    <div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    Eventos
-				</button>
-				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-				    <a class="dropdown-item" href="#">Cronograma</a>
-				    <a class="dropdown-item" href="#">CTF</a>
-				    <a class="dropdown-item" href="#">Churrasco</a>
-				</div>
-			    </div>			
+			<li class="nav-item dropdown">
+			    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
+				Eventos
+			    </a>
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<a class="dropdown-item" href="#">Cronograma</a>
+				<a class="dropdown-item" href="#">CTF</a>
+				<a class="dropdown-item" href="#">Churrasco</a>
+			    </div>
 			</li>
 			<li class="nav-item">
 			    <a class="nav-link" href="#">FAQ</a>
@@ -91,14 +87,14 @@
 	    <div class="col-md-6 mt-md-0 mt-3">
 		{# TODO:corrigir formatação de expanção de nomes #}
 		{# Expandir variável secomp com nome dos membros #}
-		{% for name in secomp %}
-		<p>Desenvolvido por {{ name }}<br/></p>
+		{% for name in secomp|sort %}
+		<p>Desenvolvido por {{ name }}, </p><br/>
 		{% endfor %}
 		{# Expandir variável para o email da secomp #}
 		<a href="mailto:{{ secomp_email }}">{{ secomp_email }}</a><br/>
 		{# Expandir variável para mantenedores atuais #}
-		{% for name in secomp_now %}
-		<p>Atualmente mantido por {{ name }}</p></br>
+		{% for name in secomp_now|sort %}
+		<p>Atualmente mantido por {{ name }} </p></br>
 		{% endfor %}
 		<hr/><br/>
 		<p>Universidade Federal de São Carlos</p><br/>
@@ -108,6 +104,12 @@
 	    </div>
 	</div>
     </footer>
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     {% endblock %}
     {% endblock %}
 
