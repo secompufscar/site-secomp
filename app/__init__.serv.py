@@ -11,7 +11,7 @@ configs = {
     'default': '../config/default.py'
 }
 
-config_name = os.getenv('FLASK_CONFIGURATION', 'development')
+config_name = os.getenv('FLASK_CONFIGURATION', 'default')
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -34,7 +34,7 @@ adm = admin.init_admin(app)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-manager.add_command('runserver', Server(host='0.0.0.0'))
+manager.add_command('runserver', Server(host='0.0.0.0', ssl_crt='ssl/server.crt', ssl_key='ssl/server.key'))
 
 @manager.command
 def create():
