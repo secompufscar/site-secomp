@@ -171,10 +171,11 @@ def verificacao(token):
 @app.route('/inscricao-atividades')
 @login_required
 def inscricao_atividades():
-    atividades = db.session.query(Atividade)
+    minicursos = db.session.query(Atividade).filter_by(tipo=0)
+    palestras = db.session.query(Atividade).filter_by(tipo=1)
     return render_template('inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
-                           usuario=current_user, atividades=atividades)
+                           usuario=current_user, minicursos=minicursos, palestras=palestras)
 
 
 @app.route('/inscrever-atividade/<id>')
