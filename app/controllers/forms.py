@@ -18,3 +18,8 @@ class CadastroForm(FlaskForm):
     instituicao = SelectField('Instituição', choices=escolhas_instituicao, id= "instituicao", default="UFSCar")
     cidade = SelectField('Cidade', choices=escolhas_cidade, id= "cidade", default="São Carlos")
     data_nasc = DateField("Data de Nascimento", format="%d/%m/%Y", id="data_nasc")
+	
+class ContatoForm(FlaskForm):
+	nome_completo = StringField('Nome', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
+	email = StringField('Email', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
+	mensagem = StringField('Mensagem', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=500)])

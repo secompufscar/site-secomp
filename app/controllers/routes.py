@@ -2,8 +2,8 @@ from flask import render_template, request, redirect, url_for, session
 from flask_login import login_required, login_user, logout_user, current_user
 from app.controllers.constants import secomp_now, secomp, secomp_email, secomp_edition
 from app import app
-from app.controllers.forms import LoginForm, CadastroForm
-from app.controllers.functions import enviarEmailConfirmacao
+from app.controllers.forms import LoginForm, CadastroForm, ContatoForm
+from app.controllers.functions import enviarEmailConfirmacao, enviarEmailDM
 from app.models.models import *
 from passlib.hash import pbkdf2_sha256
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -118,3 +118,19 @@ def verificacao(token):
         # return render_template('cadastro.html', resultado='Falha na ativação.')
     return 'Email confirmado.'
     # return render_template('cadastro.html', resultado='Email confirmado.')
+	
+# Página de contato
+@app.route('/contato', methods=['POST', 'GET'])
+def contatoDM():
+	form = ContatoForm(request.form)
+	
+	if form.validate_on_submit():
+		nome = form.nome_completo.data
+		email = form.email.data
+		mensagem = form.mensagem.data
+	
+		enviarEmailDM(app, nome, email, mensagem)
+		
+		return render_templete('contato.html', form=form, enviado=True)
+	
+	return render_templete('contato.html', form=form)

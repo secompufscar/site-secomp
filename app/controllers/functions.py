@@ -24,3 +24,21 @@ def enviarEmailConfirmacao(app, email, token): #Envia email para validação do 
 			log.close()
 		except:
 			pass
+			
+def enviarEmailDM(app, nome, email, mensagem):
+	from flask_mail import Mail, Message
+	
+	mail = Mail(app)
+	
+	msg = Message('Mensagem de {}'.format(nome), sender=app.config['MAIL_USERNAME'], recipients=app.config['MAIL_DM'])
+	msg.body = '{}\nEmail: {}\n\n{}'.format(nome, email, mensagem)
+	
+	try:
+		mail.send(msg) #Envia o email
+	except Exception as e: #Erros mais prováveis são devivo ao email_config, printa error em um arquivo
+		try:
+			log = open('logMailError.txt', 'a+')
+			log.write('{} {} {} {} {}\n'.format(str(e), nome, email, mensagem, strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
+			log.close()
+		except:
+			pass
