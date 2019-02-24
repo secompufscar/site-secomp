@@ -1,15 +1,15 @@
-from flask import render_template, request, redirect, url_for, session
+import datetime
+
+from bcrypt import gensalt
+from flask import render_template, request, redirect, url_for
 from flask_login import login_required, login_user, logout_user, current_user
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from passlib.hash import pbkdf2_sha256
+
 from app.controllers.constants import secomp_now, secomp, secomp_email, secomp_edition
-from app import app
 from app.controllers.forms import LoginForm, CadastroForm
 from app.controllers.functions import enviarEmailConfirmacao
 from app.models.models import *
-from passlib.hash import pbkdf2_sha256
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-import datetime
-import os
-from bcrypt import gensalt
 
 
 @app.route('/')
@@ -80,8 +80,8 @@ def cadastro():
             hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
             usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
                               data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
-                              ult_nome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
-                              cidade=form.cidade.data, data_nasc=form.data_nasc.data,
+                              sobrenome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
+                              cidade=form.cidade.data, data_nascimento=form.data_nasc.data,
                               token_email=token, autenticado=True, salt=salt)
             # TODO Quando pronto o modelo de evento implementar função get_id_edicao()
             db.session.add(usuario)
@@ -118,3 +118,31 @@ def verificacao(token):
         # return render_template('cadastro.html', resultado='Falha na ativação.')
     return 'Email confirmado.'
     # return render_template('cadastro.html', resultado='Email confirmado.')
+
+
+@app.route('/inscricao-atividades')
+@login_required
+def inscricao_atividades():
+    atividades = db.session.query(Atividade)
+    return render_template('inscricao_atividades.html', usuario=current_user, atividades=atividades)
+
+
+@app.route('/inscrever-atividade/<id>')
+@login_required
+def inscrever(id):
+    atv = db.session.query(Atividade).filter_by(id=id)[0]
+    if atv.vagas_disponiveis > 0:
+        atv.inscritos.append(db.session.query(Participante).filter_by(usuario=current_user)[0])
+        atv.vagas_disponiveis = atv.vagas_disponiveis - 1
+        db.session.flush()
+        db.session.commit()
+        return redirect(url_for(inscricao_atividades))
+    else:
+        return "Não há vagas disponíveis!"
+    return id
+
+
+@app.route('/gerenciar-atividades')
+@login_required
+def gerenciar_atividades():
+    return 0
