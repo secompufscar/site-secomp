@@ -109,24 +109,23 @@ def cadastro_participante():
 	if email_confirmado() == True:
 		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
 		if participante is None:
-
-
-form = ParticipanteForm(request.form)
-			participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
-			if form.validate_on_submit() and participante is None:
-				agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-				usuario = current_user
-				participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
+    form = ParticipanteForm(request.form)
+    participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+    if form.validate_on_submit() and participante is None:
+        agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        usuario = current_user
+        participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
 				pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
 				opcao_coffee=form.restricao_coffee.data)
-				db.session.add(participante)
-				db.session.flush()
-				db.session.commit()
-				return redirect(url_for('dashboard_usuario'))
-			else:
-				return render_template('cadastro_participante.html', form=form)
-		else:
-			return redirect(url_for('dashboard_usuario'))
+        db.session.add(participante)
+        db.session.flush()
+        db.session.commit()
+        return redirect(url_for('dashboard_usuario'))
+    else:
+        return render_template('cadastro_participante.html', form=form)
+
+else:
+return redirect(url_for('dashboard_usuario'))
 	else:
 		return redirect(url_for('verificar_email'))
 
