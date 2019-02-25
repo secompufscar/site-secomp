@@ -121,3 +121,6 @@ dmypy.json
 # Migrate
 migrations/
 app.db
+
+config/development.py
+ssl/
