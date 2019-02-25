@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  .bloco-oculto{
+    visibility: hidden;
+  }
+  #menu_usuario, #menu_eventos{
+    padding-right: 15px;
+    padding-left: 15px;
+    font-size:30px;
+  }
+  .navbar{
+    background-color: #d9d9d9;
+  }
+  .navbar-brand{
+    color:black;
+  }
+  .inscrever{
+    background-color:#00cc00;
+    color:white;
+  }
+
+}
+</style>
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" id="menu_usuario" href="#">Informações do Usuario</a>
+  <a class="navbar-brand" id="menu_eventos" href="#">Eventos</a>
+</nav><br>
+
+  <div id="conteudo"></div>
+  <div class="bloco-oculto" id="eventos">
+{% for evento in eventos: %}
+  <div>
+    <div>{{evento.titulo}}</div>
+    {% if evento.inscricao == 1: %}
+      <button class="inscrever" onclick="location.href='https://0.0.0.0:5000/cadastro-participante'">Inscrever-se</button>
+    {% elif evento.inscricao == 0: %}
+      <button onclick="location.href='{{evento.url}}'">Ver Informações</button>
+    {% else: %}
+      <div>Inscrições não abertas</div>
+    {% endif %}
+  </div><hr>
+{% endfor %}
+  </div>
+  <div class="bloco-oculto" id="info-usuario">
+    <div>Nome: {{info_usuario.nome}}</div><br>
+    <div>Email: {{info_usuario.email}}</div><br>
+    <div>Curso: {{info_usuario.curso}}</div><br>
+    <div>Instituição: {{info_usuario.instituicao}}</div><br>
+    <div>Data de nascimento: {{info_usuario.data_nasc}}</div><br>
+  </div>
+  <script>
+  $('#conteudo').html($('#info-usuario').html());
+  $('#menu_usuario').css("background-color", "black");
+  $('#menu_usuario').css("color", "white");
+    $('#menu_usuario').click(function() {
+      $('#menu_usuario').css("background-color", "black");
+      $('#menu_usuario').css("color", "white");
+      $('#menu_eventos').css("background-color", "transparent");
+      $('#menu_eventos').css("color", "black");
+      $('#conteudo').css("display", "none");
+      $('#conteudo').html($('#info-usuario').html());
+      $('#conteudo').fadeIn(400);
+    });
+    $('#menu_eventos').click(function() {
+      $('#menu_eventos').css("background-color", "black");
+      $('#menu_eventos').css("color", "white");
+      $('#menu_usuario').css("background-color", "transparent");
+      $('#menu_usuario').css("color", "black");
+      $('#conteudo').css("display", "none");
+      $('#conteudo').html($('#eventos').html());
+      $('#conteudo').fadeIn(400);
+    });
+  </script>
+{% endblock %}
