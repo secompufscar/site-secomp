@@ -70,7 +70,7 @@ def get_dicionario_usuario(usuario):
 		"email": usuario.email,
 		"curso": usuario.curso,
 		"instituicao": usuario.instituicao,
-		"data_nasc": usuario.data_nasc
+		"data_nasc": usuario.data_nascimento
 	}
 	return info
 
