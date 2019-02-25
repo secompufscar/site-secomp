@@ -14,7 +14,7 @@ from bcrypt import gensalt
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Página inicial')
+	return render_template('index.html', title='Página inicial')
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -45,24 +45,24 @@ def logout():
 
 @app.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
-    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
-    form = CadastroForm(request.form)
-    email = form.email.data
-    token = serializer.dumps(email, salt='confirmacao_email')
-    salt = gensalt().decode('utf-8')
+	form = CadastroForm(request.form)
+	email = form.email.data
+	salt = gensalt().decode('utf-8')
+	token = serializer.dumps(email, salt=salt)
 
 	if form.validate_on_submit():
 		usuario = db.session.query(Usuario).filter_by(email=email).first()
 		if usuario is not None:
 			return "Este email já está sendo usado!"
 		else:
-			agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+			agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 			hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
 			usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
 							  data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
 							  ult_nome=form.sobrenome.data, id_curso=form.curso.data, id_instituicao=form.instituicao.data,
-							  id_cidade=form.cidade.data, data_nasc=form.data_nasc.data,
+							  id_cidade=form.cidade.data, data_nascimento=form.data_nasc.data,
 							  token_email=token, autenticado=True, salt=salt)
 			#TODO Quando pronto o modelo de evento implementar função get_id_edicao()
 			db.session.add(usuario)
@@ -94,7 +94,7 @@ def cadastro_participante():
 			form = ParticipanteForm(request.form)
 			participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
 			if form.validate_on_submit() and participante is None:
-				agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+				agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 				usuario = current_user
 				participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
 				pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
@@ -124,8 +124,12 @@ def dashboard_usuario():
 def info_participante_evento(edicao):
 	return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
 
+@app.login_manager.user_loader
+def user_loader(user_id):
+		return Usuario.query.get(user_id)
 
-# Página do link enviado para o usuário
+
+#Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
 def verificacao(token):
 	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
