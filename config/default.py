@@ -18,5 +18,5 @@ MAIL_PASSWORD = ''
 FLASK_ADMIN_SWATCH = 'darkly'
 
 # SQL ALCHEMY
-SQLALCHEMY_DATABASE_URI = 'mysql://root:root@localhost/db'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:2968@localhost/db'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
