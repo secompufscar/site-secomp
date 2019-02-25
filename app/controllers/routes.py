@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, session
 from flask_login import login_required, login_user, logout_user, current_user
+from app.controllers.constants import secomp_now, secomp, secomp_email, secomp_edition
 from app import app
 from app.controllers.forms import LoginForm, CadastroForm, ParticipanteForm
 from app.controllers.functions import *
@@ -14,33 +15,51 @@ from bcrypt import gensalt
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Página inicial')
+    """
+    Renderiza a página inicial do projeto
+    """
+    return render_template('index.html', title='Página inicial', 
+            secomp_now=secomp_now[0], secomp=secomp[0], 
+            secomp_email=secomp_email, 
+            secompEdition = secomp_edition)
 
+@app.route('/dev')
+def dev():
+    return render_template('index.dev.html')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-	form = LoginForm(request.form)
-	if form.validate_on_submit():
-		user = db.session.query(Usuario).filter_by(email = form.email.data).first()
-		if user:
-			if pbkdf2_sha256.verify(form.senha.data, user.senha):
-				user.autenticado = True
-				db.session.add(user)
-				db.session.commit()
-				login_user(user, remember=True)
-				return redirect(url_for('dashboard_usuario'))
-	return render_template('login.html', form=form)
+    """
+    Renderiza a página de login do projeto
+    """
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        user = db.session.query(Usuario).filter_by(
+            email=form.email.data).first()
+        if user:
+            if pbkdf2_sha256.verify(form.senha.data, user.senha):
+                user.autenticado = True
+                user.ultimo_login = datetime.datetime.now()
+                db.session.add(user)
+                db.session.commit()
+                login_user(user, remember=True)
+                return "olá, {}".format(user.primeiro_nome)
+                # return redirect(url_for('index_usuario'))
+    return render_template('login.html', form=form)
 
 
 @app.route("/logout", methods=["GET"])
 @login_required
 def logout():
-	user = current_user
-	user.autenticado = False
-	db.session.add(user)
-	db.session.commit()
-	logout_user()
-	return redirect(url_for('login'))
+    """
+    Renderiza a página de logout do projeto
+    """
+    user = current_user
+    user.autenticado = False
+    db.session.add(user)
+    db.session.commit()
+    logout_user()
+    return redirect(url_for('index'))
 
 
 @app.route('/cadastro', methods=['POST', 'GET'])
