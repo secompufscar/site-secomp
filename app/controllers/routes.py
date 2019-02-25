@@ -42,8 +42,7 @@ def login():
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
-                return "olá, {}".format(user.primeiro_nome)
-                # return redirect(url_for('index_usuario'))
+                return redirect(url_for('dashboard_usuario'))
     return render_template('login.html', form=form)
 
 
@@ -195,7 +194,7 @@ def inscricao_atividades():
 def inscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if atv.vagas_disponiveis > 0:
-        atv.inscritos.append(db.session.query(Participante).filter_by(usuario=current_user).first())
+        atv.participantes.append(db.session.query(Participante).filter_by(usuario=current_user).first())
         atv.vagas_disponiveis = atv.vagas_disponiveis - 1
         db.session.flush()
         db.session.commit()
@@ -212,8 +211,8 @@ def inscrever(id):
 @login_required
 def desinscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id).first()
-    if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.inscritos:
-        atv.inscritos.remove(db.session.query(Participante).filter_by(usuario=current_user).first())
+    if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
+        atv.participantes.remove(db.session.query(Participante).filter_by(usuario=current_user).first())
         atv.vagas_disponiveis = atv.vagas_disponiveis + 1
         db.session.flush()
         db.session.commit()
