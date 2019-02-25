@@ -1,6 +1,7 @@
 
 from bcrypt import gensalt
 from flask import render_template, request, redirect
+from flask_login import *
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 
