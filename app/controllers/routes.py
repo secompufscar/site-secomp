@@ -11,10 +11,6 @@ from app.models.models import *
 
 @app.route('/')
 def index():
-<<<<<<< HEAD
-	return render_template('index.html', title='Página inicial')
-
-=======
     """
     Renderiza a página inicial do projeto
     """
@@ -26,28 +22,20 @@ def index():
 @app.route('/dev')
 def dev():
     return render_template('index.dev.html')
->>>>>>> origin
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """
-    Renderiza a página de login do projeto
-    """
-    form = LoginForm(request.form)
-    if form.validate_on_submit():
-        user = db.session.query(Usuario).filter_by(
-            email=form.email.data).first()
-        if user:
-            if pbkdf2_sha256.verify(form.senha.data, user.senha):
-                user.autenticado = True
-                user.ultimo_login = datetime.datetime.now()
-                db.session.add(user)
-                db.session.commit()
-                login_user(user, remember=True)
-                return "olá, {}".format(user.primeiro_nome)
-                # return redirect(url_for('index_usuario'))
-    return render_template('login.html', form=form)
-
+	form = LoginForm(request.form)
+	if form.validate_on_submit():
+		user = db.session.query(Usuario).filter_by(email = form.email.data).first()
+		if user:
+			if pbkdf2_sha256.verify(form.senha.data, user.senha):
+				user.autenticado = True
+				db.session.add(user)
+				db.session.commit()
+				login_user(user, remember=True)
+				return redirect(url_for('dashboard_usuario'))
+	return render_template('login.html', form=form)
 
 @app.route("/logout", methods=["GET"])
 @login_required
@@ -72,7 +60,6 @@ def cadastro():
 	salt = gensalt().decode('utf-8')
 	token = serializer.dumps(email, salt=salt)
 
-<<<<<<< HEAD
 	if form.validate_on_submit():
 		usuario = db.session.query(Usuario).filter_by(email=email).first()
 		if usuario is not None:
@@ -93,31 +80,6 @@ def cadastro():
 			login_user(usuario, remember=True)
 			return redirect(url_for('verificar_email'))
 	return render_template('cadastro.html', form=form)
-=======
-    if form.validate_on_submit():
-        usuario = db.session.query(Usuario).filter_by(email=email).first()
-        if usuario != None:
-            return "Este email já está sendo usado!"
-        else:
-            agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
-            usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
-                              data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
-                              sobrenome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
-                              id_cidade=form.cidade.data, data_nascimento=form.data_nasc.data,
-                              token_email=token, autenticado=True, salt=salt)
-            # TODO Quando pronto o modelo de evento implementar função get_id_edicao()
-            db.session.add(usuario)
-            db.session.flush()
-            participante = Participante(id=usuario.id, edicao=1, pacote=False, pagamento=False,
-                                        camiseta=' ', data_inscricao=agora, credenciado=False)
-            enviarEmailConfirmacao(app, email, token)
-            db.session.add(participante)
-            db.session.commit()
-            login_user(usuario, remember=True)
-            return redirect(url_for('index_usuario'))
-    return render_template('cadastro.html', form=form)
->>>>>>> origin
 
 @app.route('/verificar-email')
 @login_required
