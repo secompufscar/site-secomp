@@ -1,7 +1,8 @@
+from datetime import datetime
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
-from datetime import datetime
-from enum import Enum
+
 from app import app
 
 db = SQLAlchemy(app)
@@ -29,7 +30,7 @@ class Usuario(db.Model):
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
     primeiro_nome = Column(String(64), nullable=False)
-    ult_nome = Column(String(64), nullable=False)
+    sobrenome = Column(String(64), nullable=False)
     id_curso = Column(Integer, db.ForeignKey('curso.id'), nullable=False)
     id_cidade = Column(Integer, db.ForeignKey('cidade.id'), nullable=False)
     id_instituicao = Column(Integer, db.ForeignKey('instituicao.id'), nullable=False)
