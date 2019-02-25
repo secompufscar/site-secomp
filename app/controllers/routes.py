@@ -1,16 +1,12 @@
-from flask import render_template, request, redirect, url_for, session
-from flask_login import login_required, login_user, logout_user, current_user
-from app.controllers.constants import secomp_now, secomp, secomp_email, secomp_edition
-from app import app
-from app.controllers.forms import LoginForm, CadastroForm, ParticipanteForm
-from app.controllers.functions import *
-from passlib.hash import pbkdf2_sha256
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-import datetime
-import os
-from app.controllers.constants import EDICAO_ATUAL
-from app.models.models import *
 from bcrypt import gensalt
+from flask import render_template, request, redirect
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from passlib.hash import pbkdf2_sha256
+
+from app.controllers.forms import LoginForm, CadastroForm
+from app.controllers.functions import *
+from app.controllers.functions import enviarEmailConfirmacao
+from app.models.models import *
 
 
 @app.route('/')
@@ -18,10 +14,10 @@ def index():
     """
     Renderiza a página inicial do projeto
     """
-    return render_template('index.html', title='Página inicial', 
-            secomp_now=secomp_now[0], secomp=secomp[0], 
-            secomp_email=secomp_email, 
-            secompEdition = secomp_edition)
+    return render_template('index.html', title='Página inicial',
+                           secomp_now=secomp_now[0], secomp=secomp[0],
+                           secomp_email=secomp_email,
+                           secompEdition=secomp_edition)
 
 @app.route('/dev')
 def dev():
@@ -71,26 +67,29 @@ def cadastro():
     token = serializer.dumps(email, salt='confirmacao_email')
     salt = gensalt().decode('utf-8')
 
-	if form.validate_on_submit():
-		usuario = db.session.query(Usuario).filter_by(email=email).first()
-		if usuario is not None:
-			return "Este email já está sendo usado!"
-		else:
-			agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-			hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
-			usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
-							  data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
-							  ult_nome=form.sobrenome.data, id_curso=form.curso.data, id_instituicao=form.instituicao.data,
-							  id_cidade=form.cidade.data, data_nasc=form.data_nasc.data,
-							  token_email=token, autenticado=True, salt=salt)
-			#TODO Quando pronto o modelo de evento implementar função get_id_edicao()
-			db.session.add(usuario)
-			db.session.flush()
-			db.session.commit()
-			enviarEmailConfirmacao(app, email, token)
-			login_user(usuario, remember=True)
-			return redirect(url_for('verificar_email'))
-	return render_template('cadastro.html', form=form)
+    if form.validate_on_submit():
+        usuario = db.session.query(Usuario).filter_by(email=email).first()
+        if usuario != None:
+            return "Este email já está sendo usado!"
+        else:
+            agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
+            usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
+                              data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
+                              sobrenome=form.sobrenome.data, curso=form.curso.data, instituicao=form.instituicao.data,
+                              id_cidade=form.cidade.data, data_nascimento=form.data_nasc.data,
+                              token_email=token, autenticado=True, salt=salt)
+            # TODO Quando pronto o modelo de evento implementar função get_id_edicao()
+            db.session.add(usuario)
+            db.session.flush()
+            participante = Participante(id=usuario.id, edicao=1, pacote=False, pagamento=False,
+                                        camiseta=' ', data_inscricao=agora, credenciado=False)
+            enviarEmailConfirmacao(app, email, token)
+            db.session.add(participante)
+            db.session.commit()
+            login_user(usuario, remember=True)
+            return redirect(url_for('index_usuario'))
+    return render_template('cadastro.html', form=form)
 
 @app.route('/verificar-email')
 @login_required
@@ -166,3 +165,31 @@ def verificacao(token):
 	except Exception as e:
 		return render_template('cadastro.html', resultado='Falha na ativação.')
 	return redirect(url_for('verificar_email'))
+
+
+@app.route('/inscricao-atividades')
+@login_required
+def inscricao_atividades():
+    atividades = db.session.query(Atividade)
+    return render_template('inscricao_atividades.html', usuario=current_user, atividades=atividades)
+
+
+@app.route('/inscrever-atividade/<id>')
+@login_required
+def inscrever(id):
+    atv = db.session.query(Atividade).filter_by(id=id)[0]
+    if atv.vagas_disponiveis > 0:
+        atv.inscritos.append(db.session.query(Participante).filter_by(usuario=current_user)[0])
+        atv.vagas_disponiveis = atv.vagas_disponiveis - 1
+        db.session.flush()
+        db.session.commit()
+        return redirect(url_for(inscricao_atividades))
+    else:
+        return "Não há vagas disponíveis!"
+    return id
+
+
+@app.route('/gerenciar-atividades')
+@login_required
+def gerenciar_atividades():
+    return 0
