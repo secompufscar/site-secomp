@@ -6,10 +6,9 @@ from app.controllers.forms import LoginForm, CadastroForm, ContatoForm
 
 from bcrypt import gensalt
 from flask import render_template, request, redirect
-from flask_login import *
+from flask_login import login_user, login_required, logout_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
-
 from app.controllers.forms import LoginForm, CadastroForm
 from app.controllers.forms import ParticipanteForm
 from app.controllers.functions import *
