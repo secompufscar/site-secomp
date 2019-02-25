@@ -19,5 +19,5 @@ MAIL_DM = 'marketing@secompufscar.com.br'
 FLASK_ADMIN_SWATCH = 'darkly'
 
 # SQLALCHEMY
-SQLALCHEMY_DATABASE_URI = 'mysql://../db'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:2968@localhost/db'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
