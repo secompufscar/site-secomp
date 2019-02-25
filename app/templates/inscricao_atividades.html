@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+Usuario: {{usuario}}
+<br><br><br><br><br>
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Minicurso</th>
+            <th>Ministrante</th>
+            <th>Vagas disponíveis</th>
+            <th>Descrição</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for atividade in atividades %}
+        {% if atividade.ativo%}
+        <tr>
+            <td><a href="/inscrever-atividade/{{atividade.id}}">{{atividade.titulo}}</a></td>
+            <td>{{atividade.ministrante.nome}}</td>
+            <td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
+            <td>{{atividade.descricao}}</td>
+        </tr>
+
+        {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
