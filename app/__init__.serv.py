@@ -1,9 +1,10 @@
+import os
+
 from flask import Flask
 from flask_bootstrap import Bootstrap
-from flask_script import Server, Manager, prompt_bool
-from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
-import os
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Server, Manager, prompt_bool
 
 configs = {
     'development': '../config/development.py',
@@ -11,7 +12,7 @@ configs = {
     'default': '../config/default.py'
 }
 
-config_name = os.getenv('FLASK_CONFIGURATION', 'default')
+config_name = os.getenv('FLASK_CONFIGURATION', 'development')
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -28,7 +29,8 @@ login_manager.init_app(app)
 def user_loader(user_id):
     return db.session.query(Usuario).filter_by(id = user_id).first()
 
-from app.controllers import routes, admin
+
+from app.controllers import admin
 
 adm = admin.init_admin(app)
 
