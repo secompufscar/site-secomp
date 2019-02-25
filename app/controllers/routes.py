@@ -1,9 +1,10 @@
 from bcrypt import gensalt
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 
 from app.controllers.forms import LoginForm, CadastroForm
+from app.controllers.forms import ParticipanteForm
 from app.controllers.functions import *
 from app.controllers.functions import enviarEmailConfirmacao
 from app.models.models import *
@@ -108,7 +109,9 @@ def cadastro_participante():
 	if email_confirmado() == True:
 		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
 		if participante is None:
-			form = ParticipanteForm(request.form)
+
+
+form = ParticipanteForm(request.form)
 			participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
 			if form.validate_on_submit() and participante is None:
 				agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
