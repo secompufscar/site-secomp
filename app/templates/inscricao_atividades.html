@@ -3,7 +3,20 @@
 
 {% block content %}
 Usuario: {{usuario}}
-<br><br><br><br><br>
+
+<br><br><br><br>
+{% if acao == "+" %}
+<div class="alert alert-success">
+    <strong>Inscrito!</strong> Sua inscrição foi confirmada com sucesso.
+</div>
+{% endif %}
+{% if acao == "-" %}
+<div class="alert alert-success">
+    <strong>Desinscrito!</strong> A sua inscrição foi removida com sucesso.
+</div>
+{% endif %}
+<br>
+<h1>Minicursos</h1>
 <div class="container">
     <table class="table table-hover">
         <thead>
@@ -12,16 +25,68 @@ Usuario: {{usuario}}
             <th>Ministrante</th>
             <th>Vagas disponíveis</th>
             <th>Descrição</th>
+            <th>Opções</th>
         </tr>
         </thead>
         <tbody>
-        {% for atividade in atividades %}
-        {% if atividade.ativo%}
+        {% for atividade in minicursos %}
+        {% if atividade.ativo %}
         <tr>
-            <td><a href="/inscrever-atividade/{{atividade.id}}">{{atividade.titulo}}</a></td>
+            <td>{{atividade.titulo}}</td>
             <td>{{atividade.ministrante.nome}}</td>
             <td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
             <td>{{atividade.descricao}}</td>
+            {% if participante in atividade.inscritos %}
+            <td><a href="/desinscrever-atividade/{{atividade.id}}">
+                <button type="button" class="btn">Desinscrever-se</button>
+            </a></td>
+            {% else %}
+            <td><a href="/inscrever-atividade/{{atividade.id}}">
+                {% if atividade.vagas_disponiveis > 0 %}
+                <button type="button" class="btn">
+                    {% else %}
+                    <button type="button" class="btn" disabled>
+                        {% endif %}
+                        Inscrever-se
+                    </button>
+            </a></td>
+            {% endif %}
+
+        </tr>
+
+        {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <h1>Palestras</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Palestra</th>
+            <th>Ministrante</th>
+            <th>Vagas disponíveis</th>
+            <th>Descrição</th>
+            <th>Opções</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for atividade in palestras %}
+        {% if atividade.ativo%}
+        <tr>
+            <td>{{atividade.titulo}}</td>
+            <td>{{atividade.ministrante.nome}}</td>
+            <td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
+            <td>{{atividade.descricao}}</td>
+            {% if participante in atividade.inscritos %}
+            <td><a href="/desinscrever-atividade/{{atividade.id}}">
+                <button type="button" class="btn">Desinscrever-se</button>
+            </a></td>
+            {% else %}
+            <td><a href="/inscrever-atividade/{{atividade.id}}">
+                <button type="button" class="btn">Inscrever-se</button>
+            </a></td>
+            {% endif %}
         </tr>
 
         {% endif %}
