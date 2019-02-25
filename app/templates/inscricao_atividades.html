@@ -22,10 +22,10 @@ Usuario: {{usuario}}
         {% if atividade.ativo%}
         <tr>
             <td>{{atividade.titulo}}</td>
-            <td>{{atividade.ministrante.nome}}</td>
+            <td>{{atividade.ministrantes.nome}}</td>
             <td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
             <td>{{atividade.descricao}}</td>
-            {% if participante in atividade.inscritos %}
+            {% if participante in atividade.participantes %}
             <td><a href="/desinscrever-atividade/{{atividade.id}}">
                 <button type="button" class="btn">Desinscrever-se</button>
             </a></td>
@@ -57,10 +57,10 @@ Usuario: {{usuario}}
         {% if atividade.ativo%}
         <tr>
             <td>{{atividade.titulo}}</td>
-            <td>{{atividade.ministrante.nome}}</td>
+            <td>{{atividade.ministrantes.nome}}</td>
             <td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
             <td>{{atividade.descricao}}</td>
-            {% if participante in atividade.inscritos %}
+            {% if participante in atividade.participantes %}
             <td><a href="/desinscrever-atividade/{{atividade.id}}">
                 <button type="button" class="btn">Desinscrever-se</button>
             </a></td>

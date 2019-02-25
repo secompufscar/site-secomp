@@ -1,8 +1,11 @@
-from flask import url_for
-from flask_login import login_required, login_user, logout_user, current_user
-from app.models.models import *
-from app.controllers.constants import *
 import datetime
+
+from flask import url_for
+from flask_login import current_user
+
+from app.controllers.constants import *
+from app.models.models import *
+
 
 def enviarEmailConfirmacao(app, email, token): #Envia email para validação do email
 	from flask_mail import Mail, Message
@@ -66,7 +69,7 @@ def get_opcoes_camisetas():
 
 def get_dicionario_usuario(usuario):
 	info = {
-		"nome": usuario.primeiro_nome + ' ' + usuario.ult_nome,
+        "nome": usuario.primeiro_nome + ' ' + usuario.sobrenome,
 		"email": usuario.email,
 		"curso": usuario.curso,
 		"instituicao": usuario.instituicao,
