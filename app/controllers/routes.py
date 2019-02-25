@@ -20,9 +20,11 @@ def index():
                            secomp_email=secomp_email,
                            secompEdition=secomp_edition)
 
+
 @app.route('/dev')
 def dev():
     return render_template('index.dev.html')
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -43,6 +45,7 @@ def login():
                 return "olá, {}".format(user.primeiro_nome)
                 # return redirect(url_for('index_usuario'))
     return render_template('login.html', form=form)
+
 
 @app.route("/logout", methods=["GET"])
 @login_required
@@ -91,85 +94,92 @@ def cadastro():
             return redirect(url_for('index_usuario'))
     return render_template('cadastro.html', form=form)
 
+
 @app.route('/verificar-email')
 @login_required
 def verificar_email():
-	if email_confirmado() == 	True:
-		msg = 'Seu email foi verificado com sucesso!'
-		status = True
-	else:
-		msg = 'Confirme o email de verificação que foi enviado ao endereço de email fornecido'
-		status = False
-	return render_template('confirma_email.html', resultado=msg, status=status)
+    if email_confirmado() == True:
+        msg = 'Seu email foi verificado com sucesso!'
+        status = True
+    else:
+        msg = 'Confirme o email de verificação que foi enviado ao endereço de email fornecido'
+        status = False
+    return render_template('confirma_email.html', resultado=msg, status=status)
+
 
 @app.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
-	id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
-	if email_confirmado() == True:
-		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
-		if participante is None:
-    form = ParticipanteForm(request.form)
-    participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
-    if form.validate_on_submit() and participante is None:
-        agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        usuario = current_user
-        participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
-				pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
-				opcao_coffee=form.restricao_coffee.data)
-        db.session.add(participante)
-        db.session.flush()
-        db.session.commit()
-        return redirect(url_for('dashboard_usuario'))
-    else:
-        return render_template('cadastro_participante.html', form=form)
+    id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
+    if email_confirmado() == True:
+        participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+        if participante is None:
+            form = ParticipanteForm(request.form)
+            participante = db.session.query(Participante).filter_by(id_usuario=current_user.id,
+                                                                    id_evento=id_evento).first()
+            if form.validate_on_submit() and participante is None:
+                agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                usuario = current_user
+                participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
+                                            pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora,
+                                            credenciado=False,
+                                            opcao_coffee=form.restricao_coffee.data)
+                db.session.add(participante)
+                db.session.flush()
+                db.session.commit()
+                return redirect(url_for('dashboard_usuario'))
+            else:
+                return render_template('cadastro_participante.html', form=form)
 
-else:
-return redirect(url_for('dashboard_usuario'))
-	else:
-		return redirect(url_for('verificar_email'))
+        else:
+            return redirect(url_for('dashboard_usuario'))
+    else:
+        return redirect(url_for('verificar_email'))
+
 
 @app.route('/dashboard-usuario')
 @login_required
 def dashboard_usuario():
-	if email_confirmado() == True:
-		return render_template('dashboard_usuario.html', eventos=get_dicionario_eventos_participante(request.base_url),
-		info_usuario=get_dicionario_usuario(current_user))
-	else:
-		return redirect(url_for('verificar_email'))
+    if email_confirmado() == True:
+        return render_template('dashboard_usuario.html', eventos=get_dicionario_eventos_participante(request.base_url),
+                               info_usuario=get_dicionario_usuario(current_user))
+    else:
+        return redirect(url_for('verificar_email'))
+
 
 @app.route('/dashboard-usuario/evento/<edicao>')
 @login_required
 def info_participante_evento(edicao):
-	return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
+    return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
+
 
 @app.login_manager.user_loader
 def user_loader(user_id):
-		return Usuario.query.get(user_id)
+    return Usuario.query.get(user_id)
 
 
-#Página do link enviado para o usuário
+# Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
 def verificacao(token):
-	serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-	try:
-		#Acha o usuário que possui o token
-		user = db.session.query(Usuario).filter_by(token_email = token).first()
-		salt = user.salt
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    try:
+        # Acha o usuário que possui o token
+        user = db.session.query(Usuario).filter_by(token_email=token).first()
+        salt = user.salt
 
-		#Gera um email a partir do token do link e do salt do db
-		email = serializer.loads(token, salt=salt, max_age=3600)
+        # Gera um email a partir do token do link e do salt do db
+        email = serializer.loads(token, salt=salt, max_age=3600)
 
-		#Valida o email
-		user.email_verificado = True
-		db.session.add(user)
-		db.session.commit()
-	#Tempo definido no max_age
-	except SignatureExpired:
-		return render_template('cadastro.html', resultado='O link de ativação expirou.')
-	except Exception as e:
-		return render_template('cadastro.html', resultado='Falha na ativação.')
-	return redirect(url_for('verificar_email'))
+        # Valida o email
+        user.email_verificado = True
+        db.session.add(user)
+        db.session.commit()
+    # Tempo definido no max_age
+    except SignatureExpired:
+        return render_template('cadastro.html', resultado='O link de ativação expirou.')
+    except Exception as e:
+        return render_template('cadastro.html', resultado='Falha na ativação.')
+    return redirect(url_for('verificar_email'))
 
 
 @app.route('/inscricao-atividades')
