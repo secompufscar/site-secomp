@@ -3,6 +3,7 @@
 
 {% block content %}
 Usuario: {{usuario}}
+
 <br><br><br><br><br>
 <div class="container">
     <table class="table table-hover">
@@ -12,16 +13,26 @@ Usuario: {{usuario}}
             <th>Ministrante</th>
             <th>Vagas disponíveis</th>
             <th>Descrição</th>
+            <th>Opções</th>
         </tr>
         </thead>
         <tbody>
         {% for atividade in atividades %}
         {% if atividade.ativo%}
         <tr>
-            <td><a href="/inscrever-atividade/{{atividade.id}}">{{atividade.titulo}}</a></td>
+            <td>{{atividade.titulo}}</td>
             <td>{{atividade.ministrante.nome}}</td>
             <td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
             <td>{{atividade.descricao}}</td>
+            {% if participante in atividade.inscritos %}
+            <td><a href="/desinscrever-atividade/{{atividade.id}}">
+                <button type="button" class="btn">Desinscrever-se</button>
+            </a></td>
+            {% else %}
+            <td><a href="/inscrever-atividade/{{atividade.id}}">
+                <button type="button" class="btn">Inscrever-se</button>
+            </a></td>
+            {% endif %}
         </tr>
 
         {% endif %}
