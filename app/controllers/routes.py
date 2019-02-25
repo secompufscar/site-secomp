@@ -139,7 +139,11 @@ def inscrever(id):
         atv.vagas_disponiveis = atv.vagas_disponiveis - 1
         db.session.flush()
         db.session.commit()
-        return redirect(url_for('inscricao_atividades'))
+        minicursos = db.session.query(Atividade).filter_by(tipo=0)
+        palestras = db.session.query(Atividade).filter_by(tipo=1)
+        return render_template('inscricao_atividades.html',
+                               participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                               usuario=current_user, minicursos=minicursos, palestras=palestras, acao="+")
     else:
         return "Não há vagas disponíveis!"
 
@@ -153,6 +157,10 @@ def desinscrever(id):
         atv.vagas_disponiveis = atv.vagas_disponiveis + 1
         db.session.flush()
         db.session.commit()
-        return redirect(url_for('inscricao_atividades'))
+        minicursos = db.session.query(Atividade).filter_by(tipo=0)
+        palestras = db.session.query(Atividade).filter_by(tipo=1)
+        return render_template('inscricao_atividades.html',
+                               participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                               usuario=current_user, minicursos=minicursos, palestras=palestras, acao="-")
     else:
         return "Não está inscrito nessa atividade!"

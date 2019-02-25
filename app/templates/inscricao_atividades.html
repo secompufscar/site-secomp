@@ -4,7 +4,18 @@
 {% block content %}
 Usuario: {{usuario}}
 
-<br><br><br><br><br>
+<br><br><br><br>
+{% if acao == "+" %}
+<div class="alert alert-success">
+    <strong>Inscrito!</strong> Sua inscrição foi confirmada com sucesso.
+</div>
+{% endif %}
+{% if acao == "-" %}
+<div class="alert alert-success">
+    <strong>Desinscrito!</strong> A sua inscrição foi removida com sucesso.
+</div>
+{% endif %}
+<br>
 <h1>Minicursos</h1>
 <div class="container">
     <table class="table table-hover">
@@ -19,7 +30,7 @@ Usuario: {{usuario}}
         </thead>
         <tbody>
         {% for atividade in minicursos %}
-        {% if atividade.ativo%}
+        {% if atividade.ativo %}
         <tr>
             <td>{{atividade.titulo}}</td>
             <td>{{atividade.ministrante.nome}}</td>
@@ -31,9 +42,16 @@ Usuario: {{usuario}}
             </a></td>
             {% else %}
             <td><a href="/inscrever-atividade/{{atividade.id}}">
-                <button type="button" class="btn">Inscrever-se</button>
+                {% if atividade.vagas_disponiveis > 0 %}
+                <button type="button" class="btn">
+                    {% else %}
+                    <button type="button" class="btn" disabled>
+                        {% endif %}
+                        Inscrever-se
+                    </button>
             </a></td>
             {% endif %}
+
         </tr>
 
         {% endif %}
