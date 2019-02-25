@@ -1,3 +1,4 @@
+
 from bcrypt import gensalt
 from flask import render_template, request, redirect
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
