@@ -18,7 +18,7 @@ def index():
     Renderiza a página inicial do projeto
     """
     return render_template('index.html', title='Página inicial', 
-            secomp_now=secomp_now, secomp=secomp, 
+            secomp_now=secomp_now[0], secomp=secomp[0], 
             secomp_email=secomp_email, 
             secompEdition = secomp_edition)
 
