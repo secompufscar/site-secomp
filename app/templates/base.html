@@ -15,6 +15,7 @@
             <title>{{title}}</title>
         {% else %}
             <title>SECOMP UFSCar</title>
+
         {% endif %}
     </head>
 
@@ -22,36 +23,13 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
-        <main role="main" class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{category}}">
-                                    {{message}}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-                {% block content %}
+
+      {% block content %}
                 {% endblock %}
-            </div>
 
-            <div class="col-md-4">
-                <div class="content-section">
-                    <h3>Barra Lateral</h3>
-                    <p class='text-muted'>Adicionais
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-light">Opção1</li>
-                            <li class="list-group-item list-group-item-light">Opção2</li>
-                            <li class="list-group-item list-group-item-light">Opção3</li>
-                        </ul>
-                    </p>
-                </div>
-            </div>
-        </main>
 
+       <!-- bootstrap javascript -->
+      <script src="{{url_for('static', filename='js/jquery-3.3.1.slim.min.js')}}"></script>
         <!-- bootstrap javascript -->
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="{{url_for('static', filename='js/popper.min.js')}}"></script>
