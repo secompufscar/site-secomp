@@ -26,9 +26,13 @@ def enviarEmailConfirmacao(app, email, token): #Envia email para validação do 
 			pass
 
 def email_confirmado():
-	usuario = current_user
-	usuario = db.session.query(Usuario).filter_by(email=usuario.email).first()
-	return usuario.email_verificado
+	try:
+		usuario = current_user
+		usuario = db.session.query(Usuario).filter_by(email=usuario.email).first()
+		return usuario.email_verificado
+	except Exception as e:
+		print(e)
+		return None
 
 def get_opcoes_cidades():
 	try:
@@ -38,7 +42,8 @@ def get_opcoes_cidades():
 			info = (cidade.id, cidade.nome)
 			info_cidades.append(info)
 		return info_cidades
-	except:
+	except Exception as e:
+		print(e)
 		return None
 
 def get_opcoes_instituicoes():
@@ -49,7 +54,8 @@ def get_opcoes_instituicoes():
 			info = (instituicao.id, instituicao.nome)
 			info_instituicoes.append(info)
 		return info_instituicoes
-	except:
+	except Exception as e:
+		print(e)
 		return None
 
 def get_opcoes_cursos():
@@ -60,9 +66,10 @@ def get_opcoes_cursos():
 			info = (curso.id, curso.nome)
 			info_cursos.append(info)
 		return info_cursos
-	except:
+	except Exception as e:
+		print(e)
 		return None
-		
+
 def get_opcoes_camisetas():
 	try:
 		camisetas = db.session.query(Camiseta).filter_by().order_by(Camiseta.ordem_site).all()
@@ -73,75 +80,88 @@ def get_opcoes_camisetas():
 				info_camisetas.append(info)
 
 		return info_camisetas
-	except:
+	except Exception as e:
+		print(e)
 		return None
 
 def get_dicionario_usuario(usuario):
-	info = {
-		"nome": usuario.primeiro_nome + ' ' + usuario.ult_nome,
-		"email": usuario.email,
-		"curso": usuario.curso,
-		"instituicao": usuario.instituicao,
-		"data_nasc": usuario.data_nascimento
-	}
-	return info
+	try:
+		info = {
+			"nome": usuario.primeiro_nome + ' ' + usuario.ult_nome,
+			"email": usuario.email,
+			"curso": usuario.curso,
+			"instituicao": usuario.instituicao,
+			"data_nasc": usuario.data_nascimento
+		}
+		return info
+	except Exception as e:
+		print(e)
+		return None
 
 def get_score_evento(edicao):
 	return 10000
 
 #Função usada na dashboard do usuário
 def get_dicionario_eventos_participante(base_url):
-	info_eventos = []
-	agora = datetime.datetime.now()
-	participantes = db.session.query(Participante).filter_by(id_usuario=current_user.id).all()
-	ja_participa = False
-	for participante in participantes:
-		evento = participante.evento
-		if evento.edicao != EDICAO_ATUAL:
-			info = {
-				"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
-				"edicao": evento.edicao,
-				"participantes": len(evento.participantes),
-				"url": base_url + "/evento/" + str(evento.edicao),
-				"inscricao": 0
-			}
-			info_eventos.append(info)
+	try:
+		info_eventos = []
+		agora = datetime.datetime.now()
+		participantes = db.session.query(Participante).filter_by(id_usuario=current_user.id).all()
+		ja_participa = False
+		for participante in participantes:
+			evento = participante.evento
+			if evento.edicao != EDICAO_ATUAL:
+				info = {
+					"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
+					"edicao": evento.edicao,
+					"participantes": len(evento.participantes),
+					"url": base_url + "/evento/" + str(evento.edicao),
+					"inscricao": 0
+				}
+				info_eventos.append(info)
+			else:
+				ja_participa = True
+		evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
+		if ja_participa == False:
+			if agora >= evento.inicio_inscricoes_evento and agora < evento.fim_inscricoes_evento:
+				inscricao = 1
+			else:
+				inscricao = 2
 		else:
-			ja_participa = True
-	evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
-	if ja_participa == False:
-		if agora >= evento.inicio_inscricoes_evento and agora < evento.fim_inscricoes_evento:
-			inscricao = 1
-		else:
-			inscricao = 2
-	else:
-		inscricao = 0
-	info = {
-		"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
-		"edicao": evento.edicao,
-		"participantes": len(evento.participantes),
-		"url": base_url + "/evento/" + str(evento.edicao),
-		"inscricao": inscricao
-	}
-	info_eventos.append(info)
-	return info_eventos
+			inscricao = 0
+		info = {
+			"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
+			"edicao": evento.edicao,
+			"participantes": len(evento.participantes),
+			"url": base_url + "/evento/" + str(evento.edicao),
+			"inscricao": inscricao
+		}
+		info_eventos.append(info)
+		return info_eventos
+	except Exception as e:
+		print(e)
+		return None
 
 #Função usada na página de informações de um determinado evento
 def get_dicionario_info_evento(edicao):
-	evento = db.session.query(Evento).filter_by(edicao=edicao).first()
-	participante = db.session.query(Participante).filter_by(id_evento=evento.id, id_usuario=current_user.id).first()
-	presencas = participante.presencas
-	atividades = []
-	for presenca in presencas:
-		atividades.append(presenca.atividades.titulo)
+	try:
+		evento = db.session.query(Evento).filter_by(edicao=edicao).first()
+		participante = db.session.query(Participante).filter_by(id_evento=evento.id, id_usuario=current_user.id).first()
+		presencas = participante.presencas
+		atividades = []
+		for presenca in presencas:
+			atividades.append(presenca.atividades.titulo)
 
-	info = {
-		"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
-		"data_inscricao" : participante.data_inscricao,
-		"presencas": atividades,
-		"kit_pago": participante.pagamento,
-		"camiseta": participante.camiseta,
-		"opcao_coffee": participante.opcao_coffee,
-		"score_geral": get_score_evento(edicao)
-	}
-	return info
+		info = {
+			"titulo": str(evento.edicao) + "ª SECOMP UFSCar",
+			"data_inscricao" : participante.data_inscricao,
+			"presencas": atividades,
+			"kit_pago": participante.pagamento,
+			"camiseta": participante.camiseta,
+			"opcao_coffee": participante.opcao_coffee,
+			"score_geral": get_score_evento(edicao)
+		}
+		return info
+	except Exception as e:
+		print(e)
+		return None
