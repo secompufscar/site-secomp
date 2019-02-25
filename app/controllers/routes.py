@@ -1,3 +1,4 @@
+
 from bcrypt import gensalt
 from flask import render_template, request, redirect
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
@@ -35,7 +36,7 @@ def login():
         if user:
             if pbkdf2_sha256.verify(form.senha.data, user.senha):
                 user.autenticado = True
-                user.ultimo_login = datetime.datetime.now()
+                user.ultimo_login = datetime.now()
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
@@ -170,26 +171,44 @@ def verificacao(token):
 @app.route('/inscricao-atividades')
 @login_required
 def inscricao_atividades():
-    atividades = db.session.query(Atividade)
-    return render_template('inscricao_atividades.html', usuario=current_user, atividades=atividades)
+    minicursos = db.session.query(Atividade).filter_by(tipo=0)
+    palestras = db.session.query(Atividade).filter_by(tipo=1)
+    return render_template('inscricao_atividades.html',
+                           participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                           usuario=current_user, minicursos=minicursos, palestras=palestras)
 
 
 @app.route('/inscrever-atividade/<id>')
 @login_required
 def inscrever(id):
-    atv = db.session.query(Atividade).filter_by(id=id)[0]
+    atv = db.session.query(Atividade).filter_by(id=id).first()
     if atv.vagas_disponiveis > 0:
-        atv.inscritos.append(db.session.query(Participante).filter_by(usuario=current_user)[0])
+        atv.inscritos.append(db.session.query(Participante).filter_by(usuario=current_user).first())
         atv.vagas_disponiveis = atv.vagas_disponiveis - 1
         db.session.flush()
         db.session.commit()
-        return redirect(url_for(inscricao_atividades))
+        minicursos = db.session.query(Atividade).filter_by(tipo=0)
+        palestras = db.session.query(Atividade).filter_by(tipo=1)
+        return render_template('inscricao_atividades.html',
+                               participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                               usuario=current_user, minicursos=minicursos, palestras=palestras, acao="+")
     else:
         return "Não há vagas disponíveis!"
-    return id
 
 
-@app.route('/gerenciar-atividades')
+@app.route('/desinscrever-atividade/<id>')
 @login_required
-def gerenciar_atividades():
-    return 0
+def desinscrever(id):
+    atv = db.session.query(Atividade).filter_by(id=id).first()
+    if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.inscritos:
+        atv.inscritos.remove(db.session.query(Participante).filter_by(usuario=current_user).first())
+        atv.vagas_disponiveis = atv.vagas_disponiveis + 1
+        db.session.flush()
+        db.session.commit()
+        minicursos = db.session.query(Atividade).filter_by(tipo=0)
+        palestras = db.session.query(Atividade).filter_by(tipo=1)
+        return render_template('inscricao_atividades.html',
+                               participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                               usuario=current_user, minicursos=minicursos, palestras=palestras, acao="-")
+    else:
+        return "Não está inscrito nessa atividade!"
