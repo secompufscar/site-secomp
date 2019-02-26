@@ -1,15 +1,12 @@
 import datetime
-
 from flask import url_for
 from flask_login import current_user
-
+from flask_mail import Mail, Message
 from app.controllers.constants import *
 from app.models.models import *
 
-
 # Envia email para validação do email
 def enviarEmailConfirmacao(app, email, token):
-    from flask_mail import Mail, Message
 
     mail = Mail(app)
 
@@ -33,8 +30,6 @@ def enviarEmailConfirmacao(app, email, token):
 
 
 def enviarEmailDM(app, nome, email, mensagem):
-    from flask_mail import Mail, Message
-
     mail = Mail(app)
 
     msg = Message('Mensagem de {}'.format(
@@ -107,7 +102,6 @@ def get_dicionario_usuario(usuario):
         "data_nasc": usuario.data_nascimento
     }
     return info
-
 
 def get_score_evento(edicao):
     return 10000
