@@ -13,6 +13,7 @@ MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 MAIL_USERNAME = 'noreply@secompufscar.com.br'
 MAIL_PASSWORD= 'passmail'
+MAIL_DM = 'marketing@secompufscar.com.br'
 
 # FLASK ADMIN
 FLASK_ADMIN_SWATCH = 'darkly'
