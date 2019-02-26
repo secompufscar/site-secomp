@@ -84,28 +84,36 @@
 {% block footer %}
 <footer class="page-footer font-small secondary pt-4">
     <div class="container center">
-	<div class="col-md-6 mt-md-0 mt-3">
-	    {# TODO:corrigir formatação de expanção de nomes #}
-	    {# Expandir variável secomp com nome dos membros #}
-	    <p>Desenvolvido por
-	    {% for name in secomp|sort %}
-	    {{ name }} 
-	    {% endfor %}
-	    </p><br/>
-	    {# Expandir variável para o email da secomp #}
-	    <a href="mailto:{{ secomp_email }}">{{ secomp_email }}</a><br/>
-	    {# Expandir variável para mantenedores atuais #}
-	    <p>Atualmente mantido por
-	    {% for name in secomp_now|sort %}
-	    {{ name }} 
-	    {% endfor %}
-	    </p>
-	    <hr/><br/>
-	    <p>Universidade Federal de São Carlos</p><br/>
-	    <p>Departamento de Computação</p><br/>
-	    <p>Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara 
-	    - São Carlos/SP - CEP 13565-905</p><br/>
-	</div>
+		<div class="col-md-6 mt-md-0 mt-3">
+			{# Expandir variável secomp com nome dos membros #}
+			<p>Desenvolvido por 
+				{% for name in secomp|sort %}
+					{% if not loop.last %}
+						{{ name }}, 
+					{% else %}
+						{{ name }}.
+					{% endif %}
+				{% endfor %}
+			</p>
+
+			{# Expandir variável para o email da secomp #}
+			<p><a href="mailto:{{ secomp_email }}">{{ secomp_email }}</a></p>
+
+			{# Expandir variável para mantenedores atuais #}
+			<p>Atualmente mantido por 
+				{% for name in secomp_now|sort %}
+					{% if not loop.last %}
+						{{ name }}, 
+					{% else %}
+						{{ name }}.
+					{% endif %}
+				{% endfor %}
+			</p><hr/>
+
+			<p>Universidade Federal de São Carlos<br/>
+			Departamento de Computação<br/>
+			Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara - São Carlos/SP - CEP 13565-905</p>
+		</div>
     </div>
 </footer>
 {% endblock %}
