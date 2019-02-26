@@ -4,6 +4,7 @@ from flask import render_template, request, redirect
 from flask_login import login_user, login_required, logout_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
+
 from app.controllers.forms import LoginForm, CadastroForm
 from app.controllers.forms import ParticipanteForm
 from app.controllers.functions import *
@@ -104,30 +105,30 @@ def verificar_email():
 @app.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
-	id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
-	if email_confirmado() == True:
-		participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
-		if participante is None:
-
-
-form = ParticipanteForm(request.form)
-			participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
-			if form.validate_on_submit() and participante is None:
-				agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-				usuario = current_user
-				participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
-				pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
-				opcao_coffee=form.restricao_coffee.data)
-				db.session.add(participante)
-				db.session.flush()
-				db.session.commit()
-				return redirect(url_for('dashboard_usuario'))
-			else:
-				return render_template('cadastro_participante.html', form=form)
-		else:
-			return redirect(url_for('dashboard_usuario'))
-	else:
-		return redirect(url_for('verificar_email'))
+    id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
+    if email_confirmado() == True:
+        participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+        if participante is None:
+            form = ParticipanteForm(request.form)
+            participante = db.session.query(Participante).filter_by(id_usuario=current_user.id,
+                                                                    id_evento=id_evento).first()
+            if form.validate_on_submit() and participante is None:
+                agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                usuario = current_user
+                participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
+                                            pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora,
+                                            credenciado=False,
+                                            opcao_coffee=form.restricao_coffee.data)
+                db.session.add(participante)
+                db.session.flush()
+                db.session.commit()
+                return redirect(url_for('dashboard_usuario'))
+            else:
+                return render_template('cadastro_participante.html', form=form)
+        else:
+            return redirect(url_for('dashboard_usuario'))
+    else:
+        return redirect(url_for('verificar_email'))
 
 @app.route('/dashboard-usuario')
 @login_required
