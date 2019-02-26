@@ -1,14 +1,13 @@
+from flask import render_template, request, redirect, url_for
+from flask_login import login_required, login_user, logout_user, current_user
+from app import app
+from app.controllers.constants import secomp_now, secomp, secomp_email, secomp_edition
+from app.controllers.forms import LoginForm, CadastroForm, ContatoForm, ParticipanteForm
+from app.controllers.functions import *
+from app.models.models import *
 from bcrypt import gensalt
-from flask import render_template, request, redirect
-from flask_login import login_user, login_required, logout_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
-from app.controllers.forms import LoginForm, CadastroForm
-from app.controllers.forms import ParticipanteForm
-from app.controllers.functions import *
-from app.controllers.functions import enviarEmailConfirmacao
-from app.models.models import *
-
 
 @app.route('/')
 def index():
@@ -75,7 +74,8 @@ def cadastro():
             return "Este email já está sendo usado!"
         else:
             agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
+            hash = pbkdf2_sha256.encrypt(
+                form.senha.data, rounds=10000, salt_size=15)
             usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
                               data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
                               sobrenome=form.sobrenome.data, id_curso=form.curso.data,
@@ -107,9 +107,11 @@ def verificar_email():
 @app.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
-    id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
+    id_evento = db.session.query(Evento).filter_by(
+        edicao=EDICAO_ATUAL).first().id
     if email_confirmado() == True:
-        participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+        participante = db.session.query(Participante).filter_by(
+            id_usuario=current_user.id, id_evento=id_evento).first()
         if participante is None:
             form = ParticipanteForm(request.form)
             participante = db.session.query(Participante).filter_by(id_usuario=current_user.id,
@@ -127,13 +129,12 @@ def cadastro_participante():
                 return redirect(url_for('dashboard_usuario'))
             else:
                 return render_template('cadastro_participante.html', form=form)
-
         else:
             return redirect(url_for('dashboard_usuario'))
     else:
         return redirect(url_for('verificar_email'))
 
-
+      
 @app.route('/dashboard-usuario')
 @login_required
 def dashboard_usuario():
@@ -175,8 +176,22 @@ def verificacao(token):
     except SignatureExpired:
         return render_template('cadastro.html', resultado='O link de ativação expirou.')
     except Exception as e:
-        return render_template('cadastro.html', resultado='Falha na ativação.')
-    return redirect(url_for('verificar_email'))
+        return 'Falha na ativação.'
+        # return render_template('cadastro.html', resultado='Falha na ativação.')
+    return 'Email confirmado.'
+    # return render_template('cadastro.html', resultado='Email confirmado.')
+
+# Página de contato
+@app.route('/contato', methods=['POST', 'GET'])
+def contatoDM():
+    form = ContatoForm(request.form)
+    if form.validate_on_submit():
+        nome = form.nome_completo.data
+        email = form.email.data
+        mensagem = form.mensagem.data
+        enviarEmailDM(app, nome, email, mensagem)
+        return render_template('contato.html', form=form, enviado=True)
+    return render_template('contato.html', form=form)
 
 
 @app.route('/inscricao-atividades')
@@ -185,7 +200,8 @@ def inscricao_atividades():
     minicursos = db.session.query(Atividade).filter_by(tipo=0)
     palestras = db.session.query(Atividade).filter_by(tipo=1)
     return render_template('inscricao_atividades.html',
-                           participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                           participante=db.session.query(Participante).filter_by(
+                               usuario=current_user).first(),
                            usuario=current_user, minicursos=minicursos, palestras=palestras)
 
 
@@ -194,14 +210,16 @@ def inscricao_atividades():
 def inscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if atv.vagas_disponiveis > 0:
-        atv.participantes.append(db.session.query(Participante).filter_by(usuario=current_user).first())
+        atv.participantes.append(db.session.query(
+            Participante).filter_by(usuario=current_user).first())
         atv.vagas_disponiveis = atv.vagas_disponiveis - 1
         db.session.flush()
         db.session.commit()
         minicursos = db.session.query(Atividade).filter_by(tipo=0)
         palestras = db.session.query(Atividade).filter_by(tipo=1)
         return render_template('inscricao_atividades.html',
-                               participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                               participante=db.session.query(Participante).filter_by(
+                                   usuario=current_user).first(),
                                usuario=current_user, minicursos=minicursos, palestras=palestras, acao="+")
     else:
         return "Não há vagas disponíveis!"
@@ -212,14 +230,16 @@ def inscrever(id):
 def desinscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
-        atv.participantes.remove(db.session.query(Participante).filter_by(usuario=current_user).first())
+        atv.participantes.remove(db.session.query(
+            Participante).filter_by(usuario=current_user).first())
         atv.vagas_disponiveis = atv.vagas_disponiveis + 1
         db.session.flush()
         db.session.commit()
         minicursos = db.session.query(Atividade).filter_by(tipo=0)
         palestras = db.session.query(Atividade).filter_by(tipo=1)
         return render_template('inscricao_atividades.html',
-                               participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                               participante=db.session.query(Participante).filter_by(
+                                   usuario=current_user).first(),
                                usuario=current_user, minicursos=minicursos, palestras=palestras, acao="-")
     else:
         return "Não está inscrito nessa atividade!"
