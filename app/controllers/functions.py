@@ -35,7 +35,7 @@ def enviarEmailDM(app, nome, email, mensagem):
 	
 	msg = Message('Mensagem de {}'.format(nome), sender=app.config['MAIL_USERNAME'], recipients=app.config['MAIL_DM'])
 	msg.body = '{}\nEmail: {}\n\n{}'.format(nome, email, mensagem)
-	
+
 	try:
 		mail.send(msg) #Envia o email
 	except Exception as e: #Erros mais prováveis são devivo ao email_config, printa error em um arquivo
