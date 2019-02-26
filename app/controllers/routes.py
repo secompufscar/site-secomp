@@ -9,7 +9,6 @@ from bcrypt import gensalt
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 
-
 @app.route('/')
 def index():
     """
@@ -130,13 +129,12 @@ def cadastro_participante():
                 return redirect(url_for('dashboard_usuario'))
             else:
                 return render_template('cadastro_participante.html', form=form)
-
         else:
             return redirect(url_for('dashboard_usuario'))
     else:
         return redirect(url_for('verificar_email'))
 
-
+      
 @app.route('/dashboard-usuario')
 @login_required
 def dashboard_usuario():
