@@ -251,6 +251,45 @@ def alterar_senha():
             db.session.commit()
             return redirect(url_for('login'))
         else:
-            return render_template('alterar_senha.html', form=form)
+            return render_template('alterar_senha.html', form=form, action=request.base_url)
     else:
         return redirect(url_for('dashboard_usuario'))
+
+@app.route('/esqueci-senha', methods=["POST", "GET"])
+def esqueci_senha():
+    form = AlterarSenhaPorEmailForm(request.form)
+    if form.validate_on_submit():
+        usuario = db.session.query(Usuario).filter_by(email=form.email.data).first()
+        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        salt = gensalt().decode('utf-8')
+        token = serializer.dumps(usuario.email, salt=salt)
+        usuario.salt_alteracao_senha = salt
+        usuario.token_alteracao_senha = token
+        db.session.add(usuario)
+        db.session.commit()
+        enviarEmailSenha(app, usuario.email, token)
+        return render_template("esqueci_senha.html", status_envio_email=True, form=form)
+    return render_template("esqueci_senha.html", status_envio_email=False, form=form)
+
+@app.route('/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
+def confirmar_alteracao_senha(token):
+    form = AlterarSenhaForm(request.form)
+    if form.validate_on_submit():
+        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        try:
+            #Acha o usuário que possui o token
+            usuario = db.session.query(Usuario).filter_by(token_alteracao_senha = token).first()
+            salt = usuario.salt_alteracao_senha
+            #Gera um email a partir do token do link e do salt do db
+            email = serializer.loads(token, salt=salt, max_age=3600)
+            hash = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+            usuario.senha = hash
+            db.session.add(usuario)
+            db.session.commit()
+        except SignatureExpired:
+            return "O link de confirmação expirou !"
+        except Exception as e:
+            print(e)
+            return "Falha na confirmação de link do email"
+        return redirect(url_for('login'))
+    return render_template("alterar_senha.html", form=form, action=request.base_url)

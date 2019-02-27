@@ -43,6 +43,8 @@ class Usuario(db.Model):
     data_cadastro = Column(DateTime, nullable=False)
     participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
     salt = Column(String(30), nullable=False)
+    token_alteracao_senha = Column(String(90), nullable=True)
+    salt_alteracao_senha = Column(String(30), nullable=True)
 
     def is_active(self):
         return True

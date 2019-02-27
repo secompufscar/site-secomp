@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+{% block content %}
+<style>
+  body{
+    padding:50px;
+  }
+</style>
+{% if status_envio_email == False: %}
+<h2>Digite o email de sua conta</h2>
+<form action="/esqueci-senha" method="POST">
+  {{ form.hidden_tag() }}
+  {{ wtf.form_field(form.email) }}
+  <button type="submit">Enviar</button>
+</form>
+{% else: %}
+<h2>Um email de confirmação foi enviado.</h2>
+{% endif %}
+{% endblock %}

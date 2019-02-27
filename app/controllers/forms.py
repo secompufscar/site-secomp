@@ -38,3 +38,6 @@ class EditarUsuarioForm(FlaskForm):
 class AlterarSenhaForm(FlaskForm):
     nova_senha = PasswordField('Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA), EqualTo('confirmacao', message=ERRO_COMPARA_SENHAS)])
     confirmacao = PasswordField('Confirmação de Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
+
+class AlterarSenhaPorEmailForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
