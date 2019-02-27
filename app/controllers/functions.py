@@ -159,7 +159,7 @@ def get_dicionario_info_evento(edicao):
 			"data_inscricao" : participante.data_inscricao,
 			"presencas": atividades,
 			"kit_pago": participante.pagamento,
-			"camiseta": participante.camiseta,
+			"camiseta": participante.camiseta.tamanho,
 			"opcao_coffee": participante.opcao_coffee,
 			"score_geral": get_score_evento(edicao)
 		}
