@@ -4,7 +4,7 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from bcrypt import gensalt
 from passlib.hash import pbkdf2_sha256
 
-from app.controllers.forms import LoginForm, CadastroForm, ContatoForm, ParticipanteForm
+from app.controllers.forms import *
 from app.controllers.functions import *
 from app.models.models import *
 
@@ -27,17 +27,12 @@ def dev():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """
-    Renderiza a página de login do projeto
-    """
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        user = db.session.query(Usuario).filter_by(
-            email=form.email.data).first()
+        user = db.session.query(Usuario).filter_by(email = form.email.data).first()
         if user:
             if pbkdf2_sha256.verify(form.senha.data, user.senha):
                 user.autenticado = True
-                user.ultimo_login = datetime.now()
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
@@ -65,8 +60,8 @@ def cadastro():
 
     form = CadastroForm(request.form)
     email = form.email.data
-    token = serializer.dumps(email, salt='confirmacao_email')
     salt = gensalt().decode('utf-8')
+    token = serializer.dumps(email, salt=salt)
 
     if form.validate_on_submit():
         usuario = db.session.query(Usuario).filter_by(email=email).first()
@@ -82,7 +77,6 @@ def cadastro():
                               id_instituicao=form.instituicao.data,
                               id_cidade=form.cidade.data, data_nascimento=form.data_nasc.data,
                               token_email=token, autenticado=True, salt=salt)
-            # TODO Quando pronto o modelo de evento implementar função get_id_edicao()
             db.session.add(usuario)
             db.session.flush()
             db.session.commit()
@@ -114,15 +108,13 @@ def cadastro_participante():
             id_usuario=current_user.id, id_evento=id_evento).first()
         if participante is None:
             form = ParticipanteForm(request.form)
-            participante = db.session.query(Participante).filter_by(id_usuario=current_user.id,
-                                                                    id_evento=id_evento).first()
+            participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
             if form.validate_on_submit() and participante is None:
                 agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 usuario = current_user
                 participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
-                                            pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora,
-                                            credenciado=False,
-                                            opcao_coffee=form.restricao_coffee.data)
+                pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
+                opcao_coffee=form.restricao_coffee.data)
                 db.session.add(participante)
                 db.session.flush()
                 db.session.commit()
@@ -134,14 +126,63 @@ def cadastro_participante():
     else:
         return redirect(url_for('verificar_email'))
 
-      
-@app.route('/dashboard-usuario')
+
+@app.route('/dashboard-usuario', methods=['POST', 'GET'])
 @login_required
 def dashboard_usuario():
     if email_confirmado() == True:
+        form = EditarUsuarioForm(request.form)
+        if form.validate_on_submit():
+            usuario = db.session.query(Usuario).filter_by(id=current_user.id).first()
+            if pbkdf2_sha256.verify(form.senha.data, usuario.senha):
+                usuario.primeiro_nome = form.primeiro_nome.data
+                usuario.sobrenome = form.sobrenome.data
+                usuario.data_nascimento = form.data_nasc.data
+                usuario.id_curso = form.curso.data
+                usuario.id_instituicao = form.instituicao.data
+                usuario.id_cidade = form.cidade.data
+                if usuario.email != form.email.data:
+                    print(usuario.email)
+                    print(form.email.data)
+                    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+                    salt = gensalt().decode('utf-8')
+                    token = serializer.dumps(form.email.data, salt=salt)
+                    usuario.salt = salt
+                    usuario.token_email = token
+                    usuario.email_verificado = False
+                    db.session.add(usuario)
+                    db.session.commit()
+                    enviarEmailConfirmacao(app, form.email.data, token)
+                    login_user(usuario, remember=True)
+                    return redirect(url_for('verificar_email'))
+                else:
+                    db.session.add(usuario)
+                    db.session.commit()
+                    login_user(usuario, remember=True)
+        form.primeiro_nome.default = current_user.primeiro_nome
+        form.sobrenome.default = current_user.sobrenome
+        form.email.default = current_user.email
+        form.data_nasc.default = current_user.data_nascimento
+        form.curso.default = current_user.curso.id
+        form.instituicao.default = current_user.instituicao.id
+        form.cidade.default = current_user.cidade.id
+        form.process()
+        print(form.errors)
+
         return render_template('dashboard_usuario.html', eventos=get_dicionario_eventos_participante(request.base_url),
-                               info_usuario=get_dicionario_usuario(current_user))
+        info_usuario=get_dicionario_usuario(current_user), form=form)
     else:
+        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        salt = gensalt().decode('utf-8')
+        token = serializer.dumps(current_user.email, salt=salt)
+        usuario = current_user
+        usuario.salt = salt
+        usuario.token_email = token
+        usuario.email_verificado = False
+        db.session.add(usuario)
+        db.session.commit()
+        enviarEmailConfirmacao(app, usuario.email, token)
+        login_user(usuario, remember=True)
         return redirect(url_for('verificar_email'))
 
 
@@ -151,39 +192,38 @@ def info_participante_evento(edicao):
     return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
 
 
-@app.login_manager.user_loader
-def user_loader(user_id):
-    return Usuario.query.get(user_id)
-
-
-# Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
 def verificacao(token):
+    """
+    Página do link enviado para o usuário
+    """
+
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     try:
-        # Acha o usuário que possui o token
-        user = db.session.query(Usuario).filter_by(token_email=token).first()
+        #Acha o usuário que possui o token
+        user = db.session.query(Usuario).filter_by(token_email = token).first()
         salt = user.salt
-
-        # Gera um email a partir do token do link e do salt do db
+        #Gera um email a partir do token do link e do salt do db
         email = serializer.loads(token, salt=salt, max_age=3600)
-
-        # Valida o email
+        user.email = email
+        #Valida o email
         user.email_verificado = True
         db.session.add(user)
         db.session.commit()
-    # Tempo definido no max_age
+    #Tempo definido no max_age
     except SignatureExpired:
         return render_template('cadastro.html', resultado='O link de ativação expirou.')
     except Exception as e:
-        return 'Falha na ativação.'
-        # return render_template('cadastro.html', resultado='Falha na ativação.')
-    return 'Email confirmado.'
-    # return render_template('cadastro.html', resultado='Email confirmado.')
+        print(e)
+        return render_template('cadastro.html', resultado='Falha na ativação.')
+    return redirect(url_for('verificar_email'))
 
-# Página de contato
+
 @app.route('/contato', methods=['POST', 'GET'])
 def contatoDM():
+    """
+    Página de contato
+    """
     form = ContatoForm(request.form)
     if form.validate_on_submit():
         nome = form.nome_completo.data
@@ -222,11 +262,10 @@ def inscricao_atividades_com_filtro(filtro):
                            usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
-
 @app.route('/inscrever-atividade/<id>')
 @login_required
 def inscrever(id):
-    atv = db.session.query(Atividade).filter_by(id=id).first()
+    atv = db.session.query(Atividade).filter_by(id=id)[0]
     if atv.vagas_disponiveis > 0:
         atv.participantes.append(db.session.query(
             Participante).filter_by(usuario=current_user).first())
@@ -244,10 +283,11 @@ def inscrever(id):
                                acao="+")
     else:
         return "Não há vagas disponíveis!"
+    return id
 
 
 @app.route('/desinscrever-atividade/<id>')
-@login_required
+@login_required   
 def desinscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
@@ -266,6 +306,65 @@ def desinscrever(id):
                                acao="-")
     else:
         return "Não está inscrito nessa atividade!"
+
+
+@app.route('/alterar-senha', methods=["POST", "GET"])
+@login_required
+def alterar_senha():
+    form = AlterarSenhaForm(request.form)
+    if email_confirmado() == True:
+        if form.validate_on_submit():
+            usuario = db.session.query(Usuario).filter_by(email=current_user.email).first()
+            hash = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+            usuario.senha = hash
+            db.session.add(usuario)
+            db.session.commit()
+            return redirect(url_for('login'))
+        else:
+            return render_template('alterar_senha.html', form=form, action=request.base_url)
+    else:
+        return redirect(url_for('dashboard_usuario'))
+
+
+@app.route('/esqueci-senha', methods=["POST", "GET"])
+def esqueci_senha():
+    form = AlterarSenhaPorEmailForm(request.form)
+    if form.validate_on_submit():
+        usuario = db.session.query(Usuario).filter_by(email=form.email.data).first()
+        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        salt = gensalt().decode('utf-8')
+        token = serializer.dumps(usuario.email, salt=salt)
+        usuario.salt_alteracao_senha = salt
+        usuario.token_alteracao_senha = token
+        db.session.add(usuario)
+        db.session.commit()
+        enviarEmailSenha(app, usuario.email, token)
+        return render_template("esqueci_senha.html", status_envio_email=True, form=form)
+    return render_template("esqueci_senha.html", status_envio_email=False, form=form)
+
+
+@app.route('/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
+def confirmar_alteracao_senha(token):
+    form = AlterarSenhaForm(request.form)
+    if form.validate_on_submit():
+        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        try:
+            #Acha o usuário que possui o token
+            usuario = db.session.query(Usuario).filter_by(token_alteracao_senha = token).first()
+            salt = usuario.salt_alteracao_senha
+            #Gera um email a partir do token do link e do salt do db
+            email = serializer.loads(token, salt=salt, max_age=3600)
+            hash = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+            usuario.senha = hash
+            db.session.add(usuario)
+            db.session.commit()
+        except SignatureExpired:
+            return "O link de confirmação expirou !"
+        except Exception as e:
+            print(e)
+            return "Falha na confirmação de link do email"
+        return redirect(url_for('login'))
+    return render_template("alterar_senha.html", form=form, action=request.base_url)
 
 
 @app.route('/estoque-camisetas')

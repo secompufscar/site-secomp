@@ -7,12 +7,12 @@ DEBUG = None
 SECRET_KEY = os.urandom(32)
 
 # FLASK MAIL
-MAIL_SERVER = 'smtp.zoho.com'
+MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 465
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
-MAIL_USERNAME = 'noreply@secompufscar.com.br'
-MAIL_PASSWORD= 'passmail'
+MAIL_USERNAME = 'email@gmail.com.br'
+MAIL_PASSWORD = 'passmail'
 MAIL_DM = 'marketing@secompufscar.com.br'
 
 # FLASK ADMIN
