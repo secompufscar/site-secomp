@@ -18,7 +18,7 @@
 <link href="{{ url_for('static', filename='bs/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
-<!--link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" type="text/css"/-->
+<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
 {% block favicon %}
@@ -72,18 +72,30 @@
 		    {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
 		</ul>
 	    </div>
+
+	    <!-- Lado direito da Navbar -->
+	    <div class="navbar-nav">
+		{# TODO: criar lógica baseada no bd #}
+		{# if current_user.is_authenticated #}
+		    <a class="nav-item nav-link" href="#">Participante</a>
+		    <a class="nav-item nav-link" href="#">Sair</a>
+		{# else #}
+		    <a class="nav-item nav-link" href="#">Entrar</a>
+		    <a class="nav-item nav-link" href="#">Inscrever</a>
+		{# endif #}
+	    </div>
 	</nav>
     </div>
 </header>
 {% endblock %}
-{% block content %}
 
-{% endblock %}
+{# Não retirar esse bloco, caso contrário o content para de funcionar #}
+{% block content %}{% endblock %}
 
 {# Rascunho de rodapé #}
 {% block footer %}
 <footer class="page-footer font-small secondary pt-4">
-    <div class="container center">
+    <div class="container">
 		<div class="col-md-6 mt-md-0 mt-3">
 			{# Expandir variável secomp com nome dos membros #}
 			<p>Desenvolvido por 
