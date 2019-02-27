@@ -2,6 +2,7 @@ from flask import url_for, redirect
 from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
+
 from app import app
 from app.models.models import *
 
