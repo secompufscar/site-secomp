@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+  <style>
+      .help-block{
+        color:red;
+      }
+      body{
+        padding:50px;
+      }
+  </style>
+  <h2>Digite uma nova senha para seu usuário</h2>
+    <div>
+        <form method="POST" action="/alterar-senha">
+          {{ form.hidden_tag() }}
+          {{ wtf.form_field(form.nova_senha) }}
+          {{ wtf.form_field(form.confirmacao) }}
+
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+    </div>
+{% endblock %}

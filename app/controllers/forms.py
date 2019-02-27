@@ -34,3 +34,7 @@ class EditarUsuarioForm(FlaskForm):
     cidade = SelectField('Cidade', choices=get_opcoes_cidades(), id='cidade', coerce=int)
     data_nasc = DateField("Data de Nascimento", format="%d/%m/%Y", id='data-nasc')
     senha = PasswordField('Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
+
+class AlterarSenhaForm(FlaskForm):
+    nova_senha = PasswordField('Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA), EqualTo('confirmacao', message=ERRO_COMPARA_SENHAS)])
+    confirmacao = PasswordField('Confirmação de Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
