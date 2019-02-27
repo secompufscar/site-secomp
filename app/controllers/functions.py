@@ -1,10 +1,13 @@
 from flask import url_for
 from flask_login import login_required, login_user, logout_user, current_user
+from flask_mail import Mail, Message
+
 from app.models.models import *
 from app.controllers.constants import *
 
-def enviarEmailConfirmacao(app, email, token): #Envia email para validação do email
-	from flask_mail import Mail, Message
+
+def enviarEmailConfirmacao(app, email, token):
+	'''Envia email para validação do email'''
 
 	mail = Mail(app)
 
@@ -24,13 +27,14 @@ def enviarEmailConfirmacao(app, email, token): #Envia email para validação do 
 		except:
 			pass
 
-def enviarEmailSenha(app, email, token): #Envia email para validação do email
-	from flask_mail import Mail, Message
+
+def enviarEmailSenha(app, email, token):
+	''' Envia email para alteração de senha'''
 
 	mail = Mail(app)
 
 	#Cria a msg, Assunto, De, Para
-	msg = Message('Confirmação do Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
+	msg = Message('Confirmação de Alteração de Senha', sender=app.config['MAIL_USERNAME'], recipients=[email])
 	#Str com o link da verificação + tokmethods=['POST', 'GET']
 	link = url_for('confirmar_alteracao_senha', token=token, _external=True)
 	msg.body = '{}'.format(link)
@@ -45,6 +49,7 @@ def enviarEmailSenha(app, email, token): #Envia email para validação do email
 		except:
 			pass
 
+
 def email_confirmado():
 	try:
 		usuario = current_user
@@ -53,6 +58,7 @@ def email_confirmado():
 	except Exception as e:
 		print(e)
 		return None
+
 
 def get_opcoes_cidades():
 	try:
@@ -66,6 +72,7 @@ def get_opcoes_cidades():
 		print(e)
 		return None
 
+
 def get_opcoes_instituicoes():
 	try:
 		instituicoes = db.session.query(Instituicao).filter_by().all()
@@ -77,6 +84,7 @@ def get_opcoes_instituicoes():
 	except Exception as e:
 		print(e)
 		return None
+
 
 def get_opcoes_cursos():
 	try:
@@ -104,6 +112,7 @@ def get_opcoes_camisetas():
 		print(e)
 		return None
 
+
 def get_dicionario_usuario(usuario):
 	try:
 		data = str(usuario.data_nascimento).split("-")
@@ -121,11 +130,13 @@ def get_dicionario_usuario(usuario):
 		print(e)
 		return None
 
+
 def get_score_evento(edicao):
 	return 10000
 
-#Função usada na dashboard do usuário
+
 def get_dicionario_eventos_participante(base_url):
+	'''Função usada na dashboard do usuário'''
 	try:
 		info_eventos = []
 		agora = datetime.now()
@@ -165,8 +176,9 @@ def get_dicionario_eventos_participante(base_url):
 		print(e)
 		return None
 
-#Função usada na página de informações de um determinado evento
+
 def get_dicionario_info_evento(edicao):
+	'''Função usada na página de informações de um determinado evento'''
 	try:
 		evento = db.session.query(Evento).filter_by(edicao=edicao).first()
 		participante = db.session.query(Participante).filter_by(id_evento=evento.id, id_usuario=current_user.id).first()
