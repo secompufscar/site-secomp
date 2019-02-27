@@ -1,9 +1,12 @@
 import datetime
+
 from flask import url_for
 from flask_login import current_user
 from flask_mail import Mail, Message
+
 from app.controllers.constants import *
 from app.models.models import *
+
 
 # Envia email para validação do email
 def enviarEmailConfirmacao(app, email, token):
@@ -111,7 +114,7 @@ def get_score_evento(edicao):
 
 def get_dicionario_eventos_participante(base_url):
     info_eventos = []
-    agora = datetime.datetime.now()
+    agora = datetime.now()
     participantes = db.session.query(Participante).filter_by(
         id_usuario=current_user.id).all()
     ja_participa = False
