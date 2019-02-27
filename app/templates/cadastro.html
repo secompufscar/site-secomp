@@ -38,6 +38,11 @@
           {{ wtf.form_field(form.instituicao) }}
           {{ wtf.form_field(form.cidade) }}
           {{ wtf.form_field(form.data_nasc) }}
+          {{ form.recaptcha }}
+
+          {% for error in form.recaptcha.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
 
           <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
