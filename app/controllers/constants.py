@@ -43,6 +43,7 @@ ERRO_INPUT_REQUIRED = "Preencha esse campo"
 ERRO_EMAIL = "Entre com um endereço de email válido"
 ERRO_COMPARA_SENHAS = "Senhas devem ser iguais"
 EDICAO_ATUAL = 10
+ERRO_TAMANHO_SENHA = "A senha deve ter entre 8 e 20 caracteres"
 
 escolhas_restricao = [
     (1, "Nenhum"),
