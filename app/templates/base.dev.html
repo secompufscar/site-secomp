@@ -76,13 +76,13 @@
 	    <!-- Lado direito da Navbar -->
 	    <div class="navbar-nav">
 		{# TODO: criar lógica baseada no bd #}
-		{# if current_user.is_authenticated #}
+		{% if current_user.is_authenticated %}
 		    <a class="nav-item nav-link" href="#">Participante</a>
-		    <a class="nav-item nav-link" href="#">Sair</a>
-		{# else #}
-		    <a class="nav-item nav-link" href="#">Entrar</a>
-		    <a class="nav-item nav-link" href="#">Inscrever</a>
-		{# endif #}
+		    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Sair</a>
+		{% else %}
+		<a class="nav-item nav-link" href="{{ url_for('login') }}">Entrar</a>
+		    <a class="nav-item nav-link" href="{{ url_for('cadastro') }}">Inscrever</a>
+		{% endif %}
 	    </div>
 	</nav>
     </div>

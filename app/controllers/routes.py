@@ -22,10 +22,6 @@ def index():
             secomp_email=secomp_email, 
             secompEdition = secomp_edition)
 
-@app.route('/dev')
-def dev():
-    return render_template('index.dev.html')
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """
@@ -63,6 +59,9 @@ def logout():
 
 @app.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
+    """
+    Renderiza a página de cadastro do projeto
+    """
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     
     form = CadastroForm(request.form)
