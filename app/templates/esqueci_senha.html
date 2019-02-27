@@ -11,6 +11,10 @@
 <form action="/esqueci-senha" method="POST">
   {{ form.hidden_tag() }}
   {{ wtf.form_field(form.email) }}
+  {{ form.recaptcha }}
+  {% for error in form.recaptcha.errors %}
+    <span class="help-block">{{ error }}</span>
+  {% endfor %}
   <button type="submit">Enviar</button>
 </form>
 {% else: %}
