@@ -1,7 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
 from datetime import datetime
 from enum import Enum
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
+
 from app import app
 
 db = SQLAlchemy(app)
@@ -16,11 +17,20 @@ Column('id', Integer, primary_key=True),
 Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
 Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
 
-
 relacao_patrocinador_evento = db.Table('relacao_patrocinador_evento',
 Column('id', Integer, primary_key=True),
 Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')),
 Column('id_evento', Integer, db.ForeignKey('evento.id')))
+
+class Permissao(Enum):
+    USUARIO = 0
+    ADMIN = 1
+    SUPER_ADMIN = 2
+
+class Atividades(Enum):
+    MINICURSO = 0
+    WORKSHOP = 1
+    PALESTRA = 2
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'

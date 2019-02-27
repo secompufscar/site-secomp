@@ -1,3 +1,5 @@
+import datetime
+
 from flask import url_for
 from flask_login import login_required, login_user, logout_user, current_user
 from flask_mail import Mail, Message
@@ -7,25 +9,44 @@ from app.controllers.constants import *
 
 
 def enviarEmailConfirmacao(app, email, token):
-	'''Envia email para validação do email'''
+  ''' Envia email para validação do email'''
+    mail = Mail(app)
+    # Cria a msg, Assunto, De, Para
+    msg = Message('Confirmação do Email',
+                  sender=app.config['MAIL_USERNAME'], recipients=[email])
+    # Str com o link da verificação + tokmethods=['POST', 'GET']
+    link = url_for('verificacao', token=token, _external=True)
+    msg.body = '{}'.format(link)
 
-	mail = Mail(app)
+    try:
+        mail.send(msg)  # Envia o email
+    except Exception as e:  # Erros mais prováveis são devivo ao email_config, printa error em um arquivo
+        try:
+            log = open('logMailError.txt', 'a+')
+            log.write('{} {} {}\n'.format(str(e), email,
+                                          strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
+            log.close()
+        except:
+            pass
 
-	#Cria a msg, Assunto, De, Para
-	msg = Message('Confirmação do Email', sender=app.config['MAIL_USERNAME'], recipients=[email])
-	#Str com o link da verificação + tokmethods=['POST', 'GET']
-	link = url_for('verificacao', token=token, _external=True)
-	msg.body = '{}'.format(link)
 
-	try:
-		mail.send(msg) #Envia o email
-	except Exception as e: #Erros mais prováveis são devivo ao email_config, printa error em um arquivo
-		try:
-			log = open('logMailError.txt', 'a+')
-			log.write('{} {} {}\n'.format(str(e), email, strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
-			log.close()
-		except:
-			pass
+def enviarEmailDM(app, nome, email, mensagem):
+    mail = Mail(app)
+    msg = Message('Mensagem de {}'.format(
+        nome), sender=app.config['MAIL_USERNAME'], recipients=app.config['MAIL_DM'])
+    msg.body = '{}\nEmail: {}\n\n{}'.format(nome, email, mensagem)
+
+    try:
+        mail.send(msg)  # Envia o email
+    except Exception as e:  # Erros mais prováveis são devivo ao email_config, printa error em um arquivo
+        try:
+            log = open('logMailError.txt', 'a+')
+            log.write('{} {} {} {} {}\n'.format(str(e), nome, email,
+                                                mensagem, strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
+            log.close()
+        except:
+            pass
+
 
 
 def enviarEmailSenha(app, email, token):
@@ -98,6 +119,7 @@ def get_opcoes_cursos():
 		print(e)
 		return None
 
+
 def get_opcoes_camisetas():
 	try:
 		camisetas = db.session.query(Camiseta).filter_by().order_by(Camiseta.ordem_site).all()
@@ -132,7 +154,7 @@ def get_dicionario_usuario(usuario):
 
 
 def get_score_evento(edicao):
-	return 10000
+    return 10000
 
 
 def get_dicionario_eventos_participante(base_url):
