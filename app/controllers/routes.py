@@ -1,7 +1,7 @@
-from bcrypt import gensalt
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, abort, url_for
 from flask_login import login_required, login_user, logout_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from bcrypt import gensalt
 from passlib.hash import pbkdf2_sha256
 
 from app.controllers.forms import LoginForm, CadastroForm, ContatoForm, ParticipanteForm
@@ -266,3 +266,23 @@ def desinscrever(id):
                                acao="-")
     else:
         return "Não está inscrito nessa atividade!"
+
+
+@app.route('/estoque-camisetas')
+@login_required
+def estoque_camisetas():
+    if (current_user.permissao > 0):
+        camisetas = db.session.query(Camiseta)
+        return render_template('controle_camisetas.html', camisetas=camisetas, usuario=current_user)
+    else:
+        abort(403)
+
+
+@app.route('/estoque-camisetas/<tamanho>')
+@login_required
+def estoque_camisetas_por_tamanho(tamanho):
+    if (current_user.permissao > 0):
+        camisetas = db.session.query(Camiseta).filter_by(tamanho=tamanho)
+        return render_template('controle_camisetas.html', camisetas=camisetas, usuario=current_user)
+    else:
+        abort(403)
