@@ -15,7 +15,7 @@
 <title>{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}</title>
 {# styles globais #}
 {% block styles %}
-<link href="{{ url_for('static', filename='bs/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css"/>
@@ -30,7 +30,7 @@
 {% block navbar %}
 <header>
     <div class="container">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary">
 	    {# Marca d'água para a home  #}
 	    <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
 	    {# TODO mudar o aria #}
