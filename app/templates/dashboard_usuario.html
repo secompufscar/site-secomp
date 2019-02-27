@@ -1,8 +1,12 @@
 {% extends "base.html" %}
+{% import "wtf.html" as wtf %}
 {% block content %}
 <style>
+  body{
+    padding:50px;
+  }
   .bloco-oculto{
-    visibility: hidden;
+    display: none;
   }
   #menu_usuario, #menu_eventos{
     padding-right: 15px;
@@ -19,12 +23,21 @@
     background-color:#00cc00;
     color:white;
   }
+  .titulo-info{
+    font-weight: bold;
+    font-size:17px;
+    float: left;
+    margin-right:5px;
+  }
+  .info{
+    font-size:17px;
+  }
 
 }
 </style>
 <nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" id="menu_usuario" href="#">Informações do Usuario</a>
-  <a class="navbar-brand" id="menu_eventos" href="#">Eventos</a>
+  <a class="navbar-brand" id="menu_usuario" href="#" onclick="muda1()">Informações do Usuario</a>
+  <a class="navbar-brand" id="menu_eventos" href="#" onclick="muda2()">Eventos</a>
 </nav><br>
 
   <div id="conteudo"></div>
@@ -33,7 +46,7 @@
   <div>
     <div>{{evento.titulo}}</div>
     {% if evento.inscricao == 1: %}
-      <button class="inscrever" onclick="location.href='https://0.0.0.0:5000/cadastro-participante'">Inscrever-se</button>
+      <button class="inscrever" onclick="location.href='{{ url_for('cadastro_participante') }}'">Inscrever-se</button>
     {% elif evento.inscricao == 0: %}
       <button onclick="location.href='{{evento.url}}'">Ver Informações</button>
     {% else: %}
@@ -43,17 +56,44 @@
 {% endfor %}
   </div>
   <div class="bloco-oculto" id="info-usuario">
-    <div>Nome: {{info_usuario.nome}}</div><br>
-    <div>Email: {{info_usuario.email}}</div><br>
-    <div>Curso: {{info_usuario.curso}}</div><br>
-    <div>Instituição: {{info_usuario.instituicao}}</div><br>
-    <div>Data de nascimento: {{info_usuario.data_nasc}}</div><br>
+    <div class="info"><div class="titulo-info">Nome:</div> {{info_usuario.primeiro_nome + ' ' + info_usuario.sobrenome}}</div><hr>
+    <div class="info"><div class="titulo-info">Email:</div> {{info_usuario.email}}</div><hr>
+    <div class="info"><div class="titulo-info">Curso:</div> {{info_usuario.curso}}</div><hr>
+    <div class="info"><div class="titulo-info">Instituição:</div> {{info_usuario.instituicao}}</div><hr>
+    <div class="info"><div class="titulo-info">Data de nascimento:</div> {{info_usuario.data_nasc}}</div><hr>
+    <div class="info"><div class="titulo-info">Cidade:</div> {{info_usuario.cidade}}</div><hr>
+    <button id="editar-info" onclick="muda3()">Editar Informações</button>
+  </div>
+  <div class="bloco-oculto" id="editar-usuario">
+    <form method="POST" action="/dashboard-usuario">
+      {{ form.hidden_tag() }}
+      <div id="primeira-etapa">
+      {{ wtf.form_field(form.primeiro_nome) }}
+      {{ wtf.form_field(form.sobrenome) }}
+      {{ wtf.form_field(form.email) }}
+      {{ wtf.form_field(form.data_nasc) }}
+      {{ wtf.form_field(form.curso) }}
+      {{ wtf.form_field(form.instituicao) }}
+      {{ wtf.form_field(form.cidade) }}
+
+      <button onclick="muda1()">Voltar</button>
+      <button id="salvar" onclick="muda4()">Salvar</button>
+    </div>
+    <div id="segunda-etapa">
+    <h2>Digite sua senha para atualizar seus dados</h2>
+      {{ wtf.form_field(form.senha) }}
+      <button onclick="muda3()">Voltar</button>
+      <button type="submit">Confirmar Senha</button>
+    </div>
+    </form>
   </div>
   <script>
   $('#conteudo').html($('#info-usuario').html());
   $('#menu_usuario').css("background-color", "black");
   $('#menu_usuario').css("color", "white");
-    $('#menu_usuario').click(function() {
+  $('#editar-usuario').hide();
+  $('#segunda-etapa').hide();
+    function muda1(){
       $('#menu_usuario').css("background-color", "black");
       $('#menu_usuario').css("color", "white");
       $('#menu_eventos').css("background-color", "transparent");
@@ -61,8 +101,8 @@
       $('#conteudo').css("display", "none");
       $('#conteudo').html($('#info-usuario').html());
       $('#conteudo').fadeIn(400);
-    });
-    $('#menu_eventos').click(function() {
+    }
+    function muda2(){
       $('#menu_eventos').css("background-color", "black");
       $('#menu_eventos').css("color", "white");
       $('#menu_usuario').css("background-color", "transparent");
@@ -70,6 +110,17 @@
       $('#conteudo').css("display", "none");
       $('#conteudo').html($('#eventos').html());
       $('#conteudo').fadeIn(400);
-    });
+    }
+    function muda3() {
+      $('#conteudo').css("display", "none");
+      $('#conteudo').html($('#editar-usuario').html());
+      $('#conteudo').fadeIn(400);
+    }
+    function muda4() {
+      $('#conteudo').css("display", "none");
+      $('#primeira-etapa').hide();
+      $('#conteudo').fadeIn(400);
+      $('#segunda-etapa').show();
+    }
   </script>
 {% endblock %}

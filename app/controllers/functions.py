@@ -2,7 +2,6 @@ from flask import url_for
 from flask_login import login_required, login_user, logout_user, current_user
 from app.models.models import *
 from app.controllers.constants import *
-import datetime
 
 def enviarEmailConfirmacao(app, email, token): #Envia email para validação do email
 	from flask_mail import Mail, Message
@@ -86,12 +85,15 @@ def get_opcoes_camisetas():
 
 def get_dicionario_usuario(usuario):
 	try:
+		data = str(usuario.data_nascimento).split("-")
 		info = {
-			"nome": usuario.primeiro_nome + ' ' + usuario.ult_nome,
+			"primeiro_nome": usuario.primeiro_nome,
+			"sobrenome": usuario.sobrenome,
 			"email": usuario.email,
-			"curso": usuario.curso,
-			"instituicao": usuario.instituicao,
-			"data_nasc": usuario.data_nascimento
+			"curso": usuario.curso.nome,
+			"instituicao": usuario.instituicao.nome,
+			"data_nasc": "{0}/{1}/{2}".format(data[2], data[1], data[0]),
+			"cidade": usuario.cidade.nome
 		}
 		return info
 	except Exception as e:
@@ -105,7 +107,7 @@ def get_score_evento(edicao):
 def get_dicionario_eventos_participante(base_url):
 	try:
 		info_eventos = []
-		agora = datetime.datetime.now()
+		agora = datetime.now()
 		participantes = db.session.query(Participante).filter_by(id_usuario=current_user.id).all()
 		ja_participa = False
 		for participante in participantes:

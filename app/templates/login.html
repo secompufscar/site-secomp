@@ -2,6 +2,11 @@
 {% import "wtf.html" as wtf %}
 
 {% block content %}
+<style>
+  body{
+    padding:50px;
+  }
+</style>
 <form action="/login" method="POST">
   {{ form.hidden_tag() }}
   {{ wtf.form_field(form.email) }}
