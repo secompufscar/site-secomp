@@ -2,7 +2,7 @@ from flask import url_for, redirect
 from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
-from app import app
+
 from app.models.models import *
 
 
@@ -28,4 +28,5 @@ def init_admin(app):
     admin.add_view(AppModelView(Participante, db.session))
     admin.add_view(AppModelView(Ministrante, db.session))
     admin.add_view(AppModelView(Atividade, db.session))
+    admin.add_view(AppModelView(Camiseta, db.session))
     return admin
