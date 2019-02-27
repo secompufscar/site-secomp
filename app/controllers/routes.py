@@ -7,6 +7,7 @@ from app.controllers.forms import *
 from app.controllers.functions import *
 from app.controllers.functions import enviarEmailConfirmacao
 from app.models.models import *
+from app import *
 
 
 @app.route('/')
@@ -22,6 +23,10 @@ def index():
 @app.route('/dev')
 def dev():
     return render_template('index.dev.html')
+
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return redirect('/login')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -181,10 +186,6 @@ def dashboard_usuario():
 def info_participante_evento(edicao):
     return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
 
-@app.login_manager.user_loader
-def user_loader(user_id):
-        return Usuario.query.get(user_id)
-
 
 #Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
@@ -236,3 +237,20 @@ def inscrever(id):
 @login_required
 def gerenciar_atividades():
     return 0
+
+@app.route('/alterar-senha', methods=["POST", "GET"])
+@login_required
+def alterar_senha():
+    form = AlterarSenhaForm(request.form)
+    if email_confirmado() == True:
+        if form.validate_on_submit():
+            usuario = db.session.query(Usuario).filter_by(email=current_user.email).first()
+            hash = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+            usuario.senha = hash
+            db.session.add(usuario)
+            db.session.commit()
+            return redirect(url_for('login'))
+        else:
+            return render_template('alterar_senha.html', form=form)
+    else:
+        return redirect(url_for('dashboard_usuario'))
