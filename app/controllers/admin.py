@@ -1,8 +1,8 @@
-from flask import url_for, redirect 
-from flask_admin import Admin, AdminIndexView, expose 
+from flask import url_for, redirect
+from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
-from app import app
+
 from app.models.models import *
 
 
@@ -20,7 +20,7 @@ class AppModelView(ModelView):
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.permissao > Permissao.USUARIO.value
-    
+
 
 def init_admin(app):
     admin = Admin(app, index_view=AppIndexView(), template_mode='bootstrap3')
@@ -28,4 +28,5 @@ def init_admin(app):
     admin.add_view(AppModelView(Participante, db.session))
     admin.add_view(AppModelView(Ministrante, db.session))
     admin.add_view(AppModelView(Atividade, db.session))
+    admin.add_view(AppModelView(Camiseta, db.session))
     return admin

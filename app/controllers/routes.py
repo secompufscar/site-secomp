@@ -1,13 +1,12 @@
-from bcrypt import gensalt
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, abort, url_for
+from flask_login import login_required, login_user, logout_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from bcrypt import gensalt
 from passlib.hash import pbkdf2_sha256
 
 from app.controllers.forms import *
 from app.controllers.functions import *
-from app.controllers.functions import enviarEmailConfirmacao
 from app.models.models import *
-from app import *
 
 
 @app.route('/')
@@ -37,7 +36,6 @@ def login():
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
-                print(form.errors)
                 return redirect(url_for('dashboard_usuario'))
     return render_template('login.html', form=form)
 
@@ -71,10 +69,12 @@ def cadastro():
             return "Este email já está sendo usado!"
         else:
             agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
+            hash = pbkdf2_sha256.encrypt(
+                form.senha.data, rounds=10000, salt_size=15)
             usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
                               data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
-                              sobrenome=form.sobrenome.data, id_curso=form.curso.data, id_instituicao=form.instituicao.data,
+                              sobrenome=form.sobrenome.data, id_curso=form.curso.data,
+                              id_instituicao=form.instituicao.data,
                               id_cidade=form.cidade.data, data_nascimento=form.data_nasc.data,
                               token_email=token, autenticado=True, salt=salt)
             db.session.add(usuario)
@@ -101,9 +101,11 @@ def verificar_email():
 @app.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
-    id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
+    id_evento = db.session.query(Evento).filter_by(
+        edicao=EDICAO_ATUAL).first().id
     if email_confirmado() == True:
-        participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+        participante = db.session.query(Participante).filter_by(
+            id_usuario=current_user.id, id_evento=id_evento).first()
         if participante is None:
             form = ParticipanteForm(request.form)
             participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
@@ -192,7 +194,9 @@ def info_participante_evento(edicao):
 
 @app.route('/verificacao/<token>')
 def verificacao(token):
-    '''Página do link enviado para o usuário'''
+    """
+    Página do link enviado para o usuário
+    """
 
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     try:
@@ -215,11 +219,47 @@ def verificacao(token):
     return redirect(url_for('verificar_email'))
 
 
+@app.route('/contato', methods=['POST', 'GET'])
+def contatoDM():
+    """
+    Página de contato
+    """
+    form = ContatoForm(request.form)
+    if form.validate_on_submit():
+        nome = form.nome_completo.data
+        email = form.email.data
+        mensagem = form.mensagem.data
+        enviarEmailDM(app, nome, email, mensagem)
+        return render_template('contato.html', form=form, enviado=True)
+    return render_template('contato.html', form=form)
+
+
 @app.route('/inscricao-atividades')
 @login_required
 def inscricao_atividades():
-    atividades = db.session.query(Atividade)
-    return render_template('inscricao_atividades.html', usuario=current_user, atividades=atividades)
+    minicursos = db.session.query(Atividade).filter_by(tipo=Atividades.MINICURSO.value)
+    workshops = db.session.query(Atividade).filter_by(tipo=Atividades.WORKSHOP.value)
+    palestras = db.session.query(Atividade).filter_by(tipo=Atividades.PALESTRA.value)
+    return render_template('inscricao_atividades.html',
+                           participante=db.session.query(Participante).filter_by(
+                               usuario=current_user).first(),
+                           usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
+
+
+@app.route('/inscricao-atividades/<filtro>')
+@login_required
+def inscricao_atividades_com_filtro(filtro):
+    minicursos = db.session.query(Atividade).filter(
+            Atividade.tipo.like(Atividades.MINICURSO.value), Atividade.titulo.like("%" + filtro + "%"))
+    workshops = db.session.query(Atividade).filter(
+            Atividade.tipo.like(Atividades.WORKSHOP.value), Atividade.titulo.like("%" + filtro + "%"))
+    palestras = db.session.query(Atividade).filter(
+            Atividade.tipo.like(Atividades.PALESTRA.value), Atividade.titulo.like("%" + filtro + "%"))
+
+    return render_template('inscricao_atividades.html',
+                           participante=db.session.query(Participante).filter_by(
+                               usuario=current_user).first(),
+                           usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
 @app.route('/inscrever-atividade/<id>')
@@ -227,20 +267,45 @@ def inscricao_atividades():
 def inscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id)[0]
     if atv.vagas_disponiveis > 0:
-        atv.inscritos.append(db.session.query(Participante).filter_by(usuario=current_user)[0])
+        atv.participantes.append(db.session.query(
+            Participante).filter_by(usuario=current_user).first())
         atv.vagas_disponiveis = atv.vagas_disponiveis - 1
         db.session.flush()
         db.session.commit()
-        return redirect(url_for(inscricao_atividades))
+        minicursos = db.session.query(Atividade).filter_by(tipo=Atividades.MINICURSO.value)
+        workshops = db.session.query(Atividade).filter_by(tipo=Atividades.WORKSHOP.value)
+        palestras = db.session.query(Atividade).filter_by(tipo=Atividades.PALESTRA.value)
+
+        return render_template('inscricao_atividades.html',
+                               participante=db.session.query(Participante).filter_by(
+                                   usuario=current_user).first(),
+                               usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras,
+                               acao="+")
     else:
         return "Não há vagas disponíveis!"
     return id
 
 
-@app.route('/gerenciar-atividades')
-@login_required
-def gerenciar_atividades():
-    return 0
+@app.route('/desinscrever-atividade/<id>')
+@login_required   
+def desinscrever(id):
+    atv = db.session.query(Atividade).filter_by(id=id).first()
+    if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
+        atv.participantes.remove(db.session.query(
+            Participante).filter_by(usuario=current_user).first())
+        atv.vagas_disponiveis = atv.vagas_disponiveis + 1
+        db.session.flush()
+        db.session.commit()
+        minicursos = db.session.query(Atividade).filter_by(tipo=Atividades.MINICURSO.value)
+        workshops = db.session.query(Atividade).filter_by(tipo=Atividades.WORKSHOP.value)
+        palestras = db.session.query(Atividade).filter_by(tipo=Atividades.PALESTRA.value)
+        return render_template('inscricao_atividades.html',
+                               participante=db.session.query(Participante).filter_by(
+                                   usuario=current_user).first(),
+                               usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras,
+                               acao="-")
+    else:
+        return "Não está inscrito nessa atividade!"
 
 
 @app.route('/alterar-senha', methods=["POST", "GET"])
@@ -301,3 +366,22 @@ def confirmar_alteracao_senha(token):
         return redirect(url_for('login'))
     return render_template("alterar_senha.html", form=form, action=request.base_url)
 
+
+@app.route('/estoque-camisetas')
+@login_required
+def estoque_camisetas():
+    if (current_user.permissao > 0):
+        camisetas = db.session.query(Camiseta)
+        return render_template('controle_camisetas.html', camisetas=camisetas, usuario=current_user)
+    else:
+        abort(403)
+
+
+@app.route('/estoque-camisetas/<tamanho>')
+@login_required
+def estoque_camisetas_por_tamanho(tamanho):
+    if (current_user.permissao > 0):
+        camisetas = db.session.query(Camiseta).filter_by(tamanho=tamanho)
+        return render_template('controle_camisetas.html', camisetas=camisetas, usuario=current_user)
+    else:
+        abort(403)

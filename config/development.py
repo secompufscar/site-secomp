@@ -12,11 +12,12 @@ MAIL_PORT = 465
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
 MAIL_USERNAME = 'email@gmail.com.br'
-MAIL_PASSWORD= 'passmail'
+MAIL_PASSWORD = 'passmail'
+MAIL_DM = 'marketing@secompufscar.com.br'
 
 # FLASK ADMIN
 FLASK_ADMIN_SWATCH = 'darkly'
 
 # SQLALCHEMY
-SQLALCHEMY_DATABASE_URI = 'mysql://root:root@localhost/db'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/db'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
