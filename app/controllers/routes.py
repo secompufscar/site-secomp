@@ -1,13 +1,13 @@
-from flask import render_template, request, redirect, url_for
-from flask_login import login_required, login_user, logout_user, current_user
-from app import app
-from app.controllers.constants import secomp_now, secomp, secomp_email, secomp_edition
+from bcrypt import gensalt
+from flask import render_template, request, redirect
+from flask_login import login_required, login_user, logout_user
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+from passlib.hash import pbkdf2_sha256
+
 from app.controllers.forms import LoginForm, CadastroForm, ContatoForm, ParticipanteForm
 from app.controllers.functions import *
 from app.models.models import *
-from bcrypt import gensalt
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-from passlib.hash import pbkdf2_sha256
+
 
 @app.route('/')
 def index():
@@ -198,11 +198,26 @@ def contatoDM():
 @login_required
 def inscricao_atividades():
     minicursos = db.session.query(Atividade).filter_by(tipo=0)
-    palestras = db.session.query(Atividade).filter_by(tipo=1)
+    workshops = db.session.query(Atividade).filter_by(tipo=1)
+    palestras = db.session.query(Atividade).filter_by(tipo=2)
     return render_template('inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
                                usuario=current_user).first(),
-                           usuario=current_user, minicursos=minicursos, palestras=palestras)
+                           usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
+
+
+@app.route('/inscricao-atividades/<filtro>')
+@login_required
+def inscricao_atividades_com_filtro(filtro):
+    minicursos = db.session.query(Atividade).filter(Atividade.tipo.like(0), Atividade.titulo.like("%" + filtro + "%"))
+    workshops = db.session.query(Atividade).filter(Atividade.tipo.like(1), Atividade.titulo.like("%" + filtro + "%"))
+    palestras = db.session.query(Atividade).filter(Atividade.tipo.like(2), Atividade.titulo.like("%" + filtro + "%"))
+
+    return render_template('inscricao_atividades.html',
+                           participante=db.session.query(Participante).filter_by(
+                               usuario=current_user).first(),
+                           usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
+
 
 
 @app.route('/inscrever-atividade/<id>')
@@ -216,11 +231,14 @@ def inscrever(id):
         db.session.flush()
         db.session.commit()
         minicursos = db.session.query(Atividade).filter_by(tipo=0)
-        palestras = db.session.query(Atividade).filter_by(tipo=1)
+        workshops = db.session.query(Atividade).filter_by(tipo=1)
+        palestras = db.session.query(Atividade).filter_by(tipo=2)
+
         return render_template('inscricao_atividades.html',
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),
-                               usuario=current_user, minicursos=minicursos, palestras=palestras, acao="+")
+                               usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras,
+                               acao="+")
     else:
         return "Não há vagas disponíveis!"
 
@@ -236,10 +254,12 @@ def desinscrever(id):
         db.session.flush()
         db.session.commit()
         minicursos = db.session.query(Atividade).filter_by(tipo=0)
-        palestras = db.session.query(Atividade).filter_by(tipo=1)
+        workshops = db.session.query(Atividade).filter_by(tipo=1)
+        palestras = db.session.query(Atividade).filter_by(tipo=2)
         return render_template('inscricao_atividades.html',
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),
-                               usuario=current_user, minicursos=minicursos, palestras=palestras, acao="-")
+                               usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras,
+                               acao="-")
     else:
         return "Não está inscrito nessa atividade!"
