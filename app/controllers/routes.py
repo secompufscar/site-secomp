@@ -20,13 +20,11 @@ def index():
                            secomp_email=secomp_email,
                            secompEdition=secomp_edition)
 
+
 @app.route('/dev')
 def dev():
     return render_template('index.dev.html')
 
-@login_manager.unauthorized_handler
-def unauthorized_callback():
-    return redirect('/login')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -42,6 +40,7 @@ def login():
                 print(form.errors)
                 return redirect(url_for('dashboard_usuario'))
     return render_template('login.html', form=form)
+
 
 @app.route("/logout", methods=["GET"])
 @login_required
@@ -86,6 +85,7 @@ def cadastro():
             return redirect(url_for('verificar_email'))
     return render_template('cadastro.html', form=form)
 
+
 @app.route('/verificar-email')
 @login_required
 def verificar_email():
@@ -96,6 +96,7 @@ def verificar_email():
         msg = 'Confirme o email de verificação que foi enviado ao endereço de email fornecido'
         status = False
     return render_template('confirma_email.html', resultado=msg, status=status)
+
 
 @app.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
@@ -122,6 +123,7 @@ def cadastro_participante():
             return redirect(url_for('dashboard_usuario'))
     else:
         return redirect(url_for('verificar_email'))
+
 
 @app.route('/dashboard-usuario', methods=['POST', 'GET'])
 @login_required
@@ -181,15 +183,17 @@ def dashboard_usuario():
         login_user(usuario, remember=True)
         return redirect(url_for('verificar_email'))
 
+
 @app.route('/dashboard-usuario/evento/<edicao>')
 @login_required
 def info_participante_evento(edicao):
     return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
 
 
-#Página do link enviado para o usuário
 @app.route('/verificacao/<token>')
 def verificacao(token):
+    '''Página do link enviado para o usuário'''
+
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     try:
         #Acha o usuário que possui o token
@@ -238,6 +242,7 @@ def inscrever(id):
 def gerenciar_atividades():
     return 0
 
+
 @app.route('/alterar-senha', methods=["POST", "GET"])
 @login_required
 def alterar_senha():
@@ -255,6 +260,7 @@ def alterar_senha():
     else:
         return redirect(url_for('dashboard_usuario'))
 
+
 @app.route('/esqueci-senha', methods=["POST", "GET"])
 def esqueci_senha():
     form = AlterarSenhaPorEmailForm(request.form)
@@ -270,6 +276,7 @@ def esqueci_senha():
         enviarEmailSenha(app, usuario.email, token)
         return render_template("esqueci_senha.html", status_envio_email=True, form=form)
     return render_template("esqueci_senha.html", status_envio_email=False, form=form)
+
 
 @app.route('/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
 def confirmar_alteracao_senha(token):
@@ -293,3 +300,4 @@ def confirmar_alteracao_senha(token):
             return "Falha na confirmação de link do email"
         return redirect(url_for('login'))
     return render_template("alterar_senha.html", form=form, action=request.base_url)
+
