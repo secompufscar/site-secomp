@@ -29,7 +29,8 @@ def dev():
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
-        user = db.session.query(Usuario).filter_by(email = form.email.data).first()
+        user = db.session.query(Usuario).filter_by(
+            email=form.email.data).first()
         if user:
             if pbkdf2_sha256.verify(form.senha.data, user.senha):
                 user.autenticado = True
@@ -108,13 +109,14 @@ def cadastro_participante():
             id_usuario=current_user.id, id_evento=id_evento).first()
         if participante is None:
             form = ParticipanteForm(request.form)
-            participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+            participante = db.session.query(Participante).filter_by(
+                id_usuario=current_user.id, id_evento=id_evento).first()
             if form.validate_on_submit() and participante is None:
                 agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 usuario = current_user
                 participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
-                pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
-                opcao_coffee=form.restricao_coffee.data)
+                                            pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
+                                            opcao_coffee=form.restricao_coffee.data)
                 db.session.add(participante)
                 db.session.flush()
                 db.session.commit()
@@ -133,7 +135,8 @@ def dashboard_usuario():
     if email_confirmado() == True:
         form = EditarUsuarioForm(request.form)
         if form.validate_on_submit():
-            usuario = db.session.query(Usuario).filter_by(id=current_user.id).first()
+            usuario = db.session.query(Usuario).filter_by(
+                id=current_user.id).first()
             if pbkdf2_sha256.verify(form.senha.data, usuario.senha):
                 usuario.primeiro_nome = form.primeiro_nome.data
                 usuario.sobrenome = form.sobrenome.data
@@ -144,7 +147,8 @@ def dashboard_usuario():
                 if usuario.email != form.email.data:
                     print(usuario.email)
                     print(form.email.data)
-                    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+                    serializer = URLSafeTimedSerializer(
+                        app.config['SECRET_KEY'])
                     salt = gensalt().decode('utf-8')
                     token = serializer.dumps(form.email.data, salt=salt)
                     usuario.salt = salt
@@ -170,7 +174,7 @@ def dashboard_usuario():
         print(form.errors)
 
         return render_template('dashboard_usuario.html', eventos=get_dicionario_eventos_participante(request.base_url),
-        info_usuario=get_dicionario_usuario(current_user), form=form)
+                               info_usuario=get_dicionario_usuario(current_user), form=form)
     else:
         serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
         salt = gensalt().decode('utf-8')
@@ -200,17 +204,17 @@ def verificacao(token):
 
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     try:
-        #Acha o usuário que possui o token
-        user = db.session.query(Usuario).filter_by(token_email = token).first()
+        # Acha o usuário que possui o token
+        user = db.session.query(Usuario).filter_by(token_email=token).first()
         salt = user.salt
-        #Gera um email a partir do token do link e do salt do db
+        # Gera um email a partir do token do link e do salt do db
         email = serializer.loads(token, salt=salt, max_age=3600)
         user.email = email
-        #Valida o email
+        # Valida o email
         user.email_verificado = True
         db.session.add(user)
         db.session.commit()
-    #Tempo definido no max_age
+    # Tempo definido no max_age
     except SignatureExpired:
         return render_template('cadastro.html', resultado='O link de ativação expirou.')
     except Exception as e:
@@ -237,9 +241,12 @@ def contatoDM():
 @app.route('/inscricao-atividades')
 @login_required
 def inscricao_atividades():
-    minicursos = db.session.query(Atividade).filter_by(tipo=Atividades.MINICURSO.value)
-    workshops = db.session.query(Atividade).filter_by(tipo=Atividades.WORKSHOP.value)
-    palestras = db.session.query(Atividade).filter_by(tipo=Atividades.PALESTRA.value)
+    minicursos = db.session.query(Atividade).filter_by(
+        tipo=Atividades.MINICURSO.value)
+    workshops = db.session.query(Atividade).filter_by(
+        tipo=Atividades.WORKSHOP.value)
+    palestras = db.session.query(Atividade).filter_by(
+        tipo=Atividades.PALESTRA.value)
     return render_template('inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
                                usuario=current_user).first(),
@@ -250,11 +257,11 @@ def inscricao_atividades():
 @login_required
 def inscricao_atividades_com_filtro(filtro):
     minicursos = db.session.query(Atividade).filter(
-            Atividade.tipo.like(Atividades.MINICURSO.value), Atividade.titulo.like("%" + filtro + "%"))
+        Atividade.tipo.like(Atividades.MINICURSO.value), Atividade.titulo.like("%" + filtro + "%"))
     workshops = db.session.query(Atividade).filter(
-            Atividade.tipo.like(Atividades.WORKSHOP.value), Atividade.titulo.like("%" + filtro + "%"))
+        Atividade.tipo.like(Atividades.WORKSHOP.value), Atividade.titulo.like("%" + filtro + "%"))
     palestras = db.session.query(Atividade).filter(
-            Atividade.tipo.like(Atividades.PALESTRA.value), Atividade.titulo.like("%" + filtro + "%"))
+        Atividade.tipo.like(Atividades.PALESTRA.value), Atividade.titulo.like("%" + filtro + "%"))
 
     return render_template('inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
@@ -272,9 +279,12 @@ def inscrever(id):
         atv.vagas_disponiveis = atv.vagas_disponiveis - 1
         db.session.flush()
         db.session.commit()
-        minicursos = db.session.query(Atividade).filter_by(tipo=Atividades.MINICURSO.value)
-        workshops = db.session.query(Atividade).filter_by(tipo=Atividades.WORKSHOP.value)
-        palestras = db.session.query(Atividade).filter_by(tipo=Atividades.PALESTRA.value)
+        minicursos = db.session.query(Atividade).filter_by(
+            tipo=Atividades.MINICURSO.value)
+        workshops = db.session.query(Atividade).filter_by(
+            tipo=Atividades.WORKSHOP.value)
+        palestras = db.session.query(Atividade).filter_by(
+            tipo=Atividades.PALESTRA.value)
 
         return render_template('inscricao_atividades.html',
                                participante=db.session.query(Participante).filter_by(
@@ -287,7 +297,7 @@ def inscrever(id):
 
 
 @app.route('/desinscrever-atividade/<id>')
-@login_required   
+@login_required
 def desinscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
@@ -296,9 +306,12 @@ def desinscrever(id):
         atv.vagas_disponiveis = atv.vagas_disponiveis + 1
         db.session.flush()
         db.session.commit()
-        minicursos = db.session.query(Atividade).filter_by(tipo=Atividades.MINICURSO.value)
-        workshops = db.session.query(Atividade).filter_by(tipo=Atividades.WORKSHOP.value)
-        palestras = db.session.query(Atividade).filter_by(tipo=Atividades.PALESTRA.value)
+        minicursos = db.session.query(Atividade).filter_by(
+            tipo=Atividades.MINICURSO.value)
+        workshops = db.session.query(Atividade).filter_by(
+            tipo=Atividades.WORKSHOP.value)
+        palestras = db.session.query(Atividade).filter_by(
+            tipo=Atividades.PALESTRA.value)
         return render_template('inscricao_atividades.html',
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),
@@ -314,8 +327,10 @@ def alterar_senha():
     form = AlterarSenhaForm(request.form)
     if email_confirmado() == True:
         if form.validate_on_submit():
-            usuario = db.session.query(Usuario).filter_by(email=current_user.email).first()
-            hash = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+            usuario = db.session.query(Usuario).filter_by(
+                email=current_user.email).first()
+            hash = pbkdf2_sha256.encrypt(
+                form.nova_senha.data, rounds=10000, salt_size=15)
             usuario.senha = hash
             db.session.add(usuario)
             db.session.commit()
@@ -330,7 +345,8 @@ def alterar_senha():
 def esqueci_senha():
     form = AlterarSenhaPorEmailForm(request.form)
     if form.validate_on_submit():
-        usuario = db.session.query(Usuario).filter_by(email=form.email.data).first()
+        usuario = db.session.query(Usuario).filter_by(
+            email=form.email.data).first()
         serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
         salt = gensalt().decode('utf-8')
         token = serializer.dumps(usuario.email, salt=salt)
@@ -349,12 +365,14 @@ def confirmar_alteracao_senha(token):
     if form.validate_on_submit():
         serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
         try:
-            #Acha o usuário que possui o token
-            usuario = db.session.query(Usuario).filter_by(token_alteracao_senha = token).first()
+            # Acha o usuário que possui o token
+            usuario = db.session.query(Usuario).filter_by(
+                token_alteracao_senha=token).first()
             salt = usuario.salt_alteracao_senha
-            #Gera um email a partir do token do link e do salt do db
+            # Gera um email a partir do token do link e do salt do db
             email = serializer.loads(token, salt=salt, max_age=3600)
-            hash = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+            hash = pbkdf2_sha256.encrypt(
+                form.nova_senha.data, rounds=10000, salt_size=15)
             usuario.senha = hash
             db.session.add(usuario)
             db.session.commit()
