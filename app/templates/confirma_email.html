@@ -1,1 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
 <p>{{ resultado }}</p>
+{% if status == True: %}
+<button onclick="location.href='dashboard-usuario'">Continuar</button>
+{% endif %}
+{% endblock %}

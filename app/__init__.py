@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect
 from flask_bootstrap import Bootstrap
 from flask_script import Server, Manager, prompt_bool
 from flask_migrate import Migrate, MigrateCommand
@@ -11,7 +11,7 @@ configs = {
     'default': '../config/default.py'
 }
 
-config_name = os.getenv('FLASK_CONFIGURATION', 'default')
+config_name = os.getenv('FLASK_CONFIGURATION', 'development')
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -27,6 +27,10 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def user_loader(user_id):
     return db.session.query(Usuario).filter_by(id = user_id).first()
+
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return redirect('/login')
 
 from app.controllers import routes, admin
 
