@@ -1,28 +1,50 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
 from datetime import datetime
 from enum import Enum
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
+
 from app import app
 
 db = SQLAlchemy(app)
+
+relacao_atividade_participante = db.Table('relacao_atividade_participante',
+Column('id', Integer, primary_key=True),
+Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+Column('id_participante', Integer, db.ForeignKey('participante.id')))
+
+relacao_atividade_ministrante = db.Table('relacao_atividade_ministrante',
+Column('id', Integer, primary_key=True),
+Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
+
+relacao_patrocinador_evento = db.Table('relacao_patrocinador_evento',
+Column('id', Integer, primary_key=True),
+Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')),
+Column('id_evento', Integer, db.ForeignKey('evento.id')))
 
 class Permissao(Enum):
     USUARIO = 0
     ADMIN = 1
     SUPER_ADMIN = 2
 
+class Atividades(Enum):
+    MINICURSO = 0
+    WORKSHOP = 1
+    PALESTRA = 2
 
 class Usuario(db.Model):
-    __tablename__ = 'usuarios'
+    __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True)
+    participantes = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
     primeiro_nome = Column(String(64), nullable=False)
     sobrenome = Column(String(64), nullable=False)
-    curso = Column(String(64), nullable=False)
-    cidade = Column(String(64), nullable=False)
-    instituicao = Column(String(64), nullable=False)
-    data_nascimento = Column(DateTime, nullable=False)
+    id_curso = Column(Integer, db.ForeignKey('curso.id'), nullable=False)
+    id_cidade = Column(Integer, db.ForeignKey('cidade.id'), nullable=False)
+    id_instituicao = Column(Integer, db.ForeignKey('instituicao.id'), nullable=False)
+    token_email = Column(String(90), nullable=False)
+    data_nascimento = Column(Date, nullable=False)
     permissao = Column(Integer, nullable=False)
     autenticado = Column(Boolean, default=False)
     token_email = Column(String(90), nullable=False)
@@ -31,6 +53,8 @@ class Usuario(db.Model):
     data_cadastro = Column(DateTime, nullable=False)
     participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
     salt = Column(String(30), nullable=False)
+    token_alteracao_senha = Column(String(90), nullable=True)
+    salt_alteracao_senha = Column(String(30), nullable=True)
 
     def is_active(self):
         return True
@@ -43,23 +67,26 @@ class Usuario(db.Model):
 
     def is_anonymous(self):
         return False
-    
+
 
 class Participante(db.Model):
-    __tablename__ = 'participantes'
-    id = Column(Integer, db.ForeignKey(Usuario.id), primary_key=True)
-    edicao = Column(Integer, nullable=False)
+    __tablename__ = 'participante'
+    id = Column(Integer, primary_key=True)
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=False)
+    id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     pacote = Column(Boolean, nullable=False)
     pagamento = Column(Boolean, nullable=False)
-    camiseta = Column(String(3))
+    id_camiseta = Column(Integer, db.ForeignKey('camiseta.id'), primary_key=False)
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
-    atividades = db.relationship('Atividade', secondary='participante_em_atividade', back_populates='inscritos', lazy=True)
-    usuario = db.relationship('Usuario', back_populates='participantes_associados')
+    opcao_coffee = Column(Integer, nullable=False)
+    presencas = db.relationship('Presenca', backref='participante')
+    atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
+    back_populates='participantes')
 
 
 class Ministrante(db.Model):
-    __tablename__ = "ministrantes"
+    __tablename__ = 'ministrante'
     id = Column(Integer, primary_key=True)
     pagar_gastos = Column(Boolean, nullable=False)
     data_chegada_sanca = Column(Date, nullable=False)
@@ -78,17 +105,14 @@ class Ministrante(db.Model):
     twitter = Column(String(64))
     linkedin = Column(String(64))
     github = Column(String(64))
-    atividade = db.relationship('Atividade', back_populates='ministrante')
-
-
-participante_em_atividade = db.Table('participante_em_atividade', 
-    Column('id_atividade', Integer, db.ForeignKey('atividades.id'), primary_key=True),
-    Column('id_participante', Integer, db.ForeignKey('participantes.id'), primary_key=True))
-
+    atividades = db.relationship('Atividade', secondary=relacao_atividade_ministrante, lazy=True,
+    back_populates='ministrantes')
 
 class Atividade(db.Model):
-    __tablename__ = 'atividades'
-    id = Column(Integer, db.ForeignKey(Ministrante.id), primary_key=True)
+    __tablename__ = 'atividade'
+    id = Column(Integer, primary_key=True)
+    id_ministrante = Column(Integer, db.ForeignKey('ministrante.id'))
+    id_evento = Column(Integer, db.ForeignKey('evento.id'))
     vagas_totais = Column(Integer, nullable=False)
     vagas_disponiveis = Column(Integer, nullable=False)
     pre_requisitos = Column(String(512), nullable=False)
@@ -101,8 +125,106 @@ class Atividade(db.Model):
     descricao = Column(String(1024), nullable=False)
     recursos_necessarios = Column(String(512), nullable=False)
     observacoes = Column(String(512), nullable=False)
-    ministrante = db.relationship('Ministrante', back_populates='atividade', lazy=True)
-    inscritos = db.relationship('Participante', secondary='participante_em_atividade', 
-	lazy='subquery', back_populates='atividades')
+    ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
+    back_populates='atividades')
 
+    participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
+    back_populates='atividades')
 
+    presencas = db.relationship('Presenca', backref='atividade')
+
+class Evento(db.Model):
+    __tablename__ = 'evento'
+    id = Column(Integer, primary_key=True)
+    edicao = Column(Integer, nullable=False)
+    data_hora_inicio = Column(DateTime, nullable=False)
+    data_hora_fim = Column(DateTime, nullable=False)
+    inicio_inscricoes_evento = Column(DateTime, nullable=False)
+    fim_inscricoes_evento = Column(DateTime, nullable=False)
+    ano = Column(Integer, nullable=False)
+    participantes = db.relationship('Participante', backref='evento', lazy=True)
+    presencas = db.relationship('Presenca', backref='evento', lazy=True)
+    atividades = db.relationship('Atividade', backref='evento', lazy=True)
+    membros_equipe = db.relationship('MembroDeEquipe', backref='evento', lazy=True)
+    patrocinadores = db.relationship('Patrocinador', secondary=relacao_patrocinador_evento, lazy=True,
+    back_populates='eventos')
+    camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
+
+class Presenca(db.Model):
+    __tablename__ = 'presenca'
+    id = Column(Integer, primary_key=True)
+    data_hora_registro = Column(DateTime, nullable=False)
+    id_atividade = Column(Integer, db.ForeignKey('atividade.id'), nullable=False)
+    id_participante = Column(Integer, db.ForeignKey('participante.id'), nullable=False)
+    id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
+    inscrito = Column(Boolean, nullable=False)
+
+class MembroDeEquipe(db.Model):
+    __tablename__ = 'membro_de_equipe'
+    id = Column(Integer, primary_key=True)
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), nullable=False)
+    foto = Column(String(100), nullable=True)
+    email_secomp = Column(String(254), nullable=True)
+    id_cargo = Column(Integer, db.ForeignKey('cargo.id'), nullable=False)
+    id_diretoria = Column(Integer, db.ForeignKey('diretoria.id'), nullable=False)
+    id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
+
+class Cargo(db.Model):
+    __tablename__ = 'cargo'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+    membros = db.relationship('MembroDeEquipe', backref='cargo', lazy=True)
+
+class Diretoria(db.Model):
+    __tablename__ = 'diretoria'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+    ordem = Column(Integer, nullable=False)
+    membros = db.relationship('MembroDeEquipe', backref='diretoria', lazy=True)
+
+class Patrocinador(db.Model):
+    __tablename__ = 'patrocinador'
+    id = Column(Integer, primary_key=True)
+    nome_empresa = Column(String(100), nullable=False)
+    logo = Column(String(100), nullable=False)
+    ativo_site = Column(Boolean, nullable=False)
+    id_cota = Column(Integer, db.ForeignKey('cota_patrocinio.id'), nullable=False)
+    ordem_site = Column(Integer, primary_key=True)
+    link_website = Column(String(200), nullable=True)
+    ultima_atualizacao_em = Column(DateTime, nullable=False)
+    eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
+    back_populates='patrocinadores')
+
+class CotaPatrocinio(db.Model):
+    __tablename__ = 'cota_patrocinio'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(50), nullable=False)
+    patrocinadores = db.relationship('Patrocinador', backref='cota_patrocinio', lazy=True)
+
+class Curso(db.Model):
+    __tablename__ = 'curso'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+    usuarios = db.relationship('Usuario', backref='curso', lazy=True)
+
+class Instituicao(db.Model):
+    __tablename__ = 'instituicao'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+    usuarios = db.relationship('Usuario', backref='instituicao', lazy=True)
+
+class Cidade(db.Model):
+    __tablename__ = 'cidade'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+    usuarios = db.relationship('Usuario', backref='cidade', lazy=True)
+
+class Camiseta(db.Model):
+    __tablename__ = 'camiseta'
+    id = Column(Integer, primary_key=True)
+    id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
+    participantes = db.relationship('Participante', backref='camiseta', lazy=True)
+    tamanho = Column(String(30), nullable=False)
+    quantidade = Column(Integer, nullable=False)
+    ordem_site = Column(Integer, nullable=False)
+    quantidade_restante = Column(Integer, nullable=False)
