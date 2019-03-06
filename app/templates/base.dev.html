@@ -29,7 +29,6 @@
 {% block body %}
 {% block navbar %}
 <header>
-    <div class="container">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary">
 	    {# Marca d'água para a home  #}
 	    <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
@@ -85,7 +84,6 @@
 		{% endif %}
 	    </div>
 	</nav>
-    </div>
 </header>
 {% endblock %}
 
@@ -94,7 +92,7 @@
 
 {# Rascunho de rodapé #}
 {% block footer %}
-<footer class="page-footer font-small secondary pt-4">
+<footer class="page-footer font-small bg-dark pt-4 text-white">
     <div class="container">
 		<div class="col-md-6 mx-auto align-self-center">
 			{# Expandir variável secomp com nome dos membros #}
