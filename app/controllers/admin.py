@@ -1,5 +1,5 @@
 import os.path as op
-from flask import url_for, redirect
+from flask import url_for, redirect, render_template
 from flask_login import current_user
 from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.form import SecureForm
@@ -13,6 +13,7 @@ class AppIndexView(AdminIndexView):
     @expose('/')
     def index(self):
         if current_user.is_authenticated and current_user.permissao > Permissao.USUARIO.value:
+            self._template_args['usuario'] = current_user
             return super(AppIndexView, self).index()
         return redirect(url_for('index'))
 
@@ -29,15 +30,13 @@ class AppModelView(ModelView):
         return redirect(url_for('index'))
 
 
-
-def init_admin(app):
-    path = op.join(op.dirname(__file__), 'static')
-
-    admin = Admin(app, index_view=AppIndexView(), template_mode='bootstrap4')
+def init_admin(app, path):
+    admin = Admin(app, index_view=AppIndexView(),
+                  base_template='admin/base.html', template_mode='bootstrap3')
     admin.add_view(AppModelView(Usuario, db.session))
     admin.add_view(AppModelView(Participante, db.session))
     admin.add_view(AppModelView(Ministrante, db.session))
     admin.add_view(AppModelView(Atividade, db.session))
     admin.add_view(AppModelView(Camiseta, db.session))
-    admin.add_view(FileAdmin(path, '/static/' name='Static Files'))
+    admin.add_view(FileAdmin(path, '/static/', name='Arquivos Estáticos'))
     return admin
