@@ -1,7 +1,10 @@
+import os.path as op
 from flask import url_for, redirect
-from flask_admin import Admin, AdminIndexView, expose
-from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
+from flask_admin import Admin, AdminIndexView, expose
+from flask_admin.form import SecureForm
+from flask_admin.contrib.sqla import ModelView
+from flask_admin.contrib.fileadmin import FileAdmin
 
 from app.models.models import *
 
@@ -15,18 +18,26 @@ class AppIndexView(AdminIndexView):
 
 
 class AppModelView(ModelView):
+    form_base_class = SecureForm
     can_view_details = True
     column_exclude_list = ['senha', 'token_email', ]
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.permissao > Permissao.USUARIO.value
 
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('index'))
+
+
 
 def init_admin(app):
-    admin = Admin(app, index_view=AppIndexView(), template_mode='bootstrap3')
+    path = op.join(op.dirname(__file__), 'static')
+
+    admin = Admin(app, index_view=AppIndexView(), template_mode='bootstrap4')
     admin.add_view(AppModelView(Usuario, db.session))
     admin.add_view(AppModelView(Participante, db.session))
     admin.add_view(AppModelView(Ministrante, db.session))
     admin.add_view(AppModelView(Atividade, db.session))
     admin.add_view(AppModelView(Camiseta, db.session))
+    admin.add_view(FileAdmin(path, '/static/' name='Static Files'))
     return admin

@@ -68,6 +68,12 @@ class Usuario(db.Model):
     def is_anonymous(self):
         return False
 
+    def __str__(self):
+        return "{} {}".format(self.primeiro_nome, self.sobrenome)
+
+    def __repr__(self):
+        return "{} {} <{}>".format(self.primeiro_nome, self.sobrenome, self.email)
+
 
 class Participante(db.Model):
     __tablename__ = 'participante'
