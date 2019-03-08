@@ -18,7 +18,7 @@ MAIL_PASSWORD = ''
 FLASK_ADMIN_SWATCH = 'darkly'
 
 # SQL ALCHEMY
-SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/db'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/db'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 #GOOGLE RECAPTCHA
