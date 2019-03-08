@@ -204,9 +204,10 @@ def envio_comprovante():
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
         filename = '{}_{}_{}'.format(
-                current_user.primeiro_nome, current_user.sobrenome, filename)
+            current_user.primeiro_nome, current_user.sobrenome, filename)
         comprovante.save(os.path.join(
-            app.config['UPLOAD_FOLDER'], 'comprovantes', filename)
+            app.config['UPLOAD_FOLDER'], 'comprovantes', filename))
+        flash('Comprovante enviado com sucesso!')
         return redirect(url_for('dashboard-usuario'))
     return render_template('enviar_comprovante.html', form=form)
 
@@ -353,6 +354,7 @@ def alterar_senha():
         else:
             return render_template('alterar_senha.html', form=form, action=request.base_url)
     else:
+        flash('Confirme seu e-mail para alterar a senha!')
         return redirect(url_for('dashboard_usuario'))
 
 
