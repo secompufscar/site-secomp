@@ -16,15 +16,14 @@ def enviarEmailConfirmacao(app, email, token):
                    sender=app.config['MAIL_USERNAME'], recipients=[email])
     # Str com o link da verificação + tokmethods=['POST', 'GET']
     link = url_for('verificacao', token=token, _external=True)
-    msg.body = '{}'.format(link)
+    msg.body = f'{link}'
 
     try:
         mail.send(msg)  # Envia o email
     except Exception as e:  # Erros mais prováveis são devivo ao email_config, printa error em um arquivo
         try:
             log = open('logMailError.txt', 'a+')
-            log.write('{} {} {}\n'.format(str(e), email,
-                                        strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
+            log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
             log.close()
         except:
             pass
@@ -32,17 +31,16 @@ def enviarEmailConfirmacao(app, email, token):
 
 def enviarEmailDM(app, nome, email, mensagem):
     mail = Mail(app)
-    msg = Message('Mensagem de {}'.format(
-        nome), sender=app.config['MAIL_USERNAME'], recipients=app.config['MAIL_DM'])
-    msg.body = '{}\nEmail: {}\n\n{}'.format(nome, email, mensagem)
+    msg = Message(f'Mensagem de {nome}', 
+            sender=app.config['MAIL_USERNAME'], recipients=app.config['MAIL_DM'])
+    msg.body = f'{nome}\nEmail: {email}\n\n{mensagem}'
 
     try:
         mail.send(msg)  # Envia o email
     except Exception as e:  # Erros mais prováveis são devivo ao email_config, printa error em um arquivo
         try:
             log = open('logMailError.txt', 'a+')
-            log.write('{} {} {} {} {}\n'.format(str(e), nome, email,
-                                                mensagem, strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
+            log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
             log.close()
         except:
             pass
@@ -58,15 +56,14 @@ def enviarEmailSenha(app, email, token):
                   sender=app.config['MAIL_USERNAME'], recipients=[email])
     # Str com o link da verificação + tokmethods=['POST', 'GET']
     link = url_for('confirmar_alteracao_senha', token=token, _external=True)
-    msg.body = '{}'.format(link)
+    msg.body = f'{link}'
 
     try:
         mail.send(msg)  # Envia o email
     except Exception as e:  # Erros mais prováveis são devivo ao email_config, printa error em um arquivo
         try:
             log = open('logMailError.txt', 'a+')
-            log.write('{} {} {}\n'.format(str(e), email,
-                                          strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
+            log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
             log.close()
         except:
             pass
@@ -147,8 +144,8 @@ def get_dicionario_usuario(usuario):
             "email": usuario.email,
             "curso": usuario.curso.nome,
             "instituicao": usuario.instituicao.nome,
-                "data_nasc": "{0}/{1}/{2}".format(data[2], data[1], data[0]),
-                "cidade": usuario.cidade.nome
+            "data_nasc": f"{data[2]}/{data[1]}/{data[0]}",
+            "cidade": usuario.cidade.nome,
         }
         return info
     except Exception as e:
