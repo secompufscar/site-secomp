@@ -72,10 +72,10 @@ class Usuario(db.Model):
         return False
 
     def __str__(self):
-        return "{} {}".format(self.primeiro_nome, self.sobrenome)
+        return f'{self.primeiro_nome} {self.sobrenome}'
 
     def __repr__(self):
-        return "{} {} <{}>".format(self.primeiro_nome, self.sobrenome, self.email)
+        return f'{self.primeiro_nome} {self.sobrenome} <{self.email}>'
 
 
 class Participante(db.Model):

@@ -199,12 +199,14 @@ def info_participante_evento(edicao):
 @app.route('/enviar-comprovante', methods=['POST', 'GET'])
 @login_required
 def envio_comprovante():
+    """
+    Página de envio de comprovantes de pagamento
+    """
     form = ComprovanteForm(request.form)
     if form.validate_on_submit():
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
-        filename = '{}_{}_{}'.format(
-            current_user.primeiro_nome, current_user.sobrenome, filename)
+        filename = f'{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
         comprovante.save(os.path.join(
             app.config['UPLOAD_FOLDER'], 'comprovantes', filename))
         flash('Comprovante enviado com sucesso!')

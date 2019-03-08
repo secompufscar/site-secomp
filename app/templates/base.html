@@ -23,10 +23,17 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 
-
-      {% block content %}
-                {% endblock %}
-
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+      {% endwith %}
+    
+      {% block content %}{% endblock %}
 
       <!-- bootstrap javascript -->
       <script src="{{url_for('static', filename='js/jquery-3.3.1.slim.min.js')}}"></script>
