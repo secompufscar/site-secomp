@@ -1,8 +1,11 @@
-from flask import render_template, request, redirect, abort, url_for
+import os.path
+
+from flask import render_template, request, redirect, url_for, abort, flash
 from flask_login import login_required, login_user, logout_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from bcrypt import gensalt
 from passlib.hash import pbkdf2_sha256
+from werkzeug import secure_filename
 
 from app.controllers.forms import *
 from app.controllers.functions import *
@@ -145,8 +148,6 @@ def dashboard_usuario():
                 usuario.id_instituicao = form.instituicao.data
                 usuario.id_cidade = form.cidade.data
                 if usuario.email != form.email.data:
-                    print(usuario.email)
-                    print(form.email.data)
                     serializer = URLSafeTimedSerializer(
                         app.config['SECRET_KEY'])
                     salt = gensalt().decode('utf-8')
@@ -171,7 +172,6 @@ def dashboard_usuario():
         form.instituicao.default = current_user.instituicao.id
         form.cidade.default = current_user.cidade.id
         form.process()
-        print(form.errors)
 
         return render_template('dashboard_usuario.html', eventos=get_dicionario_eventos_participante(request.base_url),
                                info_usuario=get_dicionario_usuario(current_user), form=form)
@@ -194,6 +194,22 @@ def dashboard_usuario():
 @login_required
 def info_participante_evento(edicao):
     return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
+
+
+@app.route('/enviar-comprovante', methods=['POST', 'GET'])
+@login_required
+def envio_comprovante():
+    form = ComprovanteForm(request.form)
+    if form.validate_on_submit():
+        comprovante = form.comprovante.data
+        filename = secure_filename(comprovante.filename)
+        filename = '{}_{}_{}'.format(
+                current_user.primeiro_nome, current_user.sobrenome, filename)
+        comprovante.save(os.path.join(
+            app.config['UPLOAD_FOLDER'], 'comprovantes', filename)
+        flash('Comprovante enviado com sucesso!')
+        return redirect(url_for('dashboard-usuario'))
+    return render_template('enviar_comprovante.html', form=form)
 
 
 @app.route('/verificacao/<token>')
@@ -329,15 +345,16 @@ def alterar_senha():
         if form.validate_on_submit():
             usuario = db.session.query(Usuario).filter_by(
                 email=current_user.email).first()
-            hash = pbkdf2_sha256.encrypt(
+            enc = pbkdf2_sha256.encrypt(
                 form.nova_senha.data, rounds=10000, salt_size=15)
-            usuario.senha = hash
+            usuario.senha = enc
             db.session.add(usuario)
             db.session.commit()
             return redirect(url_for('login'))
         else:
             return render_template('alterar_senha.html', form=form, action=request.base_url)
     else:
+        flash('Confirme seu e-mail para alterar a senha!')
         return redirect(url_for('dashboard_usuario'))
 
 
