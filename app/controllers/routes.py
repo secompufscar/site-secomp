@@ -1,6 +1,6 @@
 import os.path
 
-from flask import render_template, request, redirect, url_for, abort, flash
+from flask import render_template, request, redirect, url_for, abort
 from flask_login import login_required, login_user, logout_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from bcrypt import gensalt
@@ -207,7 +207,6 @@ def envio_comprovante():
                 current_user.primeiro_nome, current_user.sobrenome, filename)
         comprovante.save(os.path.join(
             app.config['UPLOAD_FOLDER'], 'comprovantes', filename)
-        flash('Comprovante enviado com sucesso!')
         return redirect(url_for('dashboard-usuario'))
     return render_template('enviar_comprovante.html', form=form)
 
@@ -354,7 +353,6 @@ def alterar_senha():
         else:
             return render_template('alterar_senha.html', form=form, action=request.base_url)
     else:
-        flash('Confirme seu e-mail para alterar a senha!')
         return redirect(url_for('dashboard_usuario'))
 
 
