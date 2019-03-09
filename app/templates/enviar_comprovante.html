@@ -1,13 +1,13 @@
-{% extends base.html %}
-{% import wtf.html as wtf %}
+{% extends 'base.html' %}
+{% import 'wtf.html' as wtf %}
 
 {% block content %}
     <div>
-        <form method="POST" action="/enviar-comprovante">
+        <form method='POST' action='/enviar-comprovante'>
           {{ form.hidden_tag() }}
           {{ wtf.form_field(form.comprovante) }}
 
-          <button type="submit" class="btn btn-primary">Enviar</button>
+          <button type='submit' class='btn btn-primary'>Enviar</button>
         </form>
     </div>
 {% endblock %}
