@@ -25,7 +25,7 @@ class AppModelView(ModelView):
     @staticmethod
     def is_accessible(self):
         return current_user.is_authenticated and current_user.permissao > Permissao.USUARIO.value
-    
+ 
     @staticmethod
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('index'))
