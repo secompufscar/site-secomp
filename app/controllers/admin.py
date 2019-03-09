@@ -22,6 +22,7 @@ class AppModelView(ModelView):
     can_view_details = True
     column_exclude_list = ['senha', 'token_email', ]
 
+    @staticmethod
     def is_accessible(self):
         return current_user.is_authenticated and current_user.permissao > Permissao.USUARIO.value
     
