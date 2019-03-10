@@ -40,7 +40,7 @@
 		<div class="collapse mr-auto navbar-collapse" id="navbarItens">
 		    {# TODO colocar uma lógica Jinja para active...? #}
 		    {# TODO colocar uma lógica Jinja para usuário logado? #}
-		    <ul class="navbar-nav">
+		    <ul class="navbar-nav mr-auto">
 			<li class="nav-item">
 			    <a class="nav-link" href="{{ url_for('index') }}">HOME</a>
 			</li>
@@ -74,7 +74,7 @@
 
 		    {# TODO: Corrigir o espaçamento #}
 		    <!-- Lado direito da Navbar -->
-		    <div class="navbar-nav offset-md-6">
+		    <div class="navbar-nav">
 			{# TODO: criar lógica baseada no bd #}
 			{% if current_user.is_authenticated %}
 			    <a class="nav-item nav-link" href="#">Participante</a>
