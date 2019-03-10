@@ -1,5 +1,7 @@
-{% extends "base.html" %}
+{% extends "base.dev.html" %}
 {% import "wtf.html" as wtf %}
+
+{% block navbar %}{% endblock %}
 
 {% block content %}
 <style>
@@ -19,3 +21,5 @@
 </form><br>
 <a href="esqueci-senha">Esqueci minha senha</a>
 {% endblock %}
+
+{% block footer %}{% endblock %}

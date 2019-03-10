@@ -1,7 +1,6 @@
-{# TODO #}
-{# Corrigir o footer #}
 {# Base.html #}
 {% extends "bootstrap/base.html" %}
+{# TODO: navbar ajeitar a maneira collapsed da navbar #}
 
 {% block html_attribs %} lang="pt-br" {% endblock %}
 {% block head %}
@@ -30,68 +29,71 @@
 {% block body %}
 {% block navbar %}
 <header>
-    <div class="container">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary">
-	    {# Marca d'água para a home  #}
-	    <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
-	    {# TODO mudar o aria #}
-	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse mr-auto navbar-collapse" id="navbarItens">
-		{# TODO colocar uma lógica Jinja para active...? #}
-		{# TODO colocar uma lógica Jinja para usuário logado? #}
-		<ul class="navbar-nav">
-		    <li class="nav-item">
-			<a class="nav-link" href="{{ url_for('index') }}">HOME</a>
-		    </li>
-		    <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
-			    Secomp
-			</a>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#">Sobre o Evento</a>
-			    <a class="dropdown-item" href="#">Equipe</a>
-			    {# Colocar como um link separado? #}
-			    <a class="dropdown-item" href="#">Contato</a>
-			    <a class="dropdown-item" href="#">Gameficação</a>
-			</div>
-		    </li>
-		    <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
-			    Eventos
-			</a>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#">Cronograma</a>
-			    <a class="dropdown-item" href="#">CTF</a>
-			    <a class="dropdown-item" href="#">Churrasco</a>
-			</div>
-		    </li>
-		    <li class="nav-item">
-			<a class="nav-link" href="#">FAQ</a>
-		    </li>
-		    {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
-		</ul>
-	    </div>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary fixed-top ">
+	    <div class="container">
+		{# Marca d'água para a home  #}
+		<a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
+		{# TODO mudar o aria #}
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse mr-auto navbar-collapse" id="navbarItens">
+		    {# TODO colocar uma lógica Jinja para active...? #}
+		    {# TODO colocar uma lógica Jinja para usuário logado? #}
+		    <ul class="navbar-nav">
+			<li class="nav-item">
+			    <a class="nav-link" href="{{ url_for('index') }}">HOME</a>
+			</li>
+			<li class="nav-item dropdown">
+			    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
+				Secomp
+			    </a>
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<a class="dropdown-item" href="#">Sobre o Evento</a>
+				<a class="dropdown-item" href="#">Equipe</a>
+				{# Colocar como um link separado? #}
+				<a class="dropdown-item" href="#">Contato</a>
+				<a class="dropdown-item" href="#">Gameficação</a>
+			    </div>
+			</li>
+			<li class="nav-item dropdown">
+			    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
+				Eventos
+			    </a>
+			    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<a class="dropdown-item" href="#">Cronograma</a>
+				<a class="dropdown-item" href="#">CTF</a>
+				<a class="dropdown-item" href="#">Churrasco</a>
+			    </div>
+			</li>
+			<li class="nav-item">
+			    <a class="nav-link" href="#">FAQ</a>
+			</li>
+			{# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
+		    </ul>
 
-	    <!-- Lado direito da Navbar -->
-	    <div class="navbar-nav">
-		{# TODO: criar lógica baseada no bd #}
-		{% if current_user.is_authenticated %}
-		    <a class="nav-item nav-link" href="#">Participante</a>
-		    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Sair</a>
-		{% else %}
-		<a class="nav-item nav-link" href="{{ url_for('login') }}">Entrar</a>
-		    <a class="nav-item nav-link" href="{{ url_for('cadastro') }}">Inscrever</a>
-		{% endif %}
+		    <!-- Lado direito da Navbar -->
+		    <div class="navbar-nav offset-md-7">
+			{# TODO: criar lógica baseada no bd #}
+			{% if current_user.is_authenticated %}
+			    <a class="nav-item nav-link" href="#">Participante</a>
+			    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Sair</a>
+			{% else %}
+			<a class="nav-item nav-link" href="{{ url_for('login') }}">Entrar</a>
+			    <a class="nav-item nav-link" href="{{ url_for('cadastro') }}">Inscrever</a>
+			{% endif %}
+		    </div>
+		</div>
 	    </div>
 	</nav>
-    </div>
 </header>
 {% endblock %}
 
-{# Não retirar esse bloco, caso contrário o content para de funcionar #}
-{% block content %}{% endblock %}
+<main>
+    <div class="content">
+    {% block content %}{% endblock %}
+    </div>
+</main>
 
 {# Rascunho de rodapé #}
 {% block footer %}
