@@ -1,6 +1,5 @@
-import os.path
-
-from flask import render_template, request, redirect, url_for, abort
+from os import path, makedirs
+from flask import render_template, request, redirect, url_for, abort, flash
 from flask_login import login_required, login_user, logout_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from bcrypt import gensalt
@@ -202,15 +201,17 @@ def envio_comprovante():
     """
     Página de envio de comprovantes de pagamento
     """
-    form = ComprovanteForm(request.form)
+    form = ComprovanteForm()
     if form.validate_on_submit():
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
         filename = f'{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
-        comprovante.save(os.path.join(
-            app.config['UPLOAD_FOLDER'], 'comprovantes', filename))
+        upload_path = path.join(app.config['UPLOAD_FOLDER'],'comprovantes')
+        if not path.exists(upload_path):
+            makedirs(upload_path)
+        comprovante.save(path.join(upload_path,filename))
         flash('Comprovante enviado com sucesso!')
-        return redirect(url_for('dashboard-usuario'))
+        return redirect(url_for('dashboard_usuario'))
     return render_template('enviar_comprovante.html', form=form)
 
 
