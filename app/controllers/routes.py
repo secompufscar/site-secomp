@@ -206,10 +206,10 @@ def envio_comprovante():
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
         filename = f'{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
-        upload_path = path.join(app.config['UPLOAD_FOLDER'],'comprovantes')
+        upload_path = path.join(app.config['UPLOAD_FOLDER'], 'comprovantes')
         if not path.exists(upload_path):
             makedirs(upload_path)
-        comprovante.save(path.join(upload_path,filename))
+        comprovante.save(path.join(upload_path, filename))
         flash('Comprovante enviado com sucesso!')
         return redirect(url_for('dashboard_usuario'))
     return render_template('enviar_comprovante.html', form=form)
