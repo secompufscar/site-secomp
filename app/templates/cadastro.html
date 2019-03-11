@@ -1,5 +1,7 @@
-{% extends "base.html" %}
+{% extends "base.dev.html" %}
 {% import "wtf.html" as wtf %}
+
+{% block navbar %}{% endblock %}
 
 {% block content %}
   <script>
@@ -26,25 +28,27 @@
         padding:50px;
       }
   </style>
-    <div>
+    <div class="container">
         <form method="POST" action="/cadastro">
-          {{ form.hidden_tag() }}
-          {{ wtf.form_field(form.primeiro_nome) }}
-          {{ wtf.form_field(form.sobrenome) }}
-          {{ wtf.form_field(form.email) }}
-          {{ wtf.form_field(form.senha) }}
-          {{ wtf.form_field(form.confirmacao) }}
-          {{ wtf.form_field(form.curso) }}
-          {{ wtf.form_field(form.instituicao) }}
-          {{ wtf.form_field(form.cidade) }}
-          {{ wtf.form_field(form.data_nasc) }}
-          {{ form.recaptcha }}
+	    <div class="col-6 mx-auto">
+	      {{ form.hidden_tag() }}
+	      {{ wtf.form_field(form.primeiro_nome) }}
+	      {{ wtf.form_field(form.sobrenome) }}
+	      {{ wtf.form_field(form.email) }}
+	      {{ wtf.form_field(form.senha) }}
+	      {{ wtf.form_field(form.confirmacao) }}
+	      {{ wtf.form_field(form.curso) }}
+	      {{ wtf.form_field(form.instituicao) }}
+	      {{ wtf.form_field(form.cidade) }}
+	      {{ wtf.form_field(form.data_nasc) }}
+	      {{ form.recaptcha }}
 
-          {% for error in form.recaptcha.errors %}
-            <span class="help-block">{{ error }}</span>
-          {% endfor %}
+	      {% for error in form.recaptcha.errors %}
+		<span class="help-block">{{ error }}</span>
+	      {% endfor %}
 
-          <button type="submit" class="btn btn-primary">Cadastrar</button>
+	      <button type="submit" class="btn btn-primary">Cadastrar</button>
+	    </div>
         </form>
     </div>
     <script>
@@ -53,3 +57,5 @@
     });
     </script>
 {% endblock %}
+
+{% block footer %}{% endblock %}
