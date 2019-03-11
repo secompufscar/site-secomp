@@ -87,7 +87,8 @@ class ContatoForm(FlaskForm):
 
 class ComprovanteForm(FlaskForm):
     comprovante = FileField('Comprovante de Pagamento', validators=[
-        FileRequired(message=ERRO_INPUT_REQUIRED),
-        FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)])
+            FileRequired(message=ERRO_INPUT_REQUIRED),
+            FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
+        ])
 
 

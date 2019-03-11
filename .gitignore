@@ -123,4 +123,5 @@ migrations/
 app.db
 
 config/development.py
+uploads/
 ssl/
