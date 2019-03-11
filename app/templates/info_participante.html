@@ -1,5 +1,7 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.dev.html" %}
+
+{% block styles %}
+{{ super() }}
 <style>
   body{
     padding:50px;
@@ -24,37 +26,51 @@
 
 }
 </style>
+{% endblock %}
+
+{% block navbar %}
 <h2>{{info_evento.titulo}}</h2>
 <nav class="navbar navbar-expand-lg">
   <a class="navbar-brand" id="menu_inscricao" href="#">Minha Inscrição</a>
   <a class="navbar-brand" id="menu_kit" href="#">Kit</a>
   <a class="navbar-brand" id="menu_gameficacao" href="#">Gameficação</a>
 </nav><br>
-  <div id="conteudo">
-  </div>
-  <div id="info-inscricao">ID: 4jn33n2uo32nkmjlfekef<br>
-    QR CODE: <br>
-    realizada_em: {{ info_evento.data_inscricao }} <br>
-    Presenças:
-    {% for atividade in info_evento.atividades %}
-        {{ atividade }},
-    {% endfor %}
-  </div>
-  <div id="info-kit">
-    Pago:
-    {% if info_evento.kit_pago == True: %}
-      Sim
-    {% else: %}
-      Não
-    {% endif %}
-    <br>
-    Camiseta: {{ info_evento.camiseta }} <br>
-    Opção do Coffee: {{ info_evento.opcao_coffee }}
-  </div>
-  <div id="info-gameficacao">
-    Score: {{ info_evento.score_geral }}
-  </div>
+{% endblock %}
 
+{% block content %}
+<div class="container">
+    <div class="col-6 mx-auto">
+      <div id="conteudo">
+      </div>
+      <div id="info-inscricao">ID: 4jn33n2uo32nkmjlfekef<br>
+	QR CODE: <br>
+	realizada_em: {{ info_evento.data_inscricao }} <br>
+	Presenças:
+	{% for atividade in info_evento.atividades %}
+	    {{ atividade }},
+	{% endfor %}
+      </div>
+      <div id="info-kit">
+	Pago:
+	{% if info_evento.kit_pago == True: %}
+	  Sim
+	{% else: %}
+	  Não
+	{% endif %}
+	<br>
+	Camiseta: {{ info_evento.camiseta }} <br>
+	Opção do Coffee: {{ info_evento.opcao_coffee }}
+      </div>
+      <div id="info-gameficacao">
+	Score: {{ info_evento.score_geral }}
+      </div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+{{ super() }}
   <script>
   $('#conteudo').html($('#info-inscricao').html());
   $('#menu_inscricao').css("background-color", "black");
