@@ -5,11 +5,11 @@
 Usuario: {{usuario}}
 <!-- BS 3.3.7 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous">
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+ crossorigin="anonymous">
 </script>
 
 <br>
@@ -17,58 +17,58 @@ Usuario: {{usuario}}
 <div id="main" class="container-fluid" style="margin-top: 50px">
 
     <div id="top" class="row">
-        <div class="col-sm-3">
-            <h2>Camisetas</h2>
-        </div>
-        <div class="col-sm-6">
+	<div class="col-sm-3">
+	    <h2>Camisetas</h2>
+	</div>
+	<div class="col-sm-6">
 
-            <div class="input-group h2">
-                <input name="filtro" class="form-control" id="filtro" type="text" placeholder="Pesquisar modelo">
-                <span class="input-group-btn">
-                        <button id="buscar" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-				</span>
-            </div>
+	    <div class="input-group h2">
+		<input name="filtro" class="form-control" id="filtro" type="text" placeholder="Pesquisar modelo">
+		<span class="input-group-btn">
+		    <button id="buscar" class="btn btn-primary">
+			<span class="glyphicon glyphicon-search"></span>
+		    </button>
+		</span>
+	    </div>
 
-        </div>
-        <div class="col-sm-3">
-            <a href="/admin/camiseta/" class="btn btn-primary pull-right h2">Nova camiseta</a>
-        </div>
+	</div>
+	<div class="col-sm-3">
+	    <a href="/admin/camiseta/" class="btn btn-primary pull-right h2">Nova camiseta</a>
+	</div>
     </div>
 
 
     <hr/>
     <div id="list" class="row">
 
-        <div class="table-responsive col-md-12">
-            <table class="table table-striped" cellspacing="0" cellpadding="0">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tamanho</th>
-                    <th>Quantidade disponível</th>
-                    <th>Quantidade pedida</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for camiseta in camisetas %}
-                <tr>
-                    <td>{{camiseta.id}}</td>
-                    <td>{{camiseta.tamanho}}</td>
-                    <td>{{camiseta.quantidade_restante}}</td>
-                    <td>{{camiseta.quantidade}}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+	<div class="table-responsive col-md-12">
+	    <table class="table table-striped" cellspacing="0" cellpadding="0">
+		<thead>
+		    <tr>
+			<th>ID</th>
+			<th>Tamanho</th>
+			<th>Quantidade disponível</th>
+			<th>Quantidade pedida</th>
+		    </tr>
+		</thead>
+		<tbody>
+		    {% for camiseta in camisetas %}
+		    <tr>
+			<td>{{camiseta.id}}</td>
+			<td>{{camiseta.tamanho}}</td>
+			<td>{{camiseta.quantidade_restante}}</td>
+			<td>{{camiseta.quantidade}}</td>
+		    </tr>
+		    {% endfor %}
+		</tbody>
+	    </table>
+	</div>
     </div>
 </div>
 <script type="text/javascript">
     $("#buscar").click(function() {
-        var nome = $("#filtro").val();
-        $(location).attr('href', '/estoque-camisetas/'+nome);
+	var nome = $("#filtro").val();
+	$(location).attr('href', '/estoque-camisetas/'+nome);
     });
 
 </script>

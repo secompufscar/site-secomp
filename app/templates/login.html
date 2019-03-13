@@ -5,16 +5,16 @@
 
 {% block content %}
 <style>
-  body{
+body{
     padding:50px;
-  }
+}
 </style>
 <div class="container">
     <form action="/login" method="POST">
 	<div class="col-6 mx-auto">
-	  {{ form.hidden_tag() }}
-	  {{ wtf.form_field(form.email) }}
-	  {{ wtf.form_field(form.senha) }}
+	    {{ form.hidden_tag() }}
+	    {{ wtf.form_field(form.email) }}
+	    {{ wtf.form_field(form.senha) }}
 	    <div class="form-group row">
 		<div class="col-4">
 		    <button name="submit" type="submit" class="btn btn-primary">Login</button>
