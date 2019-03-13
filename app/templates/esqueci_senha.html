@@ -2,20 +2,20 @@
 {% import "wtf.html" as wtf %}
 {% block content %}
 <style>
-  body{
+body{
     padding:50px;
-  }
+}
 </style>
 {% if status_envio_email == False: %}
 <h2>Digite o email de sua conta</h2>
 <form action="/esqueci-senha" method="POST">
-  {{ form.hidden_tag() }}
-  {{ wtf.form_field(form.email) }}
-  {{ form.recaptcha }}
-  {% for error in form.recaptcha.errors %}
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.email) }}
+    {{ form.recaptcha }}
+    {% for error in form.recaptcha.errors %}
     <span class="help-block">{{ error }}</span>
-  {% endfor %}
-  <button type="submit">Enviar</button>
+    {% endfor %}
+    <button type="submit">Enviar</button>
 </form>
 {% else: %}
 <h2>Um email de confirmação foi enviado.</h2>

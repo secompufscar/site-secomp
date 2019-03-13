@@ -1,0 +1,5 @@
+#!/bin/bash
+# A small script to convert image in first argument to the second 
+# argument size
+
+convert $1 -resize $2 $1
