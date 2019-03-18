@@ -403,3 +403,22 @@ def estoque_camisetas_por_tamanho(tamanho):
         return render_template('controle_camisetas.html', camisetas=camisetas, usuario=current_user)
     else:
         abort(403)
+
+
+@app.route('/cadastro-patrocinio', methods=['POST', 'GET'])
+@login_required
+def cadastro_patrocinio():
+    form = PatrocinadorForm(request.form) 
+
+    if form.validate_on_submit():
+        patrocinador = Patrocinador(nome_empresa=form.nome_empresa.data,
+            logo=form.logo.data, ativo_site=form.ativo_site.data, id_cota=form.id_cota.data,
+            link_website=form.link_website.data,
+            ultima_atualizacao_em=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))	
+
+        db.session.add(patrocinador)
+            db.session.flush()
+            db.session.commit()
+        return redirect(url_for('cadastro-patrocinio'))
+    else:
+        return render_template('cadastro_patrocinio.html', form=form)

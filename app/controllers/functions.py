@@ -225,3 +225,19 @@ def get_dicionario_info_evento(edicao):
     except Exception as e:
         print(e)
         return None
+
+
+def get_opcoes_cotas_patrocinadores():
+    try:
+        cotas_data = db.session.query(CotaPatrocinio).filter_by().order_by(
+            CotaPatrocinio.nome).all()
+        cotas = []
+		
+        for cota in cotas_data:
+            info_cota = (cota.id, cota.nome)
+            cotas.append(info_cota)
+
+        return cotas
+    except Exception as e:
+        print(e)
+        return None

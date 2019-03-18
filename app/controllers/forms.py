@@ -83,4 +83,13 @@ class ContatoForm(FlaskForm):
     mensagem = StringField('Mensagem', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=500)])
 
-
+class PatrocinadorForm(FlaskForm):
+    nome_empresa = StringField('Nome', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
+    logo = StringField('Logo', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
+    ativo_site = BooleanField('Ativo', validators=[InputRequired()], id="ativo_site")
+    id_cota = SelectField('Cota', choices=get_opcoes_cotas_patrocinadores(), 
+        id="cota", default="0", coerce=int)
+    link_website = StringField('Site', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=200)])
