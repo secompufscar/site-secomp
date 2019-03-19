@@ -205,7 +205,7 @@ def envio_comprovante():
     if form.validate_on_submit():
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
-        filename = f'{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
+        filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
         upload_path = path.join(app.config['UPLOAD_FOLDER'], 'comprovantes')
         if not path.exists(upload_path):
             makedirs(upload_path)
