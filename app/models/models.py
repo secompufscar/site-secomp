@@ -22,15 +22,18 @@ Column('id', Integer, primary_key=True),
 Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')),
 Column('id_evento', Integer, db.ForeignKey('evento.id')))
 
+
 class Permissao(Enum):
     USUARIO = 0
     ADMIN = 1
     SUPER_ADMIN = 2
 
+
 class Atividades(Enum):
     MINICURSO = 0
     WORKSHOP = 1
     PALESTRA = 2
+
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
@@ -67,6 +70,12 @@ class Usuario(db.Model):
 
     def is_anonymous(self):
         return False
+
+    def __str__(self):
+        return f'{self.primeiro_nome} {self.sobrenome}'
+
+    def __repr__(self):
+        return f'{self.primeiro_nome} {self.sobrenome} <{self.email}>'
 
 
 class Participante(db.Model):
@@ -108,6 +117,7 @@ class Ministrante(db.Model):
     atividades = db.relationship('Atividade', secondary=relacao_atividade_ministrante, lazy=True,
     back_populates='ministrantes')
 
+
 class Atividade(db.Model):
     __tablename__ = 'atividade'
     id = Column(Integer, primary_key=True)
@@ -127,11 +137,10 @@ class Atividade(db.Model):
     observacoes = Column(String(512), nullable=False)
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
     back_populates='atividades')
-
     participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
     back_populates='atividades')
-
     presencas = db.relationship('Presenca', backref='atividade')
+
 
 class Evento(db.Model):
     __tablename__ = 'evento'
@@ -150,6 +159,7 @@ class Evento(db.Model):
     back_populates='eventos')
     camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
 
+
 class Presenca(db.Model):
     __tablename__ = 'presenca'
     id = Column(Integer, primary_key=True)
@@ -158,6 +168,7 @@ class Presenca(db.Model):
     id_participante = Column(Integer, db.ForeignKey('participante.id'), nullable=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     inscrito = Column(Boolean, nullable=False)
+
 
 class MembroDeEquipe(db.Model):
     __tablename__ = 'membro_de_equipe'
@@ -169,11 +180,13 @@ class MembroDeEquipe(db.Model):
     id_diretoria = Column(Integer, db.ForeignKey('diretoria.id'), nullable=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
 
+
 class Cargo(db.Model):
     __tablename__ = 'cargo'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     membros = db.relationship('MembroDeEquipe', backref='cargo', lazy=True)
+
 
 class Diretoria(db.Model):
     __tablename__ = 'diretoria'
@@ -181,6 +194,7 @@ class Diretoria(db.Model):
     nome = Column(String(100), nullable=False)
     ordem = Column(Integer, nullable=False)
     membros = db.relationship('MembroDeEquipe', backref='diretoria', lazy=True)
+
 
 class Patrocinador(db.Model):
     __tablename__ = 'patrocinador'
@@ -195,11 +209,13 @@ class Patrocinador(db.Model):
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
     back_populates='patrocinadores')
 
+
 class CotaPatrocinio(db.Model):
     __tablename__ = 'cota_patrocinio'
     id = Column(Integer, primary_key=True)
     nome = Column(String(50), nullable=False)
     patrocinadores = db.relationship('Patrocinador', backref='cota_patrocinio', lazy=True)
+
 
 class Curso(db.Model):
     __tablename__ = 'curso'
@@ -207,17 +223,20 @@ class Curso(db.Model):
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', backref='curso', lazy=True)
 
+
 class Instituicao(db.Model):
     __tablename__ = 'instituicao'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', backref='instituicao', lazy=True)
 
+
 class Cidade(db.Model):
     __tablename__ = 'cidade'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', backref='cidade', lazy=True)
+
 
 class Camiseta(db.Model):
     __tablename__ = 'camiseta'
@@ -228,3 +247,5 @@ class Camiseta(db.Model):
     quantidade = Column(Integer, nullable=False)
     ordem_site = Column(Integer, nullable=False)
     quantidade_restante = Column(Integer, nullable=False)
+
+
