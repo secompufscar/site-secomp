@@ -1,8 +1,8 @@
 from os import path, makedirs
-from flask import render_template, request, redirect, url_for, abort, flash
-from flask_login import login_required, login_user, logout_user
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+
 from bcrypt import gensalt
+from flask import render_template, request, redirect, abort, flash
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
 
@@ -69,7 +69,7 @@ def cadastro():
     if form.validate_on_submit():
         usuario = db.session.query(Usuario).filter_by(email=email).first()
         if usuario is not None:
-            return "Este email já está sendo usado!"
+            return render_template("cadastro.html", form=form, erro_email=True)
         else:
             agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             hash = pbkdf2_sha256.encrypt(
