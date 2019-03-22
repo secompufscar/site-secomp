@@ -17,9 +17,13 @@ app = Flask(__name__)
 Bootstrap(app)
 app.config.from_pyfile(configs[config_name])
 
-from app.models.models import db, Usuario 
-
+from app.models.models import db, Usuario
+from app.controllers.routes.user_routes import user_routes
+from app.controllers.routes.routes import routes
 migrate = Migrate(app, db)
+
+app.register_blueprint(user_routes)
+app.register_blueprint(routes)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

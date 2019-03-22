@@ -2,7 +2,8 @@ from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
-from app.controllers.functions import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas
+from app.controllers.functions.form_choices import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas
+from app.controllers.functions.custom_form_validators import *
 from app.controllers.constants import *
 
 
@@ -19,7 +20,7 @@ class CadastroForm(FlaskForm):
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
     email = StringField('Email', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
+        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254), email_existe()])
     senha = PasswordField('Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), EqualTo(
         'confirmacao', message=ERRO_COMPARA_SENHAS), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
     confirmacao = PasswordField('Confirmação de Senha', validators=[
@@ -82,5 +83,3 @@ class ContatoForm(FlaskForm):
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
     mensagem = StringField('Mensagem', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=500)])
-
-
