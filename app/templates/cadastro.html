@@ -28,6 +28,9 @@
   </style>
     <div>
         <form method="POST" action="/cadastro">
+            {{if erro_email:}}
+            <h1>O e-mail já está sendo utilizado!</h1>
+            {{endif}}
           {{ form.hidden_tag() }}
           {{ wtf.form_field(form.primeiro_nome) }}
           {{ wtf.form_field(form.sobrenome) }}
