@@ -98,11 +98,12 @@
 
 {# Rascunho de rodapé #}
 {% block footer %}
-<footer class="page-footer font-small bg-dark pt-4 text-white">
+<footer class="navbar font-small bg-dark pt-5 text-white">
     <div class="container">
-	<div class="col-md-6 mx-auto align-self-center">
+	 <div class="row">
+	<div class="col-md-6 align-self-left">
 	    {# Expandir variável secomp com nome dos membros #}
-	    <p>Desenvolvido por 
+	    <p align="justify">Desenvolvido por 
 	    {% for name in secomp|sort %}
 	    {% if not loop.last %}
 	    {{ name }}, 
@@ -112,11 +113,14 @@
 	    {% endfor %}
 	    </p>
 
-	    {# Expandir variável para o email da secomp #}
-	    <p><a href="mailto:{{ secomp_email }}">{{ secomp_email }}</a></p>
+	    
+		
 
-	    {# Expandir variável para mantenedores atuais #}
-	    <p>Atualmente mantido por 
+	    </p>
+	</div>
+	<div class="col-md-6 align-self-right">
+		{# Expandir variável para mantenedores atuais #}
+	    <p align="justify">Atualmente mantido por 
 	    {% for name in secomp_now|sort %}
 	    {% if not loop.last %}
 	    {{ name }}, 
@@ -124,14 +128,28 @@
 	    {{ name }}.
 	    {% endif %}
 	    {% endfor %}
-	    </p><hr/>
-
-	    <p>Universidade Federal de São Carlos<br/>
-	    Departamento de Computação<br/>
-	    Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara - São Carlos/SP - CEP 13565-905</p>
+		{# Expandir variável para o email da secomp #}
+	    <p><a href="mailto:{{ secomp_email }}">{{ secomp_email }}</a></p>
+		
+	</div>
 	</div>
     </div>
+
+
+	<div class="container">
+	<div class="col-md-12">
+	<center><br>
+	<p>
+	 Departamento de Computação <br/>
+	 UFSCar - Universidade Federal de São Carlos <br>  
+	 Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara - São Carlos/ SP - CEP 13565-905
+	</p>
+	</center>
+	</div>
+
+	</div>
 </footer>
+	
 {% endblock %}
 
 {% block scripts %}
