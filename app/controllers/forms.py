@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
@@ -82,5 +83,12 @@ class ContatoForm(FlaskForm):
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
     mensagem = StringField('Mensagem', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=500)])
+
+
+class ComprovanteForm(FlaskForm):
+    comprovante = FileField('Comprovante de Pagamento', validators=[
+            FileRequired(message=ERRO_INPUT_REQUIRED),
+            FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
+        ])
 
 
