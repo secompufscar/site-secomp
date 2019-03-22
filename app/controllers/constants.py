@@ -14,7 +14,7 @@ secomp_now = [(
     "Daniel Moura",
     "Karina Mayumi",
     "Nathan Oliveira",
-    "Victoria de Martini",
+    "Victória De Martini",
     "Lucas Cruz dos Reis"
 )]
 
@@ -28,7 +28,7 @@ secomp = [(
     "Daniel Moura",
     "Karina Mayumi",
     "Nathan Oliveira",
-    "Victoria de Martini",
+    "Victória De Martini",
     "Lucas Cruz dos Reis"
 )]
 
