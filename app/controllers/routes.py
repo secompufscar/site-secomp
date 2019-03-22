@@ -86,7 +86,7 @@ def cadastro():
             enviarEmailConfirmacao(app, email, token)
             login_user(usuario, remember=True)
             return redirect(url_for('verificar_email'))
-    return render_template('cadastro.html', form=form)
+    return render_template('cadastro.html', form=form, erro_email=False)
 
 
 @app.route('/verificar-email')
