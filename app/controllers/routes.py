@@ -9,7 +9,7 @@ from werkzeug import secure_filename
 from app.controllers.forms import *
 from app.controllers.functions import *
 from app.models.models import *
-
+from random import randint
 
 @app.route('/')
 def index():
@@ -423,3 +423,35 @@ def estoque_camisetas_por_tamanho(tamanho):
         return render_template('controle_camisetas.html', camisetas=camisetas, usuario=current_user)
     else:
         abort(403)
+
+@app.route('/venda-kits', methods=['POST', 'GET'])
+@login_required
+def vender_kits():
+    #<Falta conferir permissões>
+    form = VendaKitForm(request.form)
+    if (form.validate_on_submit() and form.participante.data != None):
+        camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
+        if(camiseta.quantidade_restante > 0):
+            participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
+            participante.id_camiseta = form.camiseta.data
+            participante.pacote = True
+            participante.pagamento = True
+            db.session.add(participante)
+            db.session.commit()
+            return render_template('venda_de_kits.html', alerta="Compra realizada com sucesso!", form=form)
+        elif(camiseta.quantidade_restante == 0):
+            return render_template('venda_de_kits.html', alerta="Sem estoque para " + camiseta.tamanho, form=form)
+    return render_template('venda_de_kits.html', alerta="Preencha o formulário abaixo", form=form)
+
+@app.route('/sortear')
+@login_required
+def sortear():
+    return render_template('sortear_usuario.html', sorteando=False)
+
+@app.route('/fazer-sorteio')
+@login_required
+def sorteando():
+    # <Falta conferir permissões>
+    sorteado = db.session.query(Participante)
+    sorteado = sorteado[randint(1, sorteado.count()) - 1]
+    return render_template('sortear_usuario.html', sorteado=sorteado, sorteando=True)

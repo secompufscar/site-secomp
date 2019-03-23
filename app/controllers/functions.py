@@ -134,6 +134,29 @@ def get_opcoes_camisetas():
         print(e)
         return None
 
+def get_participantes():
+    try:
+        query = db.session.query(Participante)
+        participantes = []
+        for p in query:
+            info = (p.id, p.usuario.nome + " " + p.usuario.sobrenome)
+            participantes.append(info)
+        return participantes
+    except Exception as e:
+        print(e)
+        return None
+
+def get_participantes_sem_kit():
+    try:
+        query = db.session.query(Participante).filter_by(pacote=0)
+        participantes = []
+        for p in query:
+            info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome)
+            participantes.append(info)
+        return participantes
+    except Exception as e:
+        print(e)
+        return None
 
 def get_dicionario_usuario(usuario):
     try:

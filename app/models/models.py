@@ -38,7 +38,6 @@ class Atividades(Enum):
 class Usuario(db.Model):
     __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True)
-    participantes = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
     primeiro_nome = Column(String(64), nullable=False)
@@ -89,6 +88,7 @@ class Participante(db.Model):
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
+    usuario = db.relationship('Usuario', back_populates='participantes_associados', lazy=True)
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
     back_populates='participantes')
