@@ -1,0 +1,4 @@
+#!/bin/bash
+# Applies a vignete effect inplace on a image
+
+convert $1 -background black -vignette 100x300 $1
