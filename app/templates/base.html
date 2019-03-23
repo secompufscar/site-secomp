@@ -33,62 +33,62 @@
 {% block navbar %}
 <header>
     <nav class="navbar navbar-expand-lg">
-	<div class="container-fluid">
-	    {# Marca d'água para a home  #}
-	    <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
-	    {# TODO mudar o aria #}
-	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse mr-auto navbar-collapse" id="navbarItens">
-		{# TODO colocar uma lógica Jinja para active...? #}
-		{# TODO colocar uma lógica Jinja para usuário logado? #}
-		<ul class="navbar-nav mr-auto">
-		    <li class="nav-item">
-			<a class="nav-link" href="{{ url_for('index') }}">HOME</a>
-		    </li>
-		    <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
-			    SECOMP
-			</a>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#">SOBRE O EVENTO</a>
-			    <a class="dropdown-item" href="#">EQUIPE</a>
-			    {# Colocar como um link separado? #}
-			    <a class="dropdown-item" href="#">CONTATO</a>
-			    <a class="dropdown-item" href="#">GAMEFICAÇÃO</a>
-			</div>
-		    </li>
-		    <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
-			    EVENTOS
-			</a>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="#">CRONOGRAMA</a>
-			    <a class="dropdown-item" href="#">CTF</a>
-			    <a class="dropdown-item" href="#">CHURRASCO</a>
-			</div>
-		    </li>
-		    <li class="nav-item">
-			<a class="nav-link" href="#">FAQ</a>
-		    </li>
-		    {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
-		</ul>
+        <div class="container-fluid">
+            {# Marca d'água para a home  #}
+            <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
+            {# TODO mudar o aria #}
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse mr-auto navbar-collapse" id="navbarItens">
+                {# TODO colocar uma lógica Jinja para active...? #}
+                {# TODO colocar uma lógica Jinja para usuário logado? #}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">HOME</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
+                            SECOMP
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">SOBRE O EVENTO</a>
+                            <a class="dropdown-item" href="#">EQUIPE</a>
+                            {# Colocar como um link separado? #}
+                            <a class="dropdown-item" href="#">CONTATO</a>
+                            <a class="dropdown-item" href="#">GAMEFICAÇÃO</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
+                            EVENTOS
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">CRONOGRAMA</a>
+                            <a class="dropdown-item" href="#">CTF</a>
+                            <a class="dropdown-item" href="#">CHURRASCO</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">FAQ</a>
+                    </li>
+                    {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
+                </ul>
 
-		{# TODO: Corrigir o espaçamento #}
-		<!-- Lado direito da Navbar -->
-		<div class="navbar-nav">
-		    {# TODO: criar lógica baseada no bd #}
-		    {% if current_user.is_authenticated %}
-		    <a class="nav-item nav-link" href="{{ url_for('dashboard_usuario') }}">Participante</a>
-		    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Sair</a>
-		    {% else %}
-		    <a class="nav-item nav-link" href="{{ url_for('login') }}">ENTRAR</a>
-		    <a class="nav-item nav-link" href="{{ url_for('cadastro') }}">INSCREVER</a>
-		    {% endif %}
-		</div>
-	    </div>
-	</div>
+                {# TODO: Corrigir o espaçamento #}
+                <!-- Lado direito da Navbar -->
+                <div class="navbar-nav">
+                    {# TODO: criar lógica baseada no bd #}
+                    {% if current_user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{{ url_for('dashboard_usuario') }}">Participante</a>
+                    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Sair</a>
+                    {% else %}
+                    <a class="nav-item nav-link" href="{{ url_for('login') }}">ENTRAR</a>
+                    <a class="nav-item nav-link" href="{{ url_for('cadastro') }}">INSCREVER</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </nav>
 </header>
 {% endblock %}
