@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
-from app.controllers.functions import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas
+from app.controllers.functions import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas, get_participantes_sem_kit
 from app.controllers.constants import *
 
 
@@ -37,11 +37,11 @@ class CadastroForm(FlaskForm):
 
 
 class ParticipanteForm(FlaskForm):
-    kit = BooleanField('Kit', validators=[InputRequired()], id="kit")
+    kit = BooleanField('Kit', id="kit")
     camiseta = SelectField('Camiseta', choices=get_opcoes_camisetas(
     ), id="camiseta", default="P Feminino", coerce=int)
     restricao_coffee = SelectField(
-        'Restrição para o Coffee-Break', choices=escolhas_restricao, default="Nenhum", coerce=int)
+        'Restrição para o Coffee-Break', choices=escolhas_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
 
 
 class EditarUsuarioForm(FlaskForm):
@@ -90,5 +90,12 @@ class ComprovanteForm(FlaskForm):
             FileRequired(message=ERRO_INPUT_REQUIRED),
             FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
         ])
+
+class VendaKitForm(FlaskForm):
+    participante = SelectField("Inscrições que não compraram o kit", choices=get_participantes_sem_kit(), id="camiseta", coerce=int)
+    camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
+
+
+
 
 

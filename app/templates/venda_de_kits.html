@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+{% block content %}
+<form method="POST" action="/venda-kits">
+    <div class="form-group">
+        <label>{{alerta}}</label>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.participante) }}
+        {{ wtf.form_field(form.camiseta) }}
+        <button type="submit" class="btn btn-primary">Confirmar venda</button>
+    </div>
+</form>
+{% endblock %}
