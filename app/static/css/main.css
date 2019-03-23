@@ -18,6 +18,16 @@
     --color15: ;
 }
 
+header{
+	  background-image: linear-gradient(to right, #008CB5, #00CFA1);
+ }
+ 
+header a {
+	color: #FFFFFF;
+	font-size: 14.5px;
+	font-family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
+}
+
 footer {
     background-color: #212121;
 }
@@ -31,5 +41,10 @@ footer ul li a {
 }
 
 footer ul li a:hover {
-    color: #00bcd4;
+    color: #00CFA1;
+}
+
+#barrinha {
+    background-image: linear-gradient(to right, #008CB5, #00CFA1);
+    padding: 0.5%;
 }
