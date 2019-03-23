@@ -18,6 +18,9 @@
 <link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
+<!-- ARQUIVO PUXA OUTROS ARQUIVOS CSS DO SERVIDOR PROPRIO; BAIXAR E ADICIONAR AO NOSSO SERVIDOR
+<link href="{{ url_for('static', filename='fa/font-awesome-5.6.3.css') }}" rel="stylesheet" type="text/css"/>-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
@@ -100,53 +103,52 @@
 {% block footer %}
 <footer class="navbar font-small bg-dark pt-5 text-white">
     <div class="container">
-	 <div class="row">
-	<div class="col-md-6 align-self-left">
-	    {# Expandir variável secomp com nome dos membros #}
-	    <p align="justify">Desenvolvido por 
-	    {% for name in secomp|sort %}
-	    {% if not loop.last %}
-	    {{ name }}, 
-	    {% else %}
-	    {{ name }}.
-	    {% endif %}
-	    {% endfor %}
-	    </p>
+        <div class="row">
+            <div class="col-md-6 align-self-left">
+                {# Expandir variável secomp com nome dos membros #}
+                <p align="justify">Desenvolvido por 
+                {% for name in secomp|sort %}
+                {% if not loop.last %}
+                {{ name }}, 
+                {% else %}
+                {{ name }}.
+                {% endif %}
+                {% endfor %}
+                </p>
 
-	    
-		
-
-	    </p>
-	</div>
-	<div class="col-md-6 align-self-right">
-		{# Expandir variável para mantenedores atuais #}
-	    <p align="justify">Atualmente mantido por 
-	    {% for name in secomp_now|sort %}
-	    {% if not loop.last %}
-	    {{ name }}, 
-	    {% else %}
-	    {{ name }}.
-	    {% endif %}
-	    {% endfor %}
-		{# Expandir variável para o email da secomp #}
-	    <p><a href="mailto:{{ secomp_email }}">{{ secomp_email }}</a></p>
-		
-	</div>
-	</div>
+            </div>
+            <div class="col-md-6 align-self-right">
+                {# Expandir variável para mantenedores atuais #}
+                <p align="justify">Atualmente mantido por 
+                {% for name in secomp_now|sort %}
+                {% if not loop.last %}
+                {{ name }}, 
+                {% else %}
+                {{ name }}.
+                {% endif %}
+                {% endfor %}
+                </div>
+        </div>
     </div>
 
+    <div class="col-md-12">
+        <ul class="list-unstyled list-inline social text-center">
+            <li class="list-inline-item"><a href="https://facebook.com/secompufscar" target="blank"><i class="fab fa-lg fa-facebook-f"></i></a></li>
+            <li class="list-inline-item"><a href="https://twitter.com/secompufscar" target="blank"><i class="fab fa-lg fa-twitter"></i></a></li>
+            <li class="list-inline-item"><a href="https://www.youtube.com/channel/UChj1pycWmHOJDeJkDf6RraA" target="blank"><i class="fab fa-lg fa-youtube"></i></a></li>
+            <li class="list-inline-item"><a href="https://instagram.com/secompufscar" target="blank"><i class="fab fa-lg fa-instagram"></i></a></li>
+            <li class="list-inline-item"><a href="mailto:{{ secomp_email }}"><i class="fa fa-lg fa-envelope"></i></a></li>
+        </ul>
+    </div>
 
 	<div class="container">
-	<div class="col-md-12">
-	<center><br>
-	<p>
-	 Departamento de Computação <br/>
-	 UFSCar - Universidade Federal de São Carlos <br>  
-	 Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara - São Carlos/ SP - CEP 13565-905
-	</p>
-	</center>
-	</div>
-
+        <div class="col-md-12 text-center">
+            <p>
+             Departamento de Computação <br/>
+             UFSCar - Universidade Federal de São Carlos <br>  
+             Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara - São Carlos/ SP - CEP 13565-905
+            </p>
+        </div>
 	</div>
 </footer>
 	
