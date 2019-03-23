@@ -4677,7 +4677,8 @@ button.bg-dark:focus {
   background-color: #1d2124 !important; }
 
 .bg-gradient-primary {
-  background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x !important; }
+  background-image: linear-gradient(to right, #008CB5, #00CFA1);
+}
 
 .bg-gradient-secondary {
   background: #6c757d linear-gradient(180deg, #828a91, #6c757d) repeat-x !important; }
