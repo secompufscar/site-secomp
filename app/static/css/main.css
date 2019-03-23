@@ -1,23 +1,4 @@
-@font-face {
-    /* Variante regular de FontAwesome */
-    font-family: FontAwesomeRegular;
-    src: url(../fonts/fa-regular-400.woff2);
-}
-
-@font-face {
-    /* Variante solid de FontAwesome */
-    font-family: FontAwesomeSolid;
-    src: url(../fonts/fa-solid-400.woff2);
-}
-
-@font-face {
-    /* Variante brands de FontAwesome */
-    font-family: FontAwesomeBrands;
-    src: url(../fonts/fa-brands-400.woff2);
-}
-
-
-:root {
+ :root {
     /* cores variáveis da paleta */
     --color0: ;
     --color1: ;
@@ -35,4 +16,20 @@
     --color13: ;
     --color14: ;
     --color15: ;
+}
+
+footer {
+    background-color: #212121;
+}
+
+footer ul li {
+    padding: 1%;
+}
+
+footer ul li a {
+    color: #FFFFFF;
+}
+
+footer ul li a:hover {
+    color: #00bcd4;
 }
