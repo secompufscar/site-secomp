@@ -21,7 +21,6 @@ class AppModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.permissao > Permissao.USUARIO.value
 
-
 def init_admin(app):
     admin = Admin(app, index_view=AppIndexView(), template_mode='bootstrap3')
     admin.add_view(AppModelView(Usuario, db.session))

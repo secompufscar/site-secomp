@@ -1,0 +1,16 @@
+{% extends "email/base.html" %}
+{% block titulo %}
+  {{ info.titulo }}
+{% endblock %}
+
+{% block saudacao %}
+  Olá, {{ info.nome }}!
+{% endblock%}
+
+{% block conteudo %}
+  Este é um email utilizado para teste
+{% endblock %}
+
+{% block footer %}
+  {{ info.footer }}
+{% endblock %}
