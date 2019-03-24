@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, abort, url_for, Blueprint
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from bcrypt import gensalt
 from passlib.hash import pbkdf2_sha256
@@ -62,7 +62,7 @@ def cadastro():
         db.session.add(usuario)
         db.session.flush()
         db.session.commit()
-        enviarEmailConfirmacao(app, email, token)
+        enviarEmailConfirmacao(usuario, token)
         login_user(usuario, remember=True)
         return redirect(url_for('verificar_email'))
     return render_template('cadastro.html', form=form)
@@ -236,7 +236,7 @@ def esqueci_senha():
         usuario.token_alteracao_senha = token
         db.session.add(usuario)
         db.session.commit()
-        enviarEmailSenha(app, usuario.email, token)
+        enviarEmailSenha(usuario, token)
         return render_template("esqueci_senha.html", status_envio_email=True, form=form)
     return render_template("esqueci_senha.html", status_envio_email=False, form=form)
 
