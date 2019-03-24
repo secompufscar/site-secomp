@@ -3,7 +3,8 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
-from app.controllers.functions import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas, get_participantes_sem_kit
+from app.controllers.functions import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas, get_participantes_sem_kit,\
+    erro_curso_existe, erro_instituicao_existe, erro_cidade_existe
 from app.controllers.constants import *
 
 
@@ -25,12 +26,16 @@ class CadastroForm(FlaskForm):
         'confirmacao', message=ERRO_COMPARA_SENHAS), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
     confirmacao = PasswordField('Confirmação de Senha', validators=[
                                 InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
-    curso = SelectField('Curso', choices=get_opcoes_cursos(),
+    curso = SelectField('Curso', choices=get_opcoes_cursos(), validators=
+    [InputRequired(message=ERRO_INPUT_REQUIRED)],
                         id="curso", coerce=int)
+    outro_curso = StringField("Outro curso", id="outro_curso", validators=[erro_curso_existe()])
     instituicao = SelectField('Instituição', choices=get_opcoes_instituicoes(
     ), id="instituicao", default="UFSCar", coerce=int)
+    outra_instituicao = StringField("Outra instituição", id="outra_instituicao", validators=[erro_instituicao_existe()])
     cidade = SelectField('Cidade', choices=get_opcoes_cidades(
     ), id="cidade", default="São Carlos", coerce=int)
+    outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe()])
     data_nasc = DateField("Data de Nascimento",
                           format="%d/%m/%Y", id="data_nasc")
     recaptcha = RecaptchaField()
