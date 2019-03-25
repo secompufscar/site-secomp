@@ -12,15 +12,16 @@
 <meta name="organization" content="SECOMP UFSCar"/>
 {% endblock %}
 
+{% block headscripts %}
+<script defer src="{{ url_for('static', filename='fa/all.js') }}"></script>
+{% endblock %}
+
 <title>{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}</title>
 {# styles globais #}
 {% block styles %}
 <link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
-<!-- ARQUIVO PUXA OUTROS ARQUIVOS CSS DO SERVIDOR PROPRIO; BAIXAR E ADICIONAR AO NOSSO SERVIDOR
-<link href="{{ url_for('static', filename='fa/font-awesome-5.6.3.css') }}" rel="stylesheet" type="text/css"/>-->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
