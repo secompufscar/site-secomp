@@ -18,38 +18,89 @@
 }
 })
   </script>
-  <style>
-      .help-block{
-        color:red;
-      }
-      body{
-        padding:50px;
-      }
-  </style>
+    <h1 class="text-center">CADASTRO</h1>
     <div>
         <form method="POST" action="/cadastro">
           {{ form.hidden_tag() }}
-          {{ wtf.form_field(form.primeiro_nome) }}
-          {{ wtf.form_field(form.sobrenome) }}
-          {{ wtf.form_field(form.email) }}
-          {{ wtf.form_field(form.senha) }}
-          {{ wtf.form_field(form.confirmacao) }}
-          {{ wtf.form_field(form.curso) }}
-          {{ wtf.form_field(form.instituicao) }}
-          {{ wtf.form_field(form.cidade) }}
-          {{ wtf.form_field(form.data_nasc) }}
-          {{ form.recaptcha }}
+          <table class=table border=0>
+          <tr scope="row">
+            <td scope="col" class="left">
+              {{ wtf.form_field(form.primeiro_nome) }}
+            </td>
+            <td scope="col" class="right">
+              {{ wtf.form_field(form.sobrenome) }}
+            </td>
+        <tr scope="row">
+          <td scope="col" class="left">
+            {{ wtf.form_field(form.email) }}
+          </td>
+          <td scope="col" class="right">
+            {{ wtf.form_field(form.curso) }}
+          </td>
+        </tr>
+        <tr scope="row">
+          <td scope="col" class="left">
+            {{ wtf.form_field(form.senha) }}
+          </td>
+          <td scope="col" class="right">
+            {{ wtf.form_field(form.instituicao) }}
+          </td>
+        </tr>
+        <tr scope="row">
+          <td scope="col" class="left">
+            {{ wtf.form_field(form.confirmacao) }}
+          </td>
+          <td scope="col" class="right">
+            {{ wtf.form_field(form.cidade) }}
+          </td>
+        </tr>
+        <tr scope="row">
+          <td scope="col">
+            {{ form.recaptcha }}
+            {% if form.recaptcha.errors %}
+              <span class="help-block">É necessário validar o recaptcha</span>
+            {% endif %}
+            <button type="submit" class="btn btn-primary" style="margin-top:10px;width:120px;">Cadastrar</button>
+          </td>
+          <td scope="col" class="right">
+            {{ wtf.form_field(form.data_nasc) }}
+          </td>
+        </tr>
+        </table>
 
-          {% for error in form.recaptcha.errors %}
-            <span class="help-block">{{ error }}</span>
-          {% endfor %}
-
-          <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
     </div>
     <script>
     $(document).ready(function($){
       $('#data_nasc').mask('00/00/0000');
+    });
+
+    $('#primeiro_nome').attr('placeholder', 'Digite seu primeiro nome');
+    $('#sobrenome').attr('placeholder', 'Digite seu sobrenome');
+    $('#email').attr('placeholder', 'Digite seu email');
+    $('#senha').attr('placeholder', 'Digite uma senha entre 8 e 20 caracteres');
+    $('#confirmacao_senha').attr('placeholder', 'Digite novamente sua senha');
+    $('#data_nasc').attr('placeholder', '01/01/2001')
+
+    </script>
+    <script  type="text/javascript">
+    $(function () {
+      $("#cidade").select2();
+      $("#instituicao").select2();
+      $("#curso").select2();
+    });
+    $('select').select2({
+    width: '100%',
+    });
+    $('select').select2({
+      "language": {
+       "noResults": function(){
+           return "Nenhum resultado encontrado";
+       }
+   },
+    escapeMarkup: function (markup) {
+        return markup;
+    }
     });
     </script>
 {% endblock %}
