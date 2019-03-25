@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
-from app.controllers.functions import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas, get_participantes_sem_kit,\
+from app.controllers.functions import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas, get_participantes_sem_kit, get_opcoes_cotas_patrocinadores,\
     erro_curso_existe, erro_instituicao_existe, erro_cidade_existe
 from app.controllers.constants import *
 
@@ -90,11 +90,24 @@ class ContatoForm(FlaskForm):
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=500)])
 
 
+class PatrocinadorForm(FlaskForm):
+    nome_empresa = StringField('Nome', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
+    logo = StringField('Logo', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
+    ativo_site = BooleanField('Ativo', validators=[InputRequired()], id="ativo_site")
+    id_cota = SelectField('Cota', choices=get_opcoes_cotas_patrocinadores(),
+        id="cota", default="0", coerce=int)
+    link_website = StringField('Site', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=200)])
+
+
 class ComprovanteForm(FlaskForm):
     comprovante = FileField('Comprovante de Pagamento', validators=[
             FileRequired(message=ERRO_INPUT_REQUIRED),
             FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
         ])
+
 
 class VendaKitForm(FlaskForm):
     participante = SelectField("Inscrições que não compraram o kit", choices=get_participantes_sem_kit(), id="camiseta", coerce=int)

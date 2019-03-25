@@ -250,6 +250,21 @@ def get_dicionario_info_evento(edicao):
         return None
 
 
+def get_opcoes_cotas_patrocinadores():
+    try:
+        cotas_data = db.session.query(CotaPatrocinio).filter_by().order_by(
+            CotaPatrocinio.nome).all()
+        cotas = []
+
+        for cota in cotas_data:
+            info_cota = (cota.id, cota.nome)
+            cotas.append(info_cota)
+
+        return cotas
+    except Exception as e:
+        return None
+
+
 def erro_curso_existe():
 
     def _erro_curso_existe(form, field):
