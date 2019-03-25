@@ -134,6 +134,29 @@ def get_opcoes_camisetas():
         print(e)
         return None
 
+def get_participantes():
+    try:
+        query = db.session.query(Participante)
+        participantes = []
+        for p in query:
+            info = (p.id, p.usuario.nome + " " + p.usuario.sobrenome)
+            participantes.append(info)
+        return participantes
+    except Exception as e:
+        print(e)
+        return None
+
+def get_participantes_sem_kit():
+    try:
+        query = db.session.query(Participante).filter_by(pacote=0)
+        participantes = []
+        for p in query:
+            info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome)
+            participantes.append(info)
+        return participantes
+    except Exception as e:
+        print(e)
+        return None
 
 def get_dicionario_usuario(usuario):
     try:
@@ -232,7 +255,7 @@ def get_opcoes_cotas_patrocinadores():
         cotas_data = db.session.query(CotaPatrocinio).filter_by().order_by(
             CotaPatrocinio.nome).all()
         cotas = []
-		
+
         for cota in cotas_data:
             info_cota = (cota.id, cota.nome)
             cotas.append(info_cota)
@@ -241,3 +264,52 @@ def get_opcoes_cotas_patrocinadores():
     except Exception as e:
         print(e)
         return None
+
+
+def erro_curso_existe():
+
+    def _erro_curso_existe(form, field):
+        cursos = db.session.query(Curso).filter(Curso.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
+        if cursos is not None:
+            raise ValidationError(ERRO_CURSO_EXISTE)
+
+    return _erro_curso_existe
+
+
+def erro_instituicao_existe():
+
+    def _erro_instituicao_existe(form, field):
+        instituicoes = db.session.query(Instituicao).filter(Instituicao.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
+        if instituicoes is not None:
+            raise ValidationError(ERRO_INSTITUICAO_EXISTE)
+
+    return _erro_instituicao_existe
+
+
+def erro_cidade_existe():
+
+    def _erro_cidade_existe(form, field):
+        cidades = db.session.query(Cidade).filter(Cidade.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
+        if cidades is not None:
+            raise ValidationError(ERRO_CIDADE_EXISTE)
+
+    return _erro_cidade_existe
+
+
+def cadastra_objeto_generico(objeto):
+    try:
+        db.session.add(objeto)
+        db.session.flush()
+        db.session.commit()
+        return objeto
+
+    except Exception as e:
+        print(e)
+        return None
+
+
+def verifica_outro_escolhido(campo, objeto):
+    if campo.data == 0:
+        return cadastra_objeto_generico(objeto).id
+    else:
+        return campo.data
