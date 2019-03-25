@@ -262,7 +262,6 @@ def get_opcoes_cotas_patrocinadores():
 
         return cotas
     except Exception as e:
-        print(e)
         return None
 
 

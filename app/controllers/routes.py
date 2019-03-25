@@ -435,11 +435,12 @@ def cadastro_patrocinio():
             ultima_atualizacao_em=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         db.session.add(patrocinador)
-            db.session.flush()
-            db.session.commit()
+        db.session.flush()
+        db.session.commit()
         return redirect(url_for('cadastro-patrocinio'))
     else:
         return render_template('cadastro_patrocinio.html', form=form)
+
 @app.route('/venda-kits', methods=['POST', 'GET'])
 @login_required
 def vender_kits():
