@@ -33,7 +33,7 @@
 {% block body %}
 {% block navbar %}
 <header>
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar fixed-top navbar-expand-lg bg-gradient-primary">
         <div class="container-fluid">
             {# Marca d'água para a home  #}
             <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
@@ -102,7 +102,7 @@
 
 {# Rascunho de rodapé #}
 {% block footer %}
-<footer class="navbar font-small pt-5 text-white">
+<footer class="navbar small pt-5 text-white">
     <div class="container">
         <div class="row">
             <div class="col-md-6 align-self-left">
