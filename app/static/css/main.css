@@ -18,9 +18,20 @@
     --color15: ;
 }
 
-header{
-	  background-image: linear-gradient(to right, #008CB5, #00CFA1);
- }
+.carousel .carousel-item {
+    height: 100vh;
+    width:  100vw;
+    object-fit: fill;
+    text-shadow: 1px 1px 5px black;
+}
+
+.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+.dropdown > .dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
  
 header a {
 	color: #FFFFFF;
