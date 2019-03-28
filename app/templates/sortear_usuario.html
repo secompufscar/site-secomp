@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/fazer-sorteio">
+    {% if sorteando: %}
+        <label>O usuário sorteado foi: {{sorteado.usuario.primeiro_nome}} {{sorteado.usuario.sobrenome}}</label>
+        <br>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">Sortear</button>
+</form>
+{% endblock %}

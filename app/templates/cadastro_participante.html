@@ -3,19 +3,35 @@
 
 {% block navbar %}{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="col-6 mx-auto">
-	<h2>Preencha com as informações do participante</h2><br>
-	<form method="POST" action="/cadastro-participante">
-	    {{ form.hidden_tag() }}
-	    {{ wtf.form_field(form.kit) }}
-	    {{ wtf.form_field(form.camiseta) }}
-	    {{ wtf.form_field(form.restricao_coffee) }}
+<h2>Preencha com as informações do participante</h2><br>
+<form method="POST" action="/cadastro-participante">
+  {{ form.hidden_tag() }}
+  {{ wtf.form_field(form.kit) }}
+  {{ wtf.form_field(form.camiseta) }}
+  {{ wtf.form_field(form.restricao_coffee) }}
 
-	    <button type="submit" class="btn btn-primary">Inscrever-se</button>
-	</form>
-    </div>
-</div>
+    <button type="submit" class="btn btn-primary">Inscrever-se</button>
+</form>
+<script>
+$('label[for="camiseta"]').hide();
+$('#camiseta').hide();
+$('label[for="restricao_coffee"]').hide();
+$('#restricao_coffee').hide();
+$('#kit').change(function() {
+    if ($('#kit').prop("checked")){
+        $('label[for="camiseta"]').show();
+        $('#camiseta').show();
+        $('label[for="restricao_coffee"]').show();
+        $('#restricao_coffee').show();
+    } else {
+        $('label[for="camiseta"]').hide();
+        $('#camiseta').hide();
+        $('label[for="restricao_coffee"]').hide();
+        $('#restricao_coffee').hide();
+    }
+});
+
+</script>
 {% endblock %}
 
 {% block footer %}{% endblock %}
