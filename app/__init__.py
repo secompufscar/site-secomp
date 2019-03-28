@@ -1,9 +1,10 @@
+import os
+
 from flask import Flask, redirect
 from flask_bootstrap import Bootstrap
 from flask_script import Server, Manager, prompt_bool
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
-import os
 
 configs = {
     'development': '../config/development.py',
@@ -34,7 +35,8 @@ def unauthorized_callback():
 
 from app.controllers import routes, admin
 
-adm = admin.init_admin(app)
+upload_path = os.path.join(os.path.dirname(__file__), 'static')
+adm = admin.init_admin(app, upload_path)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)

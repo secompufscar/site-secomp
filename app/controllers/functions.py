@@ -16,15 +16,14 @@ def enviarEmailConfirmacao(app, email, token):
                    sender=app.config['MAIL_USERNAME'], recipients=[email])
     # Str com o link da verificação + tokmethods=['POST', 'GET']
     link = url_for('verificacao', token=token, _external=True)
-    msg.body = '{}'.format(link)
+    msg.body = f'{link}'
 
     try:
         mail.send(msg)  # Envia o email
     except Exception as e:  # Erros mais prováveis são devivo ao email_config, printa error em um arquivo
         try:
             log = open('logMailError.txt', 'a+')
-            log.write('{} {} {}\n'.format(str(e), email,
-                                        strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
+            log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
             log.close()
         except:
             pass
@@ -32,17 +31,16 @@ def enviarEmailConfirmacao(app, email, token):
 
 def enviarEmailDM(app, nome, email, mensagem):
     mail = Mail(app)
-    msg = Message('Mensagem de {}'.format(
-        nome), sender=app.config['MAIL_USERNAME'], recipients=app.config['MAIL_DM'])
-    msg.body = '{}\nEmail: {}\n\n{}'.format(nome, email, mensagem)
+    msg = Message(f'Mensagem de {nome}', 
+            sender=app.config['MAIL_USERNAME'], recipients=app.config['MAIL_DM'])
+    msg.body = f'{nome}\nEmail: {email}\n\n{mensagem}'
 
     try:
         mail.send(msg)  # Envia o email
     except Exception as e:  # Erros mais prováveis são devivo ao email_config, printa error em um arquivo
         try:
             log = open('logMailError.txt', 'a+')
-            log.write('{} {} {} {} {}\n'.format(str(e), nome, email,
-                                                mensagem, strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
+            log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
             log.close()
         except:
             pass
@@ -58,15 +56,14 @@ def enviarEmailSenha(app, email, token):
                   sender=app.config['MAIL_USERNAME'], recipients=[email])
     # Str com o link da verificação + tokmethods=['POST', 'GET']
     link = url_for('confirmar_alteracao_senha', token=token, _external=True)
-    msg.body = '{}'.format(link)
+    msg.body = f'{link}'
 
     try:
         mail.send(msg)  # Envia o email
     except Exception as e:  # Erros mais prováveis são devivo ao email_config, printa error em um arquivo
         try:
             log = open('logMailError.txt', 'a+')
-            log.write('{} {} {}\n'.format(str(e), email,
-                                          strftime("%a, %d %b %Y %H:%M:%S", gmtime())))
+            log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
             log.close()
         except:
             pass
@@ -137,6 +134,29 @@ def get_opcoes_camisetas():
         print(e)
         return None
 
+def get_participantes():
+    try:
+        query = db.session.query(Participante)
+        participantes = []
+        for p in query:
+            info = (p.id, p.usuario.nome + " " + p.usuario.sobrenome)
+            participantes.append(info)
+        return participantes
+    except Exception as e:
+        print(e)
+        return None
+
+def get_participantes_sem_kit():
+    try:
+        query = db.session.query(Participante).filter_by(pacote=0)
+        participantes = []
+        for p in query:
+            info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome)
+            participantes.append(info)
+        return participantes
+    except Exception as e:
+        print(e)
+        return None
 
 def get_dicionario_usuario(usuario):
     try:
@@ -147,8 +167,8 @@ def get_dicionario_usuario(usuario):
             "email": usuario.email,
             "curso": usuario.curso.nome,
             "instituicao": usuario.instituicao.nome,
-                "data_nasc": "{0}/{1}/{2}".format(data[2], data[1], data[0]),
-                "cidade": usuario.cidade.nome
+            "data_nasc": f"{data[2]}/{data[1]}/{data[0]}",
+            "cidade": usuario.cidade.nome,
         }
         return info
     except Exception as e:
@@ -228,3 +248,67 @@ def get_dicionario_info_evento(edicao):
     except Exception as e:
         print(e)
         return None
+
+
+def get_opcoes_cotas_patrocinadores():
+    try:
+        cotas_data = db.session.query(CotaPatrocinio).filter_by().order_by(
+            CotaPatrocinio.nome).all()
+        cotas = []
+
+        for cota in cotas_data:
+            info_cota = (cota.id, cota.nome)
+            cotas.append(info_cota)
+
+        return cotas
+    except Exception as e:
+        return None
+
+
+def erro_curso_existe():
+
+    def _erro_curso_existe(form, field):
+        cursos = db.session.query(Curso).filter(Curso.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
+        if cursos is not None:
+            raise ValidationError(ERRO_CURSO_EXISTE)
+
+    return _erro_curso_existe
+
+
+def erro_instituicao_existe():
+
+    def _erro_instituicao_existe(form, field):
+        instituicoes = db.session.query(Instituicao).filter(Instituicao.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
+        if instituicoes is not None:
+            raise ValidationError(ERRO_INSTITUICAO_EXISTE)
+
+    return _erro_instituicao_existe
+
+
+def erro_cidade_existe():
+
+    def _erro_cidade_existe(form, field):
+        cidades = db.session.query(Cidade).filter(Cidade.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
+        if cidades is not None:
+            raise ValidationError(ERRO_CIDADE_EXISTE)
+
+    return _erro_cidade_existe
+
+
+def cadastra_objeto_generico(objeto):
+    try:
+        db.session.add(objeto)
+        db.session.flush()
+        db.session.commit()
+        return objeto
+
+    except Exception as e:
+        print(e)
+        return None
+
+
+def verifica_outro_escolhido(campo, objeto):
+    if campo.data == 0:
+        return cadastra_objeto_generico(objeto).id
+    else:
+        return campo.data
