@@ -3,10 +3,9 @@ import datetime
 from flask import url_for
 from flask_login import login_required, login_user, logout_user, current_user
 from flask_mail import Mail, Message
-
+from wtforms.validators import ValidationError
 from app.models.models import *
 from app.controllers.constants import *
-
 
 def enviarEmailConfirmacao(app, email, token):
     ''' Envia email para validação do email'''
@@ -139,7 +138,7 @@ def get_participantes():
         query = db.session.query(Participante)
         participantes = []
         for p in query:
-            info = (p.id, p.usuario.nome + " " + p.usuario.sobrenome)
+            info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome)
             participantes.append(info)
         return participantes
     except Exception as e:
