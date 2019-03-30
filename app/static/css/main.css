@@ -36,6 +36,10 @@ header a:hover {
   font-size: 12px;
 }
 
+.desc {
+  padding-bottom: 10%;
+}
+
 footer {
   background-color: #212121;
 }
