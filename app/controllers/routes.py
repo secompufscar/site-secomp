@@ -501,12 +501,8 @@ def alterar_camiseta():
 
 @app.route('/constr')
 def constr():
-<<<<<<< HEAD
     return render_template('em_constr.html', title='Página em construção')
 
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html', title='Sobre a Secomp')
-=======
-    return render_template('em_constr.html', title='Página em construção')
->>>>>>> 99359e4c1fac04477104ec78247a55b39dec42bb
