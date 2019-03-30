@@ -12,10 +12,9 @@
 			<div class="carousel-item active">
 				<div class="d-flex align-items-center justify-content-center min-vh-100">
 					<img class="w-100 img-fluid " src="{{url_for('static', filename='images/car1.jpg')}}">
-					<div class="carousel-caption d-none d-md-block">
-						<h1>Título 1</h1>
-						<p>Tellus tempus senectus ante nostra netus, nisl ultrices ultricies tempor gravida, malesuada natoque magnis
-							ridiculus, neque porttitor magna. Cras cum risus ut natoque ornare, magnis hymenaeos lorem conubia.</p>
+					<div class="carousel-caption d-none d-md-block mb-4">
+						<h1 class="display-4">Bem vindo a X SECOMP!</h1>
+						<h3>Semana da Computação da UFSCar</h2>
 					</div>
 				</div>
 			</div>
@@ -51,8 +50,17 @@
 	</section>
 </div>
 
-<div class="container mt-4 mb-4">
-	<h1 class="display-5">SECOMP UFSCar 2019</h1>
+<div class="container text-center mt-4 mb-4">
+	
+	
+	<h1 class="display-5">SECOMP UFSCar 2019</h1> 
+
+	<h3>Olha esse teaser da edição anterior!</h3>
+
+	<div id="video" class="mt-4 mb-4">
+			<iframe width="100%" height="100%" src="https://www.youtube.com/embed/ZmH_fsMjb-w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	</div>
+
 	{# Texto adicional para testar espaçamento #}
 	{{ lipsum() }}
 </div>
