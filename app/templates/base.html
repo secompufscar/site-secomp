@@ -34,10 +34,10 @@
 {% block body %}
 {% block navbar %}
 <header>
-    <nav class="navbar fixed-top navbar-expand-lg bg-gradient-secomp">
+    <nav class="navbar shadow fixed-top navbar-expand-lg bg-gradient-secomp">
         <div class="container-fluid">
             {# Marca d'água para a home  #}
-            <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
+            <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img id="nav-logo" src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
             {# TODO mudar o aria #}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

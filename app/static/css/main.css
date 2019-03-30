@@ -8,6 +8,10 @@ header a {
   font-family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
 }
 
+header a:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .bg-gradient-secomp {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
 }
@@ -47,4 +51,9 @@ footer ul li a:hover {
 #barrinha {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
   padding: 0.5%;
+}
+
+#nav-logo {
+  object-fit: fill;
+  padding: 1px;
 }

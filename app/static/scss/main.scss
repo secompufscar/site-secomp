@@ -4,7 +4,8 @@
 $secomp1: #008cb5 !default;
 $secomp2: #00cfa1 !default;
 $white: #fff !default;
-$dark-gray: #212121 !default
+$white70: rgba(255, 255, 255, 0.7) !default;
+$dark-gray: #212121 !default;
 
 $secomp-colors: () !default;
 $secomp-colors: map-merge(
@@ -21,7 +22,7 @@ $secomp-colors: map-merge(
 }
 
 @mixin main-font{
-	font:{
+	font: {
 		size: 14.5px;
 		family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
 	}
@@ -32,7 +33,10 @@ header{
 	@include main-gradient;
 	a{
 		color: $white;
-		@include main-font;	
+		@include main-font;
+		&:hover {
+			color: $white70;
+		}
 	}
 }
 
@@ -78,3 +82,7 @@ footer {
 	padding: 0.5%;
 }
 
+#nav-logo {
+	object-fit: fill;
+	padding: 1px;
+} 
