@@ -1,3 +1,7 @@
+.pad-inicio {
+  padding-top: 10vh;
+}
+
 header {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
 }
@@ -60,3 +64,10 @@ footer ul li a:hover {
 #nav-logo {
   object-fit: contain;
 }
+
+.sobre-img {
+  object-fit: cover;
+  max-height: 70vh;
+  width: 100vh;
+}
+

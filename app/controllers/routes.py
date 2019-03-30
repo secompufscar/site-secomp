@@ -476,3 +476,7 @@ def sorteando():
 @app.route('/constr')
 def constr():
     return render_template('em_constr.html', title='Página em construção')
+
+@app.route('/sobre')
+def sobre():
+    return render_template('sobre.html', title='Sobre a Secomp')
