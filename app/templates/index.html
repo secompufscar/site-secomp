@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container-fluid px-0" >
-	<section id="carrossel" class="carousel slide" data-ride="carousel">
+	<section id="carrossel" class="carousel slide" data-ride="carousel" data-interval="10000">
 		<ol class="carousel-indicators">
 			<li data-target="#carrossel" data-slide-to="0" class="active"></li>
 			<li data-target="#carrossel" data-slide-to="1"></li>
@@ -13,7 +13,8 @@
 				<div class="d-flex align-items-center justify-content-center min-vh-100">
 					<img class="w-100 img-fluid " src="{{url_for('static', filename='images/car1.jpg')}}">
 					<div class="carousel-caption d-none d-md-block mb-4">
-						<h1 class="display-4">Bem vindo a X SECOMP!</h1>
+						<img width="300" height="300" class="img-fluid" src="{{url_for('static', filename='images/logo-colorida.png')}}">
+						<h1 class="display-4 mt-4">Bem vindo a X SECOMP!</h1>
 						<h3>Semana da Computação da UFSCar</h2>
 					</div>
 				</div>
