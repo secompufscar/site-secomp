@@ -472,3 +472,7 @@ def sorteando():
     sorteado = db.session.query(Participante)
     sorteado = sorteado[randint(1, sorteado.count()) - 1]
     return render_template('sortear_usuario.html', sorteado=sorteado, sorteando=True)
+
+@app.route('/constr')
+def constr():
+    return render_template('em_constr.html', title='Página em construção')
