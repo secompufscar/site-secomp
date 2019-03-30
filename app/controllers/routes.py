@@ -434,6 +434,8 @@ def vender_kits():
             participante.id_camiseta = form.camiseta.data
             participante.pacote = True
             participante.pagamento = True
+            camiseta.quantidade_restante = camiseta.quantidade_restante - 1
+            db.session.add(camiseta.quantidade_restante)
             db.session.add(participante)
             db.session.commit()
             return render_template('venda_de_kits.html', alerta="Compra realizada com sucesso!", form=form)
@@ -453,3 +455,27 @@ def sorteando():
     sorteado = db.session.query(Participante)
     sorteado = sorteado[randint(1, sorteado.count()) - 1]
     return render_template('sortear_usuario.html', sorteado=sorteado, sorteando=True)
+
+@app.route('/alterar-camiseta')
+@login_required
+def alterar_camiseta():
+    # <Falta conferir permissões>
+    form = AlteraCamisetaForm(request.form)
+    if (form.validate_on_submit() and form.participante.data != None):
+        a = a7
+        participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
+        camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
+        if (camiseta.quantidade_restante > 0):
+            camiseta_antiga = db.session.query(Camiseta).filter_by(id=participante.id_camiseta).first()
+            camiseta_antiga.quantidade_restante = camiseta_antiga.quantidade_restante + 1
+            camiseta.quantidade_restante = camiseta.quantidade_restante - 1
+            participante.id_camiseta = camiseta.id
+            db.session.add(camiseta_antiga)
+            db.session.add(camiseta)
+            db.session.add(participante)
+            db.session.commit()
+            return render_template('alterar_camiseta.html', participante=participante, camiseta=camiseta, sucesso='s', form=form)
+        else:
+            return render_template('alterar_camiseta.html', participante=participante, camiseta=camiseta, sucesso='n', form=form)
+    return render_template('alterar_camiseta.html', form=form)
+
