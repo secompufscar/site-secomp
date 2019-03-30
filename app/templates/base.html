@@ -54,11 +54,11 @@
                             SECOMP
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">SOBRE O EVENTO</a>
-                            <a class="dropdown-item" href="#">EQUIPE</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}">SOBRE O EVENTO</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}">EQUIPE</a>
                             {# Colocar como um link separado? #}
-                            <a class="dropdown-item" href="#">CONTATO</a>
-                            <a class="dropdown-item" href="#">GAMEFICAÇÃO</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}">CONTATO</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}">GAMEFICAÇÃO</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -66,13 +66,13 @@
                             EVENTOS
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">CRONOGRAMA</a>
-                            <a class="dropdown-item" href="#">CTF</a>
-                            <a class="dropdown-item" href="#">CHURRASCO</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}">CRONOGRAMA</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}">CTF</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}">CHURRASCO</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">FAQ</a>
+                        <a class="nav-link" href="{{ url_for('constr') }}">FAQ</a>
                     </li>
                     {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
                 </ul>
@@ -107,28 +107,15 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 align-self-left">
-                {# Expandir variável secomp com nome dos membros #}
-                <p class="text-justify">Desenvolvido por 
-                {% for name in secomp|sort %}
-                {% if not loop.last %}
-                {{ name }}, 
-                {% else %}
-                {{ name }}.
-                {% endif %}
-                {% endfor %}
+                <p class="text-justify">Desenvolvido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Igor Lúcio,
+                    Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Matheus Victorello, Nathan Oliveira e Victória De Martini.
                 </p>
 
             </div>
             <div class="col-md-6 align-self-right">
-                {# Expandir variável para mantenedores atuais #}
-                <p class="text-justify">Mantido por 
-                {% for name in secomp_now|sort %}
-                {% if not loop.last %}
-                {{ name }}, 
-                {% else %}
-                {{ name }}.
-                {% endif %}
-                {% endfor %}
+                <p class="text-justify">Mantido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Igor Lúcio,
+                    Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Matheus Victorello, Nathan Oliveira e Victória De Martini.
+                </p>
                 </div>
         </div>
     </div>
