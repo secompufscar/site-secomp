@@ -85,8 +85,8 @@
                     <a class="nav-item nav-link" href="{{ url_for('dashboard_usuario') }}">Participante</a>
                     <a class="nav-item nav-link" href="{{ url_for('logout') }}">Sair</a>
                     {% else %}
-                    <a class="nav-item nav-link" href="{{ url_for('login') }}">ENTRAR</a>
-                    <a class="nav-item nav-link" href="{{ url_for('cadastro') }}">INSCREVER</a>
+                    <a class="nav-item nav-link" href="{{ url_for('login') }}"><i class="mr-1 fas fa-user"></i> ENTRAR</a>
+                    <a class="nav-item nav-link" href="{{ url_for('cadastro') }}"><i class="mr-1 fas fa-address-card"></i> INSCREVER</a>
                     {% endif %}
                 </div>
             </div>
