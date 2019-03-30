@@ -429,13 +429,15 @@ def vender_kits():
     form = VendaKitForm(request.form)
     if (form.validate_on_submit() and form.participante.data != None):
         camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
-        if(camiseta.quantidade_restante > 0):
-            participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
+        participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
+        if(participante.pagamento):
+            return render_template('venda_de_kits.html', alerta="Kit já comprado!", form=form)
+        elif(camiseta.quantidade_restante > 0):
             participante.id_camiseta = form.camiseta.data
             participante.pacote = True
             participante.pagamento = True
             camiseta.quantidade_restante = camiseta.quantidade_restante - 1
-            db.session.add(camiseta.quantidade_restante)
+            db.session.add(camiseta)
             db.session.add(participante)
             db.session.commit()
             return render_template('venda_de_kits.html', alerta="Compra realizada com sucesso!", form=form)
@@ -462,7 +464,6 @@ def alterar_camiseta():
     # <Falta conferir permissões>
     form = AlteraCamisetaForm(request.form)
     if (form.validate_on_submit() and form.participante.data != None):
-        a = a7
         participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
         camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
         if (camiseta.quantidade_restante > 0):
