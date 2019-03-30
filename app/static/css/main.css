@@ -3,6 +3,7 @@ header {
 }
 
 header a {
+  font-weight: 600;
   color: #fff;
   font-size: 14.5px;
   font-family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
@@ -10,6 +11,10 @@ header a {
 
 header a:hover {
   color: rgba(255, 255, 255, 0.7);
+}
+
+.small {
+  font-size: 14px;
 }
 
 .bg-gradient-secomp {
@@ -23,13 +28,8 @@ header a:hover {
   text-shadow: 1px 1px 5px black;
 }
 
-.dropdown:hover > .dropdown-menu {
-  display: block;
-}
-
-.dropdown > .dropdown-toggle:active {
-  /*Without this, clicking will make it sticky*/
-  pointer-events: none;
+.dropdown-menu a {
+  font-size: 11px;
 }
 
 footer {
@@ -54,6 +54,5 @@ footer ul li a:hover {
 }
 
 #nav-logo {
-  object-fit: fill;
-  padding: 1px;
+  object-fit: contain;
 }
