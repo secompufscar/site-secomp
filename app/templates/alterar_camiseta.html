@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+{% block content %}
+<form action="/alterar-camiseta">
+    {% if sucesso == 's': %}
+        <h1>Alteração efetuada com sucesso.</h1>
+    {% elif sucesso == 'n' %}
+        <h1>Erro! Sem unidades de {{camiseta.tamanho}} disponíveis.</h1>
+    {% endif %}
+    {{ form.hidden_tag() }}
+	{{ wtf.form_field(form.participante) }}
+	{{ wtf.form_field(form.camiseta) }}
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+{% endblock %}
