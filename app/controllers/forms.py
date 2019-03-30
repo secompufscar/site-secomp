@@ -3,7 +3,7 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
-from app.controllers.functions import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas, get_participantes_sem_kit, get_opcoes_cotas_patrocinadores,\
+from app.controllers.functions import get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_participantes, get_opcoes_camisetas, get_participantes_sem_kit,\
     erro_curso_existe, erro_instituicao_existe, erro_cidade_existe
 from app.controllers.constants import *
 
@@ -108,11 +108,13 @@ class ComprovanteForm(FlaskForm):
             FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
         ])
 
-
-class VendaKitForm(FlaskForm):
-    participante = SelectField("Inscrições que não compraram o kit", choices=get_participantes_sem_kit(), id="camiseta", coerce=int)
+class AlteraCamisetaForm(FlaskForm):
+    participante = SelectField("Selecione o usuário", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
 
+class VendaKitForm(FlaskForm):
+    participante = SelectField("Inscrições na SECOMP 2019", choices=get_participantes(), id="participante", coerce=int)
+    camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
 
 
 
