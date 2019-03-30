@@ -499,3 +499,10 @@ def alterar_camiseta():
             return render_template('alterar_camiseta.html', participante=participante, camiseta=camiseta, sucesso='n', form=form)
     return render_template('alterar_camiseta.html', form=form)
 
+@app.route('/constr')
+def constr():
+    return render_template('em_constr.html', title='Página em construção')
+
+@app.route('/sobre')
+def sobre():
+    return render_template('sobre.html', title='Sobre a Secomp')
