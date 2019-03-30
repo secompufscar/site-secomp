@@ -422,6 +422,25 @@ def estoque_camisetas_por_tamanho(tamanho):
     else:
         abort(403)
 
+
+@app.route('/cadastro-patrocinio', methods=['POST', 'GET'])
+@login_required
+def cadastro_patrocinio():
+    form = PatrocinadorForm(request.form)
+
+    if form.validate_on_submit():
+        patrocinador = Patrocinador(nome_empresa=form.nome_empresa.data,
+            logo=form.logo.data, ativo_site=form.ativo_site.data, id_cota=form.id_cota.data,
+            link_website=form.link_website.data,
+            ultima_atualizacao_em=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+        db.session.add(patrocinador)
+        db.session.flush()
+        db.session.commit()
+        return redirect(url_for('cadastro-patrocinio'))
+    else:
+        return render_template('cadastro_patrocinio.html', form=form)
+
 @app.route('/venda-kits', methods=['POST', 'GET'])
 @login_required
 def vender_kits():
@@ -429,13 +448,15 @@ def vender_kits():
     form = VendaKitForm(request.form)
     if (form.validate_on_submit() and form.participante.data != None):
         camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
-        if(camiseta.quantidade_restante > 0):
-            participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
+        participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
+        if(participante.pagamento):
+            return render_template('venda_de_kits.html', alerta="Kit já comprado!", form=form)
+        elif(camiseta.quantidade_restante > 0):
             participante.id_camiseta = form.camiseta.data
             participante.pacote = True
             participante.pagamento = True
             camiseta.quantidade_restante = camiseta.quantidade_restante - 1
-            db.session.add(camiseta.quantidade_restante)
+            db.session.add(camiseta)
             db.session.add(participante)
             db.session.commit()
             return render_template('venda_de_kits.html', alerta="Compra realizada com sucesso!", form=form)
