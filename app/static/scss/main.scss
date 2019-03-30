@@ -52,6 +52,10 @@ header{
 	@include main-gradient;
 }
 
+#video {
+	height: 80vh;
+}
+
 .carousel{ 
 	&-item {
 	    height: 100vh;
@@ -61,7 +65,7 @@ header{
 	}
 }
 .dropdown-menu a {
-	font-size: 11px;
+	font-size: 12px;
 }
 // .dropdown{
 // 	&:hover > &-menu {
