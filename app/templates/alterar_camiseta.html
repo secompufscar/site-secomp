@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 {% block content %}
-<form action="/alterar-camiseta">
+<form method="POST" action="/alterar-camiseta">
     {% if sucesso == 's': %}
         <h1>Alteração efetuada com sucesso.</h1>
     {% elif sucesso == 'n' %}

@@ -456,13 +456,12 @@ def sorteando():
     sorteado = sorteado[randint(1, sorteado.count()) - 1]
     return render_template('sortear_usuario.html', sorteado=sorteado, sorteando=True)
 
-@app.route('/alterar-camiseta')
+@app.route('/alterar-camiseta', methods=["GET","POST"])
 @login_required
 def alterar_camiseta():
     # <Falta conferir permissões>
     form = AlteraCamisetaForm(request.form)
     if (form.validate_on_submit() and form.participante.data != None):
-        a = a7
         participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
         camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
         if (camiseta.quantidade_restante > 0):
