@@ -2,11 +2,19 @@
 
 {% block content %}
 <div class="container-fluid px-0" >
+<<<<<<< HEAD
 	<section id="carrossel" class="carousel slide" data-ride="carousel">
+=======
+	<section id="carrossel" class="carousel slide" data-ride="carousel" data-interval="80000">
+>>>>>>> 99359e4c1fac04477104ec78247a55b39dec42bb
 		<ol class="carousel-indicators">
 			<li data-target="#carrossel" data-slide-to="0" class="active"></li>
 			<li data-target="#carrossel" data-slide-to="1"></li>
 			<li data-target="#carrossel" data-slide-to="2"></li>
+			<li data-target="#carrossel" data-slide-to="3"></li>
+			<li data-target="#carrossel" data-slide-to="4"></li>
+			<li data-target="#carrossel" data-slide-to="5"></li>
+			<li data-target="#carrossel" data-slide-to="6"></li>
 		</ol>
 		<div class="carousel-inner">
 			<div class="carousel-item active">
@@ -22,9 +30,21 @@
 				<div class="d-flex align-items-center justify-content-center min-vh-100">
 					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/car2.jpg')}}">
 					<div class="carousel-caption d-none d-md-block">
+<<<<<<< HEAD
 						<h1>Título 2</h1>
 						<p>Tellus tempus senectus ante nostra netus, nisl ultrices ultricies tempor gravida, malesuada natoque magnis
 							ridiculus, neque porttitor magna. Cras cum risus ut natoque ornare, magnis hymenaeos lorem conubia.</p>
+=======
+							
+						<div class="row desc align-items-center justify-content-center">
+							<div class="col-2 ">
+									<i class="fa fa-10x fa-microphone-alt mb-4"></i> 
+							</div>
+							<div class="col-4 ">
+									<h1 class="display-2">Palestras</h1>
+							</div>
+						</div>
+						<h3 align="justify-content-center"> Todas as palestras da SECOMP são abertas ao público, sem necessidade de inscrição no evento. Entretanto, para receber o certificado de participação, você deve se inscrever em nosso site e realizar o credenciamento durante o evento. </h3>
 					</div>
 				</div>
 			</div>
@@ -32,20 +52,96 @@
 				<div class="d-flex align-items-center justify-content-center min-vh-100">
 					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/car3.jpg')}}">
 					<div class="carousel-caption d-none d-md-block">
-						<h1>Título 3</h1>
-						<p>Tellus tempus senectus ante nostra netus, nisl ultrices ultricies tempor gravida, malesuada natoque magnis
-							ridiculus, neque porttitor magna. Cras cum risus ut natoque ornare, magnis hymenaeos lorem conubia.</p>
+							
+						<div class="row desc align-items-center justify-content-center">
+							<div class="col-2 ">
+									<i class="fas fa-10x fa-comments"></i>
+							</div>
+							<div class="col-8">
+									<h1 class="display-3">Mesas-Redondas</h1>
+							</div>
+						</div>
+						<h3 align="justify-content-center"> As mesas-redondas são abertas a todos os participantes, mas lembre-se que para receber o certificado de participação, você deve realizar a sua inscrição no evento.  </h3>
+					</div>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<div class="d-flex align-items-center justify-content-center min-vh-100">
+					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/car3.jpg')}}">
+					<div class="carousel-caption d-none d-md-block">
+							
+						<div class="row desc align-items-center justify-content-center">
+							<div class="col-2 ">
+									<i class="fas fa-10x fa-briefcase"></i>
+							</div>
+							<div class="col-6 ">
+									<h1 class="display-2">Workshops</h1>
+							</div>
+						</div>
+						<h3 align="justify-content-center">Os workshops são abertos ao público, mas você precisa realizar a inscrição e levar 1kg de alimento não-perecível para cada workshop que participar. Os alimentos recolhidos serão doados a instituições de caridade de São Carlos.  </h3>
+>>>>>>> 99359e4c1fac04477104ec78247a55b39dec42bb
+					</div>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<div class="d-flex align-items-center justify-content-center min-vh-100">
+					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/car3.jpg')}}">
+					<div class="carousel-caption d-none d-md-block">
+							
+						<div class="row desc align-items-center justify-content-center">
+							<div class="col-2">
+									<i class="fas fa-10x fa-flag"></i>
+							</div>
+							<div class="col-8">
+									<h1 class="display-3">Capture The Flag</h1>
+							</div>
+						</div>
+						<h3 align="justify-content-center"> A SECOMP UFSCar conta com uma competição chamada Capture The Flag (CTF), constituída de desafios que envolvem engenharia reversa, criptografia, computação forense, networking, web hacking e outros temas presentes na área de segurança. </h3>
+					</div>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<div class="d-flex align-items-center justify-content-center min-vh-100">
+					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/car3.jpg')}}">
+					<div class="carousel-caption d-none d-md-block">
+							
+						<div class="row desc align-items-center justify-content-center">
+							<div class="col-2">
+									<i class="fas fa-10x fa-user-tie"></i>
+							</div>
+							<div class="col-8">
+									<h1 class="display-2">Palestras Empresariais</h1>
+							</div>
+						</div>
+						<h3 align="justify-content-center">Venha conhecer mais sobre algumas das maiores empresas de tecnologia da região. De olho em uma vaga de estágio? Essa pode ser a sua chance! </h3>
+					</div>
+				</div>
+			</div>
+			<div class="carousel-item">
+				<div class="d-flex align-items-center justify-content-center min-vh-100">
+					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/car3.jpg')}}">
+					<div class="carousel-caption d-none d-md-block">
+							
+						<div class="row desc align-items-center justify-content-center">
+							<div class="col-2">
+									<i class="fas fa-10x fa-mouse-pointer"></i>
+							</div>
+							<div class="col-6">
+									<h1 class="display-2">Minicursos</h1>
+							</div>
+						</div>
+						<h3 align="justify-content-center"> Os minicursos são planejados para poucas pessoas e com uma pequena duração. Mas fazem muita diferença na forma como o assunto é abordado. Fique ligado(a) em nosso site e não perca essa oportunidade! </h3>
 					</div>
 				</div>
 			</div>
 		</div>
 		<a class="carousel-control-prev" href="#carrossel" role="button" data-slide="prev">
 			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="sr-only">Previous</span>
+			<span class="sr-only">Anterior</span>
 		</a>
 		<a class="carousel-control-next" href="#carrossel" role="button" data-slide="next">
 			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
+			<span class="sr-only">Próximo</span>
 		</a>
 	</section>
 </div>
