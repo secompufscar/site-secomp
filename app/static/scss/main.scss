@@ -28,16 +28,24 @@ $secomp-colors: map-merge(
 	}
 }
 
+
 // Rules
 header{
 	@include main-gradient;
 	a{
+		font: {
+			weight: 600;
+		}
 		color: $white;
 		@include main-font;
 		&:hover {
 			color: $white70;
 		}
 	}
+}
+
+.small {
+	font-size: 14px;
 }
 
 .bg-gradient-secomp{
@@ -52,17 +60,19 @@ header{
 	    text-shadow: 1px 1px 5px black;
 	}
 }
-
-.dropdown{
-	&:hover > &-menu {
-	    display: block;
-	}
+.dropdown-menu a {
+	font-size: 11px;
 }
+// .dropdown{
+// 	&:hover > &-menu {
+// 	    display: block;
+// 	}
+// }
 
-.dropdown > .dropdown-toggle:active {
-    /*Without this, clicking will make it sticky*/
-    pointer-events: none;
-}
+// .dropdown > .dropdown-toggle:active {
+//     /*Without this, clicking will make it sticky*/
+//     pointer-events: none;
+// }
 
 footer {
 	background-color: $dark-gray;
@@ -83,6 +93,6 @@ footer {
 }
 
 #nav-logo {
-	object-fit: fill;
-	padding: 1px;
+	object-fit: contain;
+	// padding: 1px;
 } 
