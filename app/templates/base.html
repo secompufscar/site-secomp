@@ -22,6 +22,7 @@
 <link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='fa/css/all.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
@@ -107,7 +108,7 @@
         <div class="row">
             <div class="col-md-6 align-self-left">
                 {# Expandir variável secomp com nome dos membros #}
-                <p align="justify">Desenvolvido por 
+                <p class="text-justify">Desenvolvido por 
                 {% for name in secomp|sort %}
                 {% if not loop.last %}
                 {{ name }}, 
@@ -120,7 +121,7 @@
             </div>
             <div class="col-md-6 align-self-right">
                 {# Expandir variável para mantenedores atuais #}
-                <p align="justify">Mantido por 
+                <p class="text-justify">Mantido por 
                 {% for name in secomp_now|sort %}
                 {% if not loop.last %}
                 {{ name }}, 
