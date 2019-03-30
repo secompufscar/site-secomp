@@ -464,12 +464,12 @@ def vender_kits():
             return render_template('venda_de_kits.html', alerta="Sem estoque para " + camiseta.tamanho, form=form)
     return render_template('venda_de_kits.html', alerta="Preencha o formulário abaixo", form=form)
 
-@app.route('/sortear')
+@app.route('/fazer-sorteio')
 @login_required
 def sortear():
     return render_template('sortear_usuario.html', sorteando=False)
 
-@app.route('/fazer-sorteio')
+@app.route('/fazer-sorteio/do')
 @login_required
 def sorteando():
     # <Falta conferir permissões>
