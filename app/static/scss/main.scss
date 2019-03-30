@@ -1,0 +1,80 @@
+// Main scss for secomp web site
+
+// Variables
+$secomp1: #008cb5 !default;
+$secomp2: #00cfa1 !default;
+$white: #fff !default;
+$dark-gray: #212121 !default
+
+$secomp-colors: () !default;
+$secomp-colors: map-merge(
+	(
+	"secomp1": $secomp1,
+	"secomp2": $secomp2	
+	),
+	$secomp-colors
+);
+
+// Mixins
+@mixin main-gradient{
+	background-image: linear-gradient(to right, $secomp1, $secomp2);
+}
+
+@mixin main-font{
+	font:{
+		size: 14.5px;
+		family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
+	}
+}
+
+// Rules
+header{
+	@include main-gradient;
+	a{
+		color: $white;
+		@include main-font;	
+	}
+}
+
+.bg-gradient-secomp{
+	@include main-gradient;
+}
+
+.carousel{ 
+	&-item {
+	    height: 100vh;
+	    width:  100vw;
+	    object-fit: fill;
+	    text-shadow: 1px 1px 5px black;
+	}
+}
+
+.dropdown{
+	&:hover > &-menu {
+	    display: block;
+	}
+}
+
+.dropdown > .dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}
+
+footer {
+	background-color: $dark-gray;
+	ul li{
+		padding: 1%;	
+		a{
+			color: $white;
+			&:hover{
+				color: $secomp2;
+			}
+		}
+	}
+}
+
+#barrinha {
+	@include main-gradient;
+	padding: 0.5%;
+}
+
