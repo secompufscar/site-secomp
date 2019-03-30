@@ -47,11 +47,10 @@
                 {# TODO colocar uma lógica Jinja para usuário logado? #}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">HOME</a>
+                        <a class="nav-link" href="{{ url_for('index') }}"><i class="mr-1 fas fa-home"></i> HOME</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
-                            SECOMP
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp"><i class="fas fa-heart"></i> SECOMP
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ url_for('constr') }}">SOBRE O EVENTO</a>
@@ -62,8 +61,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
-                            EVENTOS
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos"><i class="mr-1 fas fa-calendar-alt"></i> EVENTOS
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ url_for('constr') }}">CRONOGRAMA</a>
@@ -72,7 +70,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('constr') }}">FAQ</a>
+                        <a class="nav-link" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-question-circle"></i> FAQ</a>
                     </li>
                     {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
                 </ul>
