@@ -102,7 +102,7 @@ class AlteraCamisetaForm(FlaskForm):
 
 
 class VendaKitForm(FlaskForm):
-    participante = SelectField("Inscrições que não compraram o kit", choices=get_participantes_sem_kit(), id="participante", coerce=int)
+    participante = SelectField("Inscrições que não compraram o kit", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
 
 
