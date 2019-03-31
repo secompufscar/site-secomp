@@ -1,33 +1,6 @@
 // Main scss for secomp web site
-
-// Variables
-$secomp1: #008cb5 !default;
-$secomp2: #00cfa1 !default;
-$white: #fff !default;
-$white70: rgba(255, 255, 255, 0.7) !default;
-$dark-gray: #212121 !default;
-
-$secomp-colors: () !default;
-$secomp-colors: map-merge(
-	(
-	"secomp1": $secomp1,
-	"secomp2": $secomp2	
-	),
-	$secomp-colors
-);
-
-// Mixins
-@mixin main-gradient{
-	background-image: linear-gradient(to right, $secomp1, $secomp2);
-}
-
-@mixin main-font{
-	font: {
-		size: 14.5px;
-		family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
-	}
-}
-
+@import "variables";
+@import "mixins";
 
 // Rules
 header{
