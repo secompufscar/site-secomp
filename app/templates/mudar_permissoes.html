@@ -19,4 +19,24 @@
           <button type="submit" class="btn btn-primary">Alterar</button>
         </form>
     </div>
+
+    <script  type="text/javascript">
+    $(function () {
+      $("#usuario").select2();
+      $("#permissoes").select2();
+    });
+    $('select').select2({
+    width: '100%',
+    });
+    $('select').select2({
+      "language": {
+       "noResults": function(){
+           return "Nenhum resultado encontrado";
+       }
+   },
+    escapeMarkup: function (markup) {
+        return markup;
+    }
+    });
+    </script>
 {% endblock %}

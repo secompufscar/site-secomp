@@ -136,16 +136,3 @@ def estoque_camisetas_por_tamanho(tamanho):
         return render_template('controle_camisetas.html', camisetas=camisetas, usuario=current_user)
     else:
         abort(403)
-
-@app.route('/admin/permissoes')
-@login_required
-def permissoes():
-    if current_user.is_authenticated and current_user.permissao > 0:
-        form = AlterarPermissaoAdmin(request.form)
-        if form.validate_on_submit():
-            usuario = db.session.query(Usuario).filter_by(id=form.usuario.data).first()
-            usuario.permissao = form.permissao.data
-            db.session.add(usuario)
-            db.session.commit()
-        return render_template('mudar_permissoes.html', form=form)
-    return redirect(url_for('login'))
