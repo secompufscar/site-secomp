@@ -85,6 +85,6 @@ class ContatoForm(FlaskForm):
 
 class AlterarPermissaoAdmin(FlaskForm):
     usuario = SelectField('Usuario', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED)], choices=get_opcoes_usuarios_permissao(), coerce=int)
+        message=ERRO_INPUT_REQUIRED)], choices=get_opcoes_usuarios_permissao(), coerce=int, id="usuario")
     permissoes = SelectField('Permissoes', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED)], choices=get_opcoes_permissoes(), coerce=int)
+        message=ERRO_INPUT_REQUIRED)], choices=get_opcoes_permissoes(), coerce=int, id="permissoes")
