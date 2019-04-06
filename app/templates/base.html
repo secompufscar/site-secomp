@@ -1,40 +1,152 @@
-<!DOCTYPE html>
-<!-- this will be the main template for other pages -->
-<html>
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{# Base.html #}
+{% extends "bootstrap/base.html" %}
+{# TODO: navbar ajeitar a maneira collapsed da navbar #}
 
-        <!-- bootstrap css -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-        <link rel="shortcut icon" href="{{url_for('static', filename='secomp.png')}}" type="image/x-icon"/>
-        <link rel="icon" href="{{url_for('static', filename='secomp.png')}}" type="image/x-icon"/>
-        <link href="{{url_for('static', filename='css/select2.css')}}" rel="stylesheet" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
-        <script src="{{url_for('static', filename='js/select2.js')}}"></script>
-        <script src="{{url_for('static', filename='js/pt-BR.js')}}" type="typescript"></script>
-        {% if title %}
-            <title>{{title}}</title>
-        {% else %}
-            <title>SECOMP UFSCar</title>
+{% block html_attribs %} lang="pt-br" {% endblock %}
+{% block head %}
+{% block metas %}
+{{ super() }}
+<meta charset="utf-8"/>
+<meta http-equiv="x-ua-compatible" content="ie=edge"/>
+<meta name="description" content="{{secompEdition}} Semana da Computação UFSCar"/>
+<meta name="organization" content="SECOMP UFSCar"/>
+{% endblock %}
 
-        {% endif %}
-    </head>
+{% block headscripts %}
+<script defer src="{{ url_for('static', filename='fa/all.js') }}"></script>
+{% endblock %}
 
-    <body>
+<title>{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}</title>
+{# styles globais #}
+{% block styles %}
+<link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='bs/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='fa/css/all.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
 
+{% block favicon %}
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo-colorida.png') }}"/>
+{% endblock %}
+{% endblock %}
 
-      {% block content %}
-                {% endblock %}
+{% block body %}
+{% block navbar %}
+<header>
+    <nav class="navbar shadow fixed-top navbar-expand-lg bg-gradient-secomp">
+        <div class="container-fluid">
+            {# Marca d'água para a home  #}
+            <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img id="nav-logo" src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
+            {# TODO mudar o aria #}
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse mr-auto navbar-collapse" id="navbarItens">
+                {# TODO colocar uma lógica Jinja para active...? #}
+                {# TODO colocar uma lógica Jinja para usuário logado? #}
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}"><i class="mr-1 fas fa-home"></i> HOME</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp"><i class="mr-1 fas fa-heart"></i> SECOMP
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ url_for('sobre') }}"><i class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-users"></i> EQUIPE</a>
+                            {# Colocar como um link separado? #}
+                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-comments"></i> CONTATO</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos"><i class="mr-1 fas fa-calendar-alt"></i> EVENTOS
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-flag"></i> CTF</a>
+                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-question-circle"></i> FAQ</a>
+                    </li>
+                    {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
+                </ul>
 
+                {# TODO: Corrigir o espaçamento #}
+                <!-- Lado direito da Navbar -->
+                <div class="navbar-nav">
+                    {# TODO: criar lógica baseada no bd #}
+                    {% if current_user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{{ url_for('dashboard_usuario') }}">Participante</a>
+                    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Sair</a>
+                    {% else %}
+                    <a class="nav-item nav-link" href="{{ url_for('login') }}"><i class="mr-1 fas fa-user"></i> ENTRAR</a>
+                    <a class="nav-item nav-link" href="{{ url_for('cadastro') }}"><i class="mr-1 fas fa-address-card"></i> INSCREVER</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+{% endblock %}
 
-      <!-- bootstrap javascript -->
-      <script src="{{url_for('static', filename='js /jquery-3.3.1.slim.min.js')}}"></script>
-        <!-- bootstrap javascript -->
-        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    </body>
-</html>
+<main>
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+</main>
+
+{# Rascunho de rodapé #}
+{% block footer %}
+<footer class="navbar small pt-5 text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 align-self-left">
+                <p class="text-justify">Desenvolvido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Igor Lúcio,
+                    Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Matheus Victorello, Nathan Oliveira e Victória De Martini.
+                </p>
+
+            </div>
+            <div class="col-md-6 align-self-right">
+                <p class="text-justify">Atualmente mantido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Igor Lúcio,
+                    Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Matheus Victorello, Nathan Oliveira e Victória De Martini.
+                </p>
+                </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <ul class="list-unstyled list-inline social text-center">
+            <li class="list-inline-item"><a href="https://facebook.com/secompufscar" target="blank"><i class="fab fa-2x fa-facebook-f"></i></a></li>
+            <li class="list-inline-item"><a href="https://twitter.com/secompufscar" target="blank"><i class="fab fa-2x fa-twitter"></i></a></li>
+            <li class="list-inline-item"><a href="https://www.youtube.com/channel/UChj1pycWmHOJDeJkDf6RraA" target="blank"><i class="fab fa-2x fa-youtube"></i></a></li>
+            <li class="list-inline-item"><a href="https://instagram.com/secompufscar" target="blank"><i class="fab fa-2x fa-instagram"></i></a></li>
+            <li class="list-inline-item"><a href="mailto:{{ secomp_email }}"><i class="fa fa-2x fa-envelope"></i></a></li>
+        </ul>
+    </div>
+
+	<div class="container">
+        <div class="col-md-12 text-center">
+            <p>
+             Departamento de Computação <br/>
+             UFSCar - Universidade Federal de São Carlos <br>
+             Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara - São Carlos/ SP - CEP 13565-905
+            </p>
+        </div>
+	</div>
+</footer>
+
+<div id="barrinha"></div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
+
+{% endblock %}
+{% endblock %}

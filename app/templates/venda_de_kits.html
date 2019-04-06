@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <br>
+        <center><h3>Venda de KITs</h3></center>
+        <hr>
+        <form method="POST" action="/venda-kits">
+            <div class="form-group">
+                <div class="alert alert-info" role="alert">
+                    {{alerta}}
+                </div>
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.participante) }}
+                {{ wtf.form_field(form.camiseta) }}
+                <center>
+                    <button type="submit" class="btn btn-primary">Confirmar venda</button>
+                </center>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+
+{% endblock %}
