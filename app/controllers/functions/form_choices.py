@@ -71,3 +71,18 @@ def get_opcoes_usuarios_permissao():
 
 def get_opcoes_permissoes():
     return [(0, "Super Admin"), (1, "JF")]
+
+
+def get_opcoes_cotas_patrocinadores():
+    try:
+        cotas_data = db.session.query(CotaPatrocinio).filter_by().order_by(
+            CotaPatrocinio.nome).all()
+        cotas = []
+
+        for cota in cotas_data:
+            info_cota = (cota.id, cota.nome)
+            cotas.append(info_cota)
+
+        return cotas
+    except Exception as e:
+        return None

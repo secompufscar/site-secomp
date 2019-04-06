@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block navbar %}{% endblock %}
-
 {% block content %}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -20,8 +18,8 @@
         }
     })
   </script>
-    <h1 class="text-center">CADASTRO</h1>
-    <div>
+    <div class="container pad-inicio">
+        <h1 class="text-center">CADASTRO</h1>
         <form method="POST" action="/cadastro">
           {{ form.hidden_tag() }}
           <table class=table border=0>

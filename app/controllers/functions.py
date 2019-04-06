@@ -30,7 +30,7 @@ def enviarEmailConfirmacao(app, email, token):
 
 def enviarEmailDM(app, nome, email, mensagem):
     mail = Mail(app)
-    msg = Message(f'Mensagem de {nome}', 
+    msg = Message(f'Mensagem de {nome}',
             sender=app.config['MAIL_USERNAME'], recipients=app.config['MAIL_DM'])
     msg.body = f'{nome}\nEmail: {email}\n\n{mensagem}'
 
@@ -97,7 +97,7 @@ def get_opcoes_instituicoes():
         instituicoes = db.session.query(Instituicao).filter_by().all()
         info_instituicoes = []
         for instituicao in instituicoes:
-            info = (instituicao.id, instituicao.nome)
+            info = (instituicao.id, icurso_existe, erro_instituicao_nstituicao.nome)
             info_instituicoes.append(info)
         return info_instituicoes
     except Exception as e:
@@ -133,30 +133,6 @@ def get_opcoes_camisetas():
         print(e)
         return None
 
-def get_participantes():
-    try:
-        query = db.session.query(Participante)
-        participantes = []
-        for p in query:
-            info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome)
-            participantes.append(info)
-        return participantes
-    except Exception as e:
-        print(e)
-        return None
-
-def get_participantes_sem_kit():
-    try:
-        query = db.session.query(Participante).filter_by(pacote=0)
-        participantes = []
-        for p in query:
-            info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome)
-            participantes.append(info)
-        return participantes
-    except Exception as e:
-        print(e)
-        return None
-
 def get_dicionario_usuario(usuario):
     try:
         data = str(usuario.data_nascimento).split("-")
@@ -173,7 +149,7 @@ def get_dicionario_usuario(usuario):
     except Exception as e:
         print(e)
         return None
-
+curso_existe, erro_instituicao_
 
 def get_score_evento(edicao):
     return 10000
@@ -203,7 +179,7 @@ def get_dicionario_eventos_participante(base_url):
         evento = db.session.query(Evento).filter_by(
             edicao=EDICAO_ATUAL).first()
         if ja_participa == False:
-            if agora >= evento.inicio_inscricoes_evento and agora < evento.fim_inscricoes_evento:
+            if agora >= evento.iniciocurso_existe, erro_instituicao__inscricoes_evento and agora < evento.fim_inscricoes_evento:
                 inscricao = 1
             else:
                 inscricao = 2
@@ -247,67 +223,3 @@ def get_dicionario_info_evento(edicao):
     except Exception as e:
         print(e)
         return None
-
-
-def get_opcoes_cotas_patrocinadores():
-    try:
-        cotas_data = db.session.query(CotaPatrocinio).filter_by().order_by(
-            CotaPatrocinio.nome).all()
-        cotas = []
-
-        for cota in cotas_data:
-            info_cota = (cota.id, cota.nome)
-            cotas.append(info_cota)
-
-        return cotas
-    except Exception as e:
-        return None
-
-
-def erro_curso_existe():
-
-    def _erro_curso_existe(form, field):
-        cursos = db.session.query(Curso).filter(Curso.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
-        if cursos is not None:
-            raise ValidationError(ERRO_CURSO_EXISTE)
-
-    return _erro_curso_existe
-
-
-def erro_instituicao_existe():
-
-    def _erro_instituicao_existe(form, field):
-        instituicoes = db.session.query(Instituicao).filter(Instituicao.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
-        if instituicoes is not None:
-            raise ValidationError(ERRO_INSTITUICAO_EXISTE)
-
-    return _erro_instituicao_existe
-
-
-def erro_cidade_existe():
-
-    def _erro_cidade_existe(form, field):
-        cidades = db.session.query(Cidade).filter(Cidade.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
-        if cidades is not None:
-            raise ValidationError(ERRO_CIDADE_EXISTE)
-
-    return _erro_cidade_existe
-
-
-def cadastra_objeto_generico(objeto):
-    try:
-        db.session.add(objeto)
-        db.session.flush()
-        db.session.commit()
-        return objeto
-
-    except Exception as e:
-        print(e)
-        return None
-
-
-def verifica_outro_escolhido(campo, objeto):
-    if campo.data == 0:
-        return cadastra_objeto_generico(objeto).id
-    else:
-        return campo.data
