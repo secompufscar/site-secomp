@@ -149,7 +149,62 @@
 	</div>
 
 	{# Texto adicional para testar espaçamento #}
-	{{ lipsum() }}
+{{ lipsum() }}
+
 </div>
+
+<footer class="navbar small pt-5 text-white">
+	<div class="container">
+		<div class="row">
+				<div class="col-md-4">
+					<ul class="list-unstyled list-inline social text-center">
+						<i class="fas fa-4x fa-calendar-alt"></i>
+							<h5><strong>QUANDO?</strong></h5>
+								<p><b>09 a 13 de Setembro</b></p>
+					</ul>	
+			</div>
+		
+		<div class="col-md-4">
+				<ul class="list-unstyled list-inline social text-center">
+					<i class="fas fa-4x fa-map-marker-alt"></i>
+						<h5><strong>ONDE?</strong></h5>
+							<p><b>Anfiteatro Bento Prado Jr. e Departamento de Computação, na Universidade Federal de São Carlos</b></p>
+				</ul>
+		</div>
+	<div class="col-md-4">
+			<ul class="list-unstyled list-inline social text-center">
+				<i class="fas fa-4x fa-question-circle"></i>
+				<h3><strong>DÚVIDAS?</strong></h3>
+		<p><b>Consulte mais informações no <a href="/2018/faq">FAQ</a> e, se necessário, entre em contato com a organização</b></p>
+				</ul>
+	</div>
+	</div>
+</div>
+
+</footer>
+<div class="container text-center mt-4 mb-4">
+						<h2>Realização</h2>
+		<div class="row">
+			<div class="col-md-4">
+					<p align="center">
+							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-secomp.jpg')}}">	
+						</p>
+			</div>
+			<div class="col-md-4">
+					<p align="center">
+							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">	
+						</p>
+			</div>
+			<div class="col-md-4">
+					<p align="center">
+							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">	
+						</p>
+			</div>
+		</div>
+					
+					
+</div>
+	
+
 
 {% endblock %}
