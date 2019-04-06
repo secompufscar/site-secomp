@@ -37,19 +37,19 @@ header{
 	    text-shadow: 1px 1px 5px black;
 	}
 }
-.dropdown-menu a {
-	font-size: 12px;
-}
-// .dropdown{
-// 	&:hover > &-menu {
-// 	    display: block;
-// 	}
-// }
+ .dropdown{
+ 	&:hover > &-menu {
+ 	    display: block;
+ 	}
 
-// .dropdown > .dropdown-toggle:active {
-//     /*Without this, clicking will make it sticky*/
-//     pointer-events: none;
-// }
+	&-menu a {
+		font-size: 12px;
+	}
+	> &-toggle:active {
+	     /*Without this, clicking will make it sticky*/
+	     pointer-events: none;
+	}
+ }
 
 .desc {
 	padding-bottom: 10%;
