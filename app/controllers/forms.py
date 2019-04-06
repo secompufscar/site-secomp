@@ -3,8 +3,9 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
-from app.controllers.functions import get_opcoes_cotas_patrocinadores, get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_participantes, get_opcoes_camisetas, get_participantes_sem_kit,\
-    erro_curso_existe, erro_instituicao_existe, erro_cidade_existe
+from app.controllers.functions.form_choices import get_opcoes_cotas_patrocinadores, get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas
+from app.controllers.functions.custom_form_validators import erro_curso_existe, erro_instituicao_existe, erro_cidade_existe, so_letras, email_existe
+from app.controllers.functions.aux import get_participantes, get_participantes_sem_kit
 from app.controllers.constants import *
 
 
