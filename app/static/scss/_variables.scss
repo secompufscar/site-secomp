@@ -1,0 +1,15 @@
+// Variables
+$secomp1: #008cb5 !default;
+$secomp2: #00cfa1 !default;
+$white: #fff !default;
+$white70: rgba(255, 255, 255, 0.7) !default;
+$dark-gray: #212121 !default;
+
+$secomp-colors: () !default;
+$secomp-colors: map-merge(
+	(
+	"secomp1": $secomp1,
+	"secomp2": $secomp2	
+	),
+	$secomp-colors
+);
