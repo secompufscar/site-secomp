@@ -506,3 +506,7 @@ def constr():
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html', title='Sobre a Secomp')
+
+@app.route('/equipe')
+def equipe():
+    return render_template('equipe.html', title='Equipe', secomp_now=secomp_now[0])
