@@ -1,45 +1,52 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
-{% block content %}
+
+{% block styles %}
+{{ super() }}
 <style>
-  body{
+body{
     padding:50px;
-  }
+}
   .bloco-oculto{
-    display: none;
+      display: none;
   }
   #menu_usuario, #menu_eventos{
-    padding-right: 15px;
-    padding-left: 15px;
-    font-size:30px;
+      padding-right: 15px;
+      padding-left: 15px;
+      font-size:30px;
   }
   .navbar{
-    background-color: #d9d9d9;
+      background-color: #d9d9d9;
   }
   .navbar-brand{
-    color:black;
+      color:black;
   }
   .inscrever{
-    background-color:#00cc00;
-    color:white;
+      background-color:#00cc00;
+      color:white;
   }
   .titulo-info{
-    font-weight: bold;
-    font-size:17px;
-    float: left;
-    margin-right:5px;
+      font-weight: bold;
+      font-size:17px;
+      float: left;
+      margin-right:5px;
   }
   .info{
-    font-size:17px;
+      font-size:17px;
   }
 
 }
 </style>
-<nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" id="menu_usuario" href="#" onclick="muda1()">Informações do Usuario</a>
-  <a class="navbar-brand" id="menu_eventos" href="#" onclick="muda2()">Eventos</a>
-</nav><br>
+{% endblock %}
 
+{% block navbar %}
+<nav class="navbr navbar-expand-lg">
+    <a class="navbar-brand" id="menu_usuario" href="#" onclick="muda1()">Informações do Usuario</a>
+    <a class="navbar-brand" id="menu_eventos" href="#" onclick="muda2()">Eventos</a>
+</nav><br>
+{% endblock %}
+
+{% block content %}
   <div id="conteudo"></div>
   <div class="bloco-oculto" id="eventos">
 {% for evento in eventos: %}
@@ -64,6 +71,7 @@
     <div class="info"><div class="titulo-info">Cidade:</div> {{info_usuario.cidade}}</div><hr>
     <button id="editar-info" onclick="muda3()">Editar Informações</button>
     <button onclick="location.href='/alterar-senha'">Alterar Senha</button>
+    <button onclick="location.href='/enviar-comprovante'">Enviar Comprovante de Pagamento</button>
   </div>
   <div class="bloco-oculto" id="editar-usuario">
     <form method="POST" action="/dashboard-usuario">
@@ -76,52 +84,59 @@
       {{ wtf.form_field(form.curso) }}
       {{ wtf.form_field(form.instituicao) }}
       {{ wtf.form_field(form.cidade) }}
-
-      <button onclick="muda1()">Voltar</button>
-      <button id="salvar" onclick="muda4()">Salvar</button>
+		    <button onclick="muda1()">Voltar</button>
+		    <button id="salvar" onclick="muda4()">Salvar</button>
+		</div>
+		<div id="segunda-etapa">
+		    <h2>Digite sua senha para atualizar seus dados</h2>
+		    {{ wtf.form_field(form.senha) }}
+		    <button onclick="muda3()">Voltar</button>
+		    <button type="submit">Confirmar Senha</button>
+		</div>
+	    </form>
+	</div>
     </div>
-    <div id="segunda-etapa">
-    <h2>Digite sua senha para atualizar seus dados</h2>
-      {{ wtf.form_field(form.senha) }}
-      <button onclick="muda3()">Voltar</button>
-      <button type="submit">Confirmar Senha</button>
-    </div>
-    </form>
-  </div>
-  <script>
-  $('#conteudo').html($('#info-usuario').html());
-  $('#menu_usuario').css("background-color", "black");
-  $('#menu_usuario').css("color", "white");
-  $('#editar-usuario').hide();
-  $('#segunda-etapa').hide();
-    function muda1(){
-      $('#menu_usuario').css("background-color", "black");
-      $('#menu_usuario').css("color", "white");
-      $('#menu_eventos').css("background-color", "transparent");
-      $('#menu_eventos').css("color", "black");
-      $('#conteudo').css("display", "none");
-      $('#conteudo').html($('#info-usuario').html());
-      $('#conteudo').fadeIn(400);
-    }
-    function muda2(){
-      $('#menu_eventos').css("background-color", "black");
-      $('#menu_eventos').css("color", "white");
-      $('#menu_usuario').css("background-color", "transparent");
-      $('#menu_usuario').css("color", "black");
-      $('#conteudo').css("display", "none");
-      $('#conteudo').html($('#eventos').html());
-      $('#conteudo').fadeIn(400);
-    }
-    function muda3() {
-      $('#conteudo').css("display", "none");
-      $('#conteudo').html($('#editar-usuario').html());
-      $('#conteudo').fadeIn(400);
-    }
-    function muda4() {
-      $('#conteudo').css("display", "none");
-      $('#primeira-etapa').hide();
-      $('#conteudo').fadeIn(400);
-      $('#segunda-etapa').show();
-    }
-  </script>
+</div>
 {% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    $('#conteudo').html($('#info-usuario').html());
+$('#menu_usuario').css("background-color", "black");
+$('#menu_usuario').css("color", "white");
+$('#editar-usuario').hide();
+$('#segunda-etapa').hide();
+function muda1(){
+    $('#menu_usuario').css("background-color", "black");
+    $('#menu_usuario').css("color", "white");
+    $('#menu_eventos').css("background-color", "transparent");
+    $('#menu_eventos').css("color", "black");
+    $('#conteudo').css("display", "none");
+    $('#conteudo').html($('#info-usuario').html());
+    $('#conteudo').fadeIn(400);
+}
+function muda2(){
+    $('#menu_eventos').css("background-color", "black");
+    $('#menu_eventos').css("color", "white");
+    $('#menu_usuario').css("background-color", "transparent");
+    $('#menu_usuario').css("color", "black");
+    $('#conteudo').css("display", "none");
+    $('#conteudo').html($('#eventos').html());
+    $('#conteudo').fadeIn(400);
+}
+function muda3() {
+    $('#conteudo').css("display", "none");
+    $('#conteudo').html($('#editar-usuario').html());
+    $('#conteudo').fadeIn(400);
+}
+function muda4() {
+    $('#conteudo').css("display", "none");
+    $('#primeira-etapa').hide();
+    $('#conteudo').fadeIn(400);
+    $('#segunda-etapa').show();
+}
+</script>
+{% endblock%}

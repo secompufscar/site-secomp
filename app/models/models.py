@@ -32,15 +32,16 @@ class Permissao(Enum):
     ADMIN = 1
     SUPER_ADMIN = 2
 
+
 class Atividades(Enum):
     MINICURSO = 0
     WORKSHOP = 1
     PALESTRA = 2
 
+
 class Usuario(db.Model):
     __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True)
-    participantes = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
     primeiro_nome = Column(String(64), nullable=False)
@@ -92,6 +93,7 @@ class Participante(db.Model):
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
+    usuario = db.relationship('Usuario', back_populates='participantes_associados', lazy=True)
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
     back_populates='participantes')
@@ -125,6 +127,7 @@ class Ministrante(db.Model):
     def __repr__(self):
         return self.usuario.nome
 
+
 class Atividade(db.Model):
     __tablename__ = 'atividade'
     id = Column(Integer, primary_key=True)
@@ -144,10 +147,8 @@ class Atividade(db.Model):
     observacoes = Column(String(512), nullable=False)
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
     back_populates='atividades')
-
     participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
     back_populates='atividades')
-
     presencas = db.relationship('Presenca', backref='atividade')
 
     def __repr__(self):
@@ -172,6 +173,7 @@ class Evento(db.Model):
     def __repr__(self):
         return str(self.edicao) + "ª Edição"
 
+
 class Presenca(db.Model):
     __tablename__ = 'presenca'
     id = Column(Integer, primary_key=True)
@@ -180,6 +182,7 @@ class Presenca(db.Model):
     id_participante = Column(Integer, db.ForeignKey('participante.id'), nullable=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     inscrito = Column(Boolean, nullable=False)
+
 
 class MembroDeEquipe(db.Model):
     __tablename__ = 'membro_de_equipe'
@@ -193,6 +196,7 @@ class MembroDeEquipe(db.Model):
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + "<" + self.usuario.email + ">"
 
+
 class Cargo(db.Model):
     __tablename__ = 'cargo'
     id = Column(Integer, primary_key=True)
@@ -200,6 +204,7 @@ class Cargo(db.Model):
     membros = db.relationship('MembroDeEquipe', backref='cargo', lazy=True)
     def __repr__(self):
         return self.nome
+
 
 class Diretoria(db.Model):
     __tablename__ = 'diretoria'
@@ -209,6 +214,7 @@ class Diretoria(db.Model):
     membros = db.relationship('MembroDeEquipe', backref='diretoria', lazy=True)
     def __repr__(self):
         return self.nome
+
 
 class Patrocinador(db.Model):
     __tablename__ = 'patrocinador'
@@ -225,11 +231,13 @@ class Patrocinador(db.Model):
     def __repr__(self):
         return self.nome_empresa
 
+
 class CotaPatrocinio(db.Model):
     __tablename__ = 'cota_patrocinio'
     id = Column(Integer, primary_key=True)
     nome = Column(String(50), nullable=False)
     patrocinadores = db.relationship('Patrocinador', backref='cota_patrocinio', lazy=True)
+
 
 class Curso(db.Model):
     __tablename__ = 'curso'
@@ -239,6 +247,7 @@ class Curso(db.Model):
     def __repr__(self):
         return self.nome
 
+
 class Instituicao(db.Model):
     __tablename__ = 'instituicao'
     id = Column(Integer, primary_key=True)
@@ -247,6 +256,7 @@ class Instituicao(db.Model):
     def __repr__(self):
         return self.nome
 
+
 class Cidade(db.Model):
     __tablename__ = 'cidade'
     id = Column(Integer, primary_key=True)
@@ -254,6 +264,7 @@ class Cidade(db.Model):
     usuarios = db.relationship('Usuario', backref='cidade', lazy=True)
     def __repr__(self):
         return self.nome
+
 
 class Camiseta(db.Model):
     __tablename__ = 'camiseta'

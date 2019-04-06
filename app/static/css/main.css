@@ -1,71 +1,76 @@
-@import url(https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css);
-:palette {
-    /* cores variáveis da paleta */
-    --color0: ;
-    --color1: ;
-    --color2: ;
-    --color3: ;
-    --color4: ;
-    --color5: ;
-    --color6: ;
-    --color7: ;
-    --color8: ;
-    --color9: ;
-    --color10: ;
-    --color11: ;
-    --color12: ;
-    --color13: ;
-    --color14: ;
-    --color15: ;
+.pad-inicio {
+  padding-top: 10vh;
 }
 
-.modal-open .select2-dropdown {
-z-index: 10060;
-}
-.modal-open .select2-close-mask {
-z-index: 10055;
+header {
+  background-image: linear-gradient(to right, #008cb5, #00cfa1);
 }
 
-.help-block{
-  color:#a94442;
-}
-body{
-  padding:50px;
-}
-table, .table{
-  width:80%;
-  margin-left:auto;
-  margin-right:auto;
+header a {
+  font-weight: 600;
+  color: #fff;
+  font-size: 14.5px;
+  font-family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
 }
 
-::after, ::before {
-
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-
-}
-element {
-
-}
-.table > tbody > tr > td, .table > tbody > tr > th, .table >
-tfoot > tr > td, .table > tfoot > tr > th, .table > thead >
-tr > td, .table > thead > tr > th{
-  border: 0px solid black;
+header a:hover {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.table > tbody > tr >.left{
-  padding-right:20px;
-  width: 50%;
-}
-.table > tbody > tr >.right{
-  padding-left:20px;
-  width: 50%;
+.small {
+  font-size: 14px;
 }
 
-.form-group{
-  margin-top:0 ;
-  display: block;
-  position:relative;
+.bg-gradient-secomp {
+  background-image: linear-gradient(to right, #008cb5, #00cfa1);
+}
 
+#video {
+  height: 80vh;
+}
+
+.carousel-item {
+  height: 100vh;
+  width: 100vw;
+  object-fit: fill;
+  text-shadow: 1px 1px 5px black;
+}
+
+.dropdown-menu a {
+  font-size: 12px;
+}
+
+.desc {
+  padding-bottom: 10%;
+}
+
+footer {
+  background-color: #212121;
+}
+
+footer ul li {
+  padding: 1%;
+}
+
+footer ul li a {
+  color: #fff;
+}
+
+footer ul li a:hover {
+  color: #00cfa1;
+}
+
+#barrinha {
+  background-image: linear-gradient(to right, #008cb5, #00cfa1);
+  padding: 0.5%;
+}
+
+#nav-logo {
+  object-fit: contain;
+}
+
+.sobre-img {
+  object-fit: cover;
+  max-height: 70vh;
+  width: 100vh;
 }
