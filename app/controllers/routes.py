@@ -174,7 +174,7 @@ def envio_comprovante():
     return render_template('enviar_comprovante.html', form=form)
 
 
-@app.route('/participante/alterar-dados', methods=['POST', 'GET'])
+@app.route('/participante/enviar-comprovante', methods=['POST', 'GET'])
 @login_required
 def envio_comprovante():
     """
