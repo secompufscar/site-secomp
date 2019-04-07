@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block navbar %}{% endblock %}
-
 {% block content %}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -56,4 +54,3 @@
 <script href="{{url_for('static', filename='js/cadastro.js')}}"></script>
 {% endblock %}
 
-{% block footer %}{% endblock %}
