@@ -14,7 +14,7 @@ secomp_now = [(
     "Daniel Moura",
     "Karina Mayumi",
     "Nathan Oliveira",
-    "Victoria de Martini",
+    "Victória De Martini",
     "Lucas Cruz dos Reis"
 )]
 
@@ -28,7 +28,7 @@ secomp = [(
     "Daniel Moura",
     "Karina Mayumi",
     "Nathan Oliveira",
-    "Victoria de Martini",
+    "Victória De Martini",
     "Lucas Cruz dos Reis"
 )]
 
@@ -39,11 +39,12 @@ secomp_email = "ti@secompufscar.com.br"
 secomp_edition = "X"
 
 # Variáveis usadas nas mensagens de erro no Formulário
-ERRO_INPUT_REQUIRED = "Preencha esse campo"
-ERRO_EMAIL = "Entre com um endereço de email válido"
-ERRO_COMPARA_SENHAS = "Senhas devem ser iguais"
+ERRO_INPUT_REQUIRED = "Preencha esse campo."
+ERRO_EMAIL = "Entre com um endereço de email válido."
+ERRO_COMPARA_SENHAS = "Senhas devem ser iguais."
+ERRO_TAMANHO_SENHA = "A senha deve ter entre 8 e 20 caracteres."
+ERRO_EXTENSAO_INVALIDA = "Tipo de arquivo inválido, tipos aceitos: .jpg, .png, .jpeg."
 EDICAO_ATUAL = 10
-ERRO_TAMANHO_SENHA = "A senha deve ter entre 8 e 20 caracteres"
 
 escolhas_restricao = [
     (1, "Nenhum"),
