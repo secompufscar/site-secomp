@@ -1,28 +1,56 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 
+
+{% block styles %}
+{{ super() }}
+
+<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
 {% block navbar %}{% endblock %}
 
 {% block content %}
-<style>
-body{
-    padding:50px;
-}
-</style>
+
+
+
 <div class="container">
+		<div class="row">
+
+		<img width="60" height="60" src="{{url_for('static', filename='images/logo-colorida.png')}}">
+		<h3 style="padding-top:6%;padding-left: 15%;"> SECOMP X</h3><br>
+		
+		</div>
     <form action="/login" method="POST">
-	<div class="col-6 mx-auto">
+	<div class="col mx-auto">
 	    {{ form.hidden_tag() }}
 	    {{ wtf.form_field(form.email) }}
 	    {{ wtf.form_field(form.senha) }}
-	    <div class="form-group row">
-		<div class="col-4">
-		    <button name="submit" type="submit" class="btn btn-primary">Login</button>
-		</div>
-	    </div>
-    </form><br>
-    <a href="esqueci-senha">Esqueci minha senha</a>
+	   
 	</div>
+		<button name="submit" type="submit" class="btn btn-primary" style="padding:8px; background:linear-gradient(to right, #008cb5, #00cfa1);border-radius:4px"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
+		
+		<div class="row">
+		<div class="col-md-4">
+			<p align="center">
+					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/logo-secomp.jpg')}}">	
+				</p>
+		</div>
+		<div class="col-md-4">
+			<p align="center">
+					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">	
+				</p>
+		</div>
+		<div class="col-md-4">
+			<p align="center">
+					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">	
+				</p>
+		</div>
+		</div>			
+</form>
+	<hr>
+		<a href="esqueci-senha">Esqueci minha senha</a><br>
+  
 </div>
 {% endblock %}
 
