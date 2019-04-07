@@ -1,106 +1,184 @@
 // Main scss for secomp web site
-
-// Variables
-$secomp1: #008cb5 !default;
-$secomp2: #00cfa1 !default;
-$white: #fff !default;
-$white70: rgba(255, 255, 255, 0.7) !default;
-$dark-gray: #212121 !default;
-
-$secomp-colors: () !default;
-$secomp-colors: map-merge(
-	(
-	"secomp1": $secomp1,
-	"secomp2": $secomp2	
-	),
-	$secomp-colors
-);
-
-// Mixins
-@mixin main-gradient{
-	background-image: linear-gradient(to right, $secomp1, $secomp2);
-}
-
-@mixin main-font{
-	font: {
-		size: 14.5px;
-		family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
-	}
-}
-
+@import "variables";
+@import "mixins";
 
 // Rules
 header{
-	@include main-gradient;
-	a{
-		font: {
-			weight: 600;
-		}
-		color: $white;
-		@include main-font;
-		&:hover {
-			color: $white70;
-		}
+    @include main-gradient;
+    a{
+	font: {
+	    weight: 600;
 	}
+	color: $white;
+	@include main-font;
+	&:hover {
+	    color: $white70;
+	}
+    }
 }
 
 .small {
-	font-size: 14px;
+    font-size: 14px;
 }
 
 .bg-gradient-secomp{
-	@include main-gradient;
+    @include main-gradient;
+}
+
+.pad-inicio {
+    padding-top: 10vh;
 }
 
 #video {
-	height: 80vh;
+    height: 80vh;
 }
 
 .carousel{ 
-	&-item {
-	    height: 100vh;
-	    width:  100vw;
-	    object-fit: fill;
-	    text-shadow: 1px 1px 5px black;
-	}
+    &-item {
+	height: 100vh;
+	width:  100vw;
+	object-fit: fill;
+	text-shadow: 1px 1px 5px black;
+    }
 }
-.dropdown-menu a {
-	font-size: 12px;
-}
-// .dropdown{
-// 	&:hover > &-menu {
-// 	    display: block;
-// 	}
-// }
+.dropdown{
+    &:hover > &-menu {
+	display: block;
+    }
 
-// .dropdown > .dropdown-toggle:active {
-//     /*Without this, clicking will make it sticky*/
-//     pointer-events: none;
-// }
+    &-menu a {
+	font-size: 12px;
+    }
+    > &-toggle:active {
+	/*Without this, clicking will make it sticky*/
+	pointer-events: none;
+    }
+}
 
 .desc {
-	padding-bottom: 10%;
+    padding-bottom: 10%;
 }
 
 footer {
-	background-color: $dark-gray;
-	ul li{
-		padding: 1%;	
-		a{
-			color: $white;
-			&:hover{
-				color: $secomp2;
-			}
-		}
+    background-color: $dark-gray;
+    ul li{
+	padding: 1%;	
+	a{
+	    color: $white;
+	    &:hover{
+		color: $secomp2;
+	    }
 	}
+    }
 }
 
 #barrinha {
-	@include main-gradient;
-	padding: 0.5%;
+    @include main-gradient;
+    padding: 0.5%;
 }
 
 #nav-logo {
-	object-fit: contain;
-	// padding: 1px;
+    object-fit: contain;
+    // padding: 1px;
 } 
+
+.sobre-img {
+    object-fit: cover;
+    max-height: 70vh;
+    width: 100vh;
+}
+
+/* CSS para os cards da página '/equipe' */
+
+.image-flip:hover .backside,
+.image-flip.hover .backside {
+    -webkit-transform: rotateY(0deg);
+    -moz-transform: rotateY(0deg);
+    -o-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+    border-radius: .25rem;
+}
+
+.image-flip:hover .frontside,
+.image-flip.hover .frontside {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+.mainflip {
+    -webkit-transition: 1s;
+    -webkit-transform-style: preserve-3d;
+    -ms-transition: 1s;
+    -moz-transition: 1s;
+    -moz-transform: perspective(1000px);
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transition: 1s;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.frontside {
+    position: relative;
+    -webkit-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    z-index: 2;
+    margin-bottom: 30px;
+}
+
+.backside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: white;
+    -webkit-transform: rotateY(-180deg);
+    -moz-transform: rotateY(-180deg);
+    -o-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+    -webkit-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+    -moz-box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+    box-shadow: 5px 7px 9px -4px rgb(158, 158, 158);
+}
+
+.frontside,
+.backside {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transition: 1s;
+    -webkit-transform-style: preserve-3d;
+    -moz-transition: 1s;
+    -moz-transform-style: preserve-3d;
+    -o-transition: 1s;
+    -o-transform-style: preserve-3d;
+    -ms-transition: 1s;
+    -ms-transform-style: preserve-3d;
+    transition: 1s;
+    transform-style: preserve-3d;
+}
+
+.frontside .card,
+.backside .card {
+    /* Ajustar para ficar responsivo com a largura da tela */
+    min-height: 250px;
+}
+
+.backside .card p {
+    font-size: 0.8em;
+}
+
+.frontside .card .card-title,
+.backside .card .card-title {
+    color: #007b5e !important;
+}
+
+.frontside .card .card-body img {
+    width: 20vh;
+    height: 20vh;
+    border-radius: 50%;
+}

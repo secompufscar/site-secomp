@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container"><br><br>
+		<div class="pt-3 text-center">
+				<br><h2>FAQ</h2>
+			</div>
+			<hr>
+	<div class="row"> 
+		<div class="col-md-7"> <br>
+		<div class="list-group">
+				<div id="barrinha" style="padding: 14px;"></div>
+	
+				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+				  <div class="d-flex w-100 justify-content-between">
+					<h5 class="mb-1">Não sou aluno da UFSCar. Posso me inscrever?</h5>
+				  </div>
+				  <p align="justify class="mb-1"> Claro! Seja muito bem-vindo(a)! Qualquer pessoa pode se inscrever na SECOMP UFSCar.
+					</p>
+				</a>
+				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+				  <div class="d-flex w-100 justify-content-between">
+					<h5 class="mb-1"> O evento é pago?</h5>
+				  </div>
+				  <p align="justify class="mb-1">O acesso ao conteúdo do evento é gratuito para todos os participantes. Entretanto, teremos opções de pacotes para compra do kit do participante que contará com camiseta personalizada do evento, caneca, diversos brindes e acesso a todos os coffee breaks do evento. Aos que quiserem participar apenas do Capture the Flag (CTF), também será possível comprar um pacote mais barato que contempla apenas a inscrição na modalidade. Mais detalhes sobre os pacotes serão divulgados em breve.
+					</p>
+				</a>
+				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+						<div class="d-flex w-100 justify-content-between">
+						  <h5 class="mb-1"> Qual a forma de pagamento, caso eu queira comprar o kit?</h5>
+						</div>
+						<p align="justify class="mb-1"> Você poderá pagar com cartão de crédito via PayPal, realizando depósito ou transferência bancária para uma conta do Banco do Brasil, ou ainda poderá pagar presencialmente no Departamento de Computação da UFSCar em dias e horários a serem divulgados em nossa página do Facebook.
+							</p>
+					  </a>
+					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+						<div class="d-flex w-100 justify-content-between">
+						  <h5 class="mb-1">Há limite de vagas?</h5>
+						</div>
+						<p align="justify" class="mb-1"> Minicursos e workshops possuem limite de vagas que serão divulgados junto à descrição de cada atividade ou no edital. As vagas são preenchidas por ordem de inscrição. Portanto, assim que as inscrições abrirem, garanta o quanto antes a sua vaga!
+
+								As demais atividades que não precisam de inscrição (como palestras e mesas-redondas, por exemplo) possuem vagas limitadas apenas à quantidade de lugares no lugar da atividade.</p>
+					  </a><br>
+		</div>
+		<br><br>
+		</div>
+		<div class="col-md-5"> 
+				<div class="pt-3 text-center">
+						<h3 class="md-1">
+							<br>Tem alguma dúvida sobre o evento? Entre em contato com a organização
+						</h3> <br>
+				</div>
+				<form>
+						<div class="form-group">
+								<label for="id_nome">Seu nome:</label>
+								<input type="text" name="nome" style="border-radius:4px;" placeholder="Seu nome" required="" id="id_nome">
+							</div>
+							<div class="form-group">								
+								<label for="id_email">Seu e-mail:</label>
+								<input type="email" name="email" style="border-radius:4px;" placeholder="Seu e-mail" required="" id="id_email">
+							</div>
+							<div class="form-group">								
+								<label for="id_mensagem">Mensagem:</label><br>
+								<textarea name="mensagem" cols="40" rows="5" style="border-radius:4px;" placeholder="Sua mensagem" required="" id="id_mensagem"></textarea>
+							</div>
+							<center>
+							<button type="button" class="btn btn-secondary" style="background:linear-gradient(to right, #008cb5, #00cfa1);"><i class="fas fa-location-arrow"></i> Enviar mensagem</button>
+								</center>
+						</form>
+		</div>
+
+		</div>
+		</div>
+		</div>
+
+		
+		<div class="container text-center mt-4 mb-4">
+				<hr>
+				<h2>Realização</h2>
+		<div class="row">
+			<div class="col-md-4">
+					<p align="center">
+							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-secomp.jpg')}}">	
+						</p>
+			</div>
+			<div class="col-md-4">
+					<p align="center">
+							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">	
+						</p>
+			</div>
+			<div class="col-md-4">
+					<p align="center">
+							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">	
+						</p>
+			</div>
+		</div>
+					
+			
+		</div>
+
+                        
+                        
+{% endblock %}

@@ -1,0 +1,26 @@
+// Forms scss file style
+@import "variables";
+@import "mixins";
+
+html{
+    height: 100%;
+    @include main-gradient;
+}
+
+body{
+    padding: 50px;
+    width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    position: relative;
+}
+
+.btn{
+    width: 100px;
+    font-weight: bold;
+    border: 0 none;
+    border-radius: 1px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px;
+}

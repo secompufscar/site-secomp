@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section id="team" class="pb-5">
+    <div class="pad-inicio container">
+        {% for array in data %}
+        <h5 class="section-title text-center h1">{{ array }}</h5>
+        <div class="row justify-content-center">
+			{% for membro in data[array] %}
+            <div class="col-xs-12 col-sm-6 col-md-3">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                    <div class="mainflip">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <p><img class=" img-fluid" src="{{url_for('static', filename='images/equipe/%s' % data[array][membro]['img']) }}" alt="card image"></p>
+                                    <h4 class="card-title">{{ membro }}</h4>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="backside">
+                            <div class="card">
+                                <div class="card-body text-center mt-4">
+                                    <h5 class="card-title">{{ membro }}</h5>
+                                    <p>{{ data[array][membro]['bio'] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			{% endfor %}
+		</div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
