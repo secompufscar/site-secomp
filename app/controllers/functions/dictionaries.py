@@ -4,6 +4,8 @@ from flask_login import current_user
 
 from app.models.models import *
 from app.controllers.constants import *
+from app.controllers.functions.aux import get_score_evento
+
 
 def get_dicionario_usuario(usuario):
     try:
@@ -21,6 +23,7 @@ def get_dicionario_usuario(usuario):
     except Exception as e:
         print(e)
         return None
+
 
 def get_dicionario_eventos_participante(base_url):
     '''Função usada na dashboard do usuário'''

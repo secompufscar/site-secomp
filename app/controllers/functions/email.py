@@ -1,11 +1,9 @@
-import datetime
-
+from time import strftime, gmtime
 from flask import url_for, render_template
 from flask_login import login_required, login_user, logout_user, current_user
 from flask_mail import Mail, Message
 from app import app
 from app.models.models import *
-from app.controllers.constants import *
 
 _teste = {
         "assunto": 'Teste', #assunto do email
@@ -35,7 +33,7 @@ def enviarEmailGenerico(info=None):
     except Exception as e:  # Erros mais prováveis são devido ao email_config, printa error em um arquivo
         try:
             log = open('logMailError.txt', 'a+')
-            log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
+            log.write(f"{str(e)} {info['email']} {strftime('%a, %d %b %Y %H:%M:%S', gmtime())}\n")
             log.close()
         except Exception:
             return

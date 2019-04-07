@@ -1,10 +1,8 @@
-from flask import render_template, request, redirect, abort, url_for, Blueprint
-from flask_login import login_required, login_user, logout_user, current_user
+from flask import render_template, request, Blueprint
 
 from app.controllers.forms import *
-from app.controllers.functions import *
+from app.controllers.functions.email import enviarEmailDM
 from app.models.models import *
-from os import path, makedirs
 
 routes = Blueprint('routes', __name__, template_folder='templates')
 @app.route('/')

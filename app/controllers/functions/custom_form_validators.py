@@ -1,8 +1,9 @@
+import re
+
 from wtforms.validators import ValidationError
 from app.models.models import *
-from flask_login import login_required, login_user, logout_user
 from app.controllers.constants import *
-import re
+
 
 def email_existe():
     mensagem = "Este email já está cadastrado!"

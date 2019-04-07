@@ -1,5 +1,4 @@
 from app.models.models import *
-from app.controllers.constants import *
 
 def get_opcoes_cidades():
     try:
