@@ -1,9 +1,10 @@
 from flask import url_for, redirect
 from flask_admin import Admin, AdminIndexView, expose, BaseView
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.form import SecureForm
+from flask_admin.contrib.fileadmin import FileAdmin
 from flask_login import current_user
 
-from app.controllers.forms import *
 from app.models.models import *
 
 
@@ -11,18 +12,26 @@ class AppIndexView(AdminIndexView):
     @expose('/')
     def index(self):
         if current_user.is_authenticated and current_user.permissao > TipoUsuario['usuario']:
+            self._template_args['usuario'] = current_user
             return super(AppIndexView, self).index()
         return redirect(url_for('index'))
 
 
 class AppModelView(ModelView):
+    form_base_class = SecureForm
     can_view_details = True
     column_exclude_list = ['senha', 'token_email', 'token_alteracao_senha', 'salt_alteracao_senha', 'salt']
+
+    @staticmethod
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.permissao > TipoUsuario['usuario']
+        return current_user.is_authenticated and current_user.permissao >  TipoUsuario['usuario']
+
+    @staticmethod
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('index'))
 
 
-def init_admin(app):
+def init_admin(app, path):
     admin = Admin(app, index_view=AppIndexView(), template_mode='bootstrap3')
     admin.add_view(AppModelView(Usuario, db.session))
     admin.add_view(AppModelView(Participante, db.session))
@@ -31,4 +40,5 @@ def init_admin(app):
     admin.add_view(AppModelView(Camiseta, db.session))
     admin.add_view(AppModelView(PermissaoUsuarios, db.session))
     admin.add_view(AppModelView(MembroDeEquipe, db.session))
+    admin.add_view(FileAdmin(path, '/static/', name='Arquivos Estáticos'))
     return admin

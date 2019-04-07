@@ -32,16 +32,16 @@ TipoUsuario = {
     'super_admin': 2,
 }
 
-TipoAtividade = {    
+TipoAtividade = {
     'minicurso' = 0,
     'workshop' = 1,
     'palestra' = 2
 }
 
+
 class Usuario(db.Model):
     __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True)
-    participantes = db.relationship('Participante', backref='usuario', lazy=True)
     email = Column(String(64), unique=True, nullable=False)
     senha = Column(String(256), nullable=False)
     primeiro_nome = Column(String(64), nullable=False)
@@ -92,6 +92,7 @@ class Participante(db.Model):
     data_inscricao = Column(DateTime, nullable=False)
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
+    usuario = db.relationship('Usuario', back_populates='participantes_associados', lazy=True)
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
     back_populates='participantes')
@@ -146,10 +147,8 @@ class Atividade(db.Model):
     observacoes = Column(String(512), nullable=False)
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
     back_populates='atividades')
-
     participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
     back_populates='atividades')
-
     presencas = db.relationship('Presenca', backref='atividade')
 
     def __repr__(self):
@@ -172,7 +171,7 @@ class Evento(db.Model):
     patrocinadores = db.relationship('Patrocinador', secondary=relacao_patrocinador_evento, lazy=True,
     back_populates='eventos')
     camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
-    
+
     def __repr__(self):
         return str(self.edicao) + "ª Edição"
 
@@ -196,7 +195,7 @@ class MembroDeEquipe(db.Model):
     id_cargo = Column(Integer, db.ForeignKey('cargo.id'), nullable=False)
     id_diretoria = Column(Integer, db.ForeignKey('diretoria.id'), nullable=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
-    
+
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + "<" + self.usuario.email + ">"
 
@@ -206,7 +205,7 @@ class Cargo(db.Model):
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     membros = db.relationship('MembroDeEquipe', backref='cargo', lazy=True)
-    
+
     def __repr__(self):
         return self.nome
 
@@ -217,7 +216,7 @@ class Diretoria(db.Model):
     nome = Column(String(100), nullable=False)
     ordem = Column(Integer, nullable=False)
     membros = db.relationship('MembroDeEquipe', backref='diretoria', lazy=True)
-    
+
     def __repr__(self):
         return self.nome
 
@@ -234,7 +233,7 @@ class Patrocinador(db.Model):
     ultima_atualizacao_em = Column(DateTime, nullable=False)
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
     back_populates='patrocinadores')
-    
+
     def __repr__(self):
         return self.nome_empresa
 
@@ -271,7 +270,7 @@ class Cidade(db.Model):
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', backref='cidade', lazy=True)
-    
+
     def __repr__(self):
         return self.nome
 
@@ -285,7 +284,7 @@ class Camiseta(db.Model):
     quantidade = Column(Integer, nullable=False)
     ordem_site = Column(Integer, nullable=False)
     quantidade_restante = Column(Integer, nullable=False)
-    
+
     def __repr__(self):
         return self.nome
 
@@ -296,8 +295,7 @@ class PermissaoUsuarios(db.Model):
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', secondary=relacao_permissao_usuario, lazy=True,
     back_populates='permissoes_usuario')
-    
+
     def __repr__(self):
         return self.nome
-
 
