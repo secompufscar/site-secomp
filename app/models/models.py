@@ -33,9 +33,9 @@ TipoUsuario = {
 }
 
 TipoAtividade = {
-    'minicurso' = 0,
-    'workshop' = 1,
-    'palestra' = 2
+    'minicurso': 0,
+    'workshop': 1,
+    'palestra': 2
 }
 
 
