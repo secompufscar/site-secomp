@@ -1,5 +1,3 @@
-import datetime
-
 from app.models.models import *
 from app.controllers.constants import *
 
@@ -69,6 +67,7 @@ def get_opcoes_usuarios_permissao():
         print(e)
         return None
 
+
 def get_opcoes_permissoes():
     return [(0, "Super Admin"), (1, "JF")]
 
@@ -84,5 +83,6 @@ def get_opcoes_cotas_patrocinadores():
             cotas.append(info_cota)
 
         return cotas
-    except Exception as e:
+    except Exception:
         return None
+

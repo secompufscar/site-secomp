@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, abort, url_for, Blueprint
+from flask import render_template, request, redirect, url_for, Blueprint
 from flask_login import login_required, login_user, logout_user, current_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from bcrypt import gensalt
