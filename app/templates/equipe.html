@@ -4,17 +4,18 @@
 
 <section id="team" class="pb-5">
     <div class="pad-inicio container">
-        <h5 class="section-title text-center h1">TI - EM CONSTRUÇÃO</h5>
+        {% for array in data %}
+        <h5 class="section-title text-center h1">{{ array }}</h5>
         <div class="row justify-content-center">
-			{% for nome in secomp_now|sort %}
+			{% for membro in data[array] %}
             <div class="col-xs-12 col-sm-6 col-md-3">
                 <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
                     <div class="mainflip">
                         <div class="frontside">
                             <div class="card">
                                 <div class="card-body text-center">
-                                    <p><img class=" img-fluid" src="{{url_for('static', filename='images/equipe/Nathan.jpg') }}" alt="card image"></p>
-                                    <h4 class="card-title">{{ nome }}</h4>
+                                    <p><img class=" img-fluid" src="{{url_for('static', filename='images/equipe/%s' % data[array][membro]['img']) }}" alt="card image"></p>
+                                    <h4 class="card-title">{{ membro }}</h4>
 
                                 </div>
                             </div>
@@ -22,8 +23,8 @@
                         <div class="backside">
                             <div class="card">
                                 <div class="card-body text-center mt-4">
-                                    <h5 class="card-title">{{ nome }}</h5>
-                                    <p>This is basic card with Nathan on top, title and description.This is basic card with Nathan on top, title and description.This is basic card with Nathan on top, title and description.</p>
+                                    <h5 class="card-title">{{ membro }}</h5>
+                                    <p>{{ data[array][membro]['bio'] }}</p>
                                 </div>
                             </div>
                         </div>
@@ -32,6 +33,7 @@
             </div>
 			{% endfor %}
 		</div>
+        {% endfor %}
     </div>
 </section>
 
