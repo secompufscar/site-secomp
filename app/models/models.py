@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import Enum
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
 
@@ -27,15 +26,17 @@ Column('id', Integer, primary_key=True),
 Column('id_usuario', Integer, db.ForeignKey('usuario.id')),
 Column('id_permissao', Integer, db.ForeignKey('permissaousuarios.id')))
 
-class Permissao(Enum):
-    USUARIO = 0
-    ADMIN = 1
-    SUPER_ADMIN = 2
+TipoUsuario = {
+    'usuario': 0,
+    'admin': 1,
+    'super_admin': 2,
+}
 
-class Atividades(Enum):
-    MINICURSO = 0
-    WORKSHOP = 1
-    PALESTRA = 2
+TipoAtividade = {    
+    'minicurso' = 0,
+    'workshop' = 1,
+    'palestra' = 2
+}
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
@@ -76,10 +77,9 @@ class Usuario(db.Model):
     def is_anonymous(self):
         return False
 
-    def __unicode__(self):
-        return self.primeiro_nome + " " + self.sobrenome + "< " + self.email + ">"
     def __repr__(self):
         return self.primeiro_nome + " " + self.sobrenome + " <" + self.email + ">"
+
 
 class Participante(db.Model):
     __tablename__ = 'participante'
@@ -122,8 +122,10 @@ class Ministrante(db.Model):
     github = Column(String(64))
     atividades = db.relationship('Atividade', secondary=relacao_atividade_ministrante, lazy=True,
     back_populates='ministrantes')
+
     def __repr__(self):
         return self.usuario.nome
+
 
 class Atividade(db.Model):
     __tablename__ = 'atividade'
@@ -153,6 +155,7 @@ class Atividade(db.Model):
     def __repr__(self):
         return self.titulo
 
+
 class Evento(db.Model):
     __tablename__ = 'evento'
     id = Column(Integer, primary_key=True)
@@ -169,8 +172,10 @@ class Evento(db.Model):
     patrocinadores = db.relationship('Patrocinador', secondary=relacao_patrocinador_evento, lazy=True,
     back_populates='eventos')
     camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
+    
     def __repr__(self):
         return str(self.edicao) + "ª Edição"
+
 
 class Presenca(db.Model):
     __tablename__ = 'presenca'
@@ -181,6 +186,7 @@ class Presenca(db.Model):
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     inscrito = Column(Boolean, nullable=False)
 
+
 class MembroDeEquipe(db.Model):
     __tablename__ = 'membro_de_equipe'
     id = Column(Integer, primary_key=True)
@@ -190,16 +196,20 @@ class MembroDeEquipe(db.Model):
     id_cargo = Column(Integer, db.ForeignKey('cargo.id'), nullable=False)
     id_diretoria = Column(Integer, db.ForeignKey('diretoria.id'), nullable=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
+    
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + "<" + self.usuario.email + ">"
+
 
 class Cargo(db.Model):
     __tablename__ = 'cargo'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     membros = db.relationship('MembroDeEquipe', backref='cargo', lazy=True)
+    
     def __repr__(self):
         return self.nome
+
 
 class Diretoria(db.Model):
     __tablename__ = 'diretoria'
@@ -207,8 +217,10 @@ class Diretoria(db.Model):
     nome = Column(String(100), nullable=False)
     ordem = Column(Integer, nullable=False)
     membros = db.relationship('MembroDeEquipe', backref='diretoria', lazy=True)
+    
     def __repr__(self):
         return self.nome
+
 
 class Patrocinador(db.Model):
     __tablename__ = 'patrocinador'
@@ -222,8 +234,10 @@ class Patrocinador(db.Model):
     ultima_atualizacao_em = Column(DateTime, nullable=False)
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
     back_populates='patrocinadores')
+    
     def __repr__(self):
         return self.nome_empresa
+
 
 class CotaPatrocinio(db.Model):
     __tablename__ = 'cota_patrocinio'
@@ -231,29 +245,36 @@ class CotaPatrocinio(db.Model):
     nome = Column(String(50), nullable=False)
     patrocinadores = db.relationship('Patrocinador', backref='cota_patrocinio', lazy=True)
 
+
 class Curso(db.Model):
     __tablename__ = 'curso'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', backref='curso', lazy=True)
+
     def __repr__(self):
         return self.nome
+
 
 class Instituicao(db.Model):
     __tablename__ = 'instituicao'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', backref='instituicao', lazy=True)
+
     def __repr__(self):
         return self.nome
+
 
 class Cidade(db.Model):
     __tablename__ = 'cidade'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', backref='cidade', lazy=True)
+    
     def __repr__(self):
         return self.nome
+
 
 class Camiseta(db.Model):
     __tablename__ = 'camiseta'
@@ -264,8 +285,10 @@ class Camiseta(db.Model):
     quantidade = Column(Integer, nullable=False)
     ordem_site = Column(Integer, nullable=False)
     quantidade_restante = Column(Integer, nullable=False)
+    
     def __repr__(self):
         return self.nome
+
 
 class PermissaoUsuarios(db.Model):
     __tablename__ = 'permissaousuarios'
@@ -273,5 +296,8 @@ class PermissaoUsuarios(db.Model):
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', secondary=relacao_permissao_usuario, lazy=True,
     back_populates='permissoes_usuario')
+    
     def __repr__(self):
         return self.nome
+
+

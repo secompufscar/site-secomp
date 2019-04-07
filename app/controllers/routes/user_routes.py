@@ -11,6 +11,7 @@ from app.models.models import *
 
 user_routes = Blueprint('user_routes', __name__, template_folder='templates')
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm(request.form)
