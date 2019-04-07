@@ -488,3 +488,13 @@ def constr():
 def sobre():
     return render_template('sobre.html', title='Sobre a Secomp')
 
+@app.route('/equipe')
+def equipe():
+    import json
+    with open('./config/membros_org.json', 'r') as read_file:
+        data = json.load(read_file)
+    return render_template('equipe.html', title='Equipe', data=data)
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html', title='FAQ')
