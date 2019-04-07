@@ -18,39 +18,115 @@
         }
     })
   </script>
-  <style>
-      .help-block{
-        color:red;
-      }
-      body{
-	  padding:50px;
-      }
-</style>
-<div class="container">
-    <form method="POST" action="/cadastro">
-	<div class="col-6 mx-auto">
-        {{ wtf.form_field(form.primeiro_nome) }}
-        {{ wtf.form_field(form.sobrenome) }}
-        {{ wtf.form_field(form.email) }}
-        {{ wtf.form_field(form.senha) }}
-        {{ wtf.form_field(form.confirmacao) }}
-        {{ wtf.form_field(form.curso) }}
-        {{ wtf.form_field(form.outro_curso) }}
-        {{ wtf.form_field(form.instituicao) }}
-        {{ wtf.form_field(form.outra_instituicao) }}
-        {{ wtf.form_field(form.cidade) }}
-        {{ wtf.form_field(form.outra_cidade) }}
-        {{ wtf.form_field(form.data_nasc) }}
-        {{ form.recaptcha }}
+    <div class="container pad-inicio">
+        <h1 class="text-center">CADASTRO</h1>
+        <form method="POST" action="/participante/cadastro">
+          {{ form.hidden_tag() }}
+          <div class="col-6 mx-auto">
+            {{ wtf.form_field(form.primeiro_nome) }}
+            {{ wtf.form_field(form.sobrenome) }}
+            {{ wtf.form_field(form.email) }}
+            {{ wtf.form_field(form.senha) }}
+            {{ wtf.form_field(form.confirmacao) }}
+            {{ wtf.form_field(form.curso) }}
+            {{ wtf.form_field(form.outro_curso) }}
+            {{ wtf.form_field(form.instituicao) }}
+            {{ wtf.form_field(form.outra_instituicao) }}
+            {{ wtf.form_field(form.cidade) }}
+            {{ wtf.form_field(form.outra_cidade) }}
+            {{ wtf.form_field(form.data_nasc) }}
+            {{ form.recaptcha }}
+            {% if form.recaptcha.errors %}
+              <span class="help-block">É necessário validar o recaptcha</span>
+            {% endif %}
+            <button type="submit" class="btn btn-primary" style="margin-top:10px;width:120px;">Cadastrar</button>
 
-	    {% for error in form.recaptcha.errors %}
-	    <span class="help-block">{{ error }}</span>
-	    {% endfor %}
+        </form>
+    </div>
+    <script>
+    $(document).ready(function($){
+	    $('#data_nasc').mask('00/00/0000');
 
-	    <button type="submit" class="btn btn-primary">Cadastrar</button>
-	</div>
-    </form>
-</div>
-<script href="{{url_for('static', filename='js/cadastro.js')}}"></script>
+	    if($("#curso option:selected").val() !==  '0'){
+                $('label[for="outro_curso"]').hide();
+                $("#outro_curso").hide();
+            }
+
+            if($("#instituicao option:selected").val() !==  '0'){
+                $('label[for="outra_instituicao"]').hide();
+                $("#outra_instituicao").hide();
+            }
+
+            if($("#cidade option:selected").val() !==  '0'){
+                $('label[for="outra_cidade"]').hide();
+                $("#outra_cidade").hide();
+            }
+
+
+            $('#data_nasc').mask('00/00/0000');
+
+            $("#curso").change(function() {
+
+                if ($("#curso option:selected").val() ===  '0'){
+                    $('label[for="outro_curso"]').show();
+                    $("#outro_curso").show();
+                }else{
+                    $('label[for="outro_curso"]').hide();
+                    $("#outro_curso").hide(); }
+
+            });
+
+            $("#instituicao").change(function() {
+
+                if ($("#instituicao option:selected").val() ===  '0'){
+                    $('label[for="outra_instituicao"]').show();
+                    $("#outra_instituicao").show();
+                }else{
+                    $('label[for="outra_instituicao"]').hide();
+                    $("#outra_instituicao").hide(); }
+
+            });
+
+            $("#cidade").change(function() {
+
+                if ($("#cidade option:selected").val() ===  '0'){
+                    $('label[for="outra_cidade"]').show();
+                    $("#outra_cidade").show();
+                }else{
+                    $('label[for="outra_cidade"]').hide();
+                    $("#outra_cidade").hide(); }
+
+            });
+    });
+
+    $('#primeiro_nome').attr('placeholder', 'Digite seu primeiro nome');
+    $('#sobrenome').attr('placeholder', 'Digite seu sobrenome');
+    $('#email').attr('placeholder', 'Digite seu email');
+    $('#senha').attr('placeholder', 'Digite uma senha entre 8 e 20 caracteres');
+    $('#confirmacao_senha').attr('placeholder', 'Digite novamente sua senha');
+    $('#data_nasc').attr('placeholder', '01/01/2001')
+
+    </script>
+    <script  type="text/javascript">
+    $(function () {
+      $("#cidade").select2();
+      $("#instituicao").select2();
+      $("#curso").select2();
+    });
+    $('select').select2({
+    width: '100%',
+    });
+    $('select').select2({
+      "language": {
+       "noResults": function(){
+           return "Nenhum resultado encontrado";
+       }
+   },
+    escapeMarkup: function (markup) {
+        return markup;
+    }
+    });
+    </script>
 {% endblock %}
 
+{% block footer %}{% endblock %}

@@ -1,10 +1,10 @@
-import os
-
-from flask import Flask, redirect
+from flask import Flask, redirect, request
 from flask_bootstrap import Bootstrap
 from flask_script import Server, Manager, prompt_bool
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
+from flask_babelex import Babel
+import os
 
 configs = {
     'development': '../config/development.py',
@@ -16,11 +16,18 @@ config_name = os.getenv('FLASK_CONFIGURATION', 'development')
 
 app = Flask(__name__)
 Bootstrap(app)
+babel = Babel(app)
 app.config.from_pyfile(configs[config_name])
 
-from app.models.models import db, Usuario 
+from app.models.models import db, Usuario
+from app.controllers.routes.user_routes import user_routes
+from app.controllers.routes.routes import routes
+from app.controllers.routes.admin_area_routes import admin_area_routes
 
 migrate = Migrate(app, db)
+
+app.register_blueprint(user_routes)
+app.register_blueprint(routes)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -52,3 +59,9 @@ def drop():
     "Drops database tables"
     if prompt_bool("Erase current database?"):
         db.drop_all()
+
+@babel.localeselector
+def get_locale():
+    if request.args.get('lang'):
+        session['lang'] = request.args.get('lang')
+    return "pt"

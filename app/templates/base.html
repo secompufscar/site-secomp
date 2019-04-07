@@ -14,6 +14,12 @@
 
 {% block headscripts %}
 <script defer src="{{ url_for('static', filename='fa/all.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+<script src="{{url_for('static', filename='js/select2.js')}}"></script>
+<script src="{{url_for('static', filename='js/pt-BR.js')}}" type="typescript"></script>
 {% endblock %}
 
 <title>{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}</title>
@@ -24,6 +30,7 @@
 <link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='fa/css/all.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css"/>
+ <link href="{{url_for('static', filename='css/select2.css')}}" rel="stylesheet" />
 {% endblock %}
 
 {% block favicon %}
@@ -107,7 +114,7 @@
         <div class="col-md-6 text-center">
             <p>
              Departamento de Computação <br/>
-             UFSCar - Universidade Federal de São Carlos <br>  
+             UFSCar - Universidade Federal de São Carlos <br>
              Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara <br> São Carlos/ SP - CEP 13565-905
             </p>
         </div>
@@ -120,6 +127,22 @@
         </div>
     </div>
     <div class="col-md-12">
+        <ul class="list-unstyled list-inline social text-center">
+            <li class="list-inline-item"><a href="https://facebook.com/secompufscar" target="blank"><i class="fab fa-2x fa-facebook-f"></i></a></li>
+            <li class="list-inline-item"><a href="https://twitter.com/secompufscar" target="blank"><i class="fab fa-2x fa-twitter"></i></a></li>
+            <li class="list-inline-item"><a href="https://www.youtube.com/channel/UChj1pycWmHOJDeJkDf6RraA" target="blank"><i class="fab fa-2x fa-youtube"></i></a></li>
+            <li class="list-inline-item"><a href="https://instagram.com/secompufscar" target="blank"><i class="fab fa-2x fa-instagram"></i></a></li>
+            <li class="list-inline-item"><a href="mailto:{{ secomp_email }}"><i class="fa fa-2x fa-envelope"></i></a></li>
+        </ul>
+    </div>
+
+	<div class="container">
+        <div class="col-md-12 text-center">
+            <p>
+             Departamento de Computação <br/>
+             UFSCar - Universidade Federal de São Carlos <br>
+             Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara - São Carlos/ SP - CEP 13565-905
+            </p>
             <ul class="list-unstyled list-inline social text-center">
                 <li class="list-inline-item"><a href="https://facebook.com/secompufscar" target="blank"><i class="fab fa-2x fa-facebook-f"></i></a></li>
                 <li class="list-inline-item"><a href="https://twitter.com/secompufscar" target="blank"><i class="fab fa-2x fa-twitter"></i></a></li>
@@ -128,11 +151,11 @@
                 <li class="list-inline-item"><a href="mailto:{{ secomp_email }}"><i class="fa fa-2x fa-envelope"></i></a></li>
             </ul>
         </div>
-    
+
 </footer>
 
 <div id="barrinha"></div>
-	
+
 {% endblock %}
 
 {% block scripts %}
