@@ -506,3 +506,11 @@ def constr():
 @app.route('/sobre')
 def sobre():
     return render_template('sobre.html', title='Sobre a Secomp')
+
+@app.route('/dashboard2')
+def dash():
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    return render_template('dashboard_nova.html', title='Dashboard', usuario=usuario, participante=participante)

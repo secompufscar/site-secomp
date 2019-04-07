@@ -2,22 +2,24 @@
 {% import "wtf.html" as wtf %}
 
 {% block content %}
-<style>
-.help-block{
-    color:red;
-}
-      body{
-	  padding:50px;
-      }
-</style>
-<h2>Digite uma nova senha para seu usuário</h2>
-<div>
-    <form method="POST" action="{{ form.action }}">
-	{{ form.hidden_tag() }}
-	{{ wtf.form_field(form.nova_senha) }}
-	{{ wtf.form_field(form.confirmacao) }}
 
-	<button type="submit" class="btn btn-primary">Confirmar Alteração</button>
-    </form>
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <br><br><br><br><br>
+        <center><h3>Alteração de senha</h3></center>
+        <hr>
+        <label class="control-label">Digite a nova senha abaixo</label>
+        <form method="POST" action="{{ form.action }}">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.nova_senha) }}
+            {{ wtf.form_field(form.confirmacao) }}
+            <center><button type="submit" class="btn btn-primary">Confirmar Alteração</button></center>
+            <br>
+        </form>
+    </div>
+    <div class="col-md-4"></div>
 </div>
+
+
 {% endblock %}
