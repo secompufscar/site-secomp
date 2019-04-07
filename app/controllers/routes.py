@@ -514,3 +514,11 @@ def equipe():
 @app.route('/faq')
 def faq():
     return render_template('faq.html', title='FAQ')
+
+@app.route('/dashboard2')
+def dash():
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    return render_template('dashboard_nova.html', title='Dashboard', usuario=usuario, participante=participante)
