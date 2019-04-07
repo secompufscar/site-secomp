@@ -144,8 +144,12 @@
 
 	<h3>Olha esse teaser da edição anterior!</h3>
 
-	<div id="video" class="mt-4 mb-4">
-	    <iframe width="100%" height="100%" src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	<div id="video" class="embed-responsive embed-responsive-21by9 mt-4 mb-4">
+	    <video width="100%" height="100%" controls>
+		<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}" type="video/mp4"/>
+	    </video>
+	    {# TODO: verificar erros de compatibilidade e remover iframe #}
+	    <!--iframe width="100%" height="100%" src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe-->
 	</div>
 
 	{# Texto adicional para testar espaçamento #}
