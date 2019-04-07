@@ -1,7 +1,6 @@
 import datetime
 
-from flask import url_for
-from flask_login import login_required, login_user, logout_user, current_user
+from flask_login import current_user
 
 from app.models.models import *
 from app.controllers.constants import *

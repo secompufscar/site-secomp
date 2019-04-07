@@ -110,7 +110,7 @@ def desinscrever(id):
         workshops = db.session.query(Atividade).filter_by(
             tipo=TipoAtividade['workshop'])
         palestras = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['palestra')
+            tipo=TipoAtividade['palestra'])
         return render_template('inscricao_atividades.html',
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),

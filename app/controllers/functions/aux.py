@@ -7,7 +7,7 @@ def get_participantes():
         participantes = []
         for p in query:
             info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome)
-            participantes.append(infocurso_existe, erro_instituicao_)
+            participantes.append(info)
         return participantes
     except Exception as e:
         print(e)

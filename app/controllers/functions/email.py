@@ -7,7 +7,7 @@ from app import app
 from app.models.models import *
 from app.controllers.constants import *
 
-teste = {
+_teste = {
         "assunto": 'Teste', #assunto do email
         "nome": 'Pessoa', #nome do destinatário
         "titulo": "EMAIL TESTE",
@@ -19,8 +19,10 @@ teste = {
 #Função que envia um email genérico recebendo um dicionário, que deve ter dados obrigatórios
 #(ver dicionario teste) mas pode ter dados a mais a serem passados para o template
 #Por padrão a chamada da função sem argumentos enviará um email teste para o ti
-def enviarEmailGenerico(info=teste):
-    app.debug = 0
+def enviarEmailGenerico(info=None):
+    if info is None:
+        global _teste
+        info = _teste
     mail = Mail(app)
     msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(app.config['MAIL_USERNAME'])), recipients=[info['email']])
     try:
@@ -35,8 +37,9 @@ def enviarEmailGenerico(info=teste):
             log = open('logMailError.txt', 'a+')
             log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
             log.close()
-        except:
-            pass
+        except Exception:
+            return
+
 
 def enviarEmailConfirmacao(usuario, token):
     ''' Envia email para validação do email'''
@@ -67,7 +70,7 @@ def enviarEmailDM(app, nome, email, mensagem):
             log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
             log.close()
         except:
-            pass
+            return
 
 
 def enviarEmailSenha(usuario, token):
@@ -95,3 +98,4 @@ def email_confirmado():
     except Exception as e:
         print(e)
         return None
+

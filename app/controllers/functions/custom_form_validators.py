@@ -1,7 +1,5 @@
-from flask_wtf import FlaskForm
 from wtforms.validators import ValidationError
 from app.models.models import *
-from flask_login import login_required, login_user, logout_user
 import re
 
 def email_existe():

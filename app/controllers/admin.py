@@ -1,5 +1,5 @@
 from flask import url_for, redirect
-from flask_admin import Admin, AdminIndexView, expose, BaseView
+from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
 from flask_admin.contrib.fileadmin import FileAdmin
@@ -24,7 +24,7 @@ class AppModelView(ModelView):
 
     @staticmethod
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.permissao >  TipoUsuario['usuario']
+        return current_user.is_authenticated and current_user.permissao > TipoUsuario['usuario']
 
     @staticmethod
     def inaccessible_callback(self, name, **kwargs):
