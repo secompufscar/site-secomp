@@ -267,7 +267,7 @@ def get_opcoes_cotas_patrocinadores():
 def erro_curso_existe():
 
     def _erro_curso_existe(form, field):
-        cursos = db.session.query(Curso).filter(Curso.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
+        cursos = db.session.query(Curso).filter_by(nome=str(field.data))
         if cursos is not None:
             raise ValidationError(ERRO_CURSO_EXISTE)
 
