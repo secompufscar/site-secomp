@@ -132,46 +132,12 @@ def cadastro_participante():
 @app.route('/dashboard-usuario', methods=['POST', 'GET'])
 @login_required
 def dashboard_usuario():
-    if email_confirmado() == True:
-        form = EditarUsuarioForm(request.form)
-        if form.validate_on_submit():
-            usuario = db.session.query(Usuario).filter_by(
-                id=current_user.id).first()
-            if pbkdf2_sha256.verify(form.senha.data, usuario.senha):
-                usuario.primeiro_nome = form.primeiro_nome.data
-                usuario.sobrenome = form.sobrenome.data
-                usuario.data_nascimento = form.data_nasc.data
-                usuario.id_curso = form.curso.data
-                usuario.id_instituicao = form.instituicao.data
-                usuario.id_cidade = form.cidade.data
-                if usuario.email != form.email.data:
-                    serializer = URLSafeTimedSerializer(
-                        app.config['SECRET_KEY'])
-                    salt = gensalt().decode('utf-8')
-                    token = serializer.dumps(form.email.data, salt=salt)
-                    usuario.salt = salt
-                    usuario.token_email = token
-                    usuario.email_verificado = False
-                    db.session.add(usuario)
-                    db.session.commit()
-                    enviarEmailConfirmacao(app, form.email.data, token)
-                    login_user(usuario, remember=True)
-                    return redirect(url_for('verificar_email'))
-                else:
-                    db.session.add(usuario)
-                    db.session.commit()
-                    login_user(usuario, remember=True)
-        form.primeiro_nome.default = current_user.primeiro_nome
-        form.sobrenome.default = current_user.sobrenome
-        form.email.default = current_user.email
-        form.data_nasc.default = current_user.data_nascimento
-        form.curso.default = current_user.curso.id
-        form.instituicao.default = current_user.instituicao.id
-        form.cidade.default = current_user.cidade.id
-        form.process()
-
-        return render_template('dashboard_usuario.html', eventos=get_dicionario_eventos_participante(request.base_url),
-                               info_usuario=get_dicionario_usuario(current_user), form=form)
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
+    if email_confirmado():
+        participante = db.session.query(Participante).filter_by(
+            usuario=current_user).first()
+        return render_template('dashboard_usuario.html', title='Dashboard', usuario=usuario, participante=participante)
     else:
         serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
         salt = gensalt().decode('utf-8')
@@ -507,10 +473,3 @@ def constr():
 def sobre():
     return render_template('sobre.html', title='Sobre a Secomp')
 
-@app.route('/dashboard2')
-def dash():
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
-    participante = db.session.query(Participante).filter_by(
-        usuario=current_user).first()
-    return render_template('dashboard_nova.html', title='Dashboard', usuario=usuario, participante=participante)
