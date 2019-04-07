@@ -509,7 +509,10 @@ def sobre():
 
 @app.route('/equipe')
 def equipe():
-    return render_template('equipe.html', title='Equipe', secomp_now=secomp_now[0])
+    import json
+    with open('./config/membros_org.json', 'r') as read_file:
+        data = json.load(read_file)
+    return render_template('equipe.html', title='Equipe', data=data)
 
 @app.route('/faq')
 def faq():
