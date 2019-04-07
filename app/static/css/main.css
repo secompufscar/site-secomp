@@ -85,6 +85,7 @@ footer ul li a:hover {
   width: 100vh;
 }
 
+
 /* CSS para os cards da página '/equipe' */
 .image-flip:hover .backside,
 .image-flip.hover .backside {
@@ -177,4 +178,8 @@ footer ul li a:hover {
   width: 20vh;
   height: 20vh;
   border-radius: 50%;
+}
+
+.help-block {
+  color:#b30000;
 }
