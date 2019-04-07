@@ -51,7 +51,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/cadastro', methods=['POST', 'GET'])
+@app.route('/participante/cadastro', methods=['POST', 'GET'])
 def cadastro():
     """
     Renderiza a página de cadastro do projeto
@@ -87,7 +87,7 @@ def cadastro():
     return render_template('cadastro.html', form=form, erro_email=False)
 
 
-@app.route('/verificar-email')
+@app.route('/participante/verificar-email')
 @login_required
 def verificar_email():
     if email_confirmado() == True:
@@ -99,7 +99,7 @@ def verificar_email():
     return render_template('confirma_email.html', resultado=msg, status=status)
 
 
-@app.route('/cadastro-participante', methods=['POST', 'GET'])
+@app.route('/participante/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
     id_evento = db.session.query(Evento).filter_by(
@@ -129,7 +129,7 @@ def cadastro_participante():
         return redirect(url_for('verificar_email'))
 
 
-@app.route('/dashboard-usuario', methods=['POST', 'GET'])
+@app.route('/participante/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard_usuario():
     usuario = db.session.query(Usuario).filter_by(
@@ -153,13 +153,8 @@ def dashboard_usuario():
         return redirect(url_for('verificar_email'))
 
 
-@app.route('/dashboard-usuario/evento/<edicao>')
-@login_required
-def info_participante_evento(edicao):
-    return render_template('info_participante.html', info_evento=get_dicionario_info_evento(edicao))
 
-
-@app.route('/enviar-comprovante', methods=['POST', 'GET'])
+@app.route('/participante/enviar-comprovante', methods=['POST', 'GET'])
 @login_required
 def envio_comprovante():
     """
@@ -179,7 +174,27 @@ def envio_comprovante():
     return render_template('enviar_comprovante.html', form=form)
 
 
-@app.route('/verificacao/<token>')
+@app.route('/participante/alterar-dados', methods=['POST', 'GET'])
+@login_required
+def envio_comprovante():
+    """
+    Página de envio de comprovantes de pagamento
+    """
+    form = ComprovanteForm()
+    if form.validate_on_submit():
+        comprovante = form.comprovante.data
+        filename = secure_filename(comprovante.filename)
+        filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
+        upload_path = path.join(app.config['UPLOAD_FOLDER'], 'comprovantes')
+        if not path.exists(upload_path):
+            makedirs(upload_path)
+        comprovante.save(path.join(upload_path, filename))
+        flash('Comprovante enviado com sucesso!')
+        return redirect(url_for('dashboard_usuario'))
+    return render_template('enviar_comprovante.html', form=form)
+
+
+@app.route('/participante/verificacao/<token>')
 def verificacao(token):
     """
     Página do link enviado para o usuário
@@ -221,7 +236,7 @@ def contatoDM():
     return render_template('contato.html', form=form)
 
 
-@app.route('/inscricao-atividades')
+@app.route('/participante/inscricao-atividades')
 @login_required
 def inscricao_atividades():
     minicursos = db.session.query(Atividade).filter_by(
@@ -236,7 +251,7 @@ def inscricao_atividades():
                            usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
-@app.route('/inscricao-atividades/<filtro>')
+@app.route('/participante/inscricao-atividades/<filtro>')
 @login_required
 def inscricao_atividades_com_filtro(filtro):
     minicursos = db.session.query(Atividade).filter(
@@ -252,7 +267,7 @@ def inscricao_atividades_com_filtro(filtro):
                            usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
-@app.route('/inscrever-atividade/<id>')
+@app.route('/participante/inscrever-atividade/<id>')
 @login_required
 def inscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id)[0]
@@ -279,7 +294,7 @@ def inscrever(id):
     return id
 
 
-@app.route('/desinscrever-atividade/<id>')
+@app.route('/participante/desinscrever-atividade/<id>')
 @login_required
 def desinscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id).first()
@@ -304,7 +319,7 @@ def desinscrever(id):
         return "Não está inscrito nessa atividade!"
 
 
-@app.route('/alterar-senha', methods=["POST", "GET"])
+@app.route('/participante/alterar-senha', methods=["POST", "GET"])
 @login_required
 def alterar_senha():
     form = AlterarSenhaForm(request.form)
@@ -325,7 +340,7 @@ def alterar_senha():
         return redirect(url_for('dashboard_usuario'))
 
 
-@app.route('/esqueci-senha', methods=["POST", "GET"])
+@app.route('/participante/esqueci-senha', methods=["POST", "GET"])
 def esqueci_senha():
     form = AlterarSenhaPorEmailForm(request.form)
     if form.validate_on_submit():
@@ -343,7 +358,7 @@ def esqueci_senha():
     return render_template("esqueci_senha.html", status_envio_email=False, form=form)
 
 
-@app.route('/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
+@app.route('/participante/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
 def confirmar_alteracao_senha(token):
     form = AlterarSenhaForm(request.form)
     if form.validate_on_submit():
@@ -369,7 +384,7 @@ def confirmar_alteracao_senha(token):
     return render_template("alterar_senha.html", form=form, action=request.base_url)
 
 
-@app.route('/estoque-camisetas')
+@app.route('/area-administrativa/estoque-camisetas')
 @login_required
 def estoque_camisetas():
     if (current_user.permissao > 0):
@@ -379,7 +394,7 @@ def estoque_camisetas():
         abort(403)
 
 
-@app.route('/estoque-camisetas/<tamanho>')
+@app.route('/area-administrativa/estoque-camisetas/<tamanho>')
 @login_required
 def estoque_camisetas_por_tamanho(tamanho):
     if (current_user.permissao > 0):
@@ -389,7 +404,7 @@ def estoque_camisetas_por_tamanho(tamanho):
         abort(403)
 
 
-@app.route('/cadastro-patrocinio', methods=['POST', 'GET'])
+@app.route('/area-administrativa/cadastro-patrocinio', methods=['POST', 'GET'])
 @login_required
 def cadastro_patrocinio():
     form = PatrocinadorForm(request.form)
@@ -407,7 +422,7 @@ def cadastro_patrocinio():
     else:
         return render_template('cadastro_patrocinio.html', form=form)
 
-@app.route('/venda-kits', methods=['POST', 'GET'])
+@app.route('/area-administrativa/venda-kits', methods=['POST', 'GET'])
 @login_required
 def vender_kits():
     #<Falta conferir permissões>
@@ -430,12 +445,12 @@ def vender_kits():
             return render_template('venda_de_kits.html', alerta="Sem estoque para " + camiseta.tamanho, form=form)
     return render_template('venda_de_kits.html', alerta="Preencha o formulário abaixo", form=form)
 
-@app.route('/fazer-sorteio')
+@app.route('/area-administrativa/fazer-sorteio')
 @login_required
 def sortear():
     return render_template('sortear_usuario.html', sorteando=False)
 
-@app.route('/fazer-sorteio/do')
+@app.route('/area-administrativa/fazer-sorteio/do')
 @login_required
 def sorteando():
     # <Falta conferir permissões>
@@ -443,7 +458,7 @@ def sorteando():
     sorteado = sorteado[randint(1, sorteado.count()) - 1]
     return render_template('sortear_usuario.html', sorteado=sorteado, sorteando=True)
 
-@app.route('/alterar-camiseta', methods=["GET","POST"])
+@app.route('/area-administrativa/alterar-camiseta', methods=["GET","POST"])
 @login_required
 def alterar_camiseta():
     # <Falta conferir permissões>
