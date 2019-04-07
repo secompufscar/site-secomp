@@ -1,3 +1,5 @@
+from app.models.models import *
+
 def get_score_evento(edicao):
     return 10000
 
@@ -24,3 +26,21 @@ def get_participantes_sem_kit():
     except Exception as e:
         print(e)
         return None
+
+def cadastra_objeto_generico(objeto):
+    try:
+        db.session.add(objeto)
+        db.session.flush()
+        db.session.commit()
+        return objeto
+
+    except Exception as e:
+        print(e)
+        return None
+
+
+def verifica_outro_escolhido(campo, objeto):
+    if campo.data == 0:
+        return cadastra_objeto_generico(objeto).id
+    else:
+        return campo.data

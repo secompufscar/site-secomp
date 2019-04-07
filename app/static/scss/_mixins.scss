@@ -1,0 +1,11 @@
+// Mixins
+@mixin main-gradient{
+	background-image: linear-gradient(to right, $secomp1, $secomp2);
+}
+
+@mixin main-font{
+	font: {
+		size: 14.5px;
+		family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
+	}
+}

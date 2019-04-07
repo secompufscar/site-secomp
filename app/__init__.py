@@ -22,6 +22,8 @@ app.config.from_pyfile(configs[config_name])
 from app.models.models import db, Usuario
 from app.controllers.routes.user_routes import user_routes
 from app.controllers.routes.routes import routes
+from app.controllers.routes.admin_area_routes import admin_area_routes
+
 migrate = Migrate(app, db)
 
 app.register_blueprint(user_routes)

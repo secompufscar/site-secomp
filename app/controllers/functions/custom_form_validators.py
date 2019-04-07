@@ -1,5 +1,7 @@
 from wtforms.validators import ValidationError
 from app.models.models import *
+from flask_login import login_required, login_user, logout_user
+from app.controllers.constants import *
 import re
 
 def email_existe():
@@ -19,11 +21,11 @@ def so_letras():
     return _so_letras
 
 def erro_curso_existe():
-
     def _erro_curso_existe(form, field):
-        cursos = db.session.query(Curso).filter(Curso.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
-        if cursos is not None:
-            raise ValidationError(ERRO_CURSO_EXISTE)
+        if len(field.data) > 0:
+            cursos = db.session.query(Curso).filter(Curso.nome.op('regexp')(r"{}".format(str(field.data)))).first()
+            if cursos is not None:
+                raise ValidationError(ERRO_CURSO_EXISTE)
 
     return _erro_curso_existe
 
@@ -31,9 +33,10 @@ def erro_curso_existe():
 def erro_instituicao_existe():
 
     def _erro_instituicao_existe(form, field):
-        instituicoes = db.session.query(Instituicao).filter(Instituicao.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
-        if instituicoes is not None:
-            raise ValidationError(ERRO_INSTITUICAO_EXISTE)
+        if len(field.data) > 0:
+            instituicoes = db.session.query(Instituicao).filter(Instituicao.nome.op('regexp')(r"{}".format(str(field.data)))).first()
+            if instituicoes is not None:
+                raise ValidationError(ERRO_INSTITUICAO_EXISTE)
 
     return _erro_instituicao_existe
 
@@ -41,27 +44,9 @@ def erro_instituicao_existe():
 def erro_cidade_existe():
 
     def _erro_cidade_existe(form, field):
-        cidades = db.session.query(Cidade).filter(Cidade.nome.op('regexp')(r"^[a-zA-Zãêç\s]+$"))
-        if cidades is not None:
-            raise ValidationError(ERRO_CIDADE_EXISTE)
+        if len(field.data) > 0:
+            cidades = db.session.query(Cidade).filter(Cidade.nome.op('regexp')(r"{}".format(str(field.data)))).first()
+            if cidades is not None:
+                raise ValidationError(ERRO_CIDADE_EXISTE)
 
     return _erro_cidade_existe
-
-
-def cadastra_objeto_generico(objeto):
-    try:
-        db.session.add(objeto)
-        db.session.flush()
-        db.session.commit()
-        return objeto
-
-    except Exception as e:
-        print(e)
-        return None
-
-
-def verifica_outro_escolhido(campo, objeto):
-    if campo.data == 0:
-        return cadastra_objeto_generico(objeto).id
-    else:
-        return campo.data

@@ -20,53 +20,27 @@
   </script>
     <div class="container pad-inicio">
         <h1 class="text-center">CADASTRO</h1>
-        <form method="POST" action="/cadastro">
+        <form method="POST" action="/participante/cadastro">
           {{ form.hidden_tag() }}
-          <table class=table border=0>
-          <tr scope="row">
-            <td scope="col" class="left">
-              {{ wtf.form_field(form.primeiro_nome) }}
-            </td>
-            <td scope="col" class="right">
-              {{ wtf.form_field(form.sobrenome) }}
-            </td>
-        <tr scope="row">
-          <td scope="col" class="left">
+          <div class="col-6 mx-auto">
+            {{ wtf.form_field(form.primeiro_nome) }}
+            {{ wtf.form_field(form.sobrenome) }}
             {{ wtf.form_field(form.email) }}
-          </td>
-          <td scope="col" class="right">
-            {{ wtf.form_field(form.curso) }}
-          </td>
-        </tr>
-        <tr scope="row">
-          <td scope="col" class="left">
             {{ wtf.form_field(form.senha) }}
-          </td>
-          <td scope="col" class="right">
-            {{ wtf.form_field(form.instituicao) }}
-          </td>
-        </tr>
-        <tr scope="row">
-          <td scope="col" class="left">
             {{ wtf.form_field(form.confirmacao) }}
-          </td>
-          <td scope="col" class="right">
+            {{ wtf.form_field(form.curso) }}
+            {{ wtf.form_field(form.outro_curso) }}
+            {{ wtf.form_field(form.instituicao) }}
+            {{ wtf.form_field(form.outra_instituicao) }}
             {{ wtf.form_field(form.cidade) }}
-          </td>
-        </tr>
-        <tr scope="row">
-          <td scope="col">
+            {{ wtf.form_field(form.outra_cidade) }}
+            {{ wtf.form_field(form.data_nasc) }}
             {{ form.recaptcha }}
             {% if form.recaptcha.errors %}
               <span class="help-block">É necessário validar o recaptcha</span>
             {% endif %}
+            <br>
             <button type="submit" class="btn btn-primary" style="margin-top:10px;width:120px;">Cadastrar</button>
-          </td>
-          <td scope="col" class="right">
-            {{ wtf.form_field(form.data_nasc) }}
-          </td>
-        </tr>
-        </table>
 
         </form>
     </div>

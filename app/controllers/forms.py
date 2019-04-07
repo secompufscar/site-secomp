@@ -30,13 +30,13 @@ class CadastroForm(FlaskForm):
     curso = SelectField('Curso', choices=get_opcoes_cursos(), validators=
     [InputRequired(message=ERRO_INPUT_REQUIRED)],
                         id="curso", coerce=int)
-    outro_curso = StringField("Outro curso", id="outro_curso", validators=[erro_curso_existe()])
+    outro_curso = StringField("Outro curso", id="outro_curso", validators=[erro_curso_existe(), so_letras()])
     instituicao = SelectField('Instituição', choices=get_opcoes_instituicoes(
     ), id="instituicao", default="UFSCar", coerce=int)
-    outra_instituicao = StringField("Outra instituição", id="outra_instituicao", validators=[erro_instituicao_existe()])
+    outra_instituicao = StringField("Outra instituição", id="outra_instituicao", validators=[erro_instituicao_existe(), so_letras()])
     cidade = SelectField('Cidade', choices=get_opcoes_cidades(
     ), id="cidade", default="São Carlos", coerce=int)
-    outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe()])
+    outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe(), so_letras()])
     data_nasc = DateField("Data de Nascimento",
                           format="%d/%m/%Y", id="data_nasc")
     recaptcha = RecaptchaField()
@@ -118,5 +118,3 @@ class AlteraCamisetaForm(FlaskForm):
 class VendaKitForm(FlaskForm):
     participante = SelectField("Inscrições na SECOMP 2019", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
-
-

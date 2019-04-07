@@ -1,7 +1,4 @@
-.pad-inicio {
-  padding-top: 10vh;
-}
-
+@charset "UTF-8";
 header {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
 }
@@ -25,6 +22,10 @@ header a:hover {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
 }
 
+.pad-inicio {
+  padding-top: 10vh;
+}
+
 #video {
   height: 80vh;
 }
@@ -36,8 +37,17 @@ header a:hover {
   text-shadow: 1px 1px 5px black;
 }
 
+.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
 .dropdown-menu a {
   font-size: 12px;
+}
+
+> .dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+  pointer-events: none;
 }
 
 .desc {
@@ -73,4 +83,8 @@ footer ul li a:hover {
   object-fit: cover;
   max-height: 70vh;
   width: 100vh;
+}
+
+.help-block {
+  color:#b30000;
 }
