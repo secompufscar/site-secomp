@@ -510,3 +510,7 @@ def sobre():
 @app.route('/equipe')
 def equipe():
     return render_template('equipe.html', title='Equipe', secomp_now=secomp_now[0])
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html', title='FAQ')
