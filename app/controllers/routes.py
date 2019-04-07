@@ -173,27 +173,6 @@ def envio_comprovante():
         return redirect(url_for('dashboard_usuario'))
     return render_template('enviar_comprovante.html', form=form)
 
-
-@app.route('/participante/enviar-comprovante', methods=['POST', 'GET'])
-@login_required
-def envio_comprovante():
-    """
-    Página de envio de comprovantes de pagamento
-    """
-    form = ComprovanteForm()
-    if form.validate_on_submit():
-        comprovante = form.comprovante.data
-        filename = secure_filename(comprovante.filename)
-        filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
-        upload_path = path.join(app.config['UPLOAD_FOLDER'], 'comprovantes')
-        if not path.exists(upload_path):
-            makedirs(upload_path)
-        comprovante.save(path.join(upload_path, filename))
-        flash('Comprovante enviado com sucesso!')
-        return redirect(url_for('dashboard_usuario'))
-    return render_template('enviar_comprovante.html', form=form)
-
-
 @app.route('/participante/verificacao/<token>')
 def verificacao(token):
     """
