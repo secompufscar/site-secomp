@@ -36,7 +36,7 @@
 									<h1 class="display-2"> Palestras</h1>
 							</div>
 						</div>
-						<h3 align="justify-content-center"> Todas as palestras da SECOMP são abertas ao público, sem necessidade de inscrição no evento. Entretanto, para receber o certificado de participação, você deve se inscrever em nosso site. </h3>
+						<h3> Todas as palestras da SECOMP são abertas ao público, sem necessidade de inscrição no evento. Entretanto, para receber o certificado de participação, você deve se inscrever em nosso site. </h3>
 					</div>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 									<h1 class="display-3">Mesas-Redondas</h1>
 							</div>
 						</div>
-						<h3 align="justify-content-center"> As mesas-redondas são abertas a todos os participantes, mas lembre-se que para receber o certificado de participação, você deve realizar a sua inscrição no evento.  </h3>
+						<h3> As mesas-redondas são abertas a todos os participantes, mas lembre-se que para receber o certificado de participação, você deve realizar a sua inscrição no evento.  </h3>
 					</div>
 				</div>
 			</div>
@@ -70,7 +70,7 @@
 									<h1 class="display-2">Workshops</h1>
 							</div>
 						</div>
-						<h3 align="justify-content-center">Os workshops são abertos ao público, mas você precisa realizar a inscrição e levar 1kg de alimento não-perecível para cada workshop que participar. Os alimentos recol-2hidos serão doados a instituições de caridade de São Carlos.  </h3>
+						<h3>Os workshops são abertos ao público, mas você precisa realizar a inscrição e levar 1kg de alimento não-perecível para cada workshop que participar. Os alimentos recol-2hidos serão doados a instituições de caridade de São Carlos.  </h3>
 					</div>
 				</div>
 			</div>
@@ -87,7 +87,7 @@
 									<h1 class="display-3">Capture The Flag</h1>
 							</div>
 						</div>
-						<h3 align="justify-content-center"> A SECOMP UFSCar conta com uma competição chamada Capture The Flag (CTF), constituída de desafios que envolvem engenharia reversa, criptografia, computação forense, networking, web hacking e outros temas. </h3>
+						<h3> A SECOMP UFSCar conta com uma competição chamada Capture The Flag (CTF), constituída de desafios que envolvem engenharia reversa, criptografia, computação forense, networking, web hacking e outros temas. </h3>
 					</div>
 				</div>
 			</div>
@@ -104,7 +104,7 @@
 									<h1 class="display-2">Palestras Empresariais</h1>
 							</div>
 						</div>
-						<h3 align="justify-content-center">Venha conhecer mais sobre algumas das maiores empresas de tecnologia da região. De olho em uma vaga de estágio? Essa pode ser a sua chance! </h3>
+						<h3>Venha conhecer mais sobre algumas das maiores empresas de tecnologia da região. De olho em uma vaga de estágio? Essa pode ser a sua chance! </h3>
 					</div>
 				</div>
 			</div>
@@ -121,7 +121,7 @@
 									<h1 class="display-2">Minicursos</h1>
 							</div>
 						</div>
-						<h3 align="justify-content-center"> Os minicursos são planejados para poucas pessoas e com uma pequena duração. Mas fazem muita diferença na forma como o assunto é abordado. Fique ligado(a) em nosso site e não perca essa oportunidade! </h3>
+						<h3> Os minicursos são planejados para poucas pessoas e com uma pequena duração. Mas fazem muita diferença na forma como o assunto é abordado. Fique ligado(a) em nosso site e não perca essa oportunidade! </h3>
 					</div>
 				</div>
 			</div>
@@ -145,34 +145,34 @@
 	<h1>SAVE THE DATE</h1>
 	<h2 >9 a 13 de setembro</h2>
 
-	<div class="row justify-content-center">
-		<div class="col-1">
+	<!--<div class="row justify-content-center">
+		<div class="col-md-3">
 			<h3>DD</h3>
 		</div>
-		<div class="col-1">
+		<div class="col-md-3">
 			<h3>HH</h3>
 		</div>
-		<div class="col-1">
+		<div class="col-md-3">
 			<h3>MM</h3>
 		</div>
-		<div class="col-1">
+		<div class="col-md-3">
 			<h3>SS</h3>
 		</div>
 	</div>
 	<div class="row justify-content-center">
-		<div class="col-1">
+		<div class="col-md-3"> // col-md-3 deveria funcionar, mas gera um espaço adicional
 			dias
 		</div>
-		<div class="col-1">
+		<div class="col-md-3"> // estava col-1, que também deveria funcionar, mas...
 			horas
 		</div>
-		<div class="col-1">
+		<div class="col-md-3">
 			min
 		</div>
-		<div class="col-1">
+		<div class="col-md-3">
 			seg
 		</div>
-	</div><br>
+	</div>--><br>
 </div>
 <div class="container text-center mt-4 mb-4">
 
@@ -187,7 +187,7 @@
 	</div>
 
 	{# Texto adicional para testar espaçamento #}
-{{ lipsum() }}
+<p>{{ lipsum() }}</p>
 
 </div>
 
@@ -224,23 +224,15 @@
 						<h2>Realização</h2>
 		<div class="row">
 			<div class="col-md-4">
-					<p align="center">
-							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-secomp.jpg')}}">	
-						</p>
+				<img class="w-50 img-fluid" src="{{ url_for('static', filename='images/logo-secomp.jpg') }}">	
 			</div>
 			<div class="col-md-4">
-					<p align="center">
-							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">	
-						</p>
+				<img class="w-50 img-fluid" src="{{ url_for('static', filename='images/logo-dc.png') }}">	
 			</div>
 			<div class="col-md-4">
-					<p align="center">
-							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">	
-						</p>
+				<img class="w-50 img-fluid" src="{{ url_for('static', filename='images/logo-ufscar.png') }}">	
 			</div>
 		</div>					
 </div>
-	
-
 
 {% endblock %}
