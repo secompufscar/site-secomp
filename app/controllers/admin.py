@@ -11,7 +11,7 @@ from app.models.models import *
 class AppIndexView(AdminIndexView):
     @expose('/')
     def index(self):
-        if current_user.is_authenticated and current_user.permissao > TipoUsuario['usuario']:
+        if current_user.is_authenticated and current_user.is_admin
             self._template_args['usuario'] = current_user
             return super(AppIndexView, self).index()
         return redirect(url_for('index'))
@@ -24,7 +24,7 @@ class AppModelView(ModelView):
 
     @staticmethod
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.permissao > TipoUsuario['usuario']
+        return current_user.is_authenticated and current_user.is_admin
 
     @staticmethod
     def inaccessible_callback(self, name, **kwargs):
