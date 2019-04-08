@@ -1,3 +1,3 @@
 # config
 
-> Armazena os arquivos de configuração do flask, atualmente só há um default
+> Armazena os arquivos de configuração do flask, bem como o arquivo com as informações dos membros da organização da SECOMP.
