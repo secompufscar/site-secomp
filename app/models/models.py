@@ -24,7 +24,7 @@ Column('id_evento', Integer, db.ForeignKey('evento.id')))
 relacao_permissao_usuario = db.Table('relacao_permissao_usuario',
 Column('id', Integer, primary_key=True),
 Column('id_usuario', Integer, db.ForeignKey('usuario.id')),
-Column('id_permissao', Integer, db.ForeignKey('permissaousuarios.id')))
+Column('id_permissao', Integer, db.ForeignKey('permissao.id')))
 
 TipoUsuario = {
     'usuario': 0,
@@ -61,7 +61,7 @@ class Usuario(db.Model):
     salt = Column(String(30), nullable=False)
     token_alteracao_senha = Column(String(90), nullable=True)
     salt_alteracao_senha = Column(String(30), nullable=True)
-    permissoes_usuario = db.relationship('PermissaoUsuarios', secondary=relacao_permissao_usuario, lazy=True,
+    permissoes_usuario = db.relationship('Permissao', secondary=relacao_permissao_usuario, lazy=True,
     back_populates='usuarios')
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
 
@@ -289,8 +289,8 @@ class Camiseta(db.Model):
         return self.nome
 
 
-class PermissaoUsuarios(db.Model):
-    __tablename__ = 'permissaousuarios'
+class Permissao(db.Model):
+    __tablename__ = 'permissao'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', secondary=relacao_permissao_usuario, lazy=True,
