@@ -38,7 +38,7 @@ def init_admin(app, path):
     admin.add_view(AppModelView(Ministrante, db.session))
     admin.add_view(AppModelView(Atividade, db.session))
     admin.add_view(AppModelView(Camiseta, db.session))
-    admin.add_view(AppModelView(PermissaoUsuarios, db.session))
+    admin.add_view(AppModelView(Permissao, db.session))
     admin.add_view(AppModelView(MembroDeEquipe, db.session))
     admin.add_view(FileAdmin(path, '/static/', name='Arquivos Estáticos'))
     return admin
