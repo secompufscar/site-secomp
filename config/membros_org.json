@@ -2,21 +2,25 @@
 	"Coordenação Geral": {
 		"Guilherme L. G. Lamonato": {
 			"img": "GuilhermeLGL.jpg",
-			"bio": "bio1"
+			"bio": "bio1",
+			"email": "contato@secompufscar.com.br"
 		},
 		"Bianca Garcia Martins": {
 			"img": "BiancaGM.jpg",
-			"bio": "bio1"
+			"bio": "bio1",
+			"email": "contato@secompufscar.com.br"
 		},
 		"Isadora Eliziário Gallerani": {
 			"img": "IsadoraEG.jpg",
-			"bio": "bio1"
+			"bio": "bio1",
+			"email": "contato@secompufscar.com.br"
 		}
 	},
 	"Diretoria de TI": {
 		"Karina Mayumi": {
 			"img": "Karina.jpeg",
-			"bio": "bio1"
+			"bio": "bio1",
+			"email": "ti@secompufscar.com.br"
 		},
 		"Alcides Mignoso": {
 			"img": "Alcides.jpg",
@@ -58,7 +62,8 @@
 	"Diretoria de Design & Marketing": {
 		"Esther Calderan Hoffmann": {
 			"img": "EstherCH.jpg",
-			"bio": "bio1"
+			"bio": "bio1",
+			"email": "marketing@secompufscar.com.br"
 		},
 		"Daniel Lamounier Henringer": {
 			"img": "DanielLH.jpg",
@@ -92,7 +97,8 @@
 	"Diretoria de Patrocínio": {
 		"Nathaelly Boni": {
 			"img": "NathaellyB.jpg",
-			"bio": "bio1"
+			"bio": "bio1",
+			"email": "contato@secompufscar.com.br"
 		},
 		"Felipe Takeo Amano": {
 			"img": "FelipeTA.jpg",
@@ -118,7 +124,8 @@
 	"Diretoria de Conteúdo": {
 		"Bruna Fernandes Prates": {
 			"img": "BrunaFP.jpeg",
-			"bio": "bio1"
+			"bio": "bio1",
+			"email": "conteudo@secompufscar.com.br"
 		},
 		"Albert Franklin Boni": {
 			"img": "AlbertFB.jpg",
@@ -148,7 +155,8 @@
 	"Diretoria Jurídico-Financeiro": {
 		"Julia Cinel": {
 			"img": "JuliaC.jpg",
-			"bio": "bio1"
+			"bio": "bio1",
+			"email": "financeiro@secompufscar.com.br"
 		},
 		"Amanda Peixoto Manso": {
 			"img": "AmandaPM.jpg",
@@ -170,7 +178,8 @@
 	"Diretoria Sócio-Cultural": {
 		"Philipe Bittencourt": {
 			"img": "PhilipeB.jpeg",
-			"bio": "bio1"
+			"bio": "bio1",
+			"email": "sociocultural@secompufscar.com.br"
 		},
 		"Emilia Silva de Sousa": {
 			"img": "EmiliaSS.jpg",
