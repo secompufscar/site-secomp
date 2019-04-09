@@ -1,7 +1,5 @@
-import datetime
-
 from app.models.models import *
-from app.controllers.constants import *
+
 
 def get_opcoes_cidades():
     try:
@@ -41,6 +39,7 @@ def get_opcoes_cursos():
         print(e)
         return None
 
+
 def get_opcoes_camisetas():
     try:
         camisetas = db.session.query(Camiseta).order_by(
@@ -56,6 +55,7 @@ def get_opcoes_camisetas():
         print(e)
         return None
 
+
 def get_opcoes_usuarios_permissao():
     try:
         usuarios = db.session.query(Usuario).order_by(
@@ -68,6 +68,7 @@ def get_opcoes_usuarios_permissao():
     except Exception as e:
         print(e)
         return None
+
 
 def get_opcoes_permissoes():
     return [(0, "Super Admin"), (1, "JF")]

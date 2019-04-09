@@ -1,9 +1,9 @@
 from datetime import datetime
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
 
 from app import app
-
 
 db = SQLAlchemy(app)
 
@@ -26,12 +26,6 @@ relacao_permissao_usuario = db.Table('relacao_permissao_usuario',
 Column('id', Integer, primary_key=True),
 Column('id_usuario', Integer, db.ForeignKey('usuario.id')),
 Column('id_permissao', Integer, db.ForeignKey('permissao.id')))
-
-TipoUsuario = {
-    'usuario': 0,
-    'admin': 1,
-    'super_admin': 2,
-}
 
 TipoAtividade = {
     'minicurso': 0,
