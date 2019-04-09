@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block content %}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
       var elements = document.getElementsByTagName("INPUT");
@@ -26,7 +25,10 @@
 	  padding:50px;
       }
 </style>
-<div class="container">
+
+{% block content %}
+
+<div class="pad-inicio container">
     <form method="POST" action="/cadastro">
 	<div class="col-6 mx-auto">
         {{ wtf.form_field(form.primeiro_nome) }}
@@ -47,10 +49,10 @@
 	    <span class="help-block">{{ error }}</span>
 	    {% endfor %}
 
-	    <button type="submit" class="btn btn-primary">Cadastrar</button>
+      <button type="submit" class="btn btn-primary btn-block mt-3 mb-3">Cadastrar</button>
 	</div>
     </form>
 </div>
-<script href="{{url_for('static', filename='js/cadastro.js')}}"></script>
 {% endblock %}
 
+<script href="{{url_for('static', filename='js/cadastro.js')}}"></script>
