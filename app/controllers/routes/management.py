@@ -7,54 +7,62 @@ from app.controllers.forms.forms import *
 from app.models.models import *
 
 
-@app.route('/area-administrativa/estoque-camisetas')
+@app.route('/gerenciar')
+@login_required
+def gerenciar():
+    if current_user.is_admin():
+        permissoes = db.query(Permissao).all()
+        permissoes = {x.nome: x for x in permissoes}
+        return render_template('gerenciar.html', usuario=current_user, permissoes=permissoes)
+    else:
+        abort(403)
+
+
+@app.route('/gerenciar/estoque-camisetas')
 @login_required
 def estoque_camisetas():
-    if current_user.permissao > 0:
+    if current_user.is_admin():
         camisetas = db.session.query(Camiseta)
         return render_template('controle_camisetas.html', camisetas=camisetas, usuario=current_user)
     else:
         abort(403)
 
 
-@app.route('/area-administrativa/estoque-camisetas/<tamanho>')
+@app.route('/gerenciar/estoque-camisetas/<tamanho>')
 @login_required
 def estoque_camisetas_por_tamanho(tamanho):
-    if current_user.permissao > 0:
+    if current_user.is_admin():
         camisetas = db.session.query(Camiseta).filter_by(tamanho=tamanho)
         return render_template('controle_camisetas.html', camisetas=camisetas, usuario=current_user)
     else:
         abort(403)
 
 
-@app.route('/area-administrativa/cadastro-patrocinio', methods=['POST', 'GET'])
+@app.route('/gerenciar/cadastro-patrocinador', methods=['POST', 'GET'])
 @login_required
-def cadastro_patrocinio():
+def cadastro_patrocinador():
     form = PatrocinadorForm(request.form)
-
     if form.validate_on_submit():
-        patrocinador = Patrocinador(nome_empresa=form.nome_empresa.data,
-            logo=form.logo.data, ativo_site=form.ativo_site.data, id_cota=form.id_cota.data,
-            link_website=form.link_website.data,
-            ultima_atualizacao_em=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-
+        patrocinador = Patrocinador(nome_empresa=form.nome_empresa.data, logo=form.logo.data,
+                                    ativo_site=form.ativo_site.data, id_cota=form.id_cota.data,
+                                    link_website=form.link_website.data)
         db.session.add(patrocinador)
         db.session.flush()
         db.session.commit()
-        return redirect(url_for('cadastro-patrocinio'))
+        return redirect(url_for('cadastro-patrocinador'))
     else:
-        return render_template('cadastro_patrocinio.html', form=form)
+        return render_template('cadastro_patrocinador.html', form=form)
 
 
-@app.route('/area-administrativa/venda-kits', methods=['POST', 'GET'])
+@app.route('/gerenciar/venda-kits', methods=['POST', 'GET'])
 @login_required
 def vender_kits():
-    # Falta conferir permissões
+    # TODO: conferir permissões
     form = VendaKitForm(request.form)
-    if form.validate_on_submit() and form.participante.data != None:
+    if form.validate_on_submit() and form.participante.data is not None:
         camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
         participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
-        if(participante.pagamento):
+        if participante.pagamento:
             return render_template('venda_de_kits.html', alerta="Kit já comprado!", form=form)
         elif camiseta.quantidade_restante > 0:
             participante.id_camiseta = form.camiseta.data
@@ -70,27 +78,27 @@ def vender_kits():
     return render_template('venda_de_kits.html', alerta="Preencha o formulário abaixo", form=form)
 
 
-@app.route('/area-administrativa/fazer-sorteio')
+@app.route('/gerenciar/sorteio')
 @login_required
-def sortear():
+def sorteia_usuario():
     return render_template('sortear_usuario.html', sorteando=False)
 
 
-@app.route('/area-administrativa/fazer-sorteio/do')
+@app.route('/gerenciar/sorteio/sortear')
 @login_required
-def sorteando():
-    # <Falta conferir permissões>
+def sortear():
+    # TODO: conferir permissões
     sorteado = db.session.query(Participante)
     sorteado = sorteado[SystemRandom().randint(1, sorteado.count()) - 1]
     return render_template('sortear_usuario.html', sorteado=sorteado, sorteando=True)
 
 
-@app.route('/area-administrativa/alterar-camiseta', methods=["GET","POST"])
+@app.route('/gerenciar/alterar-camisetas', methods=["GET", "POST"])
 @login_required
 def alterar_camiseta():
-    # <Falta conferir permissões>
+    # TODO: conferir permissões
     form = AlteraCamisetaForm(request.form)
-    if form.validate_on_submit() and form.participante.data != None:
+    if form.validate_on_submit() and form.participante.data is not None:
         participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
         camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
         if camiseta.quantidade_restante > 0:
@@ -102,7 +110,9 @@ def alterar_camiseta():
             db.session.add(camiseta)
             db.session.add(participante)
             db.session.commit()
-            return render_template('alterar_camiseta.html', participante=participante, camiseta=camiseta, sucesso='s', form=form)
+            return render_template('alterar_camisetas.html', participante=participante, camiseta=camiseta,
+                                   sucesso='s', form=form)
         else:
-            return render_template('alterar_camiseta.html', participante=participante, camiseta=camiseta, sucesso='n', form=form)
-    return render_template('alterar_camiseta.html', form=form)
+            return render_template('alterar_camisetas.html', participante=participante, camiseta=camiseta,
+                                   sucesso='n', form=form)
+    return render_template('alterar_camisetas.html', form=form)
