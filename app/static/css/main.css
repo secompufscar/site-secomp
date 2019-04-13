@@ -40,7 +40,7 @@ header {
 footer {
   background-color: #212121; }
   footer ul li {
-    padding: 1%; }
+    padding: 0.5%; }
     footer ul li a {
       color: #fff; }
       footer ul li a:hover {
@@ -105,11 +105,11 @@ footer {
   -o-transform-style: preserve-3d;
   -ms-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: 1s;
-  -moz-transition: 1s;
-  -o-transition: 1s;
-  -ms-transition: 1s;
-  transition: 1s;
+  -webkit-transition: 0.6s;
+  -moz-transition: 0.6s;
+  -o-transition: 0.6s;
+  -ms-transition: 0.6s;
+  transition: 0.6s;
   position: relative; }
 
 .frontside,
@@ -119,11 +119,11 @@ footer {
   -o-transform-style: preserve-3d;
   -ms-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: 1s;
-  -moz-transition: 1s;
-  -o-transition: 1s;
-  -ms-transition: 1s;
-  transition: 1s;
+  -webkit-transition: 0.6s;
+  -moz-transition: 0.6s;
+  -o-transition: 0.6s;
+  -ms-transition: 0.6s;
+  transition: 0.6s;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -o-backface-visibility: hidden;
@@ -154,3 +154,7 @@ footer {
   width: 20vh;
   height: 20vh;
   border-radius: 50%; }
+
+  .dash table, th, td {
+    font-size: 0.85rem;
+  }

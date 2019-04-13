@@ -2,65 +2,119 @@
 
 {% block content %}
 
+<div class="pad-inicio pb-3 container dash">
+    <div class="row justify-content-center">
 
-< style="padding:20%">
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8" style="padding:5%">
-        {% if (participante.id == None): %}
-        <a href="{{url_for('cadastro_participante')}}" class="btn btn-primary">Inscrever-se na SECOMP 2019</a>
-        {% else: %}
-        <p>Inscrito na SECOMP 2019</p>
+        <div class="col-lg-12 text-center p-2">
+            <h2>Área do participante</h2>
+            <h5>QR Code ainda não disponível</h5>
+        </div>
 
-        QR CODE: A fazer <br>
-        Inscrição realizada em: {{ participante.data_inscricao }}
-        <br>
-        Presenças:
-        {% for atividade in participante.atividades %}
-        {{ atividade }},
-        {% endfor %}
-        <br>
-        Pago:
-        {% if participante.kit_pago == True: %}
-        Sim
-        {% else: %}
-        Não
-        {% endif %}
-        <br>
-        Camiseta: {{ participante.camiseta.tamanho }}
-        <br>
-        Opção do Coffee: {{ participante.opcao_coffee }}
-        <br>
-        Score: {{ participante.score_geral }}
-        <br>
+        <div class="col-md-6">
+            <table class="table table-borderless">
 
-        <hr>
+            <!--<br>Curso: {{usuario.curso.nome}}
+            <br>Instituição: {{usuario.instituicao.nome}}
+            <br>Data de nascimento: {{usuario.data_nasc}}
+            <br>Cidade: {{usuario.cidade.nome}}-->
 
-        <label>Dados</label>
-        <br>
-        Nome: {{usuario.primeiro_nome + ' ' + usuario.sobrenome}}
-        <br>
-        Email: {{usuario.email}}
-        <br>
-        Curso: {{usuario.curso.nome}}
-        <br>
-        Instituição: {{usuario.instituicao.nome}}
-        <br>
-        Data de nascimento: {{usuario.data_nasc}}
-        <br>
-        Cidade: {{usuario.cidade.nome}}
-        <hr>
-        <a href="{{url_for('alterar_senha')}}" class="btn btn-primary">Alterar senha</a>
-        <a href="{{url_for('inscricao_atividades')}}" class="btn btn-primary">Atividades</a>
-        {% if not(participante.pagamento): %}
-        <a href="{{url_for('inscricao_atividades')}}" class="btn btn-primary">Enviar comprovante</a>
-        {% endif %}
-        <a href="{{url_for('logout')}}" class="btn btn-primary">Logout</a>
 
-        {% endif %}
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Dados</th>
+                        <th scope="col">Editar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Nome</th>
+                        <td>{{usuario.primeiro_nome + ' ' + usuario.sobrenome}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td>{{usuario.email}}</td>
+                    </tr>
+                    <tr>
+                        {% if (participante.id == None): %}
+
+                        <th scope="row">Inscrição</th>
+                        <td><a href="{{url_for('cadastro_participante')}}">Inscrever-se na SECOMP 2019</a></td>
+                            
+                        {% else: %}
+
+                        <th scope="row">Inscrição realizada em</th>
+                        <td>{{ participante.data_inscricao }}</td>
+
+                        {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <table class="table table-borderless">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Kit</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Pago</th>
+                        <td>{% if participante.kit_pago == True: %}
+                                Sim
+                            {% else: %}
+                                Não
+                            {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Camiseta</th>
+                        <td>{{ participante.camiseta.tamanho }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Opção do Coffee</th>
+                        <td>{{ participante.opcao_coffee }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12">
+        
+            <table class="table table-borderless table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Score</th>
+                        <th><!--{{ participante.score_geral }}-->8000</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for atividade in participante.atividades %}
+                    <tr>
+                        <th scope="row">{ atividade.valor }</th>
+                        <td>{{ atividade }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>        
+        </div>
     </div>
-    <div class="col-md-2"></div>
-</div>
+
+    <div class="row text-center">
+        <div class="col-md-4">
+            <a href="{{url_for('alterar_senha')}}" class="btn btn-primary">Alterar senha</a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{url_for('inscricao_atividades')}}" class="btn btn-primary">Atividades</a>
+        </div>
+        <div class="col-md-4">
+            {% if not(participante.pagamento): %}
+            <a href="{{url_for('inscricao_atividades')}}" class="btn btn-primary">Enviar comprovante</a>
+            {% endif %}
+            <a href="{{url_for('logout')}}" class="btn btn-primary">Logout</a>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
