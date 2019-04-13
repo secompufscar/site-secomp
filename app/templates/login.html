@@ -8,12 +8,8 @@
 <link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
-{% block navbar %}{% endblock %}
 
 {% block content %}
-
-
-
 <div class="container">
 		<div class="row">
 
@@ -28,7 +24,7 @@
 	    {{ wtf.form_field(form.senha) }}
 	   
 	</div>
-		<button name="submit" type="submit" class="btn btn-primary" style="padding:8px; background:linear-gradient(to right, #008cb5, #00cfa1);border-radius:4px"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
+		<button name="submit" type="submit" class="btn btn-primary bg-gradient-secomp" style="padding:8px; border-radius:4px"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
 		
 		<div class="row align-items-center">
 		<div class="col-md-4">
