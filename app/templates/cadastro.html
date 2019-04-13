@@ -17,7 +17,13 @@
         }
     })
   </script>
-  <style>
+
+
+{% block styles %}
+{{ super() }}
+
+<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css"/>
+<style>
       .help-block{
         color:red;
       }
@@ -25,12 +31,14 @@
 	  padding:50px;
       }
 </style>
+{% endblock %}
+
 
 {% block content %}
 
 <div class="pad-inicio container">
     <form method="POST" action="/cadastro">
-	<div class="col-6 mx-auto">
+	<div class="col mx-auto">
         {{ wtf.form_field(form.primeiro_nome) }}
         {{ wtf.form_field(form.sobrenome) }}
         {{ wtf.form_field(form.email) }}
@@ -49,10 +57,12 @@
 	    <span class="help-block">{{ error }}</span>
 	    {% endfor %}
 
-      <button type="submit" class="btn btn-primary btn-block mt-3 mb-3">Cadastrar</button>
+      <button type="submit" class="btn btn-primary bg-gradient-secomp btn-block mt-3 mb-3">Cadastrar</button>
 	</div>
     </form>
 </div>
 {% endblock %}
+
+{% block footer %}{% endblock %}
 
 <script href="{{url_for('static', filename='js/cadastro.js')}}"></script>
