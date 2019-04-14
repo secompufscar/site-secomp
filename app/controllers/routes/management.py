@@ -1,13 +1,16 @@
 from random import SystemRandom
 
-from flask import render_template, request, redirect, abort, url_for
+from flask import render_template, request, redirect, abort, url_for, Blueprint
 from flask_login import login_required, current_user
 
 from app.controllers.forms.forms import *
 from app.models.models import *
 
+management = Blueprint('management', __name__, static_folder='static',
+                       template_folder='templates', url_prefix='/gerenciar')
 
-@app.route('/gerenciar')
+
+@management.route('/')
 @login_required
 def gerenciar():
     if current_user.is_admin():
@@ -18,7 +21,7 @@ def gerenciar():
         abort(403)
 
 
-@app.route('/gerenciar/estoque-camisetas')
+@management.route('/estoque-camisetas')
 @login_required
 def estoque_camisetas():
     if current_user.is_admin():
@@ -28,7 +31,7 @@ def estoque_camisetas():
         abort(403)
 
 
-@app.route('/gerenciar/estoque-camisetas/<tamanho>')
+@management.route('/estoque-camisetas/<tamanho>')
 @login_required
 def estoque_camisetas_por_tamanho(tamanho):
     if current_user.is_admin():
@@ -38,7 +41,7 @@ def estoque_camisetas_por_tamanho(tamanho):
         abort(403)
 
 
-@app.route('/gerenciar/cadastro-patrocinador', methods=['POST', 'GET'])
+@management.route('/cadastro-patrocinador', methods=['POST', 'GET'])
 @login_required
 def cadastro_patrocinador():
     form = PatrocinadorForm(request.form)
@@ -54,7 +57,7 @@ def cadastro_patrocinador():
         return render_template('cadastro_patrocinador.html', form=form)
 
 
-@app.route('/gerenciar/venda-kits', methods=['POST', 'GET'])
+@management.route('/venda-kits', methods=['POST', 'GET'])
 @login_required
 def vender_kits():
     # TODO: conferir permissões
@@ -78,13 +81,13 @@ def vender_kits():
     return render_template('venda_de_kits.html', alerta="Preencha o formulário abaixo", form=form)
 
 
-@app.route('/gerenciar/sorteio')
+@management.route('/sorteio')
 @login_required
 def sorteia_usuario():
     return render_template('sortear_usuario.html', sorteando=False)
 
 
-@app.route('/gerenciar/sorteio/sortear')
+@management.route('/sorteio/sortear')
 @login_required
 def sortear():
     # TODO: conferir permissões
@@ -93,7 +96,7 @@ def sortear():
     return render_template('sortear_usuario.html', sorteado=sorteado, sorteando=True)
 
 
-@app.route('/gerenciar/alterar-camisetas', methods=["GET", "POST"])
+@management.route('/alterar-camisetas', methods=["GET", "POST"])
 @login_required
 def alterar_camiseta():
     # TODO: conferir permissões
