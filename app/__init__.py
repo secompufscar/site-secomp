@@ -7,12 +7,6 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
 from flask_babelex import Babel
 
-from app.models.models import db, Usuario
-from app.controllers import admin
-from app.controllers.routes.user_routes import user_routes
-from app.controllers.routes.routes import routes
-from app.controllers.routes.admin_area_routes import admin_area_routes
-
 
 configs = {
     'development': '../config/development.py',
@@ -28,7 +22,13 @@ app.config.from_pyfile(configs[config_name])
 Bootstrap(app)
 babel = Babel(app)
 
+from app.models.models import db, Usuario
+
 migrate = Migrate(app, db)
+
+from app.controllers.routes.user_routes import user_routes
+from app.controllers.routes.routes import routes
+from app.controllers.routes.admin_area_routes import admin_area_routes
 
 app.register_blueprint(user_routes)
 app.register_blueprint(routes)
@@ -47,6 +47,8 @@ def user_loader(user_id):
 def unauthorized_callback():
     return redirect('/login')
 
+
+from app.controllers import admin
 
 upload_path = os.path.join(os.path.dirname(__file__), 'static')
 adm = admin.init_admin(app, upload_path)
