@@ -1,7 +1,9 @@
 from app.models.models import *
 
+
 def get_score_evento(edicao):
     return 10000
+
 
 def get_participantes():
     try:
@@ -15,6 +17,7 @@ def get_participantes():
         print(e)
         return None
 
+
 def get_participantes_sem_kit():
     try:
         query = db.session.query(Participante).filter_by(pacote=0)
@@ -26,6 +29,7 @@ def get_participantes_sem_kit():
     except Exception as e:
         print(e)
         return None
+
 
 def cadastra_objeto_generico(objeto):
     try:

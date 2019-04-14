@@ -1,10 +1,12 @@
 from time import strftime, gmtime
 
-from flask import url_for, render_template
+from flask import url_for, render_template, current_app
 from flask_login import current_user
 from flask_mail import Mail, Message
 
-from app.models.models import *
+from app.models.models import db, Usuario
+
+mail = Mail()
 
 _teste = {
         "assunto": 'Teste', # assunto do email
@@ -12,7 +14,7 @@ _teste = {
         "titulo": "EMAIL TESTE",
         "email": 'ti@secompufscar.com.br', # email destino
         "template": 'email/teste.html', # path do template (raiz dentro do diretório 'templates')
-        "footer": 'TI X SECCOMP UFSCar'
+    "footer": 'TI X SECOMP UFSCar'
         }
 
 
@@ -25,14 +27,15 @@ def enviar_email_generico(info=None):
     if info is None:
         global _teste
         info = _teste
-    mail = Mail(app)
-    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(app.config['MAIL_USERNAME'])), recipients=[info['email']])
+    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['MAIL_USERNAME'])),
+                  recipients=[info['email']])
     try:
         msg.html = render_template(info['template'], info=info)
         print(msg.html)
     except Exception as e:
         print(e)
     try:
+        global mail
         mail.send(msg)
     except Exception as e:  # Erros mais prováveis são devido ao email_config, printa error em um arquivo
         try:
@@ -60,13 +63,13 @@ def enviar_email_confirmacao(usuario, token):
     enviar_email_generico(info)
 
 
-def enviar_email_DM(servico, nome, email, mensagem):
-    mail = Mail(servico)
+def enviar_email_dm(nome, email, mensagem):
     msg = Message(f'Mensagem de {nome}',
-            sender=servico.config['MAIL_USERNAME'], recipients=servico.config['MAIL_DM'])
+                  sender=current_app.config['MAIL_USERNAME'], recipients=current_app.config['MAIL_DM'])
     msg.body = f'{nome}\nEmail: {email}\n\n{mensagem}'
 
     try:
+        global mail
         mail.send(msg)  # Envia o email
     except Exception as e:  # Erros mais prováveis são devivo ao email_config, printa error em um arquivo
         try:
@@ -90,7 +93,7 @@ def enviar_email_senha(usuario, token):
         "email": usuario.email,
         "template": 'email/alteracao_senha.html',
         "link": str(link),
-        "footer": 'TI X SECCOMP UFSCar'
+        "footer": 'TI X SECOMP UFSCar'
     }
     enviar_email_generico(info)
 

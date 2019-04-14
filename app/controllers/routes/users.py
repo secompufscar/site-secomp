@@ -1,7 +1,7 @@
 from os import path, makedirs
 
 from bcrypt import gensalt
-from flask import request, redirect, flash
+from flask import request, redirect, flash, Blueprint, current_app
 from flask_login import login_required, login_user, logout_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
@@ -13,8 +13,10 @@ from app.controllers.functions.email import *
 from app.controllers.functions.helpers import *
 from app.models.models import *
 
+users = Blueprint('users', __name__, static_folder='static', template_folder='templates')
 
-@app.route("/login", methods=["GET", "POST"])
+
+@users.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
@@ -30,7 +32,7 @@ def login():
     return render_template('login.html', form=form)
 
 
-@app.route("/logout", methods=["GET"])
+@users.route("/logout", methods=["GET"])
 @login_required
 def logout():
     """
@@ -44,12 +46,12 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/participante/cadastro', methods=['POST', 'GET'])
+@users.route('/participante/cadastro', methods=['POST', 'GET'])
 def cadastro():
     """
     Renderiza a página de cadastro do projeto
     """
-    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
 
     form = CadastroForm(request.form)
     email = form.email.data
@@ -75,7 +77,7 @@ def cadastro():
     return render_template('cadastro.html', form=form)
 
 
-@app.route('/participante/verificar-email')
+@users.route('/participante/verificar-email')
 @login_required
 def verificar_email():
     if email_confirmado():
@@ -87,7 +89,7 @@ def verificar_email():
     return render_template('confirma_email.html', resultado=msg, status=status)
 
 
-@app.route('/participante/cadastro-participante', methods=['POST', 'GET'])
+@users.route('/participante/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
     id_evento = db.session.query(Evento).filter_by(
@@ -117,7 +119,7 @@ def cadastro_participante():
         return redirect(url_for('verificar_email'))
 
 
-@app.route('/participante/dashboard', methods=['POST', 'GET'])
+@users.route('/participante/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard_usuario():
     usuario = db.session.query(Usuario).filter_by(
@@ -127,7 +129,7 @@ def dashboard_usuario():
             usuario=current_user).first()
         return render_template('dashboard_usuario.html', title='Dashboard', usuario=usuario, participante=participante)
     else:
-        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         salt = gensalt().decode('utf-8')
         token = serializer.dumps(current_user.email, salt=salt)
         usuario = current_user
@@ -141,7 +143,7 @@ def dashboard_usuario():
         return redirect(url_for('verificar_email'))
 
 
-@app.route('/participante/enviar-comprovante', methods=['POST', 'GET'])
+@users.route('/participante/enviar-comprovante', methods=['POST', 'GET'])
 @login_required
 def envio_comprovante():
     """
@@ -152,7 +154,7 @@ def envio_comprovante():
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
         filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
-        upload_path = path.join(app.config['UPLOAD_FOLDER'], 'comprovantes')
+        upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'comprovantes')
         if not path.exists(upload_path):
             makedirs(upload_path)
         comprovante.save(path.join(upload_path, filename))
@@ -161,12 +163,12 @@ def envio_comprovante():
     return render_template('enviar_comprovante.html', form=form)
 
 
-@app.route('/participante/verificacao/<token>')
+@users.route('/participante/verificacao/<token>')
 def verificacao(token):
     """
     Página do link enviado para o usuário
     """
-    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     try:
         # Acha o usuário que possui o token
         user = db.session.query(Usuario).filter_by(token_email=token).first()
@@ -187,7 +189,7 @@ def verificacao(token):
     return redirect(url_for('verificar_email'))
 
 
-@app.route('/participante/inscricao-atividades')
+@users.route('/participante/inscricao-atividades')
 @login_required
 def inscricao_atividades():
     minicursos = db.session.query(Atividade).filter_by(
@@ -202,7 +204,7 @@ def inscricao_atividades():
                            usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
-@app.route('/participante/inscricao-atividades/<filtro>')
+@users.route('/participante/inscricao-atividades/<filtro>')
 @login_required
 def inscricao_atividades_com_filtro(filtro):
     minicursos = db.session.query(Atividade).filter(
@@ -218,7 +220,7 @@ def inscricao_atividades_com_filtro(filtro):
                            usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
-@app.route('/participante/inscrever-atividade/<id>')
+@users.route('/participante/inscrever-atividade/<id>')
 @login_required
 def inscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id)[0]
@@ -244,7 +246,7 @@ def inscrever(id):
         return "Não há vagas disponíveis!"
 
 
-@app.route('/participante/desinscrever-atividade/<id>')
+@users.route('/participante/desinscrever-atividade/<id>')
 @login_required
 def desinscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id).first()
@@ -269,7 +271,7 @@ def desinscrever(id):
         return "Não está inscrito nessa atividade!"
 
 
-@app.route('/participante/alterar-senha', methods=["POST", "GET"])
+@users.route('/participante/alterar-senha', methods=["POST", "GET"])
 @login_required
 def alterar_senha():
     form = AlterarSenhaForm(request.form)
@@ -290,13 +292,13 @@ def alterar_senha():
         return redirect(url_for('dashboard_usuario'))
 
 
-@app.route('/participante/esqueci-senha', methods=["POST", "GET"])
+@users.route('/participante/esqueci-senha', methods=["POST", "GET"])
 def esqueci_senha():
     form = AlterarSenhaPorEmailForm(request.form)
     if form.validate_on_submit():
         usuario = db.session.query(Usuario).filter_by(
             email=form.email.data).first()
-        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         salt = gensalt().decode('utf-8')
         token = serializer.dumps(usuario.email, salt=salt)
         usuario.salt_alteracao_senha = salt
@@ -308,11 +310,11 @@ def esqueci_senha():
     return render_template("esqueci_senha.html", status_envio_email=False, form=form)
 
 
-@app.route('/participante/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
+@users.route('/participante/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
 def confirmar_alteracao_senha(token):
     form = AlterarSenhaForm(request.form)
     if form.validate_on_submit():
-        serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         try:
             # Acha o usuário que possui o token
             usuario = db.session.query(Usuario).filter_by(
