@@ -38,7 +38,6 @@ def internal_server_error():
 
 from app.models.models import db, Usuario
 
-db.init_app(app)
 migrate = Migrate(app, db)
 
 from app.controllers.functions.email import mail
@@ -86,7 +85,8 @@ def drop():
     """
     Drops database tables
     """
-    if prompt_bool("Erase current database?"):
+    if prompt_bool("Erase current database?", default=True):
+        db.session.close_all()
         db.drop_all()
 
 
