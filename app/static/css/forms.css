@@ -1,22 +1,21 @@
-html {
-  height: 100%;
+body {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
 }
 
-body {
-  padding: 50px;
-  width: 500px;
-  margin: 50px auto;
-  text-align: center;
-  position: relative;
+.container {
+  background-color: #fff;
+  min-height: 100vh;
 }
 
 .btn {
-  width: 100px;
   font-weight: bold;
-  border: 0 none;
-  border-radius: 1px;
-  cursor: pointer;
-  padding: 10px 5px;
-  margin: 10px 5px;
+  border: none;  
+}
+
+.btn:hover {
+  background-image: linear-gradient(to right, #008cb5, #00cfa1);
+}
+
+.help-block{
+  color:red;
 }

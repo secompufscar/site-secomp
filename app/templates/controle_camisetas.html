@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
- crossorigin="anonymous">
-</script>
 
 {% block content %}
 <div class="pad-inicio container">
@@ -58,11 +54,18 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+ crossorigin="anonymous">
+</script>
+
 <script type="text/javascript">
     $("#buscar").click(function() {
 	var nome = $("#filtro").val();
 	$(location).attr('href', '/estoque-camisetas/'+nome);
     });
 </script>
-
 {% endblock %}

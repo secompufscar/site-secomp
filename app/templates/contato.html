@@ -1,18 +1,50 @@
-<head>
-</head>
-<body>
-    {%  if enviado%}
-    <h1> Enviado </h1>
-    {% endif %}
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
 
-    <div>
-	<form method="POST" action="/contato">
-	    {{ form.hidden_tag() }}
-	    {{ wtf.form_field(form.nome_completo) }}
-	    {{ wtf.form_field(form.email) }}		  
-	    {{ wtf.form_field(form.mensagem) }}
 
-	    <button type="submit" class="btn btn-primary">Enviar</button>
-	</form>
-    </div>
-<body>
+{% block styles %}
+{{ super() }}
+
+<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+
+{% block content %}
+<div class="pad-inicio container">
+	<div class="row justify-content-center">
+
+		<div class="col-md-12 text-center">
+			<h2>Contato</h2>
+			{% if enviado %}
+			<h5>Enviado</h5>
+			{% endif %}
+		</div>
+
+    <div class="col-md-8">
+		<form method="POST" action="/contato">
+			{{ form.hidden_tag() }}
+			{{ wtf.form_field(form.nome_completo) }}
+			{{ wtf.form_field(form.email) }}		  
+			{{ wtf.form_field(form.mensagem) }}
+
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-5">Enviar</button>
+			</div>
+		</form>
+	</div>
+	<div class="row justify-content-center pt-3">
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">
+		</div>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">
+		</div>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">	
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block footer %}{% endblock %}
