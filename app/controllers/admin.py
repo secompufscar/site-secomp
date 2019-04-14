@@ -31,8 +31,8 @@ class AppModelView(ModelView):
         return redirect(url_for('index'))
 
 
-def init_admin(app, path):
-    admin = Admin(app, index_view=AppIndexView(), template_mode='bootstrap3')
+def init_admin(servico, path):
+    admin = Admin(servico, index_view=AppIndexView(), template_mode='bootstrap3')
     admin.add_view(AppModelView(Usuario, db.session))
     admin.add_view(AppModelView(Participante, db.session))
     admin.add_view(AppModelView(Ministrante, db.session))
