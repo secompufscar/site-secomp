@@ -40,16 +40,12 @@ header{
     }
 }
 .dropdown{
-    &:hover > &-menu {
-	display: block;
-    }
-
     &-menu a {
 	font-size: 12px;
     }
     > &-toggle:active {
 	/*Without this, clicking will make it sticky*/
-	pointer-events: none;
+	pointer-events: visible;
     }
 }
 

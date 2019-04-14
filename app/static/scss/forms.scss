@@ -3,25 +3,23 @@
 @import "variables";
 @import "mixins";
 
-html{
-    height: 100%;
+body{
     @include main-gradient;
 }
 
-body{
-    padding: 50px;
-    width: 500px;
-    margin: 50px auto;
-    text-align: center;
-    position: relative;
+.container{
+    background-color: $white;
+    min-height: 100vh;
 }
 
 .btn{
-    width: 100px;
     font-weight: bold;
-    border: 0 none;
-    border-radius: 1px;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 5px;
+    border: none;
+    &:hover{
+	@include main-gradient;
+    }
+}
+
+.help-block{
+    color: red;
 }
