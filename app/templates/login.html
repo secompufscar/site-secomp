@@ -10,43 +10,43 @@
 
 
 {% block content %}
-<div class="container">
-		<div class="row">
+<div class="pad-inicio container">
 
-		<img width="60" height="60" src="{{url_for('static', filename='images/logo-colorida.png')}}">
-		<h3 style="padding-top:6%;padding-left: 15%;"> SECOMP X</h3><br>
-		
+	<div class="row justify-content-center pb-3">
+
+		<div class="col-lg-12 text-center p-2">
+			<h2>Login</h2>
 		</div>
-    <form action="/login" method="POST">
-	<div class="col mx-auto">
-	    {{ form.hidden_tag() }}
-	    {{ wtf.form_field(form.email) }}
-	    {{ wtf.form_field(form.senha) }}
-	   
+
+		<div class="col-md-6">
+			<form action="/login" method="POST">
+				{{ form.hidden_tag() }}
+				{{ wtf.form_field(form.email) }}
+				{{ wtf.form_field(form.senha) }}
+		
+				<div class="text-center">
+					<button name="submit" type="submit" class="btn btn-primary bg-gradient-secomp"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
+					<a href="{{url_for('esqueci_senha')}}">Esqueci minha senha</a>
+				</div>
+			</form>
+		</div>
 	</div>
-		<button name="submit" type="submit" class="btn btn-primary bg-gradient-secomp" style="padding:8px; border-radius:4px"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
-		
-		<div class="row align-items-center">
-		<div class="col-md-4">
-			<p align="center">
-					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">	
-				</p>
+
+
+	<div class="row justify-content-center pt-3">
+		<div class="col-md-12 text-center">
+			<h4>Realização</h4>
 		</div>
-		<div class="col-md-4">
-			<p align="center">
-					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">	
-				</p>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">
 		</div>
-		<div class="col-md-4">
-			<p align="center">
-					<img class="w-100 img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">	
-				</p>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">
 		</div>
-		</div>			
-</form>
-	<hr>
-		<a href="esqueci-senha">Esqueci minha senha</a><br>
-  
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">	
+		</div>
+	</div>
 </div>
 {% endblock %}
 

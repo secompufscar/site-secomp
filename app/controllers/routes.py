@@ -201,7 +201,7 @@ def verificacao(token):
 
 
 @app.route('/contato', methods=['POST', 'GET'])
-def contatoDM():
+def contato():
     """
     Página de contato
     """

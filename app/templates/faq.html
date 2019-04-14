@@ -2,48 +2,61 @@
 
 {% block content %}
 
-<div class="container"><br><br>
-		<div class="pt-3 text-center">
-				<br><h2>FAQ</h2>
-			</div>
-			<hr>
-	<div class="row"> 
-		<div class="col-md-7"> <br>
-		<div class="list-group">
-				<div id="barrinha" style="padding: 14px;"></div>
-	
-				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-				  <div class="d-flex w-100 justify-content-between">
-					<h5 class="mb-1">Não sou aluno da UFSCar. Posso me inscrever?</h5>
-				  </div>
-				  <p align="justify" class="mb-1"> Claro! Seja muito bem-vindo(a)! Qualquer pessoa pode se inscrever na SECOMP UFSCar.
-					</p>
-				</a>
-				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-				  <div class="d-flex w-100 justify-content-between">
-					<h5 class="mb-1"> O evento é pago?</h5>
-				  </div>
-				  <p align="justify" class="mb-1">O acesso ao conteúdo do evento é gratuito para todos os participantes. Entretanto, teremos opções de pacotes para compra do kit do participante que contará com camiseta personalizada do evento, caneca, diversos brindes e acesso a todos os coffee breaks do evento. Aos que quiserem participar apenas do Capture the Flag (CTF), também será possível comprar um pacote mais barato que contempla apenas a inscrição na modalidade. Mais detalhes sobre os pacotes serão divulgados em breve.
-					</p>
-				</a>
-				<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-						<div class="d-flex w-100 justify-content-between">
-						  <h5 class="mb-1"> Qual a forma de pagamento, caso eu queira comprar o kit?</h5>
-						</div>
-						<p align="justify" class="mb-1"> Você poderá pagar com cartão de crédito via PayPal, realizando depósito ou transferência bancária para uma conta do Banco do Brasil, ou ainda poderá pagar presencialmente no Departamento de Computação da UFSCar em dias e horários a serem divulgados em nossa página do Facebook.
-							</p>
-					  </a>
-					  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-						<div class="d-flex w-100 justify-content-between">
-						  <h5 class="mb-1">Há limite de vagas?</h5>
-						</div>
-						<p align="justify" class="mb-1"> Minicursos e workshops possuem limite de vagas que serão divulgados junto à descrição de cada atividade ou no edital. As vagas são preenchidas por ordem de inscrição. Portanto, assim que as inscrições abrirem, garanta o quanto antes a sua vaga!
+<div class="pad-inicio container">
+	<div class="row justify-content-center">
+		<div class="col-md-12 p-3 text-center">
+			<h2>FAQ</h2>
+		</div>
 
-								As demais atividades que não precisam de inscrição (como palestras e mesas-redondas, por exemplo) possuem vagas limitadas apenas à quantidade de lugares no lugar da atividade.</p>
-					  </a><br>
+		<div class="col-md-12">
+			<div id="barrinha" style="padding: 14px;"></div>
+
+			<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+				<div class="d-flex w-100 justify-content-between">
+					<h5 class="mb-1">Não sou aluno da UFSCar. Posso me inscrever?</h5>
+				</div>
+				<p class="text-justify mb-1"> Claro! Seja muito bem-vindo(a)! Qualquer pessoa pode se inscrever na SECOMP
+					UFSCar.
+				</p>
+			</a>
+			<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+				<div class="d-flex w-100 justify-content-between">
+					<h5 class="mb-1"> O evento é pago?</h5>
+				</div>
+				<p class="text-justify mb-1">O acesso ao conteúdo do evento é gratuito para todos os participantes. Entretanto,
+					teremos opções de pacotes para compra do kit do participante que contará com camiseta personalizada do evento,
+					caneca, diversos brindes e acesso a todos os coffee breaks do evento. Aos que quiserem participar apenas do
+					Capture the Flag (CTF), também será possível comprar um pacote mais barato que contempla apenas a inscrição na
+					modalidade. Mais detalhes sobre os pacotes serão divulgados em breve.
+				</p>
+			</a>
+			<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+				<div class="d-flex w-100 justify-content-between">
+					<h5 class="mb-1"> Qual a forma de pagamento, caso eu queira comprar o kit?</h5>
+				</div>
+				<p class="text-justify mb-1"> Você poderá pagar com cartão de crédito via PayPal, realizando depósito ou
+					transferência bancária para uma conta do Banco do Brasil, ou ainda poderá pagar presencialmente no
+					Departamento de Computação da UFSCar em dias e horários a serem divulgados em nossa página do Facebook.
+				</p>
+			</a>
+			<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+				<div class="d-flex w-100 justify-content-between">
+					<h5 class="mb-1">Há limite de vagas?</h5>
+				</div>
+				<p class="text-justify mb-1"> Minicursos e workshops possuem limite de vagas que serão divulgados junto à
+					descrição de cada atividade ou no edital. As vagas são preenchidas por ordem de inscrição. Portanto, assim que
+					as inscrições abrirem, garanta o quanto antes a sua vaga!
+
+					As demais atividades que não precisam de inscrição (como palestras e mesas-redondas, por exemplo) possuem
+					vagas limitadas apenas à quantidade de lugares no lugar da atividade.</p>
+			</a>
 		</div>
-		<br><br>
-		</div>
+	</div>
+	<!-- Este forms seria igual à página de contato?
+			 Deveria ser implementado então por wtforms?
+			 Ou apenas um link para redirecionar para a página de contato?
+
+			 
 		<div class="col-md-5"> 
 				<div class="pt-3 text-center">
 						<h3 class="md-1">
@@ -67,37 +80,22 @@
 							<button type="button" class="btn btn-secondary bg-gradient-secomp"><i class="fas fa-location-arrow"></i> Enviar mensagem</button>
 								</center>
 						</form>
-		</div>
+		</div>-->
 
-		</div>
-		</div>
-		</div>
+<div class="row justify-content-center p-3">
+	<div class="col-md-12 text-center">
+		<h4>Realização</h4>
+	</div>
+	<div class="col-sm-3 align-self-center">
+		<img class="img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">
+	</div>
+	<div class="col-sm-3 align-self-center">
+		<img class="img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">
+	</div>
+	<div class="col-sm-3 align-self-center">
+		<img class="img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">
+	</div>
+</div>
 
-		
-		<div class="container text-center mt-4 mb-4">
-				<hr>
-				<h2>Realização</h2>
-		<div class="row align-items-center">
-			<div class="col-md-4">
-					<p align="center">
-							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">	
-						</p>
-			</div>
-			<div class="col-md-4">
-					<p align="center">
-							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">	
-						</p>
-			</div>
-			<div class="col-md-4">
-					<p align="center">
-							<img class="w-50 img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">	
-						</p>
-			</div>
-		</div>
-					
-			
-		</div>
 
-                        
-                        
 {% endblock %}
