@@ -3,9 +3,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
 
-from app import app
-
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 TipoAtividade = {
     'minicurso': 0,
