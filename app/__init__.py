@@ -4,8 +4,8 @@ from flask import Flask, redirect, request, render_template, session
 from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
-from flask_migrate import Migrate, MigrateCommand
-from flask_script import Server, Manager, prompt_bool
+from flask_migrate import Migrate
+from flask_script import Server, Manager
 
 configs = {
     'development': '../config/development.py',
@@ -68,11 +68,10 @@ def unauthorized_callback():
 
 
 manager = Manager(app)
-manager.add_command('db', MigrateCommand)
 manager.add_command('runserver', Server(host='0.0.0.0'))
 
 
-@manager.command
+@app.cli.command()
 def create():
     """
     Creates database tables from sqlalchemy models
@@ -80,12 +79,13 @@ def create():
     db.create_all()
 
 
-@manager.command
+@app.cli.command()
 def drop():
     """
     Drops database tables
     """
-    if prompt_bool("Erase current database?", default=True):
+    prompt = input('Erase current database? [y/n]')
+    if prompt == 'y':
         db.session.close_all()
         db.drop_all()
 
