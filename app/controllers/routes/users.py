@@ -28,7 +28,7 @@ def login():
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
-                return redirect(url_for('.dashboard_usuario'))
+                return redirect(url_for('.dashboard'))
     return render_template('users/login.html', form=form)
 
 
@@ -62,10 +62,9 @@ def cadastro():
         agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
         usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
-                data_cadastro=agora, permissao=0, primeiro_nome=form.primeiro_nome.data,
-                sobrenome=form.sobrenome.data, id_curso=verifica_outro_escolhido(form.curso,
-                Curso(nome=str(form.outro_curso.data).strip())), id_instituicao=verifica_outro_escolhido(
-                form.instituicao, Instituicao(nome=form.outra_instituicao.data)),
+                data_cadastro=agora, primeiro_nome=form.primeiro_nome.data, sobrenome=form.sobrenome.data, 
+                id_curso=verifica_outro_escolhido(form.curso, Curso(nome=str(form.outro_curso.data).strip())), 
+                id_instituicao=verifica_outro_escolhido(form.instituicao, Instituicao(nome=form.outra_instituicao.data)),
                 id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
                 data_nascimento=form.data_nasc.data, token_email=token, autenticado=True, salt=salt)
         db.session.add(usuario)
@@ -110,18 +109,18 @@ def cadastro_participante():
                 db.session.add(participante)
                 db.session.flush()
                 db.session.commit()
-                return redirect(url_for('.dashboard_usuario'))
+                return redirect(url_for('.dashboard'))
             else:
                 return render_template('users/cadastro_participante.html', form=form)
         else:
-            return redirect(url_for('.dashboard_usuario'))
+            return redirect(url_for('.dashboard'))
     else:
         return redirect(url_for('.verificar_email'))
 
 
 @users.route('/participante/dashboard', methods=['POST', 'GET'])
 @login_required
-def dashboard_usuario():
+def dashboard():
     usuario = db.session.query(Usuario).filter_by(
         id=current_user.id).first()
     if email_confirmado():
@@ -160,7 +159,7 @@ def envio_comprovante():
             makedirs(upload_path)
         comprovante.save(path.join(upload_path, filename))
         flash('Comprovante enviado com sucesso!')
-        return redirect(url_for('.dashboard_usuario'))
+        return redirect(url_for('.dashboard'))
     return render_template('users/enviar_comprovante.html', form=form)
 
 
@@ -290,7 +289,7 @@ def alterar_senha():
             return render_template('users/alterar_senha.html', form=form, action=request.base_url)
     else:
         flash('Confirme seu e-mail para alterar a senha!')
-        return redirect(url_for('.dashboard_usuario'))
+        return redirect(url_for('.dashboard'))
 
 
 @users.route('/participante/esqueci-senha', methods=["POST", "GET"])
