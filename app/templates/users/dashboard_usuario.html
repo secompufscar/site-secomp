@@ -8,7 +8,7 @@
     <div class="col-md-2"></div>
     <div class="col-md-8" style="padding:5%">
         {% if participante.id is None %}
-        <a href="{{url_for('cadastro_participante')}}" class="btn btn-primary">Inscrever-se na SECOMP 2019</a>
+        <a href="{{url_for('.cadastro_participante')}}" class="btn btn-primary">Inscrever-se na SECOMP 2019</a>
         {% else %}
         <p>Inscrito na SECOMP 2019</p>
 
@@ -50,12 +50,12 @@
         <br>
         Cidade: {{usuario.cidade.nome}}
         <hr>
-        <a href="{{url_for('alterar_senha')}}" class="btn btn-primary">Alterar senha</a>
-        <a href="{{url_for('inscricao_atividades')}}" class="btn btn-primary">Atividades</a>
+        <a href="{{url_for('.alterar_senha')}}" class="btn btn-primary">Alterar senha</a>
+        <a href="{{url_for('.inscricao_atividades')}}" class="btn btn-primary">Atividades</a>
         {% if not participante.pagamento %}
-        <a href="{{url_for('inscricao_atividades')}}" class="btn btn-primary">Enviar comprovante</a>
+        <a href="{{url_for('.inscricao_atividades')}}" class="btn btn-primary">Enviar comprovante</a>
         {% endif %}
-        <a href="{{url_for('logout')}}" class="btn btn-primary">Logout</a>
+        <a href="{{url_for('.logout')}}" class="btn btn-primary">Logout</a>
 
         {% endif %}
     </div>

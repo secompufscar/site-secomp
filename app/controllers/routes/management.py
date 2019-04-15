@@ -52,7 +52,7 @@ def cadastro_patrocinador():
         db.session.add(patrocinador)
         db.session.flush()
         db.session.commit()
-        return redirect(url_for('cadastro-patrocinador'))
+        return redirect(url_for('.cadastro-patrocinador'))
     else:
         return render_template('cadastro_patrocinador.html', form=form)
 

@@ -2,6 +2,7 @@ from flask import render_template, request, Blueprint
 
 from app.controllers.forms.forms import *
 from app.controllers.functions.email import enviar_email_dm
+from app.controllers.constants import *
 
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
 
