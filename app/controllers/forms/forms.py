@@ -3,11 +3,8 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
-from app.controllers.constants import *
-from app.controllers.forms.options import get_opcoes_cotas_patrocinadores, get_opcoes_cidades, get_opcoes_instituicoes, \
-    get_opcoes_cursos, get_opcoes_camisetas
-from app.controllers.forms.validators import erro_curso_existe, erro_instituicao_existe, erro_cidade_existe, so_letras, \
-    email_existe
+from app.controllers.forms.options import *
+from app.controllers.forms.validators import *
 from app.controllers.functions.helpers import get_participantes
 
 
@@ -49,7 +46,7 @@ class ParticipanteForm(FlaskForm):
     camiseta = SelectField('Camiseta', choices=get_opcoes_camisetas(
     ), id="camiseta", default="P Feminino", coerce=int)
     restricao_coffee = SelectField(
-        'Restrição para o Coffee-Break', choices=escolhas_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
+        'Restrição para o Coffee-Break', choices=opcoes_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
 
 
 class EditarUsuarioForm(FlaskForm):

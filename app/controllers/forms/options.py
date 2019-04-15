@@ -1,5 +1,10 @@
 from app.models.models import *
 
+opcoes_restricao = [
+    (1, "Nenhum"),
+    (2, "Vegetariano"),
+    (3, "Vegano")
+]
 
 def get_opcoes_cidades():
     try:
@@ -87,3 +92,4 @@ def get_opcoes_cotas_patrocinadores():
         return cotas
     except Exception as e:
         return None
+

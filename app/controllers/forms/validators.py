@@ -2,8 +2,17 @@ import re
 
 from wtforms.validators import ValidationError
 
-from app.controllers.constants import *
 from app.models.models import *
+
+# Mensagens de erro possíveis nos formulários
+ERRO_INPUT_REQUIRED = "Preencha esse campo."
+ERRO_EMAIL = "Entre com um endereço de email válido."
+ERRO_COMPARA_SENHAS = "Senhas devem ser iguais."
+ERRO_TAMANHO_SENHA = "A senha deve ter entre 8 e 20 caracteres."
+ERRO_EXTENSAO_INVALIDA = "Tipo de arquivo inválido, tipos aceitos: .jpg, .png, .jpeg."
+ERRO_CURSO_EXISTE = "Este curso já existe"
+ERRO_INSTITUICAO_EXISTE = "Esta instituição já existe"
+ERRO_CIDADE_EXISTE = "Esta cidade já existe"
 
 
 def email_existe():

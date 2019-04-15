@@ -8,7 +8,9 @@
             <br>
             <h2>
                 Olá, {{ usuario.primeiro_nome }}.
-                <a href="{{ url_for('logout') }}"><button type="button" class="btn btn-primary">Fazer logout</button></a>
+                <a href="{{ url_for('users.logout') }}">
+                    <button type="button" class="btn btn-primary">Fazer logout</button>
+                </a>
             </h2>
         </div>
         <div>
@@ -39,15 +41,23 @@
             {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['ALTERAR_CAMISETAS'].usuarios %}
             <div>
                 <h3>Camisetas</h3>
-                <a href="{{ url_for('alterar_camisetas') }}"><button type="button" class="btn btn-primary">Alterar reservas de camisetas</button></a>
-                <a href="{{ url_for('controle_camisetas') }}"><button type="button" class="btn btn-primary">Controle de camisetas</button></a>
+                <a href="{{ url_for('.alterar_camisetas') }}">
+                    <button type="button" class="btn btn-primary">Alterar reservas de camisetas</button>
+                </a>
+                <a href="{{ url_for('.controle_camisetas') }}">
+                    <button type="button" class="btn btn-primary">Controle de camisetas</button>
+                </a>
             </div>
             {% endif %}
             {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_CRACHAS'].usuarios %}
             <div>
                 <h3>Geração de crachás</h3>
-                <a href="{{  }}"><button type="button" class="btn btn-primary">Gerar crachás</button></a>
-                <a href="{{  }}"><button type="button" class="btn btn-primary">Gerar um crachá</button></a>
+                <a href="{{ url_for('views.constr' }}">
+                    <button type="button" class="btn btn-primary">Gerar crachás</button>
+                </a>
+                <a href="{{ url_for('views.constr') }}">
+                    <button type="button" class="btn btn-primary">Gerar um crachá</button>
+                </a>
             </div>
             {% endif %}
             {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_LISTAS'].usuarios %}

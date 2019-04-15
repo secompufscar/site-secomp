@@ -14,7 +14,7 @@ class AppIndexView(AdminIndexView):
         if current_user.is_authenticated and current_user.is_admin:
             self._template_args['usuario'] = current_user
             return super(AppIndexView, self).index()
-        return redirect(url_for('index'))
+        return redirect(url_for('views.index'))
 
 
 class AppModelView(ModelView):
@@ -28,7 +28,7 @@ class AppModelView(ModelView):
 
     @classmethod
     def inaccessible_callback(cls, name, **kwargs):
-        return redirect(url_for('index'))
+        return redirect(url_for('views.index'))
 
 
 def init_app(service, path):

@@ -44,7 +44,10 @@
     <nav class="navbar shadow fixed-top navbar-expand-lg bg-gradient-secomp">
         <div class="container-fluid">
             {# Marca d'água para a home  #}
-            <a class="navbar-brand ml-auto" href="{{ url_for('index') }}"><img id="nav-logo" src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30" alt="Logo atual da SECOMP"/></a>
+            <a class="navbar-brand ml-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
+                                                                                     src="{{ url_for('static', filename='images/logoTest.png') }}"
+                                                                                     width="30" height="30"
+                                                                                     alt="Logo atual da SECOMP"/></a>
             {# TODO mudar o aria #}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -54,30 +57,39 @@
                 {# TODO colocar uma lógica Jinja para usuário logado? #}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}"><i class="mr-1 fas fa-home"></i> HOME</a>
+                        <a class="nav-link" href="{{ url_for('views.index') }}"><i class="mr-1 fas fa-home"></i>
+                            HOME</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp"><i class="mr-1 fas fa-heart"></i> SECOMP
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ url_for('sobre') }}"><i class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
-                            <a class="dropdown-item" href="{{ url_for('equipe') }}"><i class="mr-1 fas fa-users"></i> EQUIPE</a>
+                            <a class="dropdown-item" href="{{ url_for('views.sobre') }}"><i
+                                    class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
+                            <a class="dropdown-item" href="{{ url_for('views.equipe') }}"><i
+                                    class="mr-1 fas fa-users"></i> EQUIPE</a>
                             {# Colocar como um link separado? #}
-                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-comments"></i> CONTATO</a>
-                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
+                            <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    class="mr-1 fas fa-comments"></i> CONTATO</a>
+                            <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos"><i class="mr-1 fas fa-calendar-alt"></i> EVENTOS
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
-                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-flag"></i> CTF</a>
-                            <a class="dropdown-item" href="{{ url_for('constr') }}"><i class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
+                            <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
+                            <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    class="mr-1 fas fa-flag"></i> CTF</a>
+                            <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('faq') }}"><i class="mr-1 fas fa-question-circle"></i> FAQ</a>
+                        <a class="nav-link" href="{{ url_for('views.faq') }}"><i
+                                class="mr-1 fas fa-question-circle"></i> FAQ</a>
                     </li>
                     {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
                 </ul>
@@ -85,13 +97,15 @@
                 {# TODO: Corrigir o espaçamento #}
                 <!-- Lado direito da Navbar -->
                 <div class="navbar-nav">
-                    {# TODO: criar lógica baseada no bd #}
+                    <!-- TODO: criar lógica baseada no bd -->
                     {% if current_user.is_authenticated %}
-                    <a class="nav-item nav-link" href="{{ url_for('dashboard_usuario') }}">Participante</a>
-                    <a class="nav-item nav-link" href="{{ url_for('logout') }}">Sair</a>
+                    <a class="nav-item nav-link" href="{{ url_for('users.dashboard_usuario') }}">Participante</a>
+                    <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">SAIR</a>
                     {% else %}
-                    <a class="nav-item nav-link" href="{{ url_for('login') }}"><i class="mr-1 fas fa-user"></i> ENTRAR</a>
-                    <a class="nav-item nav-link" href="{{ url_for('cadastro') }}"><i class="mr-1 fas fa-address-card"></i> INSCREVER</a>
+                    <a class="nav-item nav-link" href="{{ url_for('users.login') }}"><i class="mr-1 fas fa-user"></i>
+                        ENTRAR</a>
+                    <a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}"><i
+                            class="mr-1 fas fa-address-card"></i> INSCREVER</a>
                     {% endif %}
                 </div>
             </div>
@@ -151,7 +165,7 @@
                 <li class="list-inline-item"><a href="mailto:{{ secomp_email }}"><i class="fa fa-2x fa-envelope"></i></a></li>
             </ul>
         </div>
-
+    </div>
 </footer>
 
 <div id="barrinha"></div>
