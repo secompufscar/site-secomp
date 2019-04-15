@@ -12,7 +12,7 @@ def index():
     """
     Renderiza a página inicial do projeto
     """
-    return render_template('index.html', title='Página inicial',
+    return render_template('views/index.html', title='Página inicial',
                            secomp_now=secomp_now[0], secomp=secomp[0],
                            secomp_email=secomp_email,
                            secompEdition=secomp_edition)
@@ -29,18 +29,18 @@ def contato_dm():
         email = form.email.data
         mensagem = form.mensagem.data
         enviar_email_dm(nome, email, mensagem)
-        return render_template('contato.html', form=form, enviado=True)
-    return render_template('contato.html', form=form)
+        return render_template('views/contato.html', form=form, enviado=True)
+    return render_template('views/contato.html', form=form)
 
 
 @views.route('/constr')
 def constr():
-    return render_template('em_constr.html', title='Página em construção')
+    return render_template('views/em_constr.html', title='Página em construção')
 
 
 @views.route('/sobre')
 def sobre():
-    return render_template('sobre.html', title='Sobre a Secomp')
+    return render_template('views/sobre.html', title='Sobre a Secomp')
 
 
 @views.route('/equipe')
@@ -48,9 +48,9 @@ def equipe():
     import json
     with open('./config/membros_org.json', 'r') as read_file:
         data = json.load(read_file)
-    return render_template('equipe.html', title='Equipe', data=data)
+    return render_template('views/equipe.html', title='Equipe', data=data)
 
 
 @views.route('/faq')
 def faq():
-    return render_template('faq.html', title='FAQ')
+    return render_template('views/faq.html', title='FAQ')
