@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block styles %}
+{{ super() }}
+<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+
+{% block content %}
+<div class="pad-inicio container">
+
+	<div class="row justify-content-center pb-3">
+
+		<div class="col-lg-12 text-center p-2">
+			<h2>Login</h2>
+		</div>
+
+		<div class="col-md-6">
+			<form action="/login" method="POST">
+				{{ form.hidden_tag() }}
+				{{ wtf.form_field(form.email) }}
+				{{ wtf.form_field(form.senha) }}
+		
+				<div class="text-center">
+					<button name="submit" type="submit" class="btn btn-primary bg-gradient-secomp"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
+					<a href="{{url_for('esqueci_senha')}}">Esqueci minha senha</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+	<div class="row justify-content-center pt-3">
+		<div class="col-md-12 text-center">
+			<h4>Realização</h4>
+		</div>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">
+		</div>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">
+		</div>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">	
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}

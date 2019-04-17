@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+
+<div class="pad-inicio container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h3 class="text-center">Alteração de senha</h3>
+            <hr>
+            <label class="control-label">Digite a nova senha abaixo</label>
+            <form method="POST" action="{{ form.action }}">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.nova_senha) }}
+                {{ wtf.form_field(form.confirmacao) }}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary p-3">Confirmar Alteração</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

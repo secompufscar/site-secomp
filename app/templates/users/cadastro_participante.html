@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+<div class="pad-inicio container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="text-center">Preencha com as informações do participante</h2>
+            <form method="POST" action="/cadastro-participante">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.kit) }}
+            {{ wtf.form_field(form.camiseta) }}
+            {{ wtf.form_field(form.restricao_coffee) }}
+
+                <button type="submit" class="btn btn-primary">Inscrever-se</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $('label[for="camiseta"]').hide();
+    $('#camiseta').hide();
+    $('label[for="restricao_coffee"]').hide();
+    $('#restricao_coffee').hide();
+    $('#kit').change(function() {
+        if ($('#kit').prop("checked")){
+            $('label[for="camiseta"]').show();
+            $('#camiseta').show();
+            $('label[for="restricao_coffee"]').show();
+            $('#restricao_coffee').show();
+        } else {
+            $('label[for="camiseta"]').hide();
+            $('#camiseta').hide();
+            $('label[for="restricao_coffee"]').hide();
+            $('#restricao_coffee').hide();
+        }
+    });
+</script>
+{% endblock %}
+
+{% block footer %}{% endblock %}
