@@ -9,13 +9,13 @@ from app.models.models import db, Usuario
 mail = Mail()
 
 _teste = {
-        "assunto": 'Teste', # assunto do email
-        "nome": 'Pessoa', # nome do destinatário
+    "assunto": 'Teste',  # assunto do email
+    "nome": 'Pessoa',  # nome do destinatário
         "titulo": "EMAIL TESTE",
-        "email": 'ti@secompufscar.com.br', # email destino
-        "template": 'email/teste.html', # path do template (raiz dentro do diretório 'templates')
+    "email": 'ti@secompufscar.com.br',  # email destino
+    "template": 'email/teste.html',  # path do template (raiz dentro do diretório 'templates')
     "footer": 'TI X SECOMP UFSCar'
-        }
+}
 
 
 def enviar_email_generico(info=None):
@@ -76,7 +76,7 @@ def enviar_email_dm(nome, email, mensagem):
             log = open('logMailError.txt', 'a+')
             log.write(f'{str(e)} {email} {strftime("%a, %d %b %Y %H:%M:%S", gmtime())}\n')
             log.close()
-        except:
+        except Exception:
             return
 
 
