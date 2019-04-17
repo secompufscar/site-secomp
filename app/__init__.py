@@ -12,7 +12,7 @@ configs = {
     'default': '../config/default.py'
 }
 
-config_name = os.getenv('FLASK_CONFIGURATION', 'development')
+config_name = os.getenv('FLASK_CONFIGURATION', 'default')
 
 app = Flask(__name__)
 Bootstrap(app)
