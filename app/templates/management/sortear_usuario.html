@@ -8,7 +8,7 @@
         <div style="text-align: center;"><h3>Sorteio de participante</h3></div>
         <hr>
         <form action="/sorteio/sortear">
-                {% if sortear: %}
+            {% if sortear: %}
                     <div class="alert alert-success" role="alert">
                         O participante sorteado foi: {{sorteado.usuario.primeiro_nome}} {{sorteado.usuario.sobrenome}}
                     </div>
@@ -16,13 +16,13 @@
                 {% else: %}
                     <label>Clique no botão abaixo para sortear um participante!</label>
                 {% endif %}
-                <div style="text-align: center;">
-                    {% if sortear: %}
+            <div style="text-align: center;">
+                {% if sortear: %}
                     <button type="submit" class="btn btn-primary">Sortear outro participante</button>
                     {% else: %}
                     <button type="submit" class="btn btn-primary">Sortear</button>
                     {% endif %}
-                </div>
+            </div>
         </form>
     </div>
     <div class="col-md-4"></div>

@@ -48,3 +48,4 @@ def verifica_outro_escolhido(campo, objeto):
         return cadastra_objeto_generico(objeto).id
     else:
         return campo.data
+

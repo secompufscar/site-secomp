@@ -7,4 +7,3 @@ if __name__ == '__main__':
     config = os.getenv('FLASK_CONFIGURATION', 'development')
     app = create_app(config)
     app.run('0.0.0.0')
-

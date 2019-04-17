@@ -12,7 +12,7 @@
     <strong>Desinscrito!</strong> A sua inscrição foi removida com sucesso.
 </div>
 {% endif %}
-<!-- TODO: Missão para o front-end: atualizar essa página para o bs 4 :P -->
+    <!-- TODO: Missão para o front-end: atualizar essa página para o bs 4 :P -->
 <!-- BS 3.3.7 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 		       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -69,18 +69,18 @@
 			<td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
 			<td>
 			    {% if participante in atividade.participantes %}
-				<a href="{{url_for('.desinscrever'}}/{{atividade.id}}">
+                    <a href="{{ url_for('.desinscrever' }}/{{ atividade.id }}">
 				<button type="button" class="btn btn-danger">Desinscrever-se</button>
 			    </a>
 			    {% else %}
-				<a href="{{url_for('.inscricao_atividades'}}/{{atividade.id}}">
+                    <a href="{{ url_for('.inscricao_atividades' }}/{{ atividade.id }}">
 				{% if atividade.vagas_disponiveis > 0 %}
 				<button type="button" class="btn btn-primary">
-					{% else %}
-					<button type="button" class="btn btn-secondary" disabled>
-						{% endif %}
-						Inscrever-se
-					</button>
+                {% else %}
+                    <button type="button" class="btn btn-secondary" disabled>
+                {% endif %}
+                        Inscrever-se
+                        </button>
 			    </a>
 			    {% endif %}
 			    <!-- Trigger the modal with a button -->
@@ -89,7 +89,7 @@
 				Visualizar
 			    </button>
 
-				<div id="{{ atividade.id }}" class="modal fade" role="dialog">
+                <div id="{{ atividade.id }}" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 				    <div class="modal-content">
 					<div class="modal-header">
@@ -120,15 +120,15 @@
 			<td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
 			<td>
 			    {% if participante in atividade.participantes %}
-				<a href="{{ url_for('.desinscrever') }}/{{ atividade.id }}">
+                    <a href="{{ url_for('.desinscrever') }}/{{ atividade.id }}">
 				<button type="button" class="btn btn-danger">Desinscrever-se</button>
 			    </a>
 			    {% else %}
-				<a href="{{ url_for('inscricao_atividades') }}/{{ atividade.id }}">
+                    <a href="{{ url_for('inscricao_atividades') }}/{{ atividade.id }}">
 				<button type="button" class="btn btn-primary">Inscrever-se</button>
 			    </a>
 			    {% endif %}
-				<div id="{{ atividade.id }}" class="modal fade" role="dialog">
+                <div id="{{ atividade.id }}" class="modal fade" role="dialog">
 				<div class="modal-dialog">
 				    <div class="modal-content">
 					<div class="modal-header">

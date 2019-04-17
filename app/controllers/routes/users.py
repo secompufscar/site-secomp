@@ -33,11 +33,12 @@ def cadastro():
         agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
         usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
-                data_cadastro=agora, primeiro_nome=form.primeiro_nome.data, sobrenome=form.sobrenome.data, 
-                id_curso=verifica_outro_escolhido(form.curso, Curso(nome=str(form.outro_curso.data).strip())), 
-                id_instituicao=verifica_outro_escolhido(form.instituicao, Instituicao(nome=form.outra_instituicao.data)),
-                id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
-                data_nascimento=form.data_nasc.data, token_email=token, autenticado=True, salt=salt)
+                          data_cadastro=agora, primeiro_nome=form.primeiro_nome.data, sobrenome=form.sobrenome.data,
+                          id_curso=verifica_outro_escolhido(form.curso, Curso(nome=str(form.outro_curso.data).strip())),
+                          id_instituicao=verifica_outro_escolhido(form.instituicao,
+                                                                  Instituicao(nome=form.outra_instituicao.data)),
+                          id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
+                          data_nascimento=form.data_nasc.data, token_email=token, autenticado=True, salt=salt)
         db.session.add(usuario)
         db.session.flush()
         db.session.commit()
