@@ -41,7 +41,7 @@
             {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['ALTERAR_CAMISETAS'].usuarios %}
             <div>
                 <h3>Camisetas</h3>
-                <a href="{{ url_for('.alterar_camisetas') }}">
+                <a href="{{ url_for('.alterar_camiseta') }}">
                     <button type="button" class="btn btn-primary">Alterar reservas de camisetas</button>
                 </a>
                 <a href="{{ url_for('.controle_camisetas') }}">
