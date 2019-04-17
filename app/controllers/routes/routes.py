@@ -1,13 +1,13 @@
-from flask import render_template, request, redirect, abort, url_for, Blueprint
-from flask_login import login_required, login_user, logout_user, current_user
+from flask import render_template, request, Blueprint
 
 from app.controllers.forms import *
-from app.controllers.functions import *
+from app.controllers.functions.email import enviar_email_dm
 from app.models.models import *
-from os import path, makedirs
 
 routes = Blueprint('routes', __name__, template_folder='templates')
-@app.route('/')
+
+
+@routes.route('/')
 def index():
     """
     Renderiza a página inicial do projeto
@@ -17,12 +17,9 @@ def index():
                            secomp_email=secomp_email,
                            secompEdition=secomp_edition)
 
-@app.route('/dev')
-def dev():
-    return render_template('index.dev.html')
 
-@app.route('/contato', methods=['POST', 'GET'])
-def contatoDM():
+@routes.route('/contato', methods=['POST', 'GET'])
+def contato_dm():
     """
     Página de contato
     """
@@ -31,25 +28,29 @@ def contatoDM():
         nome = form.nome_completo.data
         email = form.email.data
         mensagem = form.mensagem.data
-        enviarEmailDM(app, nome, email, mensagem)
+        enviar_email_dm(app, nome, email, mensagem)
         return render_template('contato.html', form=form, enviado=True)
     return render_template('contato.html', form=form)
 
-@app.route('/constr')
+
+@routes.route('/constr')
 def constr():
     return render_template('em_constr.html', title='Página em construção')
 
-@app.route('/sobre')
+
+@routes.route('/sobre')
 def sobre():
     return render_template('sobre.html', title='Sobre a Secomp')
 
-@app.route('/equipe')
+
+@routes.route('/equipe')
 def equipe():
     import json
     with open('./config/membros_org.json', 'r') as read_file:
         data = json.load(read_file)
     return render_template('equipe.html', title='Equipe', data=data)
 
-@app.route('/faq')
+
+@routes.route('/faq')
 def faq():
     return render_template('faq.html', title='FAQ')
