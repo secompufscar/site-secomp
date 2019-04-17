@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}SECOMP UFSCar - Erro 404{% endblock %}
+
+{% block content %}
+    <!-- Erro 404 -->
+    <h1>Erro 404 - Página não encontrada</h1>
+    <div>A página que você está tentando acessar não foi encontrada.</div>
+    <a>
+        <img id="error-dog"
+             src="{{ url_for('static', filename='images/404.jpg') }}"
+             alt="Imagem do erro 404">
+    </a>
+{% endblock %}
