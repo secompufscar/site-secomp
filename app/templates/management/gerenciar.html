@@ -52,7 +52,7 @@
             {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_CRACHAS'].usuarios %}
             <div>
                 <h3>Geração de crachás</h3>
-                <a href="{{ url_for('views.constr' }}">
+                <a href="{{ url_for('views.constr') }}">
                     <button type="button" class="btn btn-primary">Gerar crachás</button>
                 </a>
                 <a href="{{ url_for('views.constr') }}">
