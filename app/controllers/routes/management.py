@@ -14,7 +14,7 @@ management = Blueprint('management', __name__, static_folder='static',
 @login_required
 def gerenciar():
     if current_user.is_admin():
-        permissoes = db.query(Permissao).all()
+        permissoes = db.session.query(Permissao).all()
         permissoes = {x.nome: x for x in permissoes}
         return render_template('management/gerenciar.html', usuario=current_user, permissoes=permissoes)
     else:
