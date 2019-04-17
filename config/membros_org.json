@@ -1,116 +1,197 @@
 {
-	"Coordenação geral": {
+	"Coordenação Geral": {
 		"Guilherme L. G. Lamonato": {
 			"img": "GuilhermeLGL.jpg",
-			"bio": "bio"
+			"bio": "bio1",
+			"email": "contato@secompufscar.com.br"
 		},
 		"Bianca Garcia Martins": {
 			"img": "BiancaGM.jpg",
-			"bio": "bio"
+			"bio": "bio1",
+			"email": "contato@secompufscar.com.br"
 		},
 		"Isadora Eliziário Gallerani": {
 			"img": "IsadoraEG.jpg",
-			"bio": "bio"
+			"bio": "bio1",
+			"email": "contato@secompufscar.com.br"
 		}
 	},
 	"Diretoria de TI": {
 		"Karina Mayumi": {
 			"img": "Karina.jpeg",
-			"bio": "bio Karina"
+			"bio": "bio1",
+			"email": "ti@secompufscar.com.br"
 		},
 		"Alcides Mignoso": {
 			"img": "Alcides.jpg",
-			"bio": "bio Alcides"
+			"bio": "bio1"
 		},	
 		"Daniel Moura" : {
 			"img": "Daniel.jpg",
-			"bio": "bio Daniel"
+			"bio": "bio1"
 		},
 		"Gabriel Alves" : {
 			"img": "Gabriel.jpg",
-			"bio": "bio Gabrielzinho"
+			"bio": "bio1"
 		},
 		"Igor Lucio" : {
 			"img": "Igor.jpg",
-			"bio": "bio Igor"
+			"bio": "bio1"
 		},
 		"Lucas Cruz dos Reis" : {
 			"img": "Lucas.jpg",
-			"bio": "bio Lucas"
+			"bio": "bio1"
 		},
 		"Marcos Felipe" : {
 			"img": "Marcos.jpeg",
-			"bio": "bio Marcos"
+			"bio": "bio1"
 		},
 		"Matheus Victorello" : {
 			"img": "Matheus.jpg",
-			"bio": "bio Matheus"
+			"bio": "bio1"
 		},
 		"Nathan Oliveira" : {
 			"img": "Nathan.jpg",
-			"bio": "bio Nathan"
+			"bio": "bio1"
 		},
 		"Victória de Martini" : {
 			"img": "Victoria.jpg",
-			"bio": "bio Vicccccccc"
+			"bio": "bio1"
 		}
 	},
 	"Diretoria de Design & Marketing": {
-		"Esther calderan Hoffmann": {
+		"Esther Calderan Hoffmann": {
 			"img": "EstherCH.jpg",
-			"bio": "bio"
+			"bio": "bio1",
+			"email": "marketing@secompufscar.com.br"
 		},
 		"Daniel Lamounier Henringer": {
 			"img": "DanielLH.jpg",
-			"bio": "bio"
+			"bio": "bio1"
 		},
 		"Hemilyn Stephanye Aguiar Porfirio": {
 			"img": "HemilynSAP.jpg",
-			"bio": "bio"
+			"bio": "bio1"
 		},
 		"Jhonata Querobim": {
 			"img": "JhonataQ.jpg",
-			"bio": "bio"
+			"bio": "bio1"
 		},
 		"João Gabriel Viana Hirasawa": {
 			"img": "JoaoGVH.jpg",
-			"bio": "bio"
+			"bio": "bio1"
 		},
 		"João Victor Mendes Freire": {
 			"img": "JoaoVMF.jpg",
-			"bio": "bio"
+			"bio": "bio1"
 		},
 		"Martin Heckmann": {
 			"img": "MartinH.png",
-			"bio": "bio"
+			"bio": "bio1"
 		},
 		"Renan Dantas Pasquantonio": {
 			"img": "RenanDP.jpg",
-			"bio": "bio"
+			"bio": "bio1"
 		}
 	},
 	"Diretoria de Patrocínio": {
-		"": {
-			"img": ".jpg",
-			"bio": "bio"
+		"Nathaelly Boni": {
+			"img": "NathaellyB.jpg",
+			"bio": "bio1",
+			"email": "contato@secompufscar.com.br"
+		},
+		"Felipe Takeo Amano": {
+			"img": "FelipeTA.jpg",
+			"bio": "bio1"
+		},
+		"Guilherme Locca Salomão": {
+			"img": "GuilhermeLS.jpg",
+			"bio": "bio1"
+		},
+		"Lucas Martins de Almeida": {
+			"img": "LucasMA.jpg",
+			"bio": "bio1"
+		},
+		"Luís Felipe Corrêa Ortolan": {
+			"img": "LuisFCO.jpg",
+			"bio": "bio1"
+		},
+		"Thaís Oyamada Tanaka": {
+			"img": "ThaisOT.jpg",
+			"bio": "bio1"
 		}
 	},
 	"Diretoria de Conteúdo": {
-		"": {
-			"img": ".jpg",
-			"bio": "bio"
+		"Bruna Fernandes Prates": {
+			"img": "BrunaFP.jpeg",
+			"bio": "bio1",
+			"email": "conteudo@secompufscar.com.br"
+		},
+		"Albert Franklin Boni": {
+			"img": "AlbertFB.jpg",
+			"bio": "bio1"
+		},
+		"Alisson Hayasi da Costa": {
+			"img": "AlissonHC.jpeg",
+			"bio": "bio1"
+		},
+		"João Augusto Leite": {
+			"img": "JoaoAL.jpeg",
+			"bio": "bio1"
+		},
+		"Murilo Batista do Carmo": {
+			"img": "MuriloBC.jpeg",
+			"bio": "bio1"
+		},
+		"Paulo Henrique Dal Bello": {
+			"img": "PauloHDB.jpeg",
+			"bio": "bio1"
+		},
+		"Vinicius H. dos Santos Carvalho": {
+			"img": "ViniciusHSC.jpeg",
+			"bio": "bio1"
 		}
 	},
 	"Diretoria Jurídico-Financeiro": {
-		"": {
-			"img": ".jpg",
-			"bio": "bio"
+		"Julia Cinel": {
+			"img": "JuliaC.jpg",
+			"bio": "bio1",
+			"email": "financeiro@secompufscar.com.br"
+		},
+		"Amanda Peixoto Manso": {
+			"img": "AmandaPM.jpg",
+			"bio": "bio1"
+		},
+		"Gabriel Poggio Soneghet": {
+			"img": "GabrielPS.jpg",
+			"bio": "bio1"
+		},
+		"Samara M. M. da S. Almeida": {
+			"img": "SamaraMMSA.jpeg",
+			"bio": "bio1"
+		},
+		"Thiago Moraes": {
+			"img": "ThiagoM.jpg",
+			"bio": "bio1"
 		}
 	},
 	"Diretoria Sócio-Cultural": {
-		"": {
-			"img": ".jpg",
-			"bio": "bio"
+		"Philipe Bittencourt": {
+			"img": "PhilipeB.jpeg",
+			"bio": "bio1",
+			"email": "sociocultural@secompufscar.com.br"
+		},
+		"Emilia Silva de Sousa": {
+			"img": "EmiliaSS.jpg",
+			"bio": "bio1"
+		},
+		"Gabriel Fernandes Roza": {
+			"img": "GabrielFR.jpeg",
+			"bio": "bio1"
+		},
+		"João Gabriel Damasceno": {
+			"img": "JoaoGD.jpeg",
+			"bio": "bio1"
 		}
 	}
 }

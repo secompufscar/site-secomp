@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block styles %}
+{{ super() }}
+
+<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css"/>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="pad-inicio container pb-2">
+  <div class="row justify-content-center">
+
+      <div class="col-lg-12 text-center p-2">
+          <h2>Cadastro de usuário</h2>
+      </div>
+
+    <div class="col-md-8">
+      <form method="POST" action="/cadastro">
+          {{ wtf.form_field(form.primeiro_nome) }}
+          {{ wtf.form_field(form.sobrenome) }}
+          {{ wtf.form_field(form.email) }}
+          {{ wtf.form_field(form.senha) }}
+          {{ wtf.form_field(form.confirmacao) }}
+          {{ wtf.form_field(form.curso) }}
+          {{ wtf.form_field(form.outro_curso) }}
+          {{ wtf.form_field(form.instituicao) }}
+          {{ wtf.form_field(form.outra_instituicao) }}
+          {{ wtf.form_field(form.cidade) }}
+          {{ wtf.form_field(form.outra_cidade) }}
+          {{ wtf.form_field(form.data_nasc) }}
+          {{ form.recaptcha }}
+
+        {% for error in form.recaptcha.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Cadastrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script href="{{url_for('static', filename='js/cadastro.js')}}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var elements = document.getElementsByTagName("INPUT");
+        for (var i = 0; i < elements.length; i++) {
+          elements[i].oninvalid = function(e) {
+            e.target.setCustomValidity("");
+            if (!e.target.validity.valid) {
+                e.target.setCustomValidity("Preencha esse campo");
+            }
+          };
+          elements[i].oninput = function(e) {
+              e.target.setCustomValidity("");
+          };
+        }
+    })
+  </script>
+{% endblock %}
+
+{% block footer %}{% endblock %}

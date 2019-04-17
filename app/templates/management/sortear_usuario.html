@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+<div class="pad-inicio container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h3 class="text-center">Sorteio de participante</h3>
+
+            <form action="/sorteio/sortear">
+                {% if sortear: %}
+                    <div class="alert alert-success" role="alert">
+                        O participante sorteado foi: {{sorteado.usuario.primeiro_nome}} {{sorteado.usuario.sobrenome}}
+                    </div>
+                {% else: %}
+                    <label>Clique no botão abaixo para sortear um participante!</label>
+                {% endif %}
+                <div class="text-center">
+                    {% if sortear: %}
+                    <button type="submit" class="btn btn-primary">Sortear outro participante</button>
+                    {% else: %}
+                    <button type="submit" class="btn btn-primary">Sortear</button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

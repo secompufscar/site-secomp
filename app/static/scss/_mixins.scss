@@ -1,11 +1,51 @@
 // Mixins
 @mixin main-gradient{
-	background-image: linear-gradient(to right, $secomp1, $secomp2);
+    background-image: linear-gradient(to right, $secomp1, $secomp2);
 }
 
 @mixin main-font{
-	font: {
-		size: 14.5px;
-		family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
-	}
+    font: {
+	size: 14.5px;
+	family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif;
+    }
+}
+
+@mixin vert-rotate($degree){
+    -webkit-transform: rotateY($degree);
+    -moz-transform: rotateY($degree);
+    -o-transform: rotateY($degree);
+    -ms-transform: rotateY($degree);
+    transform: rotateY($degree);
+}
+
+@mixin trans-style($prop){
+    -webkit-transform-style: $prop;
+    -moz-transform-style: $prop;
+    -o-transform-style: $prop;
+    -ms-transform-style: $prop;
+    transform-style: $prop;
+}
+
+@mixin anim-transition($time){
+    -webkit-transition: $time;
+    -moz-transition: $time;
+    -o-transition: $time;
+    -ms-transition: $time;
+    transition: $time;
+}
+
+@mixin backface-visibility($prop){
+    -webkit-backface-visibility: $prop;
+    -moz-backface-visibility: $prop;
+    -o-backface-visibility: $prop;
+    -ms-backface-visibility: $prop;
+    backface-visibility: $prop;
+}
+
+@mixin box-shadow($orientation, $color){
+    -webkit-box-shadow: $orientation $color;
+    -moz-box-shadow: $orientation $color;
+    -o-box-shadow: $orientation $color;
+    -ms-box-shadow: $orientation $color;
+    box-shadow: $orientation $color;
 }
