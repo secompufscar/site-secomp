@@ -8,7 +8,7 @@
 ## Dependências
 Antes de rodar o servidor, instalar as seguintes dependências:
 ### Debian Based
-- `sudo apt install mysql-server zlib1g-dev libffi-dev libssl-dev python3-dev`
+- `sudo apt install mysql-server zlib1g-dev libffi-dev libssl-dev python3-dev python3-venv`
 ### Arch Based
 - `sudo pacman -S mariadb zlib libffi openssl`
 ### Pip

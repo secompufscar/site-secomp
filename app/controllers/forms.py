@@ -3,8 +3,9 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
-from app.controllers.functions import get_opcoes_cotas_patrocinadores, get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_participantes, get_opcoes_camisetas, get_participantes_sem_kit,\
-    erro_curso_existe, erro_instituicao_existe, erro_cidade_existe
+from app.controllers.functions.form_choices import get_opcoes_cotas_patrocinadores, get_opcoes_cidades, get_opcoes_instituicoes, get_opcoes_cursos, get_opcoes_camisetas
+from app.controllers.functions.custom_form_validators import erro_curso_existe, erro_instituicao_existe, erro_cidade_existe, so_letras, email_existe
+from app.controllers.functions.aux import get_participantes, get_participantes_sem_kit
 from app.controllers.constants import *
 
 
@@ -17,25 +18,25 @@ class LoginForm(FlaskForm):
 
 class CadastroForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100), so_letras()], id="sobrenome")
     email = StringField('Email', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
+        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254), email_existe()], id="email")
     senha = PasswordField('Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), EqualTo(
-        'confirmacao', message=ERRO_COMPARA_SENHAS), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
+        'confirmacao', message=ERRO_COMPARA_SENHAS), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)], id="senha")
     confirmacao = PasswordField('Confirmação de Senha', validators=[
-                                InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
+                            InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
     curso = SelectField('Curso', choices=get_opcoes_cursos(), validators=
     [InputRequired(message=ERRO_INPUT_REQUIRED)],
                         id="curso", coerce=int)
-    outro_curso = StringField("Outro curso", id="outro_curso", validators=[erro_curso_existe()])
+    outro_curso = StringField("Outro curso", id="outro_curso", validators=[erro_curso_existe(), so_letras()])
     instituicao = SelectField('Instituição', choices=get_opcoes_instituicoes(
     ), id="instituicao", default="UFSCar", coerce=int)
-    outra_instituicao = StringField("Outra instituição", id="outra_instituicao", validators=[erro_instituicao_existe()])
+    outra_instituicao = StringField("Outra instituição", id="outra_instituicao", validators=[erro_instituicao_existe(), so_letras()])
     cidade = SelectField('Cidade', choices=get_opcoes_cidades(
     ), id="cidade", default="São Carlos", coerce=int)
-    outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe()])
+    outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe(), so_letras()])
     data_nasc = DateField("Data de Nascimento",
                           format="%d/%m/%Y", id="data_nasc")
     recaptcha = RecaptchaField()
@@ -108,14 +109,12 @@ class ComprovanteForm(FlaskForm):
             FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
         ])
 
+
 class AlteraCamisetaForm(FlaskForm):
     participante = SelectField("Selecione o usuário", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
 
+
 class VendaKitForm(FlaskForm):
     participante = SelectField("Inscrições na SECOMP 2019", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
-
-
-
-
