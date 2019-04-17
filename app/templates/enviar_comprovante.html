@@ -2,11 +2,15 @@
 {% import 'wtf.html' as wtf %}
 
 {% block content %}
-    <div>
-        <form method='POST' enctype="multipart/form-data">
-          {{ form.hidden_tag() }}
-	  {{ wtf.form_field(form.comprovante) }}
-          <button type='submit' class='btn btn-primary'>Enviar</button>
-        </form>
+<div class="pad-inicio container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form method='POST' enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.comprovante) }}
+        <button type='submit' class='btn btn-primary'>Enviar</button>
+      </form>
     </div>
+  </div>
+</div>
 {% endblock %}
