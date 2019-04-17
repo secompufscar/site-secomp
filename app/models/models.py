@@ -1,38 +1,35 @@
 from datetime import datetime
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
 
-from app import app
-
-
-db = SQLAlchemy(app)
-
-relacao_atividade_participante = db.Table('relacao_atividade_participante',
-Column('id', Integer, primary_key=True),
-Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
-Column('id_participante', Integer, db.ForeignKey('participante.id')))
-
-relacao_atividade_ministrante = db.Table('relacao_atividade_ministrante',
-Column('id', Integer, primary_key=True),
-Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
-Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
-
-relacao_patrocinador_evento = db.Table('relacao_patrocinador_evento',
-Column('id', Integer, primary_key=True),
-Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')),
-Column('id_evento', Integer, db.ForeignKey('evento.id')))
-
-relacao_permissao_usuario = db.Table('relacao_permissao_usuario',
-Column('id', Integer, primary_key=True),
-Column('id_usuario', Integer, db.ForeignKey('usuario.id')),
-Column('id_permissao', Integer, db.ForeignKey('permissao.id')))
-
+db = SQLAlchemy()
 
 TipoAtividade = {
     'minicurso': 0,
     'workshop': 1,
     'palestra': 2
 }
+
+relacao_atividade_participante = db.Table('relacao_atividade_participante',
+                                          Column('id', Integer, primary_key=True),
+                                          Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+                                          Column('id_participante', Integer, db.ForeignKey('participante.id')))
+
+relacao_atividade_ministrante = db.Table('relacao_atividade_ministrante',
+                                         Column('id', Integer, primary_key=True),
+                                         Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+                                         Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
+
+relacao_patrocinador_evento = db.Table('relacao_patrocinador_evento',
+                                       Column('id', Integer, primary_key=True),
+                                       Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')),
+                                       Column('id_evento', Integer, db.ForeignKey('evento.id')))
+
+relacao_permissao_usuario = db.Table('relacao_permissao_usuario',
+                                     Column('id', Integer, primary_key=True),
+                                     Column('id_usuario', Integer, db.ForeignKey('usuario.id')),
+                                     Column('id_permissao', Integer, db.ForeignKey('permissao.id')))
 
 
 class Usuario(db.Model):
@@ -57,10 +54,11 @@ class Usuario(db.Model):
     token_alteracao_senha = Column(String(90), nullable=True)
     salt_alteracao_senha = Column(String(30), nullable=True)
     permissoes_usuario = db.relationship('Permissao', secondary=relacao_permissao_usuario, lazy=True,
-    back_populates='usuarios')
+                                         back_populates='usuarios')
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
 
-    def is_active(self):
+    @classmethod
+    def is_active(cls):
         return True
 
     def get_id(self):
@@ -69,7 +67,8 @@ class Usuario(db.Model):
     def is_authenticated(self):
         return self.autenticado
 
-    def is_anonymous(self):
+    @classmethod
+    def is_anonymous(cls):
         return False
 
     def is_admin(self):
@@ -87,13 +86,13 @@ class Participante(db.Model):
     pacote = Column(Boolean, nullable=False)
     pagamento = Column(Boolean, nullable=False)
     id_camiseta = Column(Integer, db.ForeignKey('camiseta.id'), primary_key=False)
-    data_inscricao = Column(DateTime, nullable=False)
+    data_inscricao = Column(DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
     usuario = db.relationship('Usuario', back_populates='participantes_associados', lazy=True)
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
-    back_populates='participantes')
+                                 back_populates='participantes')
 
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.email + ">"
@@ -120,7 +119,7 @@ class Ministrante(db.Model):
     linkedin = Column(String(64))
     github = Column(String(64))
     atividades = db.relationship('Atividade', secondary=relacao_atividade_ministrante, lazy=True,
-    back_populates='ministrantes')
+                                 back_populates='ministrantes')
 
     def __repr__(self):
         return self.usuario.nome
@@ -144,9 +143,9 @@ class Atividade(db.Model):
     recursos_necessarios = Column(String(512), nullable=False)
     observacoes = Column(String(512), nullable=False)
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
-    back_populates='atividades')
+                                   back_populates='atividades')
     participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
-    back_populates='atividades')
+                                    back_populates='atividades')
     presencas = db.relationship('Presenca', backref='atividade')
 
     def __repr__(self):
@@ -161,13 +160,13 @@ class Evento(db.Model):
     data_hora_fim = Column(DateTime, nullable=False)
     inicio_inscricoes_evento = Column(DateTime, nullable=False)
     fim_inscricoes_evento = Column(DateTime, nullable=False)
-    ano = Column(Integer, nullable=False)
+    ano = Column(Integer, default=datetime.now().year)
     participantes = db.relationship('Participante', backref='evento', lazy=True)
     presencas = db.relationship('Presenca', backref='evento', lazy=True)
     atividades = db.relationship('Atividade', backref='evento', lazy=True)
     membros_equipe = db.relationship('MembroDeEquipe', backref='evento', lazy=True)
     patrocinadores = db.relationship('Patrocinador', secondary=relacao_patrocinador_evento, lazy=True,
-    back_populates='eventos')
+                                     back_populates='eventos')
     camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
 
     def __repr__(self):
@@ -230,7 +229,7 @@ class Patrocinador(db.Model):
     link_website = Column(String(200), nullable=True)
     ultima_atualizacao_em = Column(DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
-    back_populates='patrocinadores')
+                              back_populates='patrocinadores')
 
     def __repr__(self):
         return self.nome_empresa
@@ -292,8 +291,7 @@ class Permissao(db.Model):
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', secondary=relacao_permissao_usuario, lazy=True,
-    back_populates='permissoes_usuario')
+                               back_populates='permissoes_usuario')
 
     def __repr__(self):
         return self.nome
-

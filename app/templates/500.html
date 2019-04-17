@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}SECOMP UFSCar - Erro 500{% endblock %}
+
+{% block content %}
+    <!-- Erro 500 -->
+    <h1>Erro 500 - Erro interno no servidor</h1>
+    <div>O servidor encontrou um erro interno ou configuração inválida e não foi possível completar sua requisição.
+    </div>
+    <a>
+        <img id="error-dog"
+             src="{{ url_for('static', filename='images/500.jpg') }}"
+             alt="Imagem do erro 500">
+    </a>
+{% endblock %}
