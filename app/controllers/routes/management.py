@@ -1,14 +1,79 @@
 from random import SystemRandom
-
 from flask import render_template, request, redirect, abort, url_for, Blueprint
 from flask_login import login_required, current_user
-
 from app.controllers.forms.forms import *
 from app.models.models import *
+from flask import Flask, redirect, request
+from flask_bootstrap import Bootstrap
+from flask_script import Server, Manager, prompt_bool
+from flask_migrate import Migrate, MigrateCommand
+from flask_login import LoginManager
+from flask_babelex import Babel
+from app.models.models import db, Usuario
+from app.controllers.routes import users as user_routes
+from app.controllers.routes import admin
+from app.controllers import routes
+import os
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
 
+
+configs = {
+    'development': '../config/development.py',
+    'production': '../config/production.py',
+    'default': '../config/default.py'
+}
+
+config_name = os.getenv('FLASK_CONFIGURATION', 'development')
+
+app = Flask(__name__)
+Bootstrap(app)
+babel = Babel(app)
+app.config.from_pyfile(configs[config_name])
+
+
+upload_path = os.path.join(os.path.dirname(__file__), 'static')
+adm = admin.init_admin(app, upload_path)
+
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+manager.add_command('runserver', Server(host='0.0.0.0'))
+migrate = Migrate(app, db)
+
+app.register_blueprint(user_routes)
+app.register_blueprint(routes)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+
+@login_manager.user_loader
+def user_loader(user_id):
+    return db.session.query(Usuario).filter_by(id = user_id).first()
+
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return redirect('/login')
+
+
+@manager.command
+def create():
+    "Creates database tables from sqlalchemy models"
+    db.create_all()
+
+@manager.command
+def drop():
+    "Drops database tables"
+    if prompt_bool("Erase current database?"):
+        db.drop_all()
+
+@babel.localeselector
+def get_locale():
+    if request.args.get('lang'):
+        session['lang'] = request.args.get('lang')
+    return "pt"
 
 @management.route('/')
 @login_required
