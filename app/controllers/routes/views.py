@@ -1,4 +1,6 @@
-from flask import render_template, request, Blueprint
+from flask import render_template, request, Blueprint, url_for, redirect
+from flask_login import login_required, login_user, logout_user, current_user
+from passlib.hash import pbkdf2_sha256
 
 from app.controllers.forms.forms import *
 from app.controllers.functions.email import enviar_email_dm
@@ -54,3 +56,33 @@ def equipe():
 @views.route('/faq')
 def faq():
     return render_template('views/faq.html', title='FAQ')
+
+
+@views.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        user = db.session.query(Usuario).filter_by(
+            email=form.email.data).first()
+        if user:
+            if pbkdf2_sha256.verify(form.senha.data, user.senha):
+                user.autenticado = True
+                db.session.add(user)
+                db.session.commit()
+                login_user(user, remember=True)
+                return redirect(url_for('users.dashboard'))
+    return render_template('views/login.html', form=form)
+
+
+@views.route("/logout", methods=["GET"])
+@login_required
+def logout():
+    """
+    Renderiza a página de logout do projeto
+    """
+    user = current_user
+    user.autenticado = False
+    db.session.add(user)
+    db.session.commit()
+    logout_user()
+    return redirect(url_for('.index'))

@@ -2,7 +2,7 @@ from os import path, makedirs
 
 from bcrypt import gensalt
 from flask import request, redirect, flash, Blueprint, current_app
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
@@ -13,40 +13,11 @@ from app.controllers.functions.email import *
 from app.controllers.functions.helpers import *
 from app.models.models import *
 
-users = Blueprint('users', __name__, static_folder='static', template_folder='templates')
+users = Blueprint('users', __name__, static_folder='static',
+                  template_folder='templates', url_prefix='/participante')
 
 
-@users.route("/login", methods=["GET", "POST"])
-def login():
-    form = LoginForm(request.form)
-    if form.validate_on_submit():
-        user = db.session.query(Usuario).filter_by(
-            email=form.email.data).first()
-        if user:
-            if pbkdf2_sha256.verify(form.senha.data, user.senha):
-                user.autenticado = True
-                db.session.add(user)
-                db.session.commit()
-                login_user(user, remember=True)
-                return redirect(url_for('.dashboard'))
-    return render_template('users/login.html', form=form)
-
-
-@users.route("/logout", methods=["GET"])
-@login_required
-def logout():
-    """
-    Renderiza a página de logout do projeto
-    """
-    user = current_user
-    user.autenticado = False
-    db.session.add(user)
-    db.session.commit()
-    logout_user()
-    return redirect(url_for('views.index'))
-
-
-@users.route('/participante/cadastro', methods=['POST', 'GET'])
+@users.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
     """
     Renderiza a página de cadastro do projeto
@@ -76,7 +47,7 @@ def cadastro():
     return render_template('users/cadastro.html', form=form)
 
 
-@users.route('/participante/verificar-email')
+@users.route('/verificar-email')
 @login_required
 def verificar_email():
     if email_confirmado():
@@ -88,7 +59,7 @@ def verificar_email():
     return render_template('users/confirma_email.html', resultado=msg, status=status)
 
 
-@users.route('/participante/cadastro-participante', methods=['POST', 'GET'])
+@users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
     id_evento = db.session.query(Evento).filter_by(
@@ -118,7 +89,7 @@ def cadastro_participante():
         return redirect(url_for('.verificar_email'))
 
 
-@users.route('/participante/dashboard', methods=['POST', 'GET'])
+@users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
     usuario = db.session.query(Usuario).filter_by(
@@ -143,7 +114,7 @@ def dashboard():
         return redirect(url_for('.verificar_email'))
 
 
-@users.route('/participante/enviar-comprovante', methods=['POST', 'GET'])
+@users.route('/enviar-comprovante', methods=['POST', 'GET'])
 @login_required
 def envio_comprovante():
     """
@@ -163,7 +134,7 @@ def envio_comprovante():
     return render_template('users/enviar_comprovante.html', form=form)
 
 
-@users.route('/participante/verificacao/<token>')
+@users.route('/verificacao/<token>')
 def verificacao(token):
     """
     Página do link enviado para o usuário
@@ -189,7 +160,7 @@ def verificacao(token):
     return redirect(url_for('.verificar_email'))
 
 
-@users.route('/participante/inscricao-atividades')
+@users.route('/inscricao-atividades')
 @login_required
 def inscricao_atividades():
     minicursos = db.session.query(Atividade).filter_by(
@@ -204,7 +175,7 @@ def inscricao_atividades():
                            usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
-@users.route('/participante/inscricao-atividades/<filtro>')
+@users.route('/inscricao-atividades/<filtro>')
 @login_required
 def inscricao_atividades_com_filtro(filtro):
     minicursos = db.session.query(Atividade).filter(
@@ -220,10 +191,10 @@ def inscricao_atividades_com_filtro(filtro):
                            usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
-@users.route('/participante/inscrever-atividade/<id>')
+@users.route('/inscrever-atividade/<id>')
 @login_required
 def inscrever(id):
-    atv = db.session.query(Atividade).filter_by(id=id)[0]
+    atv = db.session.query(Atividade).filter_by(id=id).first()
     if atv.vagas_disponiveis > 0:
         atv.participantes.append(db.session.query(
             Participante).filter_by(usuario=current_user).first())
@@ -246,7 +217,7 @@ def inscrever(id):
         return "Não há vagas disponíveis!"
 
 
-@users.route('/participante/desinscrever-atividade/<id>')
+@users.route('/desinscrever-atividade/<id>')
 @login_required
 def desinscrever(id):
     atv = db.session.query(Atividade).filter_by(id=id).first()
@@ -271,7 +242,7 @@ def desinscrever(id):
         return "Não está inscrito nessa atividade!"
 
 
-@users.route('/participante/alterar-senha', methods=["POST", "GET"])
+@users.route('/alterar-senha', methods=["POST", "GET"])
 @login_required
 def alterar_senha():
     form = AlterarSenhaForm(request.form)
@@ -292,7 +263,7 @@ def alterar_senha():
         return redirect(url_for('.dashboard'))
 
 
-@users.route('/participante/esqueci-senha', methods=["POST", "GET"])
+@users.route('/esqueci-senha', methods=["POST", "GET"])
 def esqueci_senha():
     form = AlterarSenhaPorEmailForm(request.form)
     if form.validate_on_submit():
@@ -311,7 +282,7 @@ def esqueci_senha():
     return render_template("users/esqueci_senha.html", status_envio_email=False, form=form)
 
 
-@users.route('/participante/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
+@users.route('/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
 def confirmar_alteracao_senha(token):
     form = AlterarSenhaForm(request.form)
     if form.validate_on_submit():

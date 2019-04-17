@@ -1,4 +1,4 @@
-from os import getenv, path
+from os import path
 
 from flask import Flask, redirect, request, render_template, session
 from flask_babelex import Babel
@@ -11,13 +11,13 @@ def create_app(config_name):
     """
     Project app factory
     """
-    
+
     configs = {
         'development': '../config/development.py',
         'production': '../config/production.py',
         'default': '../config/default.py'
     }
-    
+
     if config_name not in configs:
         config_name = 'default'
 
@@ -26,28 +26,23 @@ def create_app(config_name):
 
     Bootstrap(app)
 
-
     @app.errorhandler(400)
     def bad_request(error):
         return render_template('400.html'), error
-
 
     @app.errorhandler(404)
     def page_not_found(error):
         return render_template('404.html'), error
 
-
     @app.errorhandler(500)
     def internal_server_error(error):
         return render_template('500.html'), error
 
-
     from app.models.models import db, Usuario
-    
+
     app.app_context().push()
     db.init_app(app)
     migrate = Migrate(app, db)
-
 
     @app.cli.command()
     def create():
@@ -55,7 +50,6 @@ def create_app(config_name):
         Creates database tables from sqlalchemy models
         """
         db.create_all()
-
 
     @app.cli.command()
     def drop():
@@ -66,7 +60,6 @@ def create_app(config_name):
         if prompt == 'y':
             db.session.close_all()
             db.drop_all()
-
 
     from app.controllers.functions.email import mail
 
@@ -84,19 +77,15 @@ def create_app(config_name):
     login_manager = LoginManager()
     login_manager.init_app(app)
 
-
     @login_manager.user_loader
     def user_loader(user_id):
         return db.session.query(Usuario).filter_by(id=user_id).first()
-
 
     @login_manager.unauthorized_handler
     def unauthorized_callback():
         return redirect('/login')
 
-
     babel = Babel(app)
-
 
     @babel.localeselector
     def get_locale():

@@ -102,7 +102,8 @@
                     <a class="nav-item nav-link" href="{{ url_for('users.dashboard_usuario') }}">Participante</a>
                     <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">SAIR</a>
                     {% else %}
-                    <a class="nav-item nav-link" href="{{ url_for('users.login') }}"><i class="mr-1 fas fa-user"></i>
+                        <a class="nav-item nav-link" href="{{ url_for('views.login') }}"><i
+                                class="mr-1 fas fa-user"></i>
                         ENTRAR</a>
                     <a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}"><i
                             class="mr-1 fas fa-address-card"></i> INSCREVER</a>
