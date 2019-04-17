@@ -48,9 +48,6 @@ ERRO_CURSO_EXISTE = "Este curso já existe"
 ERRO_INSTITUICAO_EXISTE = "Esta instituição já existe"
 ERRO_CIDADE_EXISTE = "Esta cidade já existe"
 EDICAO_ATUAL = 10
-ERRO_CURSO_EXISTE = "Esse curso já existe!"
-ERRO_CIDADE_EXISTE = "Essa cidade já existe!"
-ERRO_INSTITUICAO_EXISTE = "Essa instituição já existe!"
 
 escolhas_restricao = [
     (1, "Nenhum"),

@@ -27,11 +27,6 @@ Column('id', Integer, primary_key=True),
 Column('id_usuario', Integer, db.ForeignKey('usuario.id')),
 Column('id_permissao', Integer, db.ForeignKey('permissao.id')))
 
-TipoUsuario = {
-    'usuario': 0,
-    'admin': 1,
-    'super_admin': 2,
-}
 
 TipoAtividade = {
     'minicurso': 0,
@@ -55,8 +50,8 @@ class Usuario(db.Model):
     admin = Column(Boolean, default=False)
     autenticado = Column(Boolean, default=False)
     email_verificado = Column(Boolean, default=False)
-    ultimo_login = Column(DateTime, default=datetime.now())
-    data_cadastro = Column(DateTime, nullable=False)
+    ultimo_login = Column(DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    data_cadastro = Column(DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
     salt = Column(String(30), nullable=False)
     token_alteracao_senha = Column(String(90), nullable=True)
@@ -233,7 +228,7 @@ class Patrocinador(db.Model):
     id_cota = Column(Integer, db.ForeignKey('cota_patrocinio.id'), nullable=False)
     ordem_site = Column(Integer, primary_key=True)
     link_website = Column(String(200), nullable=True)
-    ultima_atualizacao_em = Column(DateTime, nullable=False)
+    ultima_atualizacao_em = Column(DateTime, default=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
     back_populates='patrocinadores')
 
