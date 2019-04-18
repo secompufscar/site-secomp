@@ -69,12 +69,6 @@ def drop():
     if prompt_bool("Erase current database?"):
         db.drop_all()
 
-@babel.localeselector
-def get_locale():
-    if request.args.get('lang'):
-        session['lang'] = request.args.get('lang')
-    return "pt"
-
 @management.route('/')
 @login_required
 def gerenciar():
