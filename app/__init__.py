@@ -1,11 +1,10 @@
 from os import path
+
 from flask import Flask, redirect, request, render_template, session
 from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from app.controllers.routes import admin, management, users, views
-from app.controllers.functions.email import mail
 
 
 def create_app(config_name):
@@ -62,9 +61,11 @@ def create_app(config_name):
             db.session.close_all()
             db.drop_all()
 
+    from app.controllers.functions.email import mail
 
     mail.init_app(app)
 
+    from app.controllers.routes import admin, management, users, views
 
     app.register_blueprint(management.management)
     app.register_blueprint(users.users)
