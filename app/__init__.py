@@ -27,6 +27,8 @@ def create_app(config_name):
 
     Bootstrap(app)
 
+
+
     @app.errorhandler(400)
     def bad_request(error):
         return render_template('400.html'), 400

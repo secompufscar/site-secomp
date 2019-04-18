@@ -75,6 +75,7 @@ def login():
                 db.session.commit()
                 login_user(user, remember=True)
                 return redirect(url_for('users.dashboard'))
+        return render_template('views/login.html', form=form, erro=True)
     return render_template('views/login.html', form=form)
 
 

@@ -69,11 +69,11 @@
 			<td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
 			<td>
 			    {% if participante in atividade.participantes %}
-                    <a href="{{ url_for('.desinscrever' }}/{{ atividade.id }}">
+                    <a href="{{ url_for('.desinscrever') }}/{{ atividade.id }}">
 				<button type="button" class="btn btn-danger">Desinscrever-se</button>
 			    </a>
 			    {% else %}
-                    <a href="{{ url_for('.inscricao_atividades' }}/{{ atividade.id }}">
+                    <a href="{{ url_for('.inscricao_atividades')}}/{{ atividade.id }}">
 				{% if atividade.vagas_disponiveis > 0 %}
 				<button type="button" class="btn btn-primary">
                 {% else %}
