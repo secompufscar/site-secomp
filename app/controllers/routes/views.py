@@ -48,7 +48,11 @@ def sobre():
 @views.route('/equipe')
 def equipe():
     import json
-    with open('./config/membros_org.json', 'r') as read_file:
+    import os.path as op
+    import app.config as conf
+
+    filename = op.join(conf.__file__, 'membros_org.json')
+    with open(filename, 'r') as read_file:
         data = json.load(read_file)
     return render_template('views/equipe.html', title='Equipe', data=data)
 
