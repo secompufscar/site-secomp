@@ -6,23 +6,26 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_migrate import Migrate
 
-
 def create_app(config_name):
     """
     Project app factory
     """
 
     configs = {
-        'development': '../config/development.py',
-        'production': '../config/production.py',
-        'default': '../config/default.py'
+        'development': '.development',
+        'production': '.production',
+        'default': '.default'
     }
 
     if config_name not in configs:
         config_name = 'default'
+        
+    config = 'app.config' + configs[config_name]
+    
+    print(config)
 
     app = Flask(__name__)
-    app.config.from_pyfile(configs[config_name])
+    app.config.from_object(config)
 
     Bootstrap(app)
 
