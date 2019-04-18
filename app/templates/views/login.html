@@ -19,6 +19,11 @@
 		</div>
 
 		<div class="col-md-6">
+			 {% if erro %}
+                <div class="alert alert-danger" role="alert">
+                    Erro ao fazer login!
+                </div>
+			{% endif %}
 			<form action="/login" method="POST">
 				{{ form.hidden_tag() }}
 				{{ wtf.form_field(form.email) }}
@@ -29,7 +34,7 @@
 						<button name="submit" type="submit" class="btn btn-primary bg-gradient-secomp"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
 					</div>
 					<div class="col-md-12">
-						<a href="{{url_for('esqueci_senha')}}">Esqueci minha senha</a>
+						<a href="{{url_for('users.esqueci_senha')}}">Esqueci minha senha</a>
 					</div>
 				</div>
 			</form>

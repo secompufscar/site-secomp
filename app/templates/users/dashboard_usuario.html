@@ -35,7 +35,7 @@
                         <td>{{usuario.email}}</td>
                     </tr>
                     <tr>
-                        {% if (participante.id == None): %}
+                        {% if (participante == None): %}
 
                         <th scope="row">Inscrição</th>
                         <td><a href="{{url_for('.cadastro_participante')}}">Inscrever-se na SECOMP 2019</a></td>
@@ -50,7 +50,7 @@
                 </tbody>
             </table>
         </div>
-
+        {% if (participante != None): %}
         <div class="col-md-6">
             <table class="table table-borderless">
                 <thead class="thead-dark">
@@ -100,20 +100,24 @@
             </table>        
         </div>
     </div>
+    {% endif %}
 
     <div class="row text-center">
         <div class="col-md-4">
             <a href="{{url_for('.alterar_senha')}}" class="btn btn-primary">Alterar senha</a>
         </div>
+        {% if (participante != None): %}
         <div class="col-md-4">
             <a href="{{url_for('.inscricao_atividades')}}" class="btn btn-primary">Atividades</a>
         </div>
+
         <div class="col-md-4">
             {% if not(participante.pagamento): %}
-            <a href="{{url_for('.inscricao_atividades')}}" class="btn btn-primary">Enviar comprovante</a>
+            <a href="{{url_for('users.envio_comprovante')}}" class="btn btn-primary">Enviar comprovante</a>
             {% endif %}
-            <a href="{{url_for('.logout')}}" class="btn btn-primary">Logout</a>
+            <a href="{{url_for('views.logout')}}" class="btn btn-primary">Logout</a>
         </div>
+        {% endif %}
     </div>
 </div>
 

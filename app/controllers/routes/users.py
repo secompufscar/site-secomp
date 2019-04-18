@@ -28,7 +28,6 @@ def cadastro():
     email = form.email.data
     salt = gensalt().decode('utf-8')
     token = serializer.dumps(email, salt=salt)
-
     if form.validate_on_submit():
         agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
@@ -45,6 +44,7 @@ def cadastro():
         enviar_email_confirmacao(usuario, token)
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
+
     return render_template('users/cadastro.html', form=form)
 
 
@@ -172,8 +172,7 @@ def inscricao_atividades():
         tipo=TipoAtividade['palestra'])
     return render_template('users/inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
-                               usuario=current_user).first(),
-                           usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
+                               usuario=current_user).first(), usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
 @users.route('/inscricao-atividades/<filtro>')
