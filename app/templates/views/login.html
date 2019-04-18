@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 
+
 {% block styles %}
 {{ super() }}
+
 <link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
@@ -22,16 +24,20 @@
 				{{ wtf.form_field(form.email) }}
 				{{ wtf.form_field(form.senha) }}
 		
-				<div class="text-center">
-					<button name="submit" type="submit" class="btn btn-primary bg-gradient-secomp"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
-					<a href="{{url_for('esqueci_senha')}}">Esqueci minha senha</a>
+				<div class="row justify-content-center text-center">
+					<div class="col-md-12">
+						<button name="submit" type="submit" class="btn btn-primary bg-gradient-secomp"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
+					</div>
+					<div class="col-md-12">
+						<a href="{{url_for('esqueci_senha')}}">Esqueci minha senha</a>
+					</div>
 				</div>
 			</form>
 		</div>
 	</div>
 
 
-	<div class="row justify-content-center pt-3">
+	<div class="row justify-content-center pt-3 pb-3">
 		<div class="col-md-12 text-center">
 			<h4>Realização</h4>
 		</div>
