@@ -1,4 +1,4 @@
-from os import path
+from os import path, getenv
 
 from flask import Flask, redirect, request, render_template, session
 from flask_babelex import Babel
@@ -7,7 +7,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 
 
-def create_app(config_name):
+def create_app(config=None):
     """
     Project app factory
     """
@@ -18,8 +18,8 @@ def create_app(config_name):
         'default': '.default'
     }
 
-    if config_name not in configs:
-        config_name = 'default'
+    if config not in configs:
+        config_name = getenv("FLASK_CONFIGURATION", "default")
         
     config = 'app.config' + configs[config_name]
     
