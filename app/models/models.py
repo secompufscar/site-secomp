@@ -74,6 +74,9 @@ class Usuario(db.Model):
     def is_admin(self):
         return self.admin
 
+    def getPermissoes(self):
+        return self.permissoes_usuario
+
     def __repr__(self):
         return self.primeiro_nome + " " + self.sobrenome + " <" + self.email + ">"
 
