@@ -1,4 +1,4 @@
-from os import path
+from os import path, getenv
 
 from flask import Flask, redirect, request, render_template, session
 from flask_babelex import Babel
@@ -6,7 +6,8 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_migrate import Migrate
 
-def create_app(config_name):
+
+def create_app(config=None):
     """
     Project app factory
     """
@@ -17,8 +18,8 @@ def create_app(config_name):
         'default': '.default'
     }
 
-    if config_name not in configs:
-        config_name = 'default'
+    if config not in configs:
+        config_name = getenv("FLASK_CONFIGURATION", "default")
         
     config = 'app.config' + configs[config_name]
     
@@ -26,8 +27,6 @@ def create_app(config_name):
     app.config.from_object(config)
 
     Bootstrap(app)
-
-
 
     @app.errorhandler(400)
     def bad_request(error):
@@ -42,6 +41,7 @@ def create_app(config_name):
         return render_template('500.html'), 500
 
     from app.models.models import db, Usuario
+    from app.models.commands import populate
 
     app.app_context().push()
     db.init_app(app)
@@ -53,6 +53,7 @@ def create_app(config_name):
         Creates database tables from sqlalchemy models
         """
         db.create_all()
+        populate()
 
     @app.cli.command()
     def drop():
@@ -97,3 +98,4 @@ def create_app(config_name):
         return "pt"
 
     return app
+

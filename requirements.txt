@@ -18,3 +18,4 @@ flask_sqlalchemy>=2.3.2
 flask_wtf>=0.14.2
 flask-admin>=1.5.3
 flask-babelex>=0.9.3
+gunicorn>=19.9.0
