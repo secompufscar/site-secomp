@@ -88,7 +88,7 @@ def sorteia_usuario():
     return render_template('management/sortear_usuario.html', sorteando=False)
 
 
-@management.route('/sorteio/sortear')
+@management.route('/sorteio/sortear', methods=["POST"])
 @login_required
 def sortear():
     # TODO: conferir permissões
