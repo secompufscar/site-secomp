@@ -32,7 +32,7 @@
           {{ wtf.form_field(form.cidade) }}
           {{ wtf.form_field(form.outra_cidade) }}
           {{ wtf.form_field(form.data_nasc) }}
-          {{ form.recaptcha }}
+          {{ wtf.form_field(form.recaptcha) }}
 
         {% for error in form.recaptcha.errors %}
         <span class="help-block">{{ error }}</span>
