@@ -4,10 +4,32 @@ body {
 
 .container {
   background-color: #fff;
-  min-height: 100vh;
+  width: 50%;
+}
+
+@media(max-width: 990px) {
+  .container {
+    background-color: #fff;
+    width: 80%;
+  }
+}
+
+@media(max-width: 990px) and (orientation: landscape) {
+  .container {
+    padding-top: 15vh;
+  }
+}
+
+a {
+  color: #008cb5;
+}
+
+a:hover {
+  color: #00cfa1;
 }
 
 .btn {
+  width: 100%;
   font-weight: bold;
   border: none;  
 }

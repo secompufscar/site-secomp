@@ -122,6 +122,6 @@ dmypy.json
 migrations/
 app.db
 
-config/development.py
+app/config/development.py
 uploads/
-ssl/
+
