@@ -48,8 +48,8 @@ class Usuario(db.Model):
     admin = Column(Boolean, default=False)
     autenticado = Column(Boolean, default=False)
     email_verificado = Column(Boolean, default=False)
-    ultimo_login = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", datetime.now()))
-    data_cadastro = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", datetime.now()))
+    ultimo_login = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())))
+    data_cadastro = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())))
     participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
     salt = Column(String(30), nullable=False)
     token_alteracao_senha = Column(String(90), nullable=True)
@@ -75,6 +75,9 @@ class Usuario(db.Model):
     def is_admin(self):
         return self.admin
 
+    def getPermissoes(self):
+        return self.permissoes_usuario
+
     def __repr__(self):
         return self.primeiro_nome + " " + self.sobrenome + " <" + self.email + ">"
 
@@ -87,7 +90,7 @@ class Participante(db.Model):
     pacote = Column(Boolean, nullable=False)
     pagamento = Column(Boolean, nullable=False)
     id_camiseta = Column(Integer, db.ForeignKey('camiseta.id'), primary_key=False)
-    data_inscricao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", datetime.now()))
+    data_inscricao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())))
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
     usuario = db.relationship('Usuario', back_populates='participantes_associados', lazy=True)
@@ -228,7 +231,7 @@ class Patrocinador(db.Model):
     id_cota = Column(Integer, db.ForeignKey('cota_patrocinio.id'), nullable=False)
     ordem_site = Column(Integer, primary_key=True)
     link_website = Column(String(200), nullable=True)
-    ultima_atualizacao_em = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", datetime.now()))
+    ultima_atualizacao_em = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())))
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
                               back_populates='patrocinadores')
 
@@ -296,3 +299,4 @@ class Permissao(db.Model):
 
     def __repr__(self):
         return self.nome
+

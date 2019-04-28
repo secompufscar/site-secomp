@@ -27,7 +27,7 @@
                 </form>
             {% endif %}
             {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['VENDA_PRESENCIAL'].usuarios %}
-                <form action="/venda-kits">
+                <form action="{{url_for('.vender_kits')}}">
                     <h3>Venda de Kits</h3>
                     <button type="submit" class="btn btn-primary">Vender kit</button>
                 </form>
@@ -67,7 +67,7 @@
                 </form>
             {% endif %}
             {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['SORTEAR'].usuarios %}
-                <form action="/sortear-usuario">
+                <form action="{{url_for('.sortear')}}">
                     <h3>Sortear participante presente</h3>
                     <button type="submit" class="btn btn-primary">Sortear</button>
                 </form>
