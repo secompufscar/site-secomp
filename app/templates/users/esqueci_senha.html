@@ -22,7 +22,7 @@
         <div class="col-md-6 pt-3">
 
             {% if status_envio_email == False: %}
-            <form action="{{url_for('esqueci_senha')}}" method="POST">
+            <form action="{{url_for('users.esqueci_senha')}}" method="POST">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.email) }}
                 {{ form.recaptcha }}
