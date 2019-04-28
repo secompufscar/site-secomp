@@ -7,14 +7,13 @@
         <div class="col-md-8">
             <h3 class="text-center">Sorteio de participante</h3>
 
-            <form action="/fazer-sorteio/do">
+            <form action="{{url_for('.sortear')}}" method="POST">
                 {% if sorteando: %}
-                <div class="alert alert-success" role="alert">
-                    O participante sorteado foi: {{sorteado.usuario.primeiro_nome}} {{sorteado.usuario.sobrenome}}
-                </div>
-                <br>
+                    <div class="alert alert-success" role="alert">
+                        O participante sorteado foi: {{sorteado.usuario.primeiro_nome}} {{sorteado.usuario.sobrenome}}
+                    </div>
                 {% else: %}
-                <label>Clique no botão abaixo para sortear um participante!</label>
+                    <label>Clique no botão abaixo para sortear um participante!</label>
                 {% endif %}
                 <div class="text-center">
                     {% if sorteando: %}
@@ -28,4 +27,4 @@
     </div>
 </div>
 
-    {% endblock %}
+{% endblock %}
