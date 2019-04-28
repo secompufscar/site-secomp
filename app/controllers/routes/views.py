@@ -51,7 +51,7 @@ def equipe():
     import os.path as op
     import app.config as conf
 
-    filename = op.join(conf.__file__, 'membros_org.json')
+    filename = op.join(op.dirname(conf.__file__), 'membros_org.json')
     with open(filename, 'r') as read_file:
         data = json.load(read_file)
     return render_template('views/equipe.html', title='Equipe', data=data)
