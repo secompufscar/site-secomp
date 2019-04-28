@@ -136,3 +136,21 @@ def alterar_camiseta():
         return render_template('management/alterar_camisetas.html', form=form)
     else:
         abort(403)
+
+@management.route('/listas', methods=["GET","POST"])
+@login_required
+def listas():
+    permissoes = current_user.getPermissoes()
+    if("GERAR_LISTAS" in permissoes or current_user.is_admin()):
+        form = ListasParticipantes(request.form)
+        if(form.validate_on_submit()):
+            if(form.tipo.data == 0):
+                lista = db.session.query(Atividade).filter_by(titulo=form.atividades.data).first().participantes
+                return render_template('management/listas_participante.html', atividade=form.atividades.data, tipo='inscritos', lista=lista, form=form)
+            elif(form.tipo.data == 1):
+                lista = db.session.query(Atividade).filter_by(titulo=form.atividades.data).first().presencas
+                return render_template('management/listas_participante.html', atividade=form.atividades.data, tipo='presentes', lista=lista, form=form)
+        else:
+            return render_template('management/listas_participante.html', form=form)
+    else:
+        abort(403)

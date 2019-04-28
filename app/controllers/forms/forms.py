@@ -5,7 +5,7 @@ from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from app.controllers.forms.options import *
 from app.controllers.forms.validators import *
-from app.controllers.functions.helpers import get_participantes
+from app.controllers.functions.helpers import get_participantes, get_atividades
 
 
 class LoginForm(FlaskForm):
@@ -117,3 +117,7 @@ class AlteraCamisetaForm(FlaskForm):
 class VendaKitForm(FlaskForm):
     participante = SelectField("Inscrições na SECOMP 2019", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
+
+class ListasParticipantes(FlaskForm):
+    atividades = SelectField("Atividades", choices=get_atividades(), id="atividade", coerce=int)
+    tipo = SelectField("Modelos", choices=[(0, 'Inscritos'), (1, 'Presentes')], id="tipo", coerce=int)

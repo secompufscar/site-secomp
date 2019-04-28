@@ -61,7 +61,7 @@
                 </div>
             {% endif %}
             {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_LISTAS'].usuarios %}
-                <form action="">
+                <form action="{{url_for('.listas')}}">
                     <h3>Geração de listas</h3>
                     <button type="submit" class="btn btn-primary">Gerar Listas</button>
                 </form>
