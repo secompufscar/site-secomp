@@ -19,9 +19,9 @@ def create_app(config=None):
     }
 
     if config not in configs:
-        config_name = getenv("FLASK_CONFIGURATION", "default")
+        config = getenv("FLASK_CONFIGURATION", "default")
         
-    config = 'app.config' + configs[config_name]
+    config = 'app.config' + configs[config]
     
     app = Flask(__name__)
     app.config.from_object(config)
