@@ -3,12 +3,16 @@
 {% block title %}SECOMP UFSCar - Erro 400{% endblock %}
 
 {% block content %}
-    <!-- Erro 400 -->
-    <h1>Erro 400 - Requisição inválida</h1>
-    <div>Seu navegador enviou uma requisição que o servidor não conseguiu entender.</div>
-    <a>
-        <img id="error-dog"
-             src="{{ url_for('static', filename='images/400.jpg') }}"
-             alt="Imagem do erro 400">
-    </a>
+
+<div class="pad-inicio container pb-3">
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+            <h1>Erro 400 - Requisição inválida</h1>
+            <h3>Seu navegador enviou uma requisição que o servidor não conseguiu entender.</h3>
+            <a>
+                <img id="error-dog" src="{{ url_for('static', filename='images/400.jpg') }}" alt="Imagem do erro 400">
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}
