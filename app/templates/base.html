@@ -47,14 +47,11 @@
             <a class="navbar-brand ml-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
                     src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30"
                     alt="Logo atual da SECOMP" /></a>
-            {# TODO mudar o aria #}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens"
                 aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <i class="fas fa-bars text-white"></i>
             </button>
             <div class="collapse mr-auto navbar-collapse" id="navbarItens">
-                {# TODO colocar uma lógica Jinja para active...? #}
-                {# TODO colocar uma lógica Jinja para usuário logado? #}
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('views.index') }}"><i class="mr-1 fas fa-home"></i>
@@ -69,7 +66,6 @@
                                     class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
                             <a class="dropdown-item" href="{{ url_for('views.equipe') }}"><i
                                     class="mr-1 fas fa-users"></i> EQUIPE</a>
-                            {# Colocar como um link separado? #}
                             <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
                                     class="mr-1 fas fa-comments"></i> CONTATO</a>
                             <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
@@ -83,7 +79,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
                                     class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
-                            <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
                                     class="mr-1 fas fa-flag"></i> CTF</a>
                             <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
                                     class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
@@ -99,7 +95,6 @@
                 {# TODO: Corrigir o espaçamento #}
                 <!-- Lado direito da Navbar -->
                 <div class="navbar-nav">
-                    <!-- TODO: criar lógica baseada no bd -->
                     {% if current_user.is_authenticated %}
                     <a class="nav-item nav-link" href="{{ url_for('users.dashboard') }}">Participante</a>
                     <a class="nav-item nav-link" href="{{ url_for('views.logout') }}">SAIR</a>
