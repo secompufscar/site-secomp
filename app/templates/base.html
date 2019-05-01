@@ -6,10 +6,10 @@
 {% block head %}
 {% block metas %}
 {{ super() }}
-<meta charset="utf-8"/>
-<meta http-equiv="x-ua-compatible" content="ie=edge"/>
-<meta name="description" content="{{secompEdition}} Semana da Computação UFSCar"/>
-<meta name="organization" content="SECOMP UFSCar"/>
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<meta name="description" content="{{secompEdition}} Semana da Computação UFSCar" />
+<meta name="organization" content="SECOMP UFSCar" />
 {% endblock %}
 
 {% block headscripts %}
@@ -25,16 +25,16 @@
 <title>{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}</title>
 {# styles globais #}
 {% block styles %}
-<link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ url_for('static', filename='bs/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ url_for('static', filename='fa/css/all.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='bs/css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='fa/css/all.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{url_for('static', filename='css/select2.css')}}" rel="stylesheet" />
 {% endblock %}
 
 {% block favicon %}
-<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo-colorida.png') }}"/>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo-colorida.png') }}" />
 {% endblock %}
 {% endblock %}
 
@@ -42,111 +42,115 @@
 {% block navbar %}
 <header>
     <nav class="navbar shadow fixed-top navbar-expand-lg bg-gradient-secomp">
-	<div class="container-fluid">
-	    {# Marca d'água para a home  #}
-	    <a class="navbar-brand ml-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
-									      src="{{ url_for('static', filename='images/logoTest.png') }}"
-	       width="30" height="30"
-		   alt="Logo atual da SECOMP"/></a>
-	    {# TODO mudar o aria #}
-	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse mr-auto navbar-collapse" id="navbarItens">
-		{# TODO colocar uma lógica Jinja para active...? #}
-		{# TODO colocar uma lógica Jinja para usuário logado? #}
-		<ul class="navbar-nav mr-auto">
-		    <li class="nav-item">
-			<a class="nav-link" href="{{ url_for('views.index') }}"><i class="mr-1 fas fa-home"></i>
-			    HOME</a>
-		    </li>
-		    <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp"><i class="mr-1 fas fa-heart"></i> SECOMP
-			</a>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="{{ url_for('views.sobre') }}"><i
-				class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
-			    <a class="dropdown-item" href="{{ url_for('views.equipe') }}"><i
-				class="mr-1 fas fa-users"></i> EQUIPE</a>
-			    {# Colocar como um link separado? #}
-			    <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
-				class="mr-1 fas fa-comments"></i> CONTATO</a>
-			    <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
-				class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
-			</div>
-		    </li>
-		    <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos"><i class="mr-1 fas fa-calendar-alt"></i> EVENTOS
-			</a>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
-				class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
-			    <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
-				class="mr-1 fas fa-flag"></i> CTF</a>
-			    <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
-				class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
-			</div>
-		    </li>
-		    <li class="nav-item">
-			<a class="nav-link" href="{{ url_for('views.faq') }}"><i
-		       class="mr-1 fas fa-question-circle"></i> FAQ</a>
-		    </li>
-		    {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
-		</ul>
+        <div class="container-fluid">
+            {# Marca d'água para a home  #}
+            <a class="navbar-brand ml-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
+                    src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30"
+                    alt="Logo atual da SECOMP" /></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens"
+                aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars text-white"></i>
+            </button>
+            <div class="collapse mr-auto navbar-collapse" id="navbarItens">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('views.index') }}"><i class="mr-1 fas fa-home"></i>
+                            HOME</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp"><i
+                                class="mr-1 fas fa-heart"></i> SECOMP
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ url_for('views.sobre') }}"><i
+                                    class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
+                            <a class="dropdown-item" href="{{ url_for('views.equipe') }}"><i
+                                    class="mr-1 fas fa-users"></i> EQUIPE</a>
+                            <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    class="mr-1 fas fa-comments"></i> CONTATO</a>
+                            <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos"><i
+                                class="mr-1 fas fa-calendar-alt"></i> EVENTOS
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ url_for('views.cronograma') }}"><i
+                                    class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
+                                    <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    class="mr-1 fas fa-flag"></i> CTF</a>
+                            <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                    class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('views.faq') }}"><i
+                                class="mr-1 fas fa-question-circle"></i> FAQ</a>
+                    </li>
+                    {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
+                </ul>
 
-		{# TODO: Corrigir o espaçamento #}
-		<!-- Lado direito da Navbar -->
-		<div class="navbar-nav">
-		    <!-- TODO: criar lógica baseada no bd -->
-		    {% if current_user.is_authenticated %}
-		    <a class="nav-item nav-link" href="{{ url_for('users.dashboard') }}">Participante</a>
-		    <a class="nav-item nav-link" href="{{ url_for('views.logout') }}">SAIR</a>
-		    {% else %}
-		    <a class="nav-item nav-link" href="{{ url_for('views.login') }}"><i
-				   class="mr-1 fas fa-user"></i>
-			ENTRAR</a>
-		    <a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}"><i
-				   class="mr-1 fas fa-address-card"></i> INSCREVER</a>
-		    {% endif %}
-		</div>
-	    </div>
-	</div>
+                {# TODO: Corrigir o espaçamento #}
+                <!-- Lado direito da Navbar -->
+                <div class="navbar-nav">
+                    {% if current_user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{{ url_for('users.dashboard') }}">Participante</a>
+                    <a class="nav-item nav-link" href="{{ url_for('views.logout') }}">SAIR</a>
+                    {% else %}
+                    <a class="nav-item nav-link" href="{{ url_for('views.login') }}"><i class="mr-1 fas fa-user"></i>
+                        ENTRAR</a>
+                    <a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}"><i
+                            class="mr-1 fas fa-address-card"></i> INSCREVER</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </nav>
 </header>
 {% endblock %}
 
 <main>
-<div class="content">
-    {% block content %}{% endblock %}
-</div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
 </main>
 
 {# Rascunho de rodapé #}
 {% block footer %}
 <footer class="navbar small pt-4 text-white">
-    <div class="row justify-content-md-center">
-	<div class="col-sm-8 text-center">
-	    <p>Desenvolvido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Igor Lúcio,
-	    Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Matheus Victorello, Nathan Oliveira e Victória De Martini.
-	    </p>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-8 text-center">
+                <p>Desenvolvido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Igor Lúcio,
+                    Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Matheus Victorello, Nathan Oliveira e Victória De
+                    Martini.
+                </p>
 
-	</div>
-	<div class="col-sm-12">
-	    <ul class="list-unstyled list-inline social text-center">
-		<li class="list-inline-item"><a href="https://facebook.com/secompufscar" target="blank"><i class="fab fa-2x fa-facebook-f"></i></a></li>
-		<li class="list-inline-item"><a href="https://twitter.com/secompufscar" target="blank"><i class="fab fa-2x fa-twitter"></i></a></li>
-		<li class="list-inline-item"><a href="https://www.youtube.com/channel/UChj1pycWmHOJDeJkDf6RraA" target="blank"><i class="fab fa-2x fa-youtube"></i></a></li>
-		<li class="list-inline-item"><a href="https://instagram.com/secompufscar" target="blank"><i class="fab fa-2x fa-instagram"></i></a></li>
-		<li class="list-inline-item"><a href="mailto:{{ secomp_email }}"><i class="fa fa-2x fa-envelope"></i></a></li>
-	    </ul>
-	</div>
-	<div class="col-sm-12 text-center">
-	    <p>
-	    Departamento de Computação <br/>
-	    UFSCar - Universidade Federal de São Carlos <br>
-	    Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara <br> São Carlos/ SP - CEP 13565-905
-	    </p>
-	</div>
+            </div>
+            <div class="col-sm-12">
+                <ul class="list-unstyled list-inline social text-center">
+                    <li class="list-inline-item"><a href="https://facebook.com/secompufscar" target="blank"><i
+                                class="fab fa-2x fa-facebook-f"></i></a></li>
+                    <li class="list-inline-item"><a href="https://twitter.com/secompufscar" target="blank"><i
+                                class="fab fa-2x fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="https://www.youtube.com/channel/UChj1pycWmHOJDeJkDf6RraA"
+                            target="blank"><i class="fab fa-2x fa-youtube"></i></a></li>
+                    <li class="list-inline-item"><a href="https://instagram.com/secompufscar" target="blank"><i
+                                class="fab fa-2x fa-instagram"></i></a></li>
+                    <li class="list-inline-item"><a href="mailto:{{ secomp_email }}"><i
+                                class="fa fa-2x fa-envelope"></i></a></li>
+                </ul>
+            </div>
+            <div class="col-sm-12 text-center">
+                <p>
+                    Departamento de Computação <br />
+                    UFSCar - Universidade Federal de São Carlos <br>
+                    Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara <br> São Carlos/ SP - CEP 13565-905
+                </p>
+            </div>
+        </div>
     </div>
 
 </footer>
