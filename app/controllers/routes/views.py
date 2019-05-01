@@ -45,6 +45,11 @@ def sobre():
     return render_template('views/sobre.html', title='Sobre a Secomp')
 
 
+@views.route('/cronograma')
+def cronograma():
+    return render_template('views/cronograma.html', title='Cronograma')
+
+
 @views.route('/equipe')
 def equipe():
     import json
