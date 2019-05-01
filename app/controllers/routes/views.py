@@ -9,15 +9,17 @@ from app.controllers.constants import *
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
 
 
-@views.route('/')
+@views.route('/', methods=["GET", "POST"])
 def index():
     """
     Renderiza a página inicial do projeto
     """
+    form_login = LoginForm(request.form)
     return render_template('views/index.html', title='Página inicial',
                            secomp_now=secomp_now[0], secomp=secomp[0],
                            secomp_email=secomp_email,
-                           secompEdition=secomp_edition)
+                           secompEdition=secomp_edition,
+                           form=form_login)
 
 
 @views.route('/contato', methods=['POST', 'GET'])
@@ -35,36 +37,40 @@ def contato_dm():
     return render_template('views/contato.html', form=form)
 
 
-@views.route('/constr')
+@views.route('/constr', methods=["GET", "POST"])
 def constr():
-    return render_template('views/em_constr.html', title='Página em construção')
+    form_login = LoginForm(request.form)
+    return render_template('views/em_constr.html', title='Página em construção', form=form_login)
 
 
-@views.route('/sobre')
+@views.route('/sobre', methods=["GET", "POST"])
 def sobre():
-    return render_template('views/sobre.html', title='Sobre a Secomp')
+    form_login = LoginForm(request.form)
+    return render_template('views/sobre.html', title='Sobre a Secomp', form=form_login)
 
 
-@views.route('/cronograma')
+@views.route('/cronograma', methods=["GET", "POST"])
 def cronograma():
-    return render_template('views/cronograma.html', title='Cronograma')
+    form_login = LoginForm(request.form)
+    return render_template('views/cronograma.html', title='Cronograma', form=form_login)
 
 
-@views.route('/equipe')
+@views.route('/equipe', methods=["GET", "POST"])
 def equipe():
     import json
     import os.path as op
     import app.config as conf
-
+    form_login = LoginForm(request.form)
     filename = op.join(op.dirname(conf.__file__), 'membros_org.json')
     with open(filename, 'r') as read_file:
         data = json.load(read_file)
-    return render_template('views/equipe.html', title='Equipe', data=data)
+    return render_template('views/equipe.html', title='Equipe', data=data, form=form_login)
 
 
-@views.route('/faq')
+@views.route('/faq', methods=["GET", "POST"])
 def faq():
-    return render_template('views/faq.html', title='FAQ')
+    form_login = LoginForm(request.form)
+    return render_template('views/faq.html', title='FAQ', form=form_login)
 
 
 @views.route("/login", methods=["GET", "POST"])
