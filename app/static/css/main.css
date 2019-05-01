@@ -1,4 +1,7 @@
 @charset "UTF-8";
+.content {
+  min-height: 85vh;
+}
 header {
   background-image: linear-gradient(to right, #008cb5, #00cfa1); }
   header a {
@@ -36,6 +39,8 @@ header {
 
 footer {
   background-color: #212121; }
+  footer p {
+    font-size: 85%; }
   footer ul li {
     padding: 0.5%; }
     footer ul li a {
