@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField
+from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from app.controllers.forms.options import *
@@ -121,3 +121,77 @@ class VendaKitForm(FlaskForm):
 class ListasParticipantes(FlaskForm):
     atividades = SelectField("Atividades", choices=get_atividades(), id="atividade", coerce=int)
     tipo = SelectField("Modelos", choices=[(0, 'Inscritos'), (1, 'Presentes')], id="tipo", coerce=int)
+
+
+class CadastroInformacoesPessoais(FlaskForm):
+    nome_completo = StringField('Nome Completo', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=80)])
+    email = StringField('Email', validators=[InputRequired(), Email(message=ERRO_EMAIL), Length(min=1, max=254)],
+        id=email)
+    telefone = StringField('Telefone', validators=[InputRequired(), Length(min=1, max=11)], id=telefone)
+    profissao = StringField('Profissão', validators=[InputRequired(), Length(min=1, max=64)], id=profissao)
+    empresa_universidade = StringField('Empresa/Universidade', id='empresa_universidade')
+    biografia = StringField('Breve descrição biográfica, a ser utilizada na divulgação', validators=[InputRequired(),
+        Length(min=1, max=1500)], id='biografia')
+    foto = StringField('Foto', id='foto')
+    tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=escolhas_camiseta, id="tamanho_camiseta")
+    facebook = StringField('Facebook', id='facebook')
+    twitter = StringField('Twitter', id='twitter')
+    linkedin = StringField('Linkedin', id='linkedin')
+    github = StringField('GitHub', id='github')
+
+class CadastroInformacoesMinicurso(FlaskForm):
+    titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
+    area = SelectField('Área(s)', validators=[InputRequired()])
+    descricao = StringField('Breve descrição do minicurso, a ser utilizada na divulgação.', validators=[InputRequired(),
+        Length(min=1,max=1024)])
+    pre_requisitos = StringField('Pré-requisitos recomendados aos participantes', validators=[InputRequired()])
+    planejamento = StringField('Descrição da estrutura do minicurso', validators=[InputRequired()])
+    apresentacao_extra = StringField('Previa da apresentação')
+    material = StringField('Descrição')
+    requisitos_hardware = StringField('Requisitos de Hardware', validators=[InputRequired()])
+    requisitos_software = StringField('Requisitos de Software', validators=[InputRequired()])
+    dicas_instalacao = StringField('Dicas para instalação dos softwares necessários')
+    observacoes = StringField('Observações')
+
+class CadastroInformacoesPalestra(FlaskForm):
+    titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=64)])
+    area = SelectField('Área(s)', validators=[InputRequired()])
+    descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)])
+    requisitos_tecnicos = StringField('Requisitos de Hardware/Software')
+    planejamento = StringField('Planejamento', validators=[InputRequired()])
+    apresentacao_extra = StringField('Apresentação Extra')
+    material = StringField('Descrição')
+    perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired()])
+    observacoes = StringField('Observações')
+
+class CadastroFeiraDePesquisas(FlaskForm):
+    titulo = StringField('Título da Pesquisa', validators=[InputRequired()])
+    area = SelectField('Área(s)', validators=[InputRequired()])
+    descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
+    necessidades = StringField('Necessidades', validators=[InputRequired()])
+    planejamento = StringField('Planejamento', validators=[InputRequired()])
+    observacoes = StringField('Observações')
+
+#TODO fazer validator para campo opcoes_transporte_ida_volta ser obrigatorio caso transporte_ida_volta seja verdadeiro
+#TODO fazer validator para campo opcoes_transporte_sanca ser obrigatorio caso transporte_sanca seja verdadeiro
+#TODO fazer validator para campo necessidades_hospedagem ser obrigatorio caso hospedagem seja verdadeiro
+class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
+    cidade_origem = StringField('Cidade de Origem', validators=[InputRequired(), Length(min=1,max=64)])
+    data_chegada_sanca = DateField('Data de Chegada em São Carlos', format='%d/%m/%Y', id='data_chegada_sanca',
+        validators=[InputRequired()])
+    data_partida_sanca = DateField('Data de Partida de São Carlos', format='%d/%m/%Y', id='data_partida_sanca',
+        validators=[InputRequired()])
+    transporte_ida_volta = BooleanField('Requer que a SECOMP UFSCar pague por seu transporte de ida e volta',
+        id='transporte_ida_volta', validators=[InputRequired()])
+    opcoes_transporte_ida_volta = SelectField('De qual modo este ocorrerá?', choices='opcoes_transporte_ida_volta',
+        id='opcoes_transporte_ida_volta')
+    transporte_sanca = BooleanField('Requer que a SECOMP UFSCar se encarregue do seu transporte dentro de São Carlos?',
+        validators=[InputRequired()], id='transporte_sanca')
+    opcoes_transporte_sanca = SelectField('De qual modo este ocorrerá?', choices='opcoes_transporte_sanca',
+        id='opcoes_transporte_sanca')
+    hospedagem = BooleanField('Requer que a SECOMP UFSCar arque com os custos de sua hospedagem?',
+        validators=[InputRequired()], id='hospedagem')
+    necessidades_hospedagem = StringField('Quais são as necessidades básicas a serem atendidas pela estadia?',
+        id='necessidades_hospedagem')
+    observacoes = StringField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem')
