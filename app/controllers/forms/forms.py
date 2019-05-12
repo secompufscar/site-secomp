@@ -127,14 +127,14 @@ class CadastroInformacoesPessoais(FlaskForm):
     nome_completo = StringField('Nome Completo', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=80)])
     email = StringField('Email', validators=[InputRequired(), Email(message=ERRO_EMAIL), Length(min=1, max=254)],
-        id=email)
-    telefone = StringField('Telefone', validators=[InputRequired(), Length(min=1, max=11)], id=telefone)
-    profissao = StringField('Profissão', validators=[InputRequired(), Length(min=1, max=64)], id=profissao)
+        id='email')
+    telefone = StringField('Telefone', validators=[InputRequired(), Length(min=1, max=11)], id='telefone')
+    profissao = StringField('Profissão', validators=[InputRequired(), Length(min=1, max=64)], id='profissao')
     empresa_universidade = StringField('Empresa/Universidade', id='empresa_universidade')
     biografia = StringField('Breve descrição biográfica, a ser utilizada na divulgação', validators=[InputRequired(),
         Length(min=1, max=1500)], id='biografia')
     foto = StringField('Foto', id='foto')
-    tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=escolhas_camiseta, id="tamanho_camiseta")
+    tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=get_opcoes_camisetas(), id='tamanho_camiseta')
     facebook = StringField('Facebook', id='facebook')
     twitter = StringField('Twitter', id='twitter')
     linkedin = StringField('Linkedin', id='linkedin')
@@ -143,7 +143,7 @@ class CadastroInformacoesPessoais(FlaskForm):
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
     area = SelectField('Área(s)', validators=[InputRequired()])
-    descricao = StringField('Breve descrição do minicurso, a ser utilizada na divulgação.', validators=[InputRequired(),
+    descricao = StringField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)])
     pre_requisitos = StringField('Pré-requisitos recomendados aos participantes', validators=[InputRequired()])
     planejamento = StringField('Descrição da estrutura do minicurso', validators=[InputRequired()])
