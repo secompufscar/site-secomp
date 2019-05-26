@@ -23,7 +23,7 @@ def cadastro():
     Renderiza a página de cadastro do projeto
     """
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-
+    form_login = LoginForm(request.form)
     form = CadastroForm(request.form)
     email = form.email.data
     salt = gensalt().decode('utf-8')
@@ -44,25 +44,25 @@ def cadastro():
         enviar_email_confirmacao(usuario, token)
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
-
-    return render_template('users/cadastro.html', form=form)
+    return render_template('users/cadastro.html', form=form, form_login=form_login)
 
 
 @users.route('/verificar-email')
-@login_required
 def verificar_email():
+    form_login = LoginForm(request.form)
     if email_confirmado():
         msg = 'Seu email foi verificado com sucesso!'
         status = True
     else:
         msg = 'Confirme o email de verificação que foi enviado ao endereço de email fornecido'
         status = False
-    return render_template('users/confirma_email.html', resultado=msg, status=status)
+    return render_template('users/confirma_email.html', resultado=msg, status=status, form_login=form_login)
 
 
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
+    form_login = LoginForm(request.form)
     id_evento = db.session.query(Evento).filter_by(
         edicao=EDICAO_ATUAL).first().id
     if email_confirmado():
@@ -83,7 +83,7 @@ def cadastro_participante():
                 db.session.commit()
                 return redirect(url_for('.dashboard'))
             else:
-                return render_template('users/cadastro_participante.html', form=form)
+                return render_template('users/cadastro_participante.html', form=form, form_login=form_login)
         else:
             return redirect(url_for('.dashboard'))
     else:
@@ -93,13 +93,14 @@ def cadastro_participante():
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
+    form_login = LoginForm(request.form)
     usuario = db.session.query(Usuario).filter_by(
         id=current_user.id).first()
     if email_confirmado():
         participante = db.session.query(Participante).filter_by(
             usuario=current_user).first()
         return render_template('users/dashboard_usuario.html', title='Dashboard', usuario=usuario,
-                               participante=participante)
+                               participante=participante, form_login=form_login)
     else:
         serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         salt = gensalt().decode('utf-8')
@@ -121,6 +122,7 @@ def envio_comprovante():
     """
     Página de envio de comprovantes de pagamento
     """
+    form_login = LoginForm(request.form)
     form = ComprovanteForm()
     if form.validate_on_submit():
         comprovante = form.comprovante.data
@@ -132,7 +134,7 @@ def envio_comprovante():
         comprovante.save(path.join(upload_path, filename))
         flash('Comprovante enviado com sucesso!')
         return redirect(url_for('.dashboard'))
-    return render_template('users/enviar_comprovante.html', form=form)
+    return render_template('users/enviar_comprovante.html', form=form, form_login=form_login)
 
 
 @users.route('/verificacao/<token>')
@@ -143,6 +145,7 @@ def verificacao(token):
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     try:
         # Acha o usuário que possui o token
+
         user = db.session.query(Usuario).filter_by(token_email=token).first()
         salt = user.salt
         # Gera um email a partir do token do link e do salt do db
@@ -152,18 +155,20 @@ def verificacao(token):
         user.email_verificado = True
         db.session.add(user)
         db.session.commit()
+        login_user(user, remember=True)
     # Tempo definido no max_age
     except SignatureExpired:
-        return render_template('users/cadastro.html', resultado='O link de ativação expirou.')
+        return redirect(url_for('.cadastro'))
     except Exception as e:
         print(e)
-        return render_template('users/cadastro.html', resultado='Falha na ativação.')
+        return redirect(url_for('.cadastro'))
     return redirect(url_for('.verificar_email'))
 
 
 @users.route('/inscricao-atividades')
 @login_required
 def inscricao_atividades():
+    form_login = LoginForm(request.form)
     minicursos = db.session.query(Atividade).filter_by(
         tipo=TipoAtividade['minicurso'])
     workshops = db.session.query(Atividade).filter_by(
@@ -172,12 +177,13 @@ def inscricao_atividades():
         tipo=TipoAtividade['palestra'])
     return render_template('users/inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
-                               usuario=current_user).first(), usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
+                               usuario=current_user).first(), usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
 
 
 @users.route('/inscricao-atividades/<filtro>')
 @login_required
 def inscricao_atividades_com_filtro(filtro):
+    form_login = LoginForm(request.form)
     minicursos = db.session.query(Atividade).filter(
         Atividade.tipo.like(TipoAtividade['minicurso']), Atividade.titulo.like("%" + filtro + "%"))
     workshops = db.session.query(Atividade).filter(
@@ -188,12 +194,13 @@ def inscricao_atividades_com_filtro(filtro):
     return render_template('users/inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
                                usuario=current_user).first(),
-                           usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
+                           usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
 
 
 @users.route('/inscrever-atividade/<id>')
 @login_required
 def inscrever(id):
+    form_login = LoginForm(request.form)
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if atv.vagas_disponiveis > 0:
         atv.participantes.append(db.session.query(
@@ -212,7 +219,7 @@ def inscrever(id):
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),
                                usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras,
-                               acao="+")
+                               acao="+", form_login=form_login)
     else:
         return "Não há vagas disponíveis!"
 
@@ -220,6 +227,7 @@ def inscrever(id):
 @users.route('/desinscrever-atividade/<id>')
 @login_required
 def desinscrever(id):
+    form_login = LoginForm(request.form)
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
         atv.participantes.remove(db.session.query(
@@ -237,7 +245,7 @@ def desinscrever(id):
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),
                                usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras,
-                               acao="-")
+                               acao="-", form_login=form_login)
     else:
         return "Não está inscrito nessa atividade!"
 
@@ -245,6 +253,7 @@ def desinscrever(id):
 @users.route('/alterar-senha', methods=["POST", "GET"])
 @login_required
 def alterar_senha():
+    form_login = LoginForm(request.form)
     form = AlterarSenhaForm(request.form)
     if email_confirmado():
         if form.validate_on_submit():
@@ -257,7 +266,7 @@ def alterar_senha():
             db.session.commit()
             return redirect(url_for('.login'))
         else:
-            return render_template('users/alterar_senha.html', form=form, action=request.base_url)
+            return render_template('users/alterar_senha.html', form=form, action=request.base_url, form_login=form_login)
     else:
         flash('Confirme seu e-mail para alterar a senha!')
         return redirect(url_for('.dashboard'))
@@ -266,6 +275,7 @@ def alterar_senha():
 @users.route('/esqueci-senha', methods=["POST", "GET"])
 def esqueci_senha():
     form = AlterarSenhaPorEmailForm(request.form)
+    form_login = LoginForm(request.form)
     if form.validate_on_submit():
         usuario = db.session.query(Usuario).filter_by(
             email=form.email.data).first()
@@ -277,14 +287,15 @@ def esqueci_senha():
             db.session.add(usuario)
             db.session.commit()
             enviar_email_senha(usuario, token)
-            return render_template("users/esqueci_senha.html", status_envio_email=True, form=form)
+            return render_template("users/esqueci_senha.html", status_envio_email=True, form=form, form_login=form_login)
         flash('Este e-mail não está cadastrado no site.')
-    return render_template("users/esqueci_senha.html", status_envio_email=False, form=form)
+    return render_template("users/esqueci_senha.html", status_envio_email=False, form=form, form_login=form_login)
 
 
 @users.route('/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
 def confirmar_alteracao_senha(token):
     form = AlterarSenhaForm(request.form)
+    form_login = LoginForm(request.form)
     if form.validate_on_submit():
         try:
             # Acha o usuário que possui o token
@@ -302,4 +313,4 @@ def confirmar_alteracao_senha(token):
             print(e)
             flash("Falha na confirmação de link do email.")
         return redirect(url_for('.login'))
-    return render_template("users/alterar_senha.html", form=form, action=request.base_url)
+    return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login)
