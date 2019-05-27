@@ -100,3 +100,9 @@ def logout():
 @views.route("/senhas", methods=["GET"])
 def senhas():
     return render_template('views/requisito_50.html')
+
+@views.route("/patrocinadores", methods=["GET"])
+def patrocinadores():
+    patrocinadores = db.session.query(Patrocinador)
+    return render_template('views/patrocinadores.html', patrocinadores=patrocinadores)
+
