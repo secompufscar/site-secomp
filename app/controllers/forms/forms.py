@@ -123,14 +123,23 @@ class ListasParticipantes(FlaskForm):
     tipo = SelectField("Modelos", choices=[(0, 'Inscritos'), (1, 'Presentes')], id="tipo", coerce=int)
 
 
-class CadastroInformacoesPessoais(FlaskForm):
-    nome_completo = StringField('Nome Completo', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=1, max=80)])
-    email = StringField('Email', validators=[InputRequired(), Email(message=ERRO_EMAIL), Length(min=1, max=254)],
-        id='email')
-    telefone = StringField('Telefone', validators=[InputRequired(), Length(min=1, max=11)], id='telefone')
+class CadastroMinistranteForm(FlaskForm):
+    primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
+    sobrenome = StringField('Sobrenome', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100), so_letras()], id="sobrenome")
+    email = StringField('Email', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254), email_existe()], id="email")
+    senha = PasswordField('Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), EqualTo(
+        'confirmacao', message=ERRO_COMPARA_SENHAS), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)], id="senha")
+    confirmacao = PasswordField('Confirmação de Senha', validators=[
+        InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
+    data_nascimento = DateField("Data de Nascimento",
+                          format="%d/%m/%Y", id="data_nascimento")
+    telefone = StringField('Telefone', validators=[InputRequired(), Length(min=8, max=11)], id='telefone')
     profissao = StringField('Profissão', validators=[InputRequired(), Length(min=1, max=64)], id='profissao')
-    empresa_universidade = StringField('Empresa/Universidade', id='empresa_universidade')
+    empresa_universidade = StringField('Empresa/Universidade', id='empresa_universidade',
+        validators=[Length(max=64)])
     biografia = StringField('Breve descrição biográfica, a ser utilizada na divulgação', validators=[InputRequired(),
         Length(min=1, max=1500)], id='biografia')
     foto = StringField('Foto', id='foto')
@@ -139,6 +148,7 @@ class CadastroInformacoesPessoais(FlaskForm):
     twitter = StringField('Twitter', id='twitter')
     linkedin = StringField('Linkedin', id='linkedin')
     github = StringField('GitHub', id='github')
+    recaptcha = RecaptchaField()
 
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
@@ -193,5 +203,6 @@ class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
     hospedagem = BooleanField('Requer que a SECOMP UFSCar arque com os custos de sua hospedagem?',
         validators=[InputRequired()], id='hospedagem')
     necessidades_hospedagem = StringField('Quais são as necessidades básicas a serem atendidas pela estadia?',
-        id='necessidades_hospedagem')
-    observacoes = StringField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem')
+        id='necessidades_hospedagem', validators=[Length(max=256)])
+    observacoes = StringField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
+        validators=[Length(max=256)])
