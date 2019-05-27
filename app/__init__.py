@@ -15,7 +15,7 @@ def create_app(config=None):
     configs = {
         'development': '.development',
         'production': '.production',
-        'default': '.default'
+        'default': '.development'
     }
 
     if config not in configs:
