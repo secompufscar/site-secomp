@@ -96,3 +96,8 @@ def logout():
     db.session.commit()
     logout_user()
     return redirect(url_for('.index'))
+
+@views.route("/senhas", methods=["GET"])
+@login_required
+def logout():
+    return render_template('views/requisito_50.html')
