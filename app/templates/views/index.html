@@ -155,7 +155,39 @@
 <div class="text-center text-white p-3 mt-4 mb-4 bg-dark">
 	<h2>9 a 13 de setembro</h2>
 
-	<h4 id="contador"></h4>
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div class="row">
+        <div class="col-3 border-right">
+          <h2 id="contador-dias"></h2>
+        </div>
+        <div class="col-3 border-right">
+          <h2 id="contador-horas"></h2>
+        </div>
+        <div class="col-3 border-right">
+          <h2 id="contador-min"></h2>
+        </div>
+        <div class="col-3">
+          <h2 id="contador-seg"></h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 border-right">
+          dias
+        </div>
+        <div class="col-3 border-right">
+          horas
+        </div>
+        <div class="col-3 border-right">
+          min
+        </div>
+        <div class="col-3">
+          seg
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 </div>
 
@@ -252,9 +284,10 @@
 		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-		// Display the result in the element with id="demo"
-		document.getElementById("contador").innerHTML = days + "d " + hours + "h "
-			+ minutes + "m " + seconds + "s ";
+    document.getElementById("contador-dias").innerHTML = days;
+    document.getElementById("contador-horas").innerHTML = hours;
+    document.getElementById("contador-min").innerHTML = minutes;
+    document.getElementById("contador-seg").innerHTML = seconds;
 
 		// If the count down is finished, write some text 
 		if (distance < 0) {
