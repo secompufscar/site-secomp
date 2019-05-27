@@ -105,28 +105,44 @@ class Participante(db.Model):
 class Ministrante(db.Model):
     __tablename__ = 'ministrante'
     id = Column(Integer, primary_key=True)
-    pagar_gastos = Column(Boolean, nullable=False)
-    data_chegada_sanca = Column(Date, nullable=False)
-    data_saida_sanca = Column(Date, nullable=False)
-    precisa_acomodacao = Column(Boolean, nullable=False)
-    observacoes = Column(String(512))
-    nome = Column(String(64), nullable=False)
-    email = Column(String(64), nullable=False)
-    telefone = Column(String(64), nullable=False)
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'))
+    telefone = Column(String(11), nullable=False)
     profissao = Column(String(64), nullable=False)
-    empresa_univ = Column(String(64), nullable=False)
-    biografia = Column(String(1024), nullable=False)
-    foto = Column(String(128), nullable=False)
-    tamanho_cam = Column(String(8), nullable=False)
+    empresa_universidade = Column(String(64))
+    biografia = Column(String(1500), nullable=False)
+    foto = Column(String(128))
+    tamanho_camiseta = Column(Integer)
     facebook = Column(String(64))
     twitter = Column(String(64))
     linkedin = Column(String(64))
     github = Column(String(64))
     atividades = db.relationship('Atividade', secondary=relacao_atividade_ministrante, lazy=True,
-                                 back_populates='ministrantes')
+                                back_populates='ministrantes')
 
     def __repr__(self):
         return self.usuario.nome
+
+class DadosHospedagemTransporte(db.Model):
+    __tablename__ = 'dados_hospedagem_transporte'
+    id = Column(Integer, primary_key=True)
+    id_ministrante = Column(Integer, db.ForeignKey('ministrante.id'))
+    id_evento = Column(Integer, db.ForeignKey('evento.id'))
+    cidade_origem = Column(String(64), nullable=False)
+    data_chegada_origem = Column(Date, nullable=False)
+    data_chegada_partida = Column(Date, nullable=False)
+    transporte_ida_volta = Column(Boolean, nullable=False)
+    opcoes_transporte_ida_volta = Column(Integer)
+    transporte_sanca = Column(Boolean, nullable=False)
+    opcoes_transporte_sanca = Column(Integer)
+    hospedagem = Column(Boolean, nullable=False)
+    necessidades_hospedagem = Column(String(256))
+    observacoes = Column(String(256))
+
+
+class TipoArea(db.Model):
+    __tablename__ = 'area'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(24), nullable=False)
 
 
 class Atividade(db.Model):
@@ -146,6 +162,7 @@ class Atividade(db.Model):
     descricao = Column(String(1024), nullable=False)
     recursos_necessarios = Column(String(512), nullable=False)
     observacoes = Column(String(512), nullable=False)
+    area =
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
                                    back_populates='atividades')
     participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
@@ -154,6 +171,11 @@ class Atividade(db.Model):
 
     def __repr__(self):
         return self.titulo
+
+
+class Minicurso(db.Model):
+    __tablename__ = 'minicurso'
+    id = Column(Integer, primary_key=True)
 
 
 class Evento(db.Model):
