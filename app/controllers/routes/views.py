@@ -98,6 +98,5 @@ def logout():
     return redirect(url_for('.index'))
 
 @views.route("/senhas", methods=["GET"])
-@login_required
-def logout():
+def senhas():
     return render_template('views/requisito_50.html')

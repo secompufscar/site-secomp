@@ -15,14 +15,14 @@ def create_app(config=None):
     configs = {
         'development': '.development',
         'production': '.production',
-        'default': '.development'
+        'default': '.default'
     }
 
     if config not in configs:
         config = getenv("FLASK_CONFIGURATION", "default")
-        
+
     config = 'app.config' + configs[config]
-    
+
     app = Flask(__name__)
     app.config.from_object(config)
 
