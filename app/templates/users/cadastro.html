@@ -20,6 +20,7 @@
 
     <div class="col-md-8">
       <form method="POST" action="{{url_for('users.cadastro')}}">
+        {{ form.hidden_tag() }}
         {{ wtf.form_field(form.primeiro_nome) }}
         {{ wtf.form_field(form.sobrenome) }}
         {{ wtf.form_field(form.email) }}
