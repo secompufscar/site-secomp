@@ -57,6 +57,7 @@ class Usuario(db.Model):
     permissoes_usuario = db.relationship('Permissao', secondary=relacao_permissao_usuario, lazy=True,
                                          back_populates='usuarios')
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
+    ministrante =  db.relationship('Ministrante', back_populates='usuario', lazy=True)
 
     @classmethod
     def is_active(cls):
@@ -321,4 +322,3 @@ class Permissao(db.Model):
 
     def __repr__(self):
         return self.nome
-

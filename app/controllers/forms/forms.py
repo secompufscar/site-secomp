@@ -195,14 +195,14 @@ class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
     transporte_ida_volta = BooleanField('Requer que a SECOMP UFSCar pague por seu transporte de ida e volta',
         id='transporte_ida_volta', validators=[InputRequired()])
     opcoes_transporte_ida_volta = SelectField('De qual modo este ocorrerá?', choices='opcoes_transporte_ida_volta',
-        id='opcoes_transporte_ida_volta')
+        id='opcoes_transporte_ida_volta', validators=[transporte_ida_volta_selecionado()])
     transporte_sanca = BooleanField('Requer que a SECOMP UFSCar se encarregue do seu transporte dentro de São Carlos?',
         validators=[InputRequired()], id='transporte_sanca')
     opcoes_transporte_sanca = SelectField('De qual modo este ocorrerá?', choices='opcoes_transporte_sanca',
-        id='opcoes_transporte_sanca')
+        id='opcoes_transporte_sanca', validators=[transporte_sanca_selecionado()])
     hospedagem = BooleanField('Requer que a SECOMP UFSCar arque com os custos de sua hospedagem?',
         validators=[InputRequired()], id='hospedagem')
     necessidades_hospedagem = StringField('Quais são as necessidades básicas a serem atendidas pela estadia?',
-        id='necessidades_hospedagem', validators=[Length(max=256)])
+        id='necessidades_hospedagem', validators=[Length(max=256), hospedagem_selecionada()])
     observacoes = StringField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)])
