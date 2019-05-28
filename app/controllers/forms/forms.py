@@ -155,12 +155,13 @@ class CadastroInformacoesMinicurso(FlaskForm):
     area = SelectField('Área(s)', validators=[InputRequired()])
     descricao = StringField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)])
-    pre_requisitos = StringField('Pré-requisitos recomendados aos participantes', validators=[InputRequired()])
+    pre_requisitos = StringField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
+        Length(max=128)])
     planejamento = StringField('Descrição da estrutura do minicurso', validators=[InputRequired()])
-    apresentacao_extra = StringField('Previa da apresentação')
-    material = StringField('Descrição')
-    requisitos_hardware = StringField('Requisitos de Hardware', validators=[InputRequired()])
-    requisitos_software = StringField('Requisitos de Software', validators=[InputRequired()])
+    apresentacao_extra = StringField('Previa da apresentação', validators=[Length(max=128)])
+    material = StringField('Material', validators=[Length(max=128)])
+    requisitos_hardware = StringField('Requisitos de Hardware', validators=[InputRequired(), Length(max=128)])
+    requisitos_software = StringField('Requisitos de Software', validators=[InputRequired(), Length(max=128)])
     dicas_instalacao = StringField('Dicas para instalação dos softwares necessários')
     observacoes = StringField('Observações')
 
