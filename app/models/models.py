@@ -46,9 +46,9 @@ class Usuario(db.Model):
     senha = Column(String(256), nullable=False)
     primeiro_nome = Column(String(64), nullable=False)
     sobrenome = Column(String(64), nullable=False)
-    id_curso = Column(Integer, db.ForeignKey('curso.id'), nullable=True)
-    id_cidade = Column(Integer, db.ForeignKey('cidade.id'), nullable=True)
-    id_instituicao = Column(Integer, db.ForeignKey('instituicao.id'), nullable=True)
+    id_curso = Column(Integer, db.ForeignKey('curso.id'), nullable=False)
+    id_cidade = Column(Integer, db.ForeignKey('cidade.id'), nullable=False)
+    id_instituicao = Column(Integer, db.ForeignKey('instituicao.id'), nullable=False)
     token_email = Column(String(90), nullable=False)
     data_nascimento = Column(Date, nullable=False)
     admin = Column(Boolean, default=False)
@@ -63,7 +63,6 @@ class Usuario(db.Model):
     permissoes_usuario = db.relationship('Permissao', secondary=relacao_permissao_usuario, lazy=True,
                                          back_populates='usuarios')
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
-    ministrante =  db.relationship('Ministrante', back_populates='usuario', lazy=True)
 
     @classmethod
     def is_active(cls):
@@ -83,10 +82,7 @@ class Usuario(db.Model):
         return self.admin
 
     def getPermissoes(self):
-        permissoes = []
-        for permissao in self.permissoes_usuario:
-            permissoes.append(permissao.nome)
-        return permissoes
+        return self.permissoes_usuario
 
     def __repr__(self):
         return self.primeiro_nome + " " + self.sobrenome + " <" + self.email + ">"
@@ -128,7 +124,6 @@ class Ministrante(db.Model):
     github = Column(String(64))
     atividades = db.relationship('Atividade', secondary=relacao_atividade_ministrante, lazy=True,
                                 back_populates='ministrantes')
-    usuario =  db.relationship('Usuario', back_populates='ministrante', lazy=True)
 
     def __repr__(self):
         return self.usuario.nome
@@ -170,6 +165,8 @@ class Atividade(db.Model):
     titulo = Column(String(64), nullable=False)
     descricao = Column(String(1024), nullable=False)
     observacoes = Column(String(512), nullable=False)
+    area = db.relationship('Área(s)', secondary=relacao_atividade_area, lazy=True,
+                                    back_populates='atividades')
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
                                    back_populates='atividades')
     participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
@@ -202,7 +199,6 @@ class Palestra(db.Model):
     observacoes = Column(String(1024))
 
 class FeiraDePesquisas(db.Model):
-    id = Column(Integer, primary_key=True)
     necessidades = Column(String(1024))
     planejamento = Column(String(1024))
 
@@ -350,11 +346,3 @@ class Permissao(db.Model):
     def __repr__(self):
         return self.nome
 
-class URLConteudo(db.Model):
-    __tablename__ = 'urlconteudo'
-    id = Column(Integer, primary_key=True)
-    descricao = Column(String(100), nullable=False)
-    codigo = Column(String(200), nullable=False)
-    ultimo_gerado = Column(Boolean, default=False, nullable=False)
-    valido = Column(Boolean, default=True, nullable=False)
-    numero_cadastros = Column(Integer, default=1)
