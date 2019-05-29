@@ -77,3 +77,9 @@ def hospedagem_selecionada():
         if form.hospedagem.data is not True and field.data is not '':
             raise ValidationError("Selecione a opção de hospedagem")
     return _hospedagem_selecionada
+
+def tem_valor():
+    def _tem_valor(form, field):
+        if field.data is '' and field.data is not '1':
+            raise ValidationError("Preencha com algum valor")
+    return _tem_valor

@@ -93,3 +93,21 @@ def get_dicionario_info_evento(edicao):
     except Exception as e:
         print(e)
         return None
+
+def get_dicionario_urls_cadastro_ministrante(base_url):
+    urls = db.session.query(URLConteudo).filter_by().order_by(URLConteudo.id.desc()).all()
+    dict_urls = []
+    for url in urls:
+        if url.valido == True:
+            valido = "Sim"
+        else:
+            valido = "Não"
+        dict = {
+            'descricao': url.descricao,
+            'url' : base_url + url.codigo,
+            'numero_cadastros': url.numero_cadastros,
+            'valido': valido,
+            'ultimo': url.ultimo_gerado
+        }
+        dict_urls.append(dict)
+    return dict_urls
