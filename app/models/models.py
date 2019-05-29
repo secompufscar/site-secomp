@@ -202,6 +202,7 @@ class Palestra(db.Model):
     observacoes = Column(String(1024))
 
 class FeiraDePesquisas(db.Model):
+    id = Column(Integer, primary_key=True)
     necessidades = Column(String(1024))
     planejamento = Column(String(1024))
 
