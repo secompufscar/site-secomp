@@ -12,15 +12,20 @@ TipoAtividade = {
     'palestra': 2
 }
 
-relacao_atividade_participante = db.Table('relacao_atividade_participante',
-                                          Column('id', Integer, primary_key=True),
-                                          Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
-                                          Column('id_participante', Integer, db.ForeignKey('participante.id')))
+relacao_atividade_area = db.Table('relacao_atividade_area',
+                                    Column('id', Integer, primary_key=True),
+                                    Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+                                    Column('id_area', Integer, db.ForeignKey('area.id')))
 
 relacao_atividade_ministrante = db.Table('relacao_atividade_ministrante',
                                          Column('id', Integer, primary_key=True),
                                          Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
                                          Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
+
+relacao_atividade_participante = db.Table('relacao_atividade_participante',
+                                          Column('id', Integer, primary_key=True),
+                                          Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+                                          Column('id_participante', Integer, db.ForeignKey('participante.id')))
 
 relacao_patrocinador_evento = db.Table('relacao_patrocinador_evento',
                                        Column('id', Integer, primary_key=True),
@@ -31,6 +36,7 @@ relacao_permissao_usuario = db.Table('relacao_permissao_usuario',
                                      Column('id', Integer, primary_key=True),
                                      Column('id_usuario', Integer, db.ForeignKey('usuario.id')),
                                      Column('id_permissao', Integer, db.ForeignKey('permissao.id')))
+
 
 
 class Usuario(db.Model):
@@ -144,7 +150,7 @@ class DadosHospedagemTransporte(db.Model):
     observacoes = Column(String(256))
 
 
-class TipoArea(db.Model):
+class AreaAtividade(db.Model):
     __tablename__ = 'area'
     id = Column(Integer, primary_key=True)
     nome = Column(String(24), nullable=False)
@@ -157,15 +163,12 @@ class Atividade(db.Model):
     id_evento = Column(Integer, db.ForeignKey('evento.id'))
     vagas_totais = Column(Integer, nullable=False)
     vagas_disponiveis = Column(Integer, nullable=False)
-    pre_requisitos = Column(String(512), nullable=False)
-    pre_requisitos_recomendados = Column(String(512), nullable=False)
     ativo = Column(Boolean, nullable=False, default=True)
     tipo = Column(Integer, nullable=False)
     data_hora = Column(DateTime, nullable=False)
     local = Column(String(64), nullable=False)
     titulo = Column(String(64), nullable=False)
     descricao = Column(String(1024), nullable=False)
-    recursos_necessarios = Column(String(512), nullable=False)
     observacoes = Column(String(512), nullable=False)
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
                                    back_populates='atividades')
@@ -180,7 +183,27 @@ class Atividade(db.Model):
 class Minicurso(db.Model):
     __tablename__ = 'minicurso'
     id = Column(Integer, primary_key=True)
+    pre_requisitos = Column(String(128))
+    planejamento = Column(String(128))
+    apresentacao_extra = Column(String(128))
+    material = Column(String(128))
+    requisitos_hardware = Column(String(1024))
+    requisitos_software = Column(String(1024))
+    dicas_instalacao = Column(String(1024))
+    observacoes = Column(String(1024))
 
+class Palestra(db.Model):
+    __tablename__ = 'palestra'
+    id = Column(Integer, primary_key=True)
+    planejamento = Column(String(128))
+    apresentacao_extra = Column(String(128))
+    material = Column(String(128))
+    requisitos_tecnicos = Column(String(1024))
+    observacoes = Column(String(1024))
+
+class FeiraDePesquisas(db.Model):
+    necessidades = Column(String(1024))
+    planejamento = Column(String(1024))
 
 class Evento(db.Model):
     __tablename__ = 'evento'
