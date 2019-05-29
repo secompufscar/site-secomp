@@ -152,7 +152,7 @@ class CadastroMinistranteForm(FlaskForm):
 
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectField('Área(s)', validators=[InputRequired()])
+    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
     descricao = StringField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)])
     pre_requisitos = StringField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
@@ -167,7 +167,7 @@ class CadastroInformacoesMinicurso(FlaskForm):
 
 class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectField('Área(s)', validators=[InputRequired()])
+    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
     descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)])
     requisitos_tecnicos = StringField('Requisitos de Hardware/Software')
     planejamento = StringField('Planejamento', validators=[InputRequired()])
@@ -178,7 +178,7 @@ class CadastroInformacoesPalestra(FlaskForm):
 
 class CadastroFeiraDePesquisas(FlaskForm):
     titulo = StringField('Título da Pesquisa', validators=[InputRequired()])
-    area = SelectField('Área(s)', validators=[InputRequired()])
+    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
     descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     necessidades = StringField('Necessidades', validators=[InputRequired()])
     planejamento = StringField('Planejamento', validators=[InputRequired()])
