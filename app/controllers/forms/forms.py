@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from app.controllers.forms.options import *
@@ -143,7 +143,7 @@ class CadastroMinistranteForm(FlaskForm):
     biografia = StringField('Breve descrição biográfica, a ser utilizada na divulgação', validators=[InputRequired(),
         Length(min=1, max=1500)], id='biografia')
     foto = StringField('Foto', id='foto')
-    tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=get_opcoes_camisetas(), id='tamanho_camiseta')
+    tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=get_opcoes_camisetas(), id='tamanho_camiseta', coerce=int)
     facebook = StringField('Facebook', id='facebook')
     twitter = StringField('Twitter', id='twitter')
     linkedin = StringField('Linkedin', id='linkedin')
@@ -206,3 +206,8 @@ class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
         id='necessidades_hospedagem', validators=[Length(max=256), hospedagem_selecionada()])
     observacoes = StringField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)])
+
+class GerarURLCadastroForm(FlaskForm):
+    descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1,max=100)])
+    numero_cadastros = IntegerField('Numero de cadastros', validators=[InputRequired()])
+    gerar = HiddenField("", id='gerar',validators=[tem_valor()], default="1")
