@@ -93,3 +93,22 @@ def get_dicionario_info_evento(edicao):
     except Exception as e:
         print(e)
         return None
+
+def get_patrocinadores():
+    try:
+        patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True)
+        pat_json = []
+        anoAtual = 2019
+        for p in patrocinadores:
+            #TODO: Verificar o ano do patrocinador
+            info = {
+                "nome": p.nome_empresa,
+                "logo": "/img/"+p.logo,
+                "cota": p.cota.nome,
+                "ordem_site": p.ordem_site,
+                "link": p.link_website
+            }
+            pat_json.append({p.id:info})
+        return pat_json
+    except Exception as e:
+        return "Erro"
