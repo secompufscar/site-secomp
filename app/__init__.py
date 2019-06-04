@@ -69,11 +69,12 @@ def create_app(config=None):
 
     mail.init_app(app)
 
-    from app.controllers.routes import admin, management, users, views
+    from app.controllers.routes import admin, management, users, views, api
 
     app.register_blueprint(management.management)
     app.register_blueprint(users.users)
     app.register_blueprint(views.views)
+    app.register_blueprint(api.api)
 
     upload_path = path.join(path.dirname(__file__), 'static')
     adm = admin.init_app(app, upload_path)

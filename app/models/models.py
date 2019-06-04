@@ -235,7 +235,6 @@ class Patrocinador(db.Model):
     ultima_atualizacao_em = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
                               back_populates='patrocinadores')
-
     def __repr__(self):
         return self.nome_empresa
 
