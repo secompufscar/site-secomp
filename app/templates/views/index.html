@@ -1,19 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container-fluid px-0 d-none d-lg-block">
-	<div class="carousel-inner">
-		<div class="carousel-item active">
-			<div class="d-flex align-items-center justify-content-center min-vh-100">
-				<img class="w-100 img-fluid " src="{{url_for('static', filename='images/fundoctf.gif')}}">
-				<div class="carousel-caption d-none d-md-block mb-4">
-					<img width="300" height="300" class="img-fluid"
-						src="{{url_for('static', filename='images/logo-colorida.png')}}">
-					<h1 style="font-weight: 600; font-size: 70px;" class="display-4 mt-4">Bem vindo a X SECOMP!</h1>
-					<h2 style="font-weight: 600;font-size: 40px; ">Semana da Computação da UFSCar</h2>
-				</div>
-			</div>
-		</div>
+<div class="overlay">
+	<img class="opac img-responsive" src="{{url_for('static', filename='images/fundoctf.gif')}}">
+	<div class="text-center overlay-text">
+		<img class="w-50" src="{{url_for('static', filename='images/logo-colorida.png')}}">
+		<h1 class="mt-4">Bem vindo a X SECOMP!</h1>
+		<h2>Semana da Computação da UFSCar</h2>
 	</div>
 </div>
 
@@ -22,11 +15,10 @@
 		<div class="col-md-7">
 			<div id="video" class="embed-responsive embed-responsive-21by9 ">
 				<video width="100%" height="100%" controls>
-
-					<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}" type="video/mp4" />
+					<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}"
+						type="video/mp4" />
 				</video>
 				<h4> Teaser - IX SECOMP</h4>
-
 			</div>
 		</div>
 
@@ -35,17 +27,24 @@
 
 			<h2 class="text-center pb-3"> Um pouco sobre a SECOMP</h2>
 			<p class="text-justify">
-				A Semana Acadêmica da Computação da Universidade Federal de São Carlos surgiu da necessidade de se trazer
+				A Semana Acadêmica da Computação da Universidade Federal de São Carlos surgiu da necessidade de se
+				trazer
 				assuntos que fossem de interesse tanto da comunidade acadêmica quanto de entusiastas.
 
-				Desde a sua primeira edição, a SECOMP trabalha para que os assuntos sejam os mais atuais possíveis e que sejam
-				transmitidos da maneira mais dinâmica tentando aproximar o participante de áreas que vão da academia até o
-				mercado de trabalho através de minicursos, workshops, palestras técnicas, empresariais, mesas redondas, feira de
-				recrutamento e muitos outros conteúdos que foram pensados ao longo do tempo em busca de um evento cada vez
+				Desde a sua primeira edição, a SECOMP trabalha para que os assuntos sejam os mais atuais possíveis e que
+				sejam
+				transmitidos da maneira mais dinâmica tentando aproximar o participante de áreas que vão da academia até
+				o
+				mercado de trabalho através de minicursos, workshops, palestras técnicas, empresariais, mesas redondas,
+				feira de
+				recrutamento e muitos outros conteúdos que foram pensados ao longo do tempo em busca de um evento cada
+				vez
 				melhor.
 
-				Em prol disso, os estudos são constantes para que o modelo de evento sempre melhore e se torne referência,
-				trazendo cada vez mais experiências únicas a quem nos acompanha e encurtando as relações para que todos os
+				Em prol disso, os estudos são constantes para que o modelo de evento sempre melhore e se torne
+				referência,
+				trazendo cada vez mais experiências únicas a quem nos acompanha e encurtando as relações para que todos
+				os
 				segmentos de público sejam beneficiados.
 			</p>
 		</div>
