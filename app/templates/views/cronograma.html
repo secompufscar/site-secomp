@@ -2,7 +2,6 @@
 
 {% block styles %}
 <link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ url_for('static', filename='fa/css/all.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ url_for('static', filename='css/cronograma.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
@@ -10,146 +9,305 @@
 {% block content %}
 
 
-<div class="pad-inicio container">
+<div class="pad-inicio container pb-5">
 
     <div class="row">
         <div class="col-md-12 text-center">
-            <h3>Cronograma</h3>
+            <br>
+            <h2>Cronograma</h2>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-md-1 text-center">
+            <i class="fas fa-2x fa-chevron-left"></i>
+        </div>
+        <div class="col-md-10 text-center">
+            <nav class="navbar nav-crono navbar-light navbar-expand-lg">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <div class="collapse navbar-collapse" id="navbarContent">
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('seg');">
+
+                                        <h5>09.09.2019</h5>
+                                        <h4><span id="nav-seg" class="day selected">Seg</span></h4>
+
+                                    </a>
+                                </th>
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('ter');">
+
+                                        <h5>10.09.2019</h5>
+                                        <h4><span id="nav-ter" class="day">Ter</span></h4>
+
+                                    </a>
+                                </th>
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('qua');">
+
+                                        <h5>11.09.2019</h5>
+                                        <h4><span id="nav-qua" class="day">Qua</span></h4>
+
+                                    </a>
+                                </th>
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('qui');">
+
+                                        <h5>12.09.2019</h5>
+                                        <h4><span id="nav-qui" class="day">Qui</span></h4>
+
+                                    </a>
+                                </th>
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('sex');">
+
+                                        <h5>13.09.2019</h5>
+                                        <h4><span id="nav-sex" class="day">Sex</span></h4>
+
+                                    </a>
+                                </th>
+                            </div>
+                        </tr>
+                        <thead>
+                </table>
+            </nav>
+        </div>
+        <div class="col-md-1 text-center">
+            <i class="fas fa-2x fa-chevron-right"></i>
         </div>
     </div>
 
-    <nav class="navbar navbar-light navbar-expand-lg">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
-                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav mx-auto text-center">
-                    <li class="nav-item px-4">
-                        <h5>09.09.2019</h5>
-                        <h4><span class="day">Seg</span></h4>
-                    </li>
-                    <li class="nav-item px-4">
-                        <h5>10.09.2019</h5>
-                        <h4><span class="day selected">Ter</span></h4>
-                    </li>
-                    <li class="nav-item px-4">
-                        <h5>11.09.2019</h5>
-                        <h4><span class="day">Qua</span></h4>
-                    </li>
-                    <li class="nav-item px-4">
-                        <h5>12.09.2019</h5>
-                        <h4><span class="day">Qui</span></h4>
-                    </li>
-                    <li class="nav-item px-4">
-                        <h5>13.09.2019</h5>
-                        <h4><span class="day">Sex</span></h4>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
+    <div id="seg">
+        <div class="col-md-12">
+            <div class="card">
 
-    <div class="col-md-12">
-        <div class="card">
-
-            <div class="row no-gutters align-items-center">
-
-                <div class="col-md-2">
-                    <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid" alt="">
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card-body">
-                        <h4 class="card-title">Titulo da palestra que a gente sabe que pode ser muito longo de acordo
-                            com as edições anteriores</h4>
-                        <p class="card-subtitle text-muted">
-                            Ministrante Fulano de Tal
-                            <br>Cargo na Instituição
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card-body">
-                        <p class="card-subtitle text-muted">
-                            Mussum Ipsum, cacilds vidis litro abertis. Sapien in monti palavris qui num significa nadis
-                            i pareci latim. Quem num gosta di mim que vai caçá sua turmis! Atirei o pau no gatis, per
-                            gatis num morreus. Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis! Suco de
-                            cevadiss, é um
-                            leite divinis, qui tem lupuliz, matis, aguis e fermentis. In elementis mé pra quem é
-                            amistosis quis leo.
-                            Cevadis im ampola pa arma uma pindureta. Casamentiss faiz malandris se pirulitá...
-                        </p>
-                    </div>
-                </div>
-
-            </div>
-            <div class="card-footer text-muted">
                 <div class="row no-gutters align-items-center">
-                    <div class="col-md-3">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Anfiteatro Bento Prado Jr.</span>
-                    </div>
-                    <div class="col-md-3">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Segunda-feira, 09/09</span>
-                    </div>
 
-                    <div class="col-md-3">
-                        <i class="fas fa-clock"></i>
-                        <span>08:00 - 10:00</span>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
-                            data-target="#modal1">
-                            Detalhes
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center">
-                    Titulo da palestra que a gente sabe que pode ser muito longo de acordo com as edições anteriores
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row no-gutters">
-                    <div class="col-md-10">
-                        <h5>Ministrante Fulano de Tal</h5>
-                        <p class="text-muted">Cargo naquela instituição muito boa </p>
-                    </div>
                     <div class="col-md-2">
                         <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid"
                             alt="">
                     </div>
-                </div>
 
-                <h5>Descrição</h5>
-                <p>Mussum Ipsum, cacilds vidis litro abertis. Sapien in monti palavris qui num significa nadis i pareci
-                    latim. Quem num gosta di mim que vai caçá sua turmis! Atirei o pau no gatis, per gatis num morreus.
-                    Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis! Suco de cevadiss, é um leite
-                    divinis, qui tem lupuliz, matis, aguis e fermentis. In elementis mé pra quem é amistosis quis leo.
-                    Cevadis im ampola pa arma uma pindureta. Casamentiss faiz malandris se pirulitá.</p>
+                    <div class="col-md-4">
+                        <div class="card-body">
+                            <h4 class="card-title">Titulo da palestra que a gente sabe que pode ser muito longo de
+                                acordo
+                                com as edições anteriores</h4>
+                            <p class="card-subtitle text-muted">
+                                Ministrante Fulano de Tal
+                                <br>Cargo na Instituição
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-subtitle text-muted">
+                                Mussum Ipsum, cacilds vidis litro abertis. Sapien in monti palavris qui num significa
+                                nadis
+                                i pareci latim. Quem num gosta di mim que vai caçá sua turmis! Atirei o pau no gatis,
+                                per
+                                gatis num morreus. Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis!
+                                Suco de
+                                cevadiss, é um
+                                leite divinis, qui tem lupuliz, matis, aguis e fermentis. In elementis mé pra quem é
+                                amistosis quis leo.
+                                Cevadis im ampola pa arma uma pindureta. Casamentiss faiz malandris se pirulitá...
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-md-3">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Anfiteatro Bento Prado Jr.</span>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Segunda-feira, 09/09</span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <i class="fas fa-clock"></i>
+                            <span>08:00 - 10:00</span>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
+                                data-target="#modal1">
+                                Detalhes
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+
+
+        <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center">
+                            Titulo da palestra que a gente sabe que pode ser muito longo de acordo com as edições
+                            anteriores
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row no-gutters">
+                            <div class="col-md-10">
+                                <h5>Ministrante Fulano de Tal</h5>
+                                <p class="text-muted">Cargo naquela instituição muito boa </p>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="{{ url_for('static', filename='images/logo-colorida.png') }}"
+                                    class="img-fluid" alt="">
+                            </div>
+                        </div>
+
+                        <h5>Descrição</h5>
+                        <p>Mussum Ipsum, cacilds vidis litro abertis. Sapien in monti palavris qui num significa nadis i
+                            pareci
+                            latim. Quem num gosta di mim que vai caçá sua turmis! Atirei o pau no gatis, per gatis num
+                            morreus.
+                            Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis! Suco de cevadiss, é um
+                            leite
+                            divinis, qui tem lupuliz, matis, aguis e fermentis. In elementis mé pra quem é amistosis
+                            quis
+                            leo.
+                            Cevadis im ampola pa arma uma pindureta. Casamentiss faiz malandris se pirulitá.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <div id="ter" style="display: none;">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="row no-gutters align-items-center">
+
+                    <div class="col-md-2">
+                        <img src="{{ url_for('static', filename='images/logo-ufscar.png') }}" class="img-fluid" alt="">
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card-body">
+                            <h4 class="card-title">Titulo da palestra de terça feira dessa vez</h4>
+                            <p class="card-subtitle text-muted">
+                                Ministrante Fulano de Tal
+                                <br>Cargo na Instituição
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-subtitle text-muted">
+                                Descrição gigantesca daquela palestra de terça feira...
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-md-3">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Departamento de Computação</span>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Terça-feira, 10/09</span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <i class="fas fa-clock"></i>
+                            <span>08:00 - 10:00</span>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
+                                data-target="#modal2">
+                                Detalhes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center">
+                            Titulo da palestra de terça feira só que agora no modal
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row no-gutters">
+                            <div class="col-md-10">
+                                <h5>Ministrante Fulano de Tal</h5>
+                                <p class="text-muted">Cargo naquela instituição muito boa </p>
+                            </div>
+                            <div class="col-md-2">
+                                <img src="{{ url_for('static', filename='images/logo-ufscar.png') }}" class="img-fluid"
+                                    alt="">
+                            </div>
+                        </div>
+
+                        <h5>Descrição</h5>
+                        <p>Palestra de terça com uma descrição gigante que pode ocupar 300vh brincando.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="qua"></div>
+    <div id="qui"></div>
+    <div id="sex"></div>
 </div>
+
+<script type="text/javascript">
+    function toggle_visibility(id) {
+        var listaDias = ['seg', 'ter', 'qua', 'qui', 'sex'];
+        var i;
+        var target = document.getElementById(id);
+
+        for (i = 0; i < 5; i++) {
+
+            var dia = document.getElementById(listaDias[i]);
+            var nav = document.getElementById('nav-' + listaDias[i]);
+
+            if (dia == target) {
+                dia.style.display = 'block';
+                nav.className = "day selected";
+            }
+            else {
+                dia.style.display = 'none';
+                nav.className = "day";
+            }
+        }
+    }
+</script>
 
 {% endblock %}

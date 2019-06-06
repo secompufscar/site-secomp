@@ -2,112 +2,140 @@
 
 {% block content %}
 <div class="container-fluid px-0 d-none d-lg-block">
-	<section id="carrossel" class="carousel slide " data-ride="carousel" data-interval="10000">
-		<ol class="carousel-indicators">
-			<li data-target="#carrossel" data-slide-to="0" class="active"></li>
-		</ol>
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<div class="d-flex align-items-center justify-content-center min-vh-100">
-					<img class="w-100 img-fluid " src="{{url_for('static', filename='images/fundoctf.gif')}}">
-					<div class="carousel-caption d-none d-md-block mb-4">
-						<img width="300" height="300" class="img-fluid"
-							src="{{url_for('static', filename='images/logo-colorida.png')}}">
-						<h1 style="font-weight: 600; font-size: 70px;" class="display-4 mt-4">Bem vindo a X SECOMP!</h1>
-						<h2 style="font-weight: 600;font-size: 40px; ">Semana da Computação da UFSCar</h2>
-					</div>
+	<div class="carousel-inner">
+		<div class="carousel-item active">
+			<div class="d-flex align-items-center justify-content-center min-vh-100">
+				<img class="w-100 img-fluid " src="{{url_for('static', filename='images/fundoctf.gif')}}">
+				<div class="carousel-caption d-none d-md-block mb-4">
+					<img width="300" height="300" class="img-fluid"
+						src="{{url_for('static', filename='images/logo-colorida.png')}}">
+					<h1 style="font-weight: 600; font-size: 70px;" class="display-4 mt-4">Bem vindo a X SECOMP!</h1>
+					<h2 style="font-weight: 600;font-size: 40px; ">Semana da Computação da UFSCar</h2>
 				</div>
 			</div>
-			
+		</div>
+	</div>
+</div>
+
+<div class="container pt-4">
+	<div class="row">
+		<div class="col-md-7">
+			<div id="video" class="embed-responsive embed-responsive-21by9 ">
+				<video width="100%" height="100%" controls>
+
+					<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}" type="video/mp4" />
+				</video>
+				<h4> Teaser - IX SECOMP</h4>
+
+			</div>
+		</div>
+
+		<div class="col-md-5 align-self-center">
+			{# Texto adicional para testar espaçamento #}
+
+			<h2 class="text-center pb-3"> Um pouco sobre a SECOMP</h2>
+			<p class="text-justify">
+				A Semana Acadêmica da Computação da Universidade Federal de São Carlos surgiu da necessidade de se trazer
+				assuntos que fossem de interesse tanto da comunidade acadêmica quanto de entusiastas.
+
+				Desde a sua primeira edição, a SECOMP trabalha para que os assuntos sejam os mais atuais possíveis e que sejam
+				transmitidos da maneira mais dinâmica tentando aproximar o participante de áreas que vão da academia até o
+				mercado de trabalho através de minicursos, workshops, palestras técnicas, empresariais, mesas redondas, feira de
+				recrutamento e muitos outros conteúdos que foram pensados ao longo do tempo em busca de um evento cada vez
+				melhor.
+
+				Em prol disso, os estudos são constantes para que o modelo de evento sempre melhore e se torne referência,
+				trazendo cada vez mais experiências únicas a quem nos acompanha e encurtando as relações para que todos os
+				segmentos de público sejam beneficiados.
+			</p>
+		</div>
+	</div>
 </div>
 
 
-<div class="container text-center mt-4 mb-4">
-	<h1 class="display-4">SECOMP UFSCar 2019</h1>
-</div>
 <div class="text-center text-white p-3 mt-4 mb-4 bg-dark">
 	<h2>9 a 13 de setembro</h2>
 
-	<h4 id="contador"></h4>
-
-</div>
-
-<div class="container text-center mt-4 mb-4">
-
-	<h3>Olha esse teaser da edição anterior!</h3>
-
-	<div id="video" class="embed-responsive embed-responsive-21by9 mt-4 mb-4">
-		<video width="100%" height="100%" controls>
-			<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}" type="video/mp4" />
-		</video>
-		{# TODO: verificar erros de compatibilidade e remover iframe #}
-		<!--iframe width="100%" height="100%" src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe-->
+	<div class="row justify-content-center no-gutters">
+		<div class="col-md-2 border-right">
+			<h2 id="contador-dias">00</h2>
+			dias
+		</div>
+		<div class="col-md-2 border-right">
+			<h2 id="contador-horas">00</h2>
+			horas
+		</div>
+		<div class="col-md-2 border-right">
+			<h2 id="contador-min">00</h2>
+			minutos
+		</div>
+		<div class="col-md-2">
+			<h2 id="contador-seg">00</h2>
+			segundos
+		</div>
 	</div>
-
-	{# Texto adicional para testar espaçamento #}
-	<p>{{ lipsum() }}</p>
-
 </div>
-
 
 
 <!-- Portfolio Section -->
 <section id="portfolio">
-    <div class="container-fluid p-0">
-      <div class="row no-gutters">
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-              
-               <h3> Ministrantes </h3>
-             
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-                <h3> Palestras </h3>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-                <h3> Minicursos </h3>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-                <h3> Workshops </h3>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-                <h3> Capture The Flag </h3>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption p-3">
-                <h3> Mesas Redondas </h3>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+	<div class="container-fluid p-0">
+		<div class="row no-gutters">
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box" href="#">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
+
+						<h3 style="font-weight: 600;"> Ministrantes </h3>
+
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box" href="#">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
+						<h3 style="font-weight: 600;"> Palestras </h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box" href="#">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
+						<h3 style="font-weight: 600;"> Minicursos </h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box" href="#">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
+						<h3 style="font-weight: 600;"> Workshops </h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box" href="#">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
+						<h3 style="font-weight: 600;"> Capture The Flag </h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box" href="#">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption p-3">
+						<h3 style="font-weight: 600;"> Mesas Redondas </h3>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+
 
 
 <footer class="navbar small pt-5 text-white">
@@ -116,7 +144,7 @@
 			<div class="col-md-4">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-calendar-alt"></i>
-					<h5><strong>QUANDO?</strong></h5>
+					<h5 class="pt-2"><strong>QUANDO?</strong></h5>
 					<p><b>09 a 13 de Setembro</b></p>
 				</ul>
 			</div>
@@ -124,7 +152,7 @@
 			<div class="col-md-4">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-map-marker-alt"></i>
-					<h5><strong>ONDE?</strong></h5>
+					<h5 class="pt-2"><strong>ONDE?</strong></h5>
 					<p><b>Anfiteatro Bento Prado Jr. e Departamento de Computação, na Universidade Federal de São
 							Carlos</b></p>
 				</ul>
@@ -132,7 +160,7 @@
 			<div class="col-md-4">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-question-circle"></i>
-					<h5><strong>DÚVIDAS?</strong></h5>
+					<h5 class="pt-2"><strong>DÚVIDAS?</strong></h5>
 					<p><b>Consulte mais informações no <a href="/2018/faq">FAQ</a> e, se necessário, entre em contato
 							com a organização</b></p>
 				</ul>
@@ -144,7 +172,7 @@
 <div class="container text-center mt-4 mb-4">
 	<div class="row justify-content-center">
 		<div class="col-md-12 text-center">
-			<h4>Realização</h4>
+			<h3>Realização</h3>
 		</div>
 		<div class="col-sm-3 align-self-center">
 			<img class="img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">
@@ -186,9 +214,10 @@
 		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-		// Display the result in the element with id="demo"
-		document.getElementById("contador").innerHTML = days + "d " + hours + "h "
-			+ minutes + "m " + seconds + "s ";
+		document.getElementById("contador-dias").innerHTML = days;
+		document.getElementById("contador-horas").innerHTML = hours;
+		document.getElementById("contador-min").innerHTML = minutes;
+		document.getElementById("contador-seg").innerHTML = seconds;
 
 		// If the count down is finished, write some text 
 		if (distance < 0) {
