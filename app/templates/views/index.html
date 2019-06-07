@@ -18,8 +18,8 @@
 					<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}"
 						type="video/mp4" />
 				</video>
-				<h4> Teaser - IX SECOMP</h4>
 			</div>
+			<h6 style="margin-top: 15px;"> Teaser - IX SECOMP</h6>
 		</div>
 
 		<div class="col-md-5 align-self-center">
@@ -54,23 +54,42 @@
 
 <div class="text-center text-white p-3 mt-4 mb-4 bg-dark">
 	<h2>9 a 13 de setembro</h2>
+	<div class="teste" style="display: inline-block;">
+		<div class="clock" style="margin:2em;"></div>
 
-	<div class="row justify-content-center no-gutters">
-		<div class="col-md-2 border-right">
-			<h2 id="contador-dias">00</h2>
-			dias
-		</div>
-		<div class="col-md-2 border-right">
-			<h2 id="contador-horas">00</h2>
-			horas
-		</div>
-		<div class="col-md-2 border-right">
-			<h2 id="contador-min">00</h2>
-			minutos
-		</div>
-		<div class="col-md-2">
-			<h2 id="contador-seg">00</h2>
-			segundos
+			<script type="text/javascript">
+				var clock;
+				
+				$(document).ready(function() {
+					// Set dates.
+					var futureDate  = new Date("Sep 09, 2019 08:00:00");
+					var currentDate = new Date();
+
+					// Calculate the difference in seconds between the future and current date
+					var diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
+
+					// Calculate day difference and apply class to .clock for extra digit styling.
+					function dayDiff(first, second) {
+						return (second-first)/(1000*60*60*24);
+					}
+
+					if (dayDiff(currentDate, futureDate) < 100) {
+						$('.clock').addClass('twoDayDigits');
+					} else {
+						$('.clock').addClass('threeDayDigits');
+					}
+
+					if(diff < 0) {
+						diff = 0;
+					}
+
+					// Instantiate a coutdown FlipClock
+					clock = $('.clock').FlipClock(diff, {
+						clockFace: 'DailyCounter',
+						countdown: true
+					});
+				});
+			</script>
 		</div>
 	</div>
 </div>
@@ -81,7 +100,7 @@
 	<div class="container-fluid p-0">
 		<div class="row no-gutters">
 			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="#">
+				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-ministrantes">
 					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
 					<div class="portfolio-box-caption">
 
@@ -91,7 +110,7 @@
 				</a>
 			</div>
 			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="#">
+				<a class="portfolio-box"  href="_" data-toggle="modal" data-target="#modal-palestras">
 					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
 					<div class="portfolio-box-caption">
 						<h3 style="font-weight: 600;"> Palestras </h3>
@@ -99,7 +118,7 @@
 				</a>
 			</div>
 			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="#">
+				<a class="portfolio-box"  href="_" data-toggle="modal" data-target="#modal-minicursos">
 					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
 					<div class="portfolio-box-caption">
 						<h3 style="font-weight: 600;"> Minicursos </h3>
@@ -107,7 +126,7 @@
 				</a>
 			</div>
 			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="#">
+				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-workshops">
 					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
 					<div class="portfolio-box-caption">
 						<h3 style="font-weight: 600;"> Workshops </h3>
@@ -115,7 +134,7 @@
 				</a>
 			</div>
 			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="#">
+				<a class="portfolio-box"  href="_" data-toggle="modal" data-target="#modal-capture">
 					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
 					<div class="portfolio-box-caption">
 						<h3 style="font-weight: 600;"> Capture The Flag </h3>
@@ -123,7 +142,7 @@
 				</a>
 			</div>
 			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="#">
+				<a class="portfolio-box"  href="_" data-toggle="modal" data-target="#modal-mesa">
 					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
 					<div class="portfolio-box-caption p-3">
 						<h3 style="font-weight: 600;"> Mesas Redondas </h3>
@@ -193,36 +212,5 @@
 <script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
-
-<script>
-	// Set the date we're counting down to
-	var countDownDate = new Date("Sep 09, 2019 08:00:00").getTime();
-
-	// Update the count down every 1 second
-	var x = setInterval(function () {
-
-		// Get todays date and time
-		var now = new Date().getTime();
-
-		// Find the distance between now and the count down date
-		var distance = countDownDate - now;
-
-		// Time calculations for days, hours, minutes and seconds
-		var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-		document.getElementById("contador-dias").innerHTML = days;
-		document.getElementById("contador-horas").innerHTML = hours;
-		document.getElementById("contador-min").innerHTML = minutes;
-		document.getElementById("contador-seg").innerHTML = seconds;
-
-		// If the count down is finished, write some text 
-		if (distance < 0) {
-			clearInterval(x);
-			document.getElementById("contador").innerHTML = "Evento já realizado :P";
-		}
-	}, 1000);
-</script>
+<script src="{{ url_for('static', filename='js/flipclock.min.js') }}"></script>
 {% endblock %}

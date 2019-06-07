@@ -24,7 +24,8 @@ header {
 
 .overlay {
   background-color: #000000;
-  position: relative; }
+  position: relative;
+  margin-top: 57px; }
 
 .opac {
   filter: opacity(0.4); }
@@ -62,6 +63,44 @@ header {
   .overlay-text h2 {
     font-weight: 600;
     font-size: 70%;
+  }
+  div.text-center.overlay-text h1 {
+    font-weight: 600;
+    font-size: 170%;
+  }
+  div.text-center.overlay-text h2 {
+    font-weight: 600;
+    font-size: 95%;
+  }
+  .teste {
+    display: none !important;
+  }
+  h2.text-center.pb-3 {
+    margin-top: 15px;
+  }
+  p.text-justify {
+    margin-right: 15px;
+  }
+  div.embed-responsive.embed-responsive-21by9 video {
+    width: 100%;
+    height: 40%;
+  }
+  #video {
+    margin-bottom: -90%;
+  }
+}
+
+@media (orientation: portrait) and (min-width: 320px) and (max-width: 320px){
+  div.text-center.overlay-text h1 {
+    font-weight: 600;
+    font-size: 160%;
+  }
+  div.text-center.overlay-text h2 {
+    font-weight: 600;
+    font-size: 80%;
+  }
+  div.text-center.text-white.p-3.mt-4.mb-4.bg-dark h2 {
+    font-size: 170%;
   }
 }
 
@@ -241,3 +280,11 @@ a.portfolio-box:hover {
   -webkit-transition: opacity .25s ease;
   transition: opacity .25s ease;
   text-align: center; }
+
+.modal_portifolio {
+  display: inline-block;
+  margin: 15px;}
+
+.clock {
+  width: 100%;
+}
