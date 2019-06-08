@@ -4,6 +4,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
 
+
 db = SQLAlchemy()
 
 TipoAtividade = {
@@ -17,16 +18,6 @@ relacao_atividade_area = db.Table('relacao_atividade_area',
                                     Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
                                     Column('id_area', Integer, db.ForeignKey('area.id')))
 
-relacao_atividade_ministrante = db.Table('relacao_atividade_ministrante',
-                                         Column('id', Integer, primary_key=True),
-                                         Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
-                                         Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
-
-relacao_atividade_participante = db.Table('relacao_atividade_participante',
-                                          Column('id', Integer, primary_key=True),
-                                          Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
-                                          Column('id_participante', Integer, db.ForeignKey('participante.id')))
-
 relacao_patrocinador_evento = db.Table('relacao_patrocinador_evento',
                                        Column('id', Integer, primary_key=True),
                                        Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')),
@@ -37,7 +28,15 @@ relacao_permissao_usuario = db.Table('relacao_permissao_usuario',
                                      Column('id_usuario', Integer, db.ForeignKey('usuario.id')),
                                      Column('id_permissao', Integer, db.ForeignKey('permissao.id')))
 
+relacao_atividade_participante = db.Table('relacao_atividade_participante',
+                                       Column('id', Integer, primary_key=True),
+                                       Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+                                       Column('id_participante', Integer, db.ForeignKey('participante.id')))
 
+relacao_atividade_ministrante = db.Table('relacao_atividade_ministrante',
+                                       Column('id', Integer, primary_key=True),
+                                       Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+                                       Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
@@ -149,6 +148,8 @@ class AreaAtividade(db.Model):
     __tablename__ = 'area'
     id = Column(Integer, primary_key=True)
     nome = Column(String(24), nullable=False)
+    atividades = db.relationship('Atividade', secondary=relacao_atividade_area, lazy=True,
+                                    back_populates='areas')
 
 
 class Atividade(db.Model):
@@ -165,8 +166,8 @@ class Atividade(db.Model):
     titulo = Column(String(64), nullable=False)
     descricao = Column(String(1024), nullable=False)
     observacoes = Column(String(512), nullable=False)
-    area = db.relationship('Área(s)', secondary=relacao_atividade_area, lazy=True,
-                                    back_populates='atividades')
+    areas = db.relationship('AreaAtividade', secondary=relacao_atividade_area, lazy=True,
+                            back_populates='atividades')
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
                                    back_populates='atividades')
     participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
@@ -177,9 +178,9 @@ class Atividade(db.Model):
         return self.titulo
 
 
-class Minicurso(db.Model):
+class Minicurso(Atividade):
     __tablename__ = 'minicurso'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, db.ForeignKey('atividade.id'),primary_key=True)
     pre_requisitos = Column(String(128))
     planejamento = Column(String(128))
     apresentacao_extra = Column(String(128))
@@ -187,20 +188,22 @@ class Minicurso(db.Model):
     requisitos_hardware = Column(String(1024))
     requisitos_software = Column(String(1024))
     dicas_instalacao = Column(String(1024))
-    observacoes = Column(String(1024))
 
-class Palestra(db.Model):
+class Palestra(Atividade):
     __tablename__ = 'palestra'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
     planejamento = Column(String(128))
     apresentacao_extra = Column(String(128))
     material = Column(String(128))
     requisitos_tecnicos = Column(String(1024))
-    observacoes = Column(String(1024))
 
-class FeiraDePesquisas(db.Model):
+class FeiraDePesquisas(Atividade):
+    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
     necessidades = Column(String(1024))
     planejamento = Column(String(1024))
+
+class Workshop(Atividade):
+    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
 
 class Evento(db.Model):
     __tablename__ = 'evento'
@@ -346,3 +349,14 @@ class Permissao(db.Model):
     def __repr__(self):
         return self.nome
 
+class Pai(db.Model):
+    __abstract__ = True
+    __tablename__ = 'pai'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(24))
+    tipo = Column(Integer)
+
+class Filho(db.Model):
+    __tablename__ = 'filho'
+    id = Column(Integer, db.ForeignKey('pai.id'), primary_key=True)
+    especifico = Column(Integer)
