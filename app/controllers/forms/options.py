@@ -105,3 +105,13 @@ def get_opcoes_cotas_patrocinadores():
     except Exception as e:
         return None
 
+def get_opcoes_area_atividade():
+    try:
+        areas_data = db.session.query(AreaAtividade).all()
+        areas = []
+        for area in areas_data:
+            info_area = (area.id, area.nome)
+            areas.append(info_area)
+        return areas
+    except Exception as e:
+        return None
