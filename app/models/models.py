@@ -81,7 +81,10 @@ class Usuario(db.Model):
         return self.admin
 
     def getPermissoes(self):
-        return self.permissoes_usuario
+        permissoes = []
+        for permissao in self.permissoes_usuario:
+            permissoes.append(permissao.nome)
+        return permissoes
 
     def __repr__(self):
         return self.primeiro_nome + " " + self.sobrenome + " <" + self.email + ">"
@@ -349,14 +352,11 @@ class Permissao(db.Model):
     def __repr__(self):
         return self.nome
 
-class Pai(db.Model):
-    __abstract__ = True
-    __tablename__ = 'pai'
+class URLConteudo(db.Model):
+    __tablename__ = 'urlconteudo'
     id = Column(Integer, primary_key=True)
-    nome = Column(String(24))
-    tipo = Column(Integer)
-
-class Filho(db.Model):
-    __tablename__ = 'filho'
-    id = Column(Integer, db.ForeignKey('pai.id'), primary_key=True)
-    especifico = Column(Integer)
+    descricao = Column(String(100), nullable=False)
+    codigo = Column(String(200), nullable=False)
+    ultimo_gerado = Column(Boolean, default=False, nullable=False)
+    valido = Column(Boolean, default=True, nullable=False)
+    numero_cadastros = Column(Integer, default=1)
