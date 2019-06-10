@@ -169,34 +169,42 @@ def pesquisa_usuario_email_custon():
 
 @management.route('/atividades-json-email-custon',methods=['POST'])
 def atividades_json_email_custon():
-    atividades = get_atividades_json()
-    return jsonify({'output': atividades})
-
-
-@management.route("/email-custom", methods=["GET"])
-def email_custom():
-    form_login = LoginForm(request.form)
-
-    return render_template('management/email_custom.html', form_login=form_login)
+    permissoes = current_user.getPermissoes()
+    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+        atividades = get_atividades_json()
+        return jsonify({'output': atividades})
 
 
 @management.route('/executa-email-custon',methods=['POST'])
 def executa_email_custon():
-    try:
-        pkg = request.form
+    permissoes = current_user.getPermissoes()
+    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+        try:
+            pkg = request.form
 
-        assunto = pkg['assunto']
-        titulo = pkg['titulo']
-        template = pkg['template']
-        temAnexo = pkg['temAnexo']
-        anexo = pkg['anexo'].split(',')
-        complemento = pkg['complemento']
-        selecionados = pkg['selecionados'].split(',')
-        extencao = pkg['extencao']
+            assunto = pkg['assunto']
+            titulo = pkg['titulo']
+            template = pkg['template']
+            temAnexo = pkg['temAnexo']
+            anexo = pkg['anexo'].split(',')
+            complemento = pkg['complemento']
+            selecionados = pkg['selecionados'].split(',')
+            extencao = pkg['extencao']
 
-        enviar_email_custon(assunto, titulo, template, temAnexo, anexo, complemento, selecionados, extencao)
+            enviar_email_custon(assunto, titulo, template, temAnexo, anexo, complemento, selecionados, extencao)
 
-        return jsonify('Sucesso')
-    except Exception as e:
-        print(e)
-        return jsonify('Falha')
+            return jsonify('Sucesso')
+        except Exception as e:
+            print(e)
+            return jsonify('Falha')
+
+
+@management.route("/email-custom", methods=["GET"])
+def email_custom():
+    permissoes = current_user.getPermissoes()
+    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+
+        return render_template('management/email_custom.html', form_login=form_login)
+    else:
+        abort(403)
