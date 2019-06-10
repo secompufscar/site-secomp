@@ -45,6 +45,11 @@ def sobre():
     return render_template('views/sobre.html', title='Sobre a Secomp')
 
 
+@views.route('/cronograma')
+def cronograma():
+    return render_template('views/cronograma.html', title='Cronograma')
+
+
 @views.route('/equipe')
 def equipe():
     import json
@@ -91,3 +96,13 @@ def logout():
     db.session.commit()
     logout_user()
     return redirect(url_for('.index'))
+
+@views.route("/senhas", methods=["GET"])
+def senhas():
+    return render_template('views/requisito_50.html')
+
+@views.route("/patrocinadores", methods=["GET"])
+def patrocinadores():
+    patrocinadores = db.session.query(Patrocinador)
+    return render_template('views/patrocinadores.html', patrocinadores=patrocinadores)
+
