@@ -160,15 +160,25 @@ def listas():
 
 
 @management.route('/pesquisa-usuario-email-custon',methods=['POST'])
+@login_required
 def pesquisa_usuario_email_custon():
-    atividadeID = request.form['id']
+    '''
+    Retorna os usuários que participaram de uma atividade
+    '''
+    permissoes = current_user.getPermissoes()
+    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+        atividadeID = request.form['id']
 
-    participantes = get_participantes_da_atividade_json(int(atividadeID))
-    return jsonify({'output': participantes})
+        participantes = get_participantes_da_atividade_json(int(atividadeID))
+        return jsonify({'output': participantes})
 
 
 @management.route('/atividades-json-email-custon',methods=['POST'])
+@login_required
 def atividades_json_email_custon():
+    '''
+    Retorna um json com informações sobre as atividades
+    '''
     permissoes = current_user.getPermissoes()
     if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         atividades = get_atividades_json()
@@ -176,7 +186,11 @@ def atividades_json_email_custon():
 
 
 @management.route('/executa-email-custon',methods=['POST'])
+@login_required
 def executa_email_custon():
+    '''
+    Rota para acesso remoto que executa o envio de emails
+    '''
     permissoes = current_user.getPermissoes()
     if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         try:
@@ -197,10 +211,16 @@ def executa_email_custon():
         except Exception as e:
             print(e)
             return jsonify('Falha')
+    else:
+        print("NAO PODE")
 
 
 @management.route("/email-custom", methods=["GET"])
+@login_required
 def email_custom():
+    '''
+    Página para envio de email
+    '''
     permissoes = current_user.getPermissoes()
     if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)

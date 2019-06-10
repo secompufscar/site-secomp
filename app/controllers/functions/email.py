@@ -5,7 +5,7 @@ from flask_login import current_user
 from flask_mail import Mail, Message
 
 from app.models.models import db, Usuario
-from app.controllers.functions.helpers import get_usuarios_query
+from app.controllers.functions.helpers import get_usuarios_query, get_paths_anexo
 
 mail = Mail()
 
@@ -151,13 +151,6 @@ def enviar_email_custon(assunto, titulo, template, temAnexo, anexo, complemento,
             "footer": 'TI X SECOMP UFSCar'
         }
 
-        files = []
-
-        # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aki
-        for file in anexo:
-            if complemento == '0': # Mesmo arquivo para todos
-                files.append((file + extencao));
-            if complemento == '1': # Nome CamelCase
-                files.append((file + usuario.primeiro_nome + usuario.sobrenome + extencao));
+        files = get_paths_anexo(anexo, complemento, usuario, extencao)
 
         enviar_email_generico(info, files)
