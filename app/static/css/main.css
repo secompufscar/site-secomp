@@ -1,7 +1,4 @@
 @charset "UTF-8";
-.content {
-  min-height: 85vh;
-}
 header {
   background-image: linear-gradient(to right, #008cb5, #00cfa1); }
   header a {
@@ -30,7 +27,7 @@ header {
 .dropdown-menu a {
   font-size: 12px; }
 
-.dropdown-toggle:active {
+> .dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: visible; }
 
@@ -39,10 +36,8 @@ header {
 
 footer {
   background-color: #212121; }
-  footer p {
-    font-size: 85%; }
   footer ul li {
-    padding: 0.5%; }
+    padding: 1%; }
     footer ul li a {
       color: #fff; }
       footer ul li a:hover {
@@ -63,7 +58,6 @@ footer {
   max-height: 70vh;
   width: 100vh; }
 
-
 /* CSS para os cards da página '/equipe' */
 .frontside {
   position: relative;
@@ -79,11 +73,17 @@ footer {
   position: absolute;
   top: 0;
   left: 0;
+  background: white;
   -webkit-transform: rotateY(-180deg);
   -moz-transform: rotateY(-180deg);
   -o-transform: rotateY(-180deg);
   -ms-transform: rotateY(-180deg);
-  transform: rotateY(-180deg); }
+  transform: rotateY(-180deg);
+  -webkit-box-shadow: 5px, 7px, 9px, -4px #9e9e9e;
+  -moz-box-shadow: 5px, 7px, 9px, -4px #9e9e9e;
+  -o-box-shadow: 5px, 7px, 9px, -4px #9e9e9e;
+  -ms-box-shadow: 5px, 7px, 9px, -4px #9e9e9e;
+  box-shadow: 5px, 7px, 9px, -4px #9e9e9e; }
 
 .image-flip:hover .backside,
 .image-flip.hover .backside {
@@ -108,11 +108,12 @@ footer {
   -o-transform-style: preserve-3d;
   -ms-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: 0.6s;
-  -moz-transition: 0.6s;
-  -o-transition: 0.6s;
-  -ms-transition: 0.6s;
-  transition: 0.6s;
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -o-transition: 1s;
+  -ms-transition: 1s;
+  transition: 1s;
+  -moz-transform: perspective(1000px);
   position: relative; }
 
 .frontside,
@@ -122,11 +123,11 @@ footer {
   -o-transform-style: preserve-3d;
   -ms-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: 0.6s;
-  -moz-transition: 0.6s;
-  -o-transition: 0.6s;
-  -ms-transition: 0.6s;
-  transition: 0.6s;
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -o-transition: 1s;
+  -ms-transition: 1s;
+  transition: 1s;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -o-backface-visibility: hidden;
@@ -135,29 +136,60 @@ footer {
 
 .frontside .card,
 .backside .card {
-  /* Ajustar para ficar responsivo com a tela */
+  /* Ajustar para ficar responsivo com a largura da tela */
   min-height: 250px; }
 
 .backside .card p {
   font-size: 0.8em; }
 
-.backside .card a {
-  color: #00cfa1; }
-
-.frontside .card .card-title {
-  color: #008cb5; }
-  
-.backside .card .card-title  {
-    color: #00cfa1; }
-
-.bg-diretor {
-  background-color: #182825 !important ; }
+.frontside .card .card-title,
+.backside .card .card-title {
+  color: #007b5e !important; }
 
 .frontside .card .card-body img {
   width: 20vh;
   height: 20vh;
   border-radius: 50%; }
 
-  .dash table, th, td {
-    font-size: 0.85rem;
-  }
+#portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption {
+  opacity: 0.8; }
+
+#portfolio .container-fluid .portfolio-box .portfolio-box-caption {
+  background: rgba(244, 98, 58, 0.9);
+  -webkit-transition: opacity .25s ease;
+  transition: opacity .25s ease; }
+
+a.portfolio-box {
+  color: #f4623a;
+  text-decoration: none;
+  background-color: transparent; }
+
+a.portfolio-box:hover {
+  color: #d6370c;
+  text-decoration: underline; }
+
+#portfolio .container-fluid .portfolio-box .portfolio-box-caption {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  opacity: 0;
+  color: #fff;
+  background-image: linear-gradient(to right, #008bb5, #00cfa1);
+  -webkit-transition: opacity .25s ease;
+  transition: opacity .25s ease;
+  text-align: center; }
