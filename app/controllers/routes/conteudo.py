@@ -67,7 +67,7 @@ def gerar_url_cadastro():
         form = GerarURLCadastroForm(request.form)
         url_em_uso = db.session.query(URLConteudo).filter_by(ultimo_gerado=True, valido=True).first()
         dict_urls = get_dicionario_urls_cadastro_ministrante(request.url_root + 'area-conteudo/cadastro-ministrante/')
-        if form.validate_on_submit() or url_em_uso  is None:
+        if form.validate_on_submit() or url_em_uso is None:
             codigo = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(200))
             url_conteudo = URLConteudo(codigo=codigo, ultimo_gerado=True, valido=True,
                                        numero_cadastros=form.numero_cadastros.data, descricao=form.descricao.data)
@@ -81,37 +81,78 @@ def gerar_url_cadastro():
     else:
         abort(403)
 
+#TODO adicionar ministrantes
+#TODO adicionar areas
 @conteudo.route('/cadastro-atividade/minicurso', methods=['POST', 'GET'])
 @login_required
 def cadastro_minicurso():
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         form = CadastroInformacoesMinicurso(request.form)
+        if form.validate_on_submit():
+            id_evento = db.session.query(Evento).filter_by(
+                edicao=EDICAO_ATUAL).first().id
+            minicurso = Minicurso(id_evento= id_evento, titulo=form.titulo.data,
+                                  descricao=form.descricao.data,
+                                  pre_requisitos=form.pre_requisitos.data, planejamento=form.planejamento.data,
+                                  apresentacao_extra=form.apresentacao_extra.data, material=form.material.data,
+                                  requisitos_hardware=form.requisitos_hardware.data,
+                                  requisitos_software=form.requisitos_software.data,
+                                  dicas_instalacao=form.dicas_instalacao.data, observacoes=form.observacoes.data)
+
         return render_template('conteudo/cadastro_minicurso.html', form=form)
     abort(403)
 
+#TODO adicionar ministrante
+#TODO adicionar areas
 @conteudo.route('/cadastro-atividade/palestra', methods=['POST', 'GET'])
 @login_required
 def cadastro_palestra():
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         form = CadastroInformacoesPalestra(request.form)
+        if form.validate_on_submit():
+            id_evento = db.session.query(Evento).filter_by(
+                edicao=EDICAO_ATUAL).first().id
+            palestra = Palestra(id_evento= id_evento, titulo=form.titulo.data,
+                                areas=form.area.data, descricao=form.descricao.data,
+                                observacoes=form.observacoes.data, planejamento=form.planejamento.data,
+                                apresentacao_extra=form.apresentacao_extra.data,
+                                material=form.material.data, perguntas=form.perguntas.data)
         return render_template('conteudo/cadastro_palestra.html', form=form)
     abort(403)
 
+#TODO adicionar ministrante
+#TODO adicionar areas
 @conteudo.route('/cadastro-atividade/mesa-redonda', methods=['POST', 'GET'])
 @login_required
 def cadastro_mesa_redonda():
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+        form = CadastroMesaRedonda(request.form)
+        if form.validate_on_submit():
+            id_evento = db.session.query(Evento).filter_by(
+                edicao=EDICAO_ATUAL).first().id
+            mesa_redonda = MesaRedonda(id_evento=id_evento, titulo=form.titulo.data,
+                                       areas=form.area.data, descricao=form.descricao.data,
+                                       observacoes=form.observacoes.data, necessidades=form.necessidades.data,
+                                       planejamento=form.planejamento.data)
         return render_template('conteudo/cadastro_mesa_redonda.html')
     abort(403)
 
+#TODO adicionar ministrante
+#TODO adicionar areas
 @conteudo.route('/cadastro-atividade/feira-pesquisas', methods=['POST', 'GET'])
 @login_required
 def cadastro_feira_pesquisas():
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         form = CadastroFeiraDePesquisas(request.form)
+        if form.validate_on_submit():
+            id_evento = db.session.query(Evento).filter_by(
+                edicao=EDICAO_ATUAL).first().id
+            feira_pesquisas = FeiraDePesquisas(id_evento= id_evento, titulo=form.titulo.data,
+                                               areas=form.area.data, descricao=form.descricao.data,
+                                               planejamento=form.planejamento.data)
         return render_template('conteudo/cadastro_feira_pesquisas.html', form=form)
     abort(403)
