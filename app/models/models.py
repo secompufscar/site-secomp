@@ -154,21 +154,20 @@ class AreaAtividade(db.Model):
     atividades = db.relationship('Atividade', secondary=relacao_atividade_area, lazy=True,
                                     back_populates='areas')
 
-
+#TODO: remover campo tipo, mas que envolve outras partes do sistema
 class Atividade(db.Model):
     __tablename__ = 'atividade'
     id = Column(Integer, primary_key=True)
-    id_ministrante = Column(Integer, db.ForeignKey('ministrante.id'))
     id_evento = Column(Integer, db.ForeignKey('evento.id'))
     vagas_totais = Column(Integer, nullable=False)
     vagas_disponiveis = Column(Integer, nullable=False)
     ativo = Column(Boolean, nullable=False, default=True)
     tipo = Column(Integer, nullable=False)
-    data_hora = Column(DateTime, nullable=False)
-    local = Column(String(64), nullable=False)
+    data_hora = Column(DateTime, nullable=True)
+    local = Column(String(64), nullable=True)
     titulo = Column(String(64), nullable=False)
     descricao = Column(String(1024), nullable=False)
-    observacoes = Column(String(512), nullable=False)
+    observacoes = Column(String(512))
     areas = db.relationship('AreaAtividade', secondary=relacao_atividade_area, lazy=True,
                             back_populates='atividades')
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
@@ -192,6 +191,7 @@ class Minicurso(Atividade):
     requisitos_software = Column(String(1024))
     dicas_instalacao = Column(String(1024))
 
+
 class Palestra(Atividade):
     __tablename__ = 'palestra'
     id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
@@ -200,13 +200,27 @@ class Palestra(Atividade):
     material = Column(String(128))
     requisitos_tecnicos = Column(String(1024))
 
+
+class PalestraEmpresarial(Atividade):
+    __tablename__ = 'palestra_empresarial'
+    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
+    id_patrocinador = Column(Integer, db.ForeignKey('patrocinador.id'))
+
+
 class FeiraDePesquisas(Atividade):
     id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
     necessidades = Column(String(1024))
     planejamento = Column(String(1024))
 
+
+class MesaRedonda(Atividade):
+    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
+
+
 class Workshop(Atividade):
     id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
+    id_patrocinador = Column(Integer, db.ForeignKey('patrocinador.id'))
+
 
 class Evento(db.Model):
     __tablename__ = 'evento'
@@ -351,6 +365,7 @@ class Permissao(db.Model):
 
     def __repr__(self):
         return self.nome
+
 
 class URLConteudo(db.Model):
     __tablename__ = 'urlconteudo'
