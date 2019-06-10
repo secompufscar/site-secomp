@@ -9,7 +9,7 @@
 {% block content %}
 
 
-<div class="pad-inicio container">
+<div class="pad-inicio container pb-5">
 
     <div class="row">
         <div class="col-md-12 text-center">
@@ -18,67 +18,64 @@
         </div>
     </div>
     <div class="row align-items-center">
-            <div class="col-md-1 text-center">
-                    <i class="fas fa-2x fa-chevron-left"></i> 
-                </div>
+        <div class="col-md-1 text-center">
+            <i class="fas fa-2x fa-chevron-left"></i>
+        </div>
         <div class="col-md-10 text-center">
-            <nav class="navbar navbar-light navbar-expand-lg">
-                <div class="container">
+            <nav class="navbar nav-crono navbar-light navbar-expand-lg">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <div class="collapse navbar-collapse" id="navbarContent">
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('seg');">
 
-                    <table class="table table-bordered">
+                                        <h5>09.09.2019</h5>
+                                        <h4><span id="nav-seg" class="day selected">Seg</span></h4>
+
+                                    </a>
+                                </th>
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('ter');">
+
+                                        <h5>10.09.2019</h5>
+                                        <h4><span id="nav-ter" class="day">Ter</span></h4>
+
+                                    </a>
+                                </th>
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('qua');">
+
+                                        <h5>11.09.2019</h5>
+                                        <h4><span id="nav-qua" class="day">Qua</span></h4>
+
+                                    </a>
+                                </th>
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('qui');">
+
+                                        <h5>12.09.2019</h5>
+                                        <h4><span id="nav-qui" class="day">Qui</span></h4>
+
+                                    </a>
+                                </th>
+                                <th scope="col-md-2">
+                                    <a onclick="toggle_visibility('sex');">
+
+                                        <h5>13.09.2019</h5>
+                                        <h4><span id="nav-sex" class="day">Sex</span></h4>
+
+                                    </a>
+                                </th>
+                            </div>
+                        </tr>
                         <thead>
-                            <tr>
-                                <div class="collapse navbar-collapse" id="navbarContent">
-                                    <th scope="col">
-                                        <a onclick="toggle_visibility('seg');">
-
-                                            <h5>09.09.2019</h5>
-                                            <h4><span id="nav-seg" class="day selected">Seg</span></h4>
-
-                                        </a>
-                                    </th>
-                                    <th scope="col">
-                                        <a onclick="toggle_visibility('ter');">
-
-                                            <h5>10.09.2019</h5>
-                                            <h4><span id="nav-ter" class="day">Ter</span></h4>
-
-                                        </a>
-                                    </th>
-                                    <th scope="col">
-                                        <a onclick="toggle_visibility('qua');">
-
-                                            <h5>11.09.2019</h5>
-                                            <h4><span id="nav-qua" class="day">Qua</span></h4>
-
-                                        </a>
-                                    </th>
-                                    <th scope="col">
-                                        <a onclick="toggle_visibility('qui');">
-
-                                            <h5>12.09.2019</h5>
-                                            <h4><span id="nav-qui" class="day">Qui</span></h4>
-
-                                        </a>
-                                    </th>
-                                    <th scope="col">
-                                        <a onclick="toggle_visibility('sex');">
-
-                                            <h5>13.09.2019</h5>
-                                            <h4><span id="nav-sex" class="day">Sex</span></h4>
-
-                                        </a>
-                                    </th>
-                                </div>
-                </div>
-                </tr>
-                <thead>
-                    </table>
+                </table>
             </nav>
         </div>
         <div class="col-md-1 text-center">
-                <i class="fas fa-2x fa-chevron-right"></i> 
-            </div>
+            <i class="fas fa-2x fa-chevron-right"></i>
+        </div>
     </div>
 
 
@@ -147,7 +144,7 @@
                     </div>
                 </div>
             </div>
-        </div> <br>
+        </div>
 
 
         <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
