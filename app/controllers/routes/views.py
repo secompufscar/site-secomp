@@ -1,11 +1,9 @@
 from flask import render_template, request, Blueprint, url_for, redirect
 from flask_login import login_required, login_user, logout_user, current_user
 from passlib.hash import pbkdf2_sha256
-from jinja2 import TemplateNotFound
 
 from app.controllers.forms.forms import *
 from app.controllers.functions.email import enviar_email_dm
-from app.controllers.functions.helpers import *
 from app.controllers.constants import *
 
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
