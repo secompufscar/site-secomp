@@ -105,7 +105,7 @@
 	}
 
 	$(document).ready(function() {
-		// [id] = {'nome' : nome, 'email' : email}
+		// [id] = {'id' : id, nome' : nome, 'email' : email}
 		var usuarios = {};
 		// [nome] = {id}
 		var atividadeDict = {};
@@ -116,6 +116,7 @@
 		// Dicionário dos tipos de modificações aplicáveis ao nome dos anexos
 		var dComplemento = {'Mesmo arquivo para todos' : 0, 'Nome do usuário, CamelCase' : 1};
 
+		$("#divAnexo").hide();
 		// Define a lista de atividades
 		$.ajax({
 			type : 'POST',

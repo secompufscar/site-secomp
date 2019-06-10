@@ -115,3 +115,17 @@ def verifica_outro_escolhido(campo, objeto):
         return cadastra_objeto_generico(objeto).id
     else:
         return campo.data
+
+def get_paths_anexo(anexo, complemento, usuario, extencao):
+    '''
+    Retorna uma lista dos arquivos que serão anexados.
+    '''
+    files = []
+    # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aki
+    for file in anexo:
+        if complemento == '0': # Mesmo arquivo para todos
+            files.append((file + extencao))
+        if complemento == '1': # Nome CamelCase
+            files.append((file + usuario.primeiro_nome + usuario.sobrenome + extencao))
+
+    return files
