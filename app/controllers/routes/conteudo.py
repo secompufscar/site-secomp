@@ -45,12 +45,16 @@ def cadastro_ministrante(codigo):
                                     empresa_universidade=form.empresa_universidade.data, biografia=form.biografia.data,
                                     foto=form.foto.data, tamanho_camiseta=form.tamanho_camiseta.data, facebook=form.facebook.data,
                                     twitter=form.twitter.data, linkedin=form.linkedin.data, github=form.github.data,
-                                    usuario=usuario)
+                                    usuario=usuario, id_usuario=usuario.id)
+            permissao = db.session.query(Permissao).filter_by(nome="MINISTRANTE").first()
+            usuario.permissoes_usuario.append(permissao)
             url.numero_cadastros = url.numero_cadastros - 1
+            usuario.ministrante = ministrante
             db.session.add(usuario)
+            db.session.commit()
             db.session.add(ministrante)
+            db.session.commit()
             db.session.add(url)
-            db.session.flush()
             db.session.commit()
             enviar_email_confirmacao(usuario, token)
             login_user(usuario, remember=True)
