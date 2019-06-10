@@ -5,6 +5,7 @@ from flask_login import current_user
 from flask_mail import Mail, Message
 
 from app.models.models import db, Usuario
+from app.controllers.functions.helpers import get_usuarios_query
 
 mail = Mail()
 
@@ -18,7 +19,7 @@ _teste = {
 }
 
 
-def enviar_email_generico(info=None):
+def enviar_email_generico(info=None, anexo=None):
     """
     Função que envia um email genérico recebendo um dicionário, que deve ter dados obrigatórios
     (ver dicionario teste) mas pode ter dados a mais a serem passados para o template
@@ -29,14 +30,37 @@ def enviar_email_generico(info=None):
         info = _teste
     msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['MAIL_USERNAME'])),
                   recipients=[info['email']])
+
+    print(info['template'])
     try:
         msg.html = render_template(info['template'], info=info)
         print(msg.html)
+
+        # Parte que cuida dos anexos
+        if not (anexo is None or anexo == []):
+            for fileName in anexo:
+                try:
+                    fp = open(fileName, "r")
+
+                    # Verifica a extenção do arquivo
+                    if not fileName.find(".png") == -1:
+                        msg.attach(fileName, "image/png", fp.read())
+                    elif not fileName.find(".pdf") == -1:
+                        msg.attach(fileName, "application/pdf", fp.read())
+                    else:
+                        msg.attach(fileName, "text/plain", fp.read())
+
+                    fp.close()
+                except Exception as e:
+                    print(e)
+
     except Exception as e:
         print(e)
+
     try:
         global mail
-        mail.send(msg)
+        print(msg)
+        #mail.send(msg)
     except Exception as e:  # Erros mais prováveis são devido ao email_config, printa error em um arquivo
         try:
             log = open('logMailError.txt', 'a+')
@@ -107,3 +131,33 @@ def email_confirmado():
     except Exception as e:
         print(e)
         return None
+
+def enviar_email_custon(assunto, titulo, template, temAnexo, anexo, complemento, selecionados, extencao):
+    '''
+    Envia um ou mais emails customizados
+    Podendo ou não ter anexo
+    '''
+    usuarios = get_usuarios_query()
+
+    for i in selecionados:
+        usuario = usuarios.filter_by(id=i).first()
+
+        info = {
+            "assunto": assunto,
+            "nome": usuario.primeiro_nome + " " + usuario.sobrenome,
+            "titulo": titulo,
+            "email": usuario.email,
+            "template": "email/" + template,
+            "footer": 'TI X SECOMP UFSCar'
+        }
+
+        files = []
+
+        # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aki
+        for file in anexo:
+            if complemento == '0': # Mesmo arquivo para todos
+                files.append((file + extencao));
+            if complemento == '1': # Nome CamelCase
+                files.append((file + usuario.primeiro_nome + usuario.sobrenome + extencao));
+
+        enviar_email_generico(info, files)

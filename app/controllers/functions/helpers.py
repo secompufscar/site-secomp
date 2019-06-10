@@ -5,6 +5,18 @@ def get_score_evento(edicao):
     return 10000
 
 
+def get_usuarios_query():
+    '''
+    Retorna o objeto da query de usuários para ser usado em outra função
+    '''
+    try:
+        query = db.session.query(Usuario)
+        return query
+    except Exception as e:
+        print(e)
+        return None
+
+
 def get_participantes():
     try:
         query = db.session.query(Participante)
@@ -30,6 +42,47 @@ def get_atividades():
     except Exception as e:
         print(e)
         return None
+
+def get_atividades_json():
+    '''
+    Retorna uma lista de dicionários de atividades para ser usado na página de email customizado
+    '''
+    try:
+        query = db.session.query(Atividade)
+        atividades = []
+
+        for a in query:
+            atividade = {'id':a.id, 'ativo':a.ativo, 'tipe':a.tipo, 'titulo':a.titulo}
+            atividades.append(atividade)
+
+        return atividades
+    except Exception as e:
+        print(e)
+        return None
+
+def get_participantes_da_atividade_json(id):
+    '''
+    Retorna uma lista de dicionários de usuários para ser usado na página de email cusmotizado
+    '''
+    query = None
+
+    if (id == 0): 
+        query = db.session.query(Atividade)
+    else:
+        query = db.session.query(Atividade).filter_by(id=id)
+    
+    query = query.first()
+    ativParticipantes =  query.participantes
+
+    participantes = []
+
+    for p in ativParticipantes:
+        usuario = p.usuario
+        participante = {'id':usuario.id, 'nome':(usuario.primeiro_nome + " " + usuario.sobrenome), 'email':usuario.email}
+        participantes.append(participante)
+
+    return participantes
+
 
 
 def get_participantes_sem_kit():
@@ -62,4 +115,3 @@ def verifica_outro_escolhido(campo, objeto):
         return cadastra_objeto_generico(objeto).id
     else:
         return campo.data
-
