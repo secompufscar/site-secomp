@@ -1,150 +1,157 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container-fluid px-0 d-none d-lg-block">
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<div class="d-flex align-items-center justify-content-center min-vh-100">
-					<img class="w-100 img-fluid " src="{{url_for('static', filename='images/fundoctf.gif')}}">
-					<div class="carousel-caption d-none d-md-block mb-4">
-						<img width="300" height="300" class="img-fluid"
-							src="{{url_for('static', filename='images/logo-colorida.png')}}">
-						<h1 style="font-weight: 600; font-size: 70px;" class="display-4 mt-4">Bem vindo a X SECOMP!</h1>
-						<h2 style="font-weight: 600;font-size: 40px; ">Semana da Computação da UFSCar</h2>
-					</div>
-				</div>
-			</div>
-		</div>			
+<div class="overlay">
+	<img class="opac img-responsive" src="{{url_for('static', filename='images/fundoctf.gif')}}">
+	<div class="text-center overlay-text">
+		<img class="w-50" src="{{url_for('static', filename='images/logo-colorida.png')}}">
+		<h1 class="mt-4">Bem vindo a X SECOMP!</h1>
+		<h2>Semana da Computação da UFSCar</h2>
+	</div>
 </div>
 
-<div class="container">
+<div class="container pt-4">
 	<div class="row">
-			<div class="col-md-7">
+		<div class="col-md-7">
 			<div id="video" class="embed-responsive embed-responsive-21by9 ">
 				<video width="100%" height="100%" controls>
-						
-					<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}" type="video/mp4" />
+					<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}"
+						type="video/mp4" />
 				</video>
-				<h4> Teaser - IX SECOMP</h4>
+			</div>
+			<h6 style="margin-top: 15px;"> Teaser - IX SECOMP</h6>
+		</div>
 
-			</div>
-			</div>
-			
-			<div class="col-md-5 pt-5">
+		<div class="col-md-5 align-self-center">
 			{# Texto adicional para testar espaçamento #}
-			
-			<h2 class="text-center"> Um pouco sobre a SECOMP</h2>
-			<p style="text-align: justify;">
-					A Semana Acadêmica da Computação da Universidade Federal de São Carlos surgiu da necessidade de se trazer assuntos que fossem de interesse tanto da comunidade acadêmica quanto de entusiastas. 
-					
-					Desde a sua primeira edição, a SECOMP trabalha para que os assuntos sejam os mais atuais possíveis e que sejam transmitidos da maneira mais dinâmica tentando aproximar o participante de áreas que vão da academia até o mercado de trabalho através de minicursos, workshops, palestras técnicas, empresariais, mesas redondas, feira de recrutamento e muitos outros conteúdos que foram pensados ao longo do tempo em busca de um evento cada vez melhor.
-					
-					Em prol disso, os estudos são constantes para que o modelo de evento sempre melhore e se torne referência, trazendo cada vez mais experiências únicas a quem nos acompanha e encurtando as relações para que todos os segmentos de público sejam beneficiados.
-					</p>
-			</div>
-		</div>
-		</div>
-		
 
-		<div class="text-center text-white p-3 mt-4 mb-4 bg-dark">
-				<h2>9 a 13 de setembro</h2>
-			
-			  <div class="row justify-content-center">
-				<div class="col-4">
-				  <div class="row">
-					<div class="col-3 border-right">
-					  <h2 id="contador-dias"></h2>
-					</div>
-					<div class="col-3 border-right">
-					  <h2 id="contador-horas"></h2>
-					</div>
-					<div class="col-3 border-right">
-					  <h2 id="contador-min"></h2>
-					</div>
-					<div class="col-3">
-					  <h2 id="contador-seg"></h2>
-					</div>
-				  </div>
-				  <div class="row">
-					<div class="col-3 border-right">
-					  dias
-					</div>
-					<div class="col-3 border-right">
-					  horas
-					</div>
-					<div class="col-3 border-right">
-					  min
-					</div>
-					<div class="col-3">
-					  seg
-					</div>
-				  </div>
-			
-				</div>
-			  </div>
-			  </div>
-			</div>
+			<h2 class="text-center pb-3"> Um pouco sobre a SECOMP</h2>
+			<p class="text-justify">
+				A Semana Acadêmica da Computação da Universidade Federal de São Carlos surgiu da necessidade de se
+				trazer
+				assuntos que fossem de interesse tanto da comunidade acadêmica quanto de entusiastas.
+
+				Desde a sua primeira edição, a SECOMP trabalha para que os assuntos sejam os mais atuais possíveis e que
+				sejam
+				transmitidos da maneira mais dinâmica tentando aproximar o participante de áreas que vão da academia até
+				o
+				mercado de trabalho através de minicursos, workshops, palestras técnicas, empresariais, mesas redondas,
+				feira de
+				recrutamento e muitos outros conteúdos que foram pensados ao longo do tempo em busca de um evento cada
+				vez
+				melhor.
+
+				Em prol disso, os estudos são constantes para que o modelo de evento sempre melhore e se torne
+				referência,
+				trazendo cada vez mais experiências únicas a quem nos acompanha e encurtando as relações para que todos
+				os
+				segmentos de público sejam beneficiados.
+			</p>
+		</div>
+	</div>
+</div>
+
+
+<div class="text-center text-white p-3 mt-4 mb-4 bg-dark">
+	<h2>9 a 13 de setembro</h2>
+	<div class="teste" style="display: inline-block;">
+		<div class="clock" style="margin:2em;"></div>
+
+			<script type="text/javascript">
+				var clock;
+				
+				$(document).ready(function() {
+					// Set dates.
+					var futureDate  = new Date("Sep 09, 2019 08:00:00");
+					var currentDate = new Date();
+
+					// Calculate the difference in seconds between the future and current date
+					var diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
+
+					// Calculate day difference and apply class to .clock for extra digit styling.
+					function dayDiff(first, second) {
+						return (second-first)/(1000*60*60*24);
+					}
+
+					if (dayDiff(currentDate, futureDate) < 100) {
+						$('.clock').addClass('twoDayDigits');
+					} else {
+						$('.clock').addClass('threeDayDigits');
+					}
+
+					if(diff < 0) {
+						diff = 0;
+					}
+
+					// Instantiate a coutdown FlipClock
+					clock = $('.clock').FlipClock(diff, {
+						clockFace: 'DailyCounter',
+						countdown: true
+					});
+				});
+			</script>
+		</div>
+	</div>
+</div>
+
 
 <!-- Portfolio Section -->
 <section id="portfolio">
-    <div class="container-fluid p-0">
-      <div class="row no-gutters">
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-              
-               <h3 style="font-weight: 600;"> Ministrantes </h3>
-             
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-                <h3 style="font-weight: 600;"> Palestras </h3>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-                <h3 style="font-weight: 600;"> Minicursos </h3>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-                <h3 style="font-weight: 600;"> Workshops </h3>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption">
-                <h3 style="font-weight: 600;"> Capture The Flag </h3>
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="#">
-            <img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-            <div class="portfolio-box-caption p-3">
-                <h3 style="font-weight: 600;"> Mesas Redondas </h3>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+	<div class="container-fluid p-0">
+		<div class="row no-gutters">
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-ministrantes">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
 
+						<h3 style="font-weight: 600;"> Ministrantes </h3>
 
-
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box"  href="_" data-toggle="modal" data-target="#modal-palestras">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
+						<h3 style="font-weight: 600;"> Palestras </h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box"  href="_" data-toggle="modal" data-target="#modal-minicursos">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
+						<h3 style="font-weight: 600;"> Minicursos </h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-workshops">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
+						<h3 style="font-weight: 600;"> Workshops </h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box"  href="_" data-toggle="modal" data-target="#modal-capture">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption">
+						<h3 style="font-weight: 600;"> Capture The Flag </h3>
+					</div>
+				</a>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<a class="portfolio-box"  href="_" data-toggle="modal" data-target="#modal-mesa">
+					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
+					<div class="portfolio-box-caption p-3">
+						<h3 style="font-weight: 600;"> Mesas Redondas </h3>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
 
 
 
@@ -205,36 +212,5 @@
 <script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
-
-<script>
-	// Set the date we're counting down to
-	var countDownDate = new Date("Sep 09, 2019 08:00:00").getTime();
-
-	// Update the count down every 1 second
-	var x = setInterval(function () {
-
-		// Get todays date and time
-		var now = new Date().getTime();
-
-		// Find the distance between now and the count down date
-		var distance = countDownDate - now;
-
-		// Time calculations for days, hours, minutes and seconds
-		var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById("contador-dias").innerHTML = days;
-    document.getElementById("contador-horas").innerHTML = hours;
-    document.getElementById("contador-min").innerHTML = minutes;
-    document.getElementById("contador-seg").innerHTML = seconds;
-
-		// If the count down is finished, write some text 
-		if (distance < 0) {
-			clearInterval(x);
-			document.getElementById("contador").innerHTML = "Evento já realizado :P";
-		}
-	}, 1000);
-</script>
+<script src="{{ url_for('static', filename='js/flipclock.min.js') }}"></script>
 {% endblock %}

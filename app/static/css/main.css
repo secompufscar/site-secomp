@@ -9,6 +9,10 @@ header {
     header a:hover {
       color: rgba(255, 255, 255, 0.7); }
 
+.content {
+  min-height: 70vh;
+}
+
 .small {
   font-size: 14px; }
 
@@ -17,6 +21,89 @@ header {
 
 .pad-inicio {
   padding-top: 10vh; }
+
+.overlay {
+  background-color: #000000;
+  position: relative;
+  margin-top: 57px; }
+
+.opac {
+  filter: opacity(0.4); }
+
+.overlay-text {
+  position: absolute;
+  color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+
+@media (orientation: landscape) {
+  .img-responsive {
+    width: 100%;
+    height: 100vh;
+  }
+  .overlay-text h1 {
+    font-weight: 600;
+    font-size: 350%;
+  }
+  .overlay-text h2 {
+    font-weight: 600;
+    font-size: 200%;
+  }
+}
+
+@media (orientation: portrait) {
+  .img-responsive {
+    width: 100vw;
+  }
+  .overlay-text h1 {
+    font-weight: 600;
+    font-size: 100%;
+  }
+  .overlay-text h2 {
+    font-weight: 600;
+    font-size: 70%;
+  }
+  div.text-center.overlay-text h1 {
+    font-weight: 600;
+    font-size: 170%;
+  }
+  div.text-center.overlay-text h2 {
+    font-weight: 600;
+    font-size: 95%;
+  }
+  .teste {
+    display: none !important;
+  }
+  h2.text-center.pb-3 {
+    margin-top: 15px;
+  }
+  p.text-justify {
+    margin-right: 15px;
+  }
+  div.embed-responsive.embed-responsive-21by9 video {
+    width: 100%;
+    height: 40%;
+  }
+  #video {
+    margin-bottom: -90%;
+  }
+}
+
+@media (orientation: portrait) and (min-width: 320px) and (max-width: 320px){
+  div.text-center.overlay-text h1 {
+    font-weight: 600;
+    font-size: 160%;
+  }
+  div.text-center.overlay-text h2 {
+    font-weight: 600;
+    font-size: 80%;
+  }
+  div.text-center.text-white.p-3.mt-4.mb-4.bg-dark h2 {
+    font-size: 170%;
+  }
+}
+
 
 .carousel-item {
   height: 100vh;
@@ -27,7 +114,7 @@ header {
 .dropdown-menu a {
   font-size: 12px; }
 
-> .dropdown-toggle:active {
+.dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: visible; }
 
@@ -193,3 +280,11 @@ a.portfolio-box:hover {
   -webkit-transition: opacity .25s ease;
   transition: opacity .25s ease;
   text-align: center; }
+
+.modal_portifolio {
+  display: inline-block;
+  margin: 15px;}
+
+.clock {
+  width: 100%;
+}
