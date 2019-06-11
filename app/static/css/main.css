@@ -52,6 +52,46 @@ header {
   }
 }
 
+@media (max-width: 1199px){
+  .teste2{
+    display: none;]
+  }
+  .setaDireita{
+    text-align: right !important;
+    width: auto;
+    margin-right: 5%;
+  }
+  .setaEsquerda{
+    text-align: left !important;
+    width: auto;
+    margin-left: 5%;
+  }
+  .vai{
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+  }
+  .center{
+    width: 60%;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+  }
+  .cronograma{
+    width: 100% !important;
+  }
+}
+
+.cronograma{
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+  position: relative;
+  width: 120%;
+}
+
 @media (orientation: portrait) {
   .img-responsive {
     width: 100vw;
