@@ -48,7 +48,7 @@
 <header>
   <nav class="nav-responsiva navbar shadow fixed-top navbar-expand-lg bg-gradient-secomp">
     <div class="container-fluid">
-      {# Marca d'água para a home  #}
+      {# Marca d'água para a home #}
       <a class="navbar-brand mr-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
                                                                                src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30"
                                                                                                                                                         alt="Logo atual da SECOMP" /></a>
@@ -57,7 +57,7 @@
         <i class="fas fa-bars text-white"></i>
       </button>
       <div class="collapse mr-auto navbar-collapse" id="navbarItens">
-        <ul class="navbar-nav mr-auto">
+        <ul class="ml-3 navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.index') }}"><i class="mr-1 fas fa-home"></i>
               HOME</a>
@@ -84,7 +84,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{{ url_for('views.cronograma') }}"><i
                                        class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+              <a class="dropdown-item" href="{{ url_for('views.ctf') }}"><i
                                        class="mr-1 fas fa-flag"></i> CTF</a>
               <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
                                        class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
@@ -94,10 +94,8 @@
             <a class="nav-link" href="{{ url_for('views.faq') }}"><i
                                 class="mr-1 fas fa-question-circle"></i> FAQ</a>
           </li>
-          {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
         </ul>
 
-        {# TODO: Corrigir o espaçamento #}
         <!-- Lado direito da Navbar -->
         <div class="navbar-nav">
           {% if current_user.is_authenticated %}
