@@ -1,363 +1,446 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<style>
+	#div_anexo { display: none;}
+</style>
+1
 <div class="pad-inicio container pb-5">
-	Assunto <input id="assunto" type="text"></input>
-	Título <input id="titulo" type="text"></input>
-	Template do email <input id="template" type="text"></input></br>
-	Incluir anexo <input id="incluirAnexo" type="checkbox"></input></br>
-	
-	<div id="divAnexo">
-		Path da pasta de anexos <input id="anexoPasta" type="text"></input>
-		Nome base do arquivo, sem extenção <input id="anexo" type="text"></input>
-		Extenção <input id="extencao" list="extencaoList"/>
-		<datalist id="extencaoList">
-			<option value="Sem extenção"></option>
-			<option value=".pdf"></option>
+	Assunto
+	<input id="text_assunto" type="text"></input></br>
+	Título
+	<input id="text_titulo" type="text"></input></br>
+	Template do email
+	<input id="text_template_email" type="text"></input></br>
+
+	Anexo
+	<input id="cbox_tem_anexo" type="checkbox"></input></br>
+	<div id="div_anexo">
+		Caminho da pasta
+		<input id="text_path_anexo" type="text"></input></br>
+		Base do nome do arquivo
+		<input id="text_base_anexo" type="text"></input></br>
+		Complemento
+		<input id="list_complemento_anexo" list="listaCompAnexo"/></br>
+		<datalist id="listaCompAnexo">
+			{% for i in dictComplemento %}
+			<option value="{{i}}"></option>
+			{% endfor %}
 		</datalist>
-		Complemento <input id="tipoComplementoAnexo" list="complementoAnexoList"/>
-		<datalist id="complementoAnexoList">
-			<option value="Mesmo arquivo para todos"></option>
-			<option value="Nome do usuário, CamelCase"></option>
+		Extenção
+		<input id="list_extencao_anexo" list="listaExtencaoAnexo"/></br>
+		<datalist id="listaExtencaoAnexo">
+			{% for i in dictExtencao %}
+			<option value="{{i}}"></option>
+			{% endfor %}
 		</datalist>
 	</div>
+	
+	<button id="btn_enviar">Enviar</button></br>
 
-	<button id="btnEnviar">Enviar</button></br>
 	</br>
-	<input id="atividades" list="listaAtividades"/>
+	
+	Pesquisar Usuários</br>
+	Atividade
+	<input id="list_atividades" list="listaAtividades"/></br>
 	<datalist id="listaAtividades">
 		<option value="Todas"></option>
+		{% for i in dictAtividades %}
+		<option value="{{i}}"></option>
+		{% endfor %}
 	</datalist>
 
-	<button id="pesquisar">Pesquisar</button>
+	<button id="btn_pesquisar">Pesquisar</button></br>
 
-	<p>Resultado</p>
-	Nome: <input id="resultadoPesquisa" type="text"></br>
-	<input id="cboxTodosUsuarios" type="checkbox"></input>Todos
+	</br>
+
+	Resultado</br>
+	Nome: <input id="text_pesquisa_em_resultado" type="text">
+	<input id="cbox_todos_os_usuarios" type="checkbox"></input>Todos</br>
 	<div >
-		<table id="output">
+		<table id="tbl_resultado">
 			<tr>
 				<th></th>
-				<th id="baseColumnNome">Nome</th>
-				<th id="baseColumnId">Id</th>
-				<th id="baseColumnEmail">Email</th>
+				<th id="base_column_nome_r">Nome</th>
+				<th id="base_column_id_r">Id</th>
+				<th id="base_column_email_r">Email</th>
 			</tr>
 		</table>
 	</div>
 
-	<p>Selecionados</p>
-	Nome: <input id="selecionadosPesquisa" type="text"></br>
-	<button id="btnTodosUsuariosSelecionados" >Remover Todos</button>
+	</br>
+
+	Selecionados</br>
+	Nome: <input id="text_pesquisa_em_selecionados" type="text">
+	<button id="btn_remove_todos_os_relecionados" >Remover Todos</button></br>
 	<div >
-		<table id="selecionados">
+		<table id="tbl_selecionados">
 			<tr>
-				<th>Nome</th>
-				<th>Id</th>
-				<th>Email</th>
+				<th id="base_column_nome_s">Nome</th>
+				<th id="base_column_id_s">Id</th>
+				<th id="base_column_email_s">Email</th>
+				<th>Batata</th>
 			</tr>
 		</table>
 	</div>
 </div>
 
 <script type="text/javascript">
-	// Remove um elemento de uma lista
-	function removeFrom(lista, elemento) {
-		var index = lista.indexOf(elemento);
-
-		// Remove da lista de selecionados
-		if (index > -1) {
-			lista.splice(index, 1);
-		}
-
-		return lista;
-	}
-
-	// Remove a div de um usuário da parte dos selecionados
-	var removeButtonFunc = function () {
-		// Número do id do usuário referente
-		var divID = ($(this).parent().attr('id')).replace("selec", "");
-	
-		// Desmarca a checkbox relativa à esse usuário
-		$("#cbox" + divID).prop("checked", false);
-		$("#cboxTodosUsuarios").prop("checked", false);
-
-		selecionados = removeFrom(divID);
-
-		// Remove a div referente
-		$(this).parent().remove();
-	}
-
-	// Cria a a div de um usuário após uma pesquisa
-	var cboxUsuarioCheckedFunc = function(selecionados, id, nome, email) {
-		// Adiciona à lista de selecionados
-		if (selecionados.indexOf(id) == -1) {
-			selecionados.push(id);
-
-			// Cria um item para o selecionado
-			$("#selecionados").append("<tr id=\"" + "selec" + id + "\" name=" + nome.toLowerCase() + "><td>" + nome + "</td><td>" + id + "</td><td>" + email + "</td><button class=\"remove\">Remover</button></tr>");
-
-			// Associa a função ao botão remove
-			$(".remove").click(removeButtonFunc);
-		}
-
-		return selecionados;
-	}
-
-	$(document).ready(function() {
-		// [id] = {'id' : id, nome' : nome, 'email' : email}
+	(function(code) {
+		code(window.jQuery, window, document);
+	}(function($, window, document) {
+	// Dicts e lists
+		// [id] = {'id' : id, 'nome' : nome, 'email' : email, 'trResultado' : DOM, 'trSelecionado' : DOM}
 		var usuarios = {};
-		// [nome] = {id}
-		var atividadeDict = {};
-
-		// Array
+		// [nome] = {id};
+		var atividades = {{dictAtividades|safe}};
+		//Array do resultado
+		var resultado = [];
+		//Array dos selecionados
 		var selecionados = [];
+		// Dicionário das modificações ao nome do anexo
+		var complementoAnexo = {{dictComplemento|safe}};
+		// Dicionário das modificações ao nome do anexo
+		var extencaoAnexo = {{dictExtencao|safe}};
+	//
 
-		// Dicionário dos tipos de modificações aplicáveis ao nome dos anexos
-		var dComplemento = {'Mesmo arquivo para todos' : 0, 'Nome do usuário, CamelCase' : 1};
+		// Insere um elemento de uma lista
+		function arrayInsert(lista, elemento) {
+			var index = lista.indexOf(elemento);
 
-		$("#divAnexo").hide();
-		// Define a lista de atividades
-		$.ajax({
-			type : 'POST',
-			url : '/gerenciar/atividades-json-email-custon'
-		}).done(function(data) {
-			for (i in data.output) {
-				var id = data.output[i].id;
-				var value = data.output[i].titulo;
+			// Remove da lista de selecionados
+			if (index == -1) {
+				lista.push(elemento);
+			}
+		}
 
-				// Associa um nome a um id
-				atividadeDict[value] = id;
+		// Remove um elemento de uma lista
+		function arrayRemove(lista, elemento) {
+			var index = lista.indexOf(elemento);
 
-				$("#listaAtividades").append("<option value='"+value+"'></option>");
-			};
-		});
+			// Remove da lista de selecionados
+			if (index > -1) {
+				lista.splice(index, 1);
+			}
+		}
 
-		// Cria a lista de usuários
-		$("#pesquisar").click(function() {
-			// Requisição da informação sobre os usuários
-			if ($("#atividades").val() != "") {
-				$.ajax({
-					data : {
-						id : function() {
-							// Nome da atividade
-							var v = $("#atividades").val();
-
-							if (v == "Todas") {
-								return 0;
-							} else {
-								return atividadeDict[v];
-							}
-						},
-					},
-					type : 'POST',
-					url : '/gerenciar/pesquisa-usuario-email-custon'
-				}).done(function(data) {
-					// Coloca os itens
-					$("#output").empty();
-
-					$("#output").append("<tr><th></th><th>Nome</th><th>Id</th><th>Email</th></tr>");
-
-					data.output.forEach(function(usuario) {
-						var nome = JSON.stringify(usuario.nome);
-						var email = JSON.stringify(usuario.email);
-						var id = JSON.stringify(usuario.id);
-
-						// Incluí os usuários no dicionário
-						if (usuarios[id] == undefined) {
-							usuarios[id] = {'id' : id, 'nome' : nome, 'email' : email};
-						}
-
-						// Verifica se um usuário ja foi selecionado em outra pesquisa
-						var check = (() => {
-							return ( (selecionados.indexOf(id) != -1) ? "checked" : "")
-						})();
-
-						// Cria os elementos relativos aos usuários
-						$("#output").append("<tr id=\"result" + id + "\" name=" + nome.toLowerCase() + "><td><input id =\"cbox" + id + "\" class=\"cboxUsuarios\" type=\"checkbox\" value=\"" + id + "\"" + check + "></td><td>" + nome + "</td><td>" + id + "</td><td>" + email + "</td></tr>");
-					});
-
-					// Evento da checkbox
-					$(".cboxUsuarios").change(function() {
-						var id = $(this).attr("value");
-						var nome = usuarios[id].nome;
-						var email = usuarios[id].email;
-
-						// Cria ou destroí uma div de um usuário
-						if(this.checked) {
-							cboxUsuarioCheckedFunc(selecionados, id, nome, email);
+		// Requisita ao servidor os usuários que participaram de uma atividade
+		function pesquisarUsuarios(nomeAtiv) {
+			return $.ajax({
+				data : {
+					id : function() {
+						if (nomeAtiv == "Todas") {
+							return 0;
 						} else {
-							removeFrom(selecionados, id);
-							
-							// Remove a div referente
-							$("#selec"+id).remove();
+							return atividades[nomeAtiv];
+						}
+					},
+				},
+				type : 'POST',
+				url : '/api/pesquisa-usuario-por-atividade'
+			});
+		}
+
+		// Cria as variáveis locais referentes aos dados de um usuário
+		// Cria elementos do DOM apenas 1 vez
+		function criaUsuarios(tableR, tableS, data, cbxTUsuarios) {
+			// Elementos que serão adicionados nas tabelas
+			var toAppendTableR = "";
+			var toAppendTableS = "";
+
+			resultado = [];
+
+			// Cria a entrada de um usuário e adiciona suas rows nas variáveis temporárias
+			data.forEach(function(usuario) {
+				if (usuarios[usuario.id] == undefined) {
+					var id = usuario['id'];
+					var nome = usuario['nome'];
+					var email = usuario['email'];
+					var check = (() => {
+								return ( (selecionados.indexOf(id) != -1) ? "checked" : "")
+							})();
+
+					resultado.push(id);
+
+					usuarios[usuario.id] = {};
+					usuarios[usuario.id]['nome'] = nome;
+					usuarios[usuario.id]['id'] = id;
+					usuarios[usuario.id]['email'] = email;
+					usuarios[usuario.id]['pesq'] = nome.toLowerCase().trim();
+					usuarios[usuario.id]['trResultado'] = undefined;
+					usuarios[usuario.id]['trSelecionado'] = undefined;
+					usuarios[usuario.id]['checkbox'] = undefined;
+					usuarios[usuario.id]['remove'] = undefined;
+
+					toAppendTableR += "<tr id=resultado" + id + " class=resultado><td><input id=cbox" + id + " class=cboxUsuario type=checkbox value=" + id + " " + check + "></td><td>" + nome + "</td><td>" + id + "</td><td>" + email + "</td></tr>";
+					toAppendTableS += "<tr id=selecionado" + id + "><td>" + nome + "</td><td>" + id + "</td><td>" + email + "</td><td><button id=remove" + id + ">Remover</button></td></tr>";
+				}
+			});
+
+			// Cria os elementos
+			tableR.append(toAppendTableR);
+			tableS.append(toAppendTableS);
+
+			// Esconde todas as outras rows de resultado
+			$(".resultado").hide();
+
+			// Identifica e atribui a cada usuário
+			data.forEach(function(u) {
+				var id = u.id;
+				var usuario = usuarios[u.id];
+				if (usuario['trResultado'] == undefined) {
+					var elemento = $("#resultado" + id);
+					(usuario['trResultado']) = elemento;
+				}
+
+				// Mostra os usuários que foram pesquisados agora
+				usuarios[usuario.id]['trResultado'].show();
+
+				if (usuario['trSelecionado'] == undefined) {
+					var elemento = $("#selecionado" + id);
+					elemento.hide();
+					(usuario['trSelecionado']) = elemento;
+				}
+
+				if (usuario['checkbox'] == undefined) {
+					var elemento = $("#cbox" + id);
+					elemento.change(function() {
+						if (this.checked) {
+							arrayInsert(selecionados, id);
+							usuario['trSelecionado'].show();
+						} else {
+							arrayRemove(selecionados, id);
+							usuario['trSelecionado'].hide();
 						}
 					});
-				});
-			}
-		});
-
-		// Checkbox adicionar todos os usuários
-		$("#cboxTodosUsuarios").change(function() {
-			for (i in usuarios) {
-				var id = usuarios[i].id;
-				var nome = usuarios[i].nome;
-				var email = usuarios[i].email;
-
-				// Cria ou destroí uma div de um usuário
-				if(this.checked) {
-					cboxUsuarioCheckedFunc(selecionados, id, nome, email);
-
-					// Marca a checkbox relativa à esse usuário
-					$("#cbox" + id).prop("checked", true);
-				} else {					
-					removeFrom(selecionados, id);
-
-					// Desmarca a checkbox relativa à esse usuário
-					$("#cbox" + id).prop("checked", false);
-							
-					// Remove a div referente
-					$("#selec"+id).remove();
+					(usuario['checkbox']) = elemento;
 				}
-			}
-		});
 
-		// Checkbox adicionar todos os usuários
-		$("#btnTodosUsuariosSelecionados").click(function() {
-			// Remove todos os elementos
-			$("#selecionados").empty();
-			// Reseta selecionados
-			selecionados = [];
+				if (usuario['remove'] == undefined) {
+					var elemento = $("#remove" + id);
+					elemento.click(function() {
+						arrayRemove(selecionados, id);
+						usuario['trSelecionado'].hide();
+						usuario['checkbox'].prop('checked', false);
+						cbxTUsuarios.prop('checked', false);
+					});
+					(usuario['remove']) = elemento;
+				}
+			});
+		}
 
-			// Desmarca todas as checkbox de usuário
-			$(".cboxUsuarios").prop("checked", false);
-			$("#cboxTodosUsuarios").prop("checked", false);
-		});
+		function enviarEmails(data) {
+			return $.ajax({
+				data : data,
+				type : 'POST',
+				url : '/api/executa-email-custon'
+			});
+		}	
 
-		// Pesquisa
-		$("#resultadoPesquisa").keyup(function() {
-			var input = $(this).val();
-			var listInput = input.split(",");
+		$(function() {
+		// Elementos DOM
+			// Input assunto
+			var iptAssunto = $("#text_assunto");
+			// Input título
+			var iptTitulo = $("#text_titulo");
+			// Input Template do email, nome do arquivo
+			var iptTEmail = $("#text_template_email");
+			// Lista de atividades
+			var lstAtividades = $("#list_atividades");
+			// Botão de pesquisa
+			var btnPesquisar = $("#btn_pesquisar");
+			// Input para pesquisa no resultado
+			var iptPResultados = $("#text_pesquisa_em_resultado");
+			// Checkbox todos os usuários
+			var cbxTUsuarios = $("#cbox_todos_os_usuarios");
+			// Tabela resultados
+			var tblResultados = $("#tbl_resultado");
+			// Base da coluna nome dos resultados
+			var thColNomeR = $("#base_column_nome_r");
+			// Base da coluna id dos resultados
+			var thColIdR = $("#base_column_id_r");
+			// Base da coluna email dos resultados
+			var thColEmailR = $("#base_column_email_r");
+			// Input para pesquisa em selecionados		
+			var iptPSelecionados = $("#text_pesquisa_em_selecionados");
+			// Botão para remover todos os selecionados
+			var btnRTSelecionados = $("#btn_remove_todos_os_relecionados");
+			// Tabela selecionados
+			var tblSelecionados = $("#tbl_selecionados");
+			// Base da coluna nome dos resultados
+			var thColNomeS = $("#base_column_nome_s");
+			// Base da coluna id dos resultados
+			var thColIdS = $("#base_column_id_s");
+			// Base da coluna email dos resultados
+			var thColEmailS = $("#base_column_email_s");
+			// Checkbox do anexo
+			var cbxTemAnexo = $("#cbox_tem_anexo");
+			// Bloco do anexo
+			var divAnexo = $("#div_anexo");
+			// Input da path da pasta dos anexos
+			var iptPathAnexo = $("#text_path_anexo");
+			// Input do nome base dos arquivos
+			var iptBaseAnexo = $("#text_base_anexo");
+			// Lista complemento (modificação) do nome dos arquivos
+			var lstCompAnexo = $("#list_complemento_anexo");
+			// Lista das extenções dos arquivos
+			var lstExtencaoAnexo = $("#list_extencao_anexo");
+			// Boão de envio
+			var btnEnviar = $("#btn_enviar");
+		//
 
-			// Pesquisa usando o nome dos usuários
-			for (i in usuarios) {
-				var t = $("#result" + usuarios[i].id);
+			// Botão pesquisar
+			btnPesquisar.click(function() {
+				var nomeAtiv = lstAtividades.val().trim();
+				if (nomeAtiv != "") {
+					pesquisarUsuarios(nomeAtiv).done(function(data) {
+						criaUsuarios(tblResultados, tblSelecionados, data, cbxTUsuarios);
+					});
+				}
+			});
 
-				var target = t.attr("name");
-				var flag = false;
+			// Pesquisa Resultados
+			iptPResultados.keyup(function() {
+				var input = $(this).val();
+				var listInput = input.trim().toLowerCase().split(",");
 
-				// Para cada parâmetro da pesquisa, ferifica se ele está presente no nome do usuário
-				for (i in listInput) {
-					if (target.indexOf(listInput[i].toLowerCase().trim()) != -1) {
-						flag = true;
-						break;
+				// Pesquisa usando o nome dos usuários
+				for (i in resultado) {
+					var id = resultado[i];
+					var usuario = usuarios[id];
+					var nome = usuario.pesq;
+					var target = usuario.trResultado;
+
+					var flag = false;
+
+					for (j in listInput) {
+						if (nome.indexOf(listInput[j]) != -1) {
+							flag = true;
+							break;
+						}
+					}
+
+					if (flag) {
+						target.show();
+					} else {
+						target.hide();
 					}
 				}
+			});
 
-				if (flag) {
-					t.show();
-				} else {
-					t.hide();
-				}
-			}
-		});
+			// Pesquisa Selecionados
+			iptPSelecionados.keyup(function() {
+				var input = $(this).val();
+				var listInput = input.trim().toLowerCase().split(",");
 
-		// Pesquisa
-		$("#selecionadosPesquisa").keyup(function() {
-			var input = $(this).val();
-			var listInput = input.split(",");
+				// Pesquisa usando o nome dos usuários
+				for (i in selecionados) {
+					var id = selecionados[i];
+					var usuario = usuarios[id];
+					var nome = usuario.pesq;
+					var target = usuario.trSelecionado;
 
-			// Pesquisa usando o nome dos usuários
-			for (i in selecionados) {
-				var t = $("#selec" + selecionados[i]);
+					var flag = false;
 
-				var target = t.attr("name");
-				var flag = false;
+					for (j in listInput) {
+						if (nome.indexOf(listInput[j]) != -1) {
+							flag = true;
+							break;
+						}
+					}
 
-				// Para cada parâmetro da pesquisa, ferifica se ele está presente no nome do usuário
-				for (i in listInput) {
-					if (target.indexOf(listInput[i].toLowerCase().trim()) != -1) {
-						flag = true;
-						break;
+					if (flag) {
+						target.show();
+					} else {
+						target.hide();
 					}
 				}
+			});
 
-				if (flag) {
-					t.show();
+
+			// Marcar todos os usuários
+			cbxTUsuarios.change(function() {
+				for (i in resultado) {
+					var iid = resultado[i];
+					var usuario = usuarios[iid];
+					var id = usuario.id;
+					var cbox = usuario.checkbox;
+					var trSelecionado = usuario.trSelecionado;
+
+					if(this.checked) {
+						arrayInsert(selecionados, id);
+
+						// Marca a checkbox relativa à esse usuário
+						cbox.prop("checked", true);
+
+						trSelecionado.show();
+					} else {					
+						arrayRemove(selecionados, id);
+
+						// Desmarca a checkbox relativa à esse usuário
+						cbox.prop("checked", false);
+								
+						trSelecionado.hide();
+					}
+				}
+			});
+
+			// Botão remover todos os usuários
+			btnRTSelecionados.click(function() {
+				// Reseta selecionados
+				selecionados = [];
+
+				// Desmarca todas as checkbox de usuário
+				$(".cboxUsuario").prop("checked", false);
+				cbxTUsuarios.prop("checked", false);
+
+				for (i in resultado) {
+					var iid = resultado[i];
+					var usuario = usuarios[iid];
+					var trSelecionado = usuario.trSelecionado;
+
+					trSelecionado.hide();
+				}
+			});
+
+			// Enviar emails
+			btnEnviar.click(function() {
+				var assunto = iptAssunto.val().trim();
+				var titulo = iptTitulo.val().trim();
+				var template = iptTEmail.val().trim();
+				var temAnexo = cbxTemAnexo.prop('checked');
+				var anexoBase = iptBaseAnexo.val();
+				var anexoPasta = iptPathAnexo.val();
+				var complemento = complementoAnexo[lstCompAnexo.val()];
+				var extencao = extencaoAnexo[lstExtencaoAnexo.val()];
+
+				if (assunto == "") {
+					alert("Assunto vazio!");
+				} else if (titulo == "") {
+					alert("Título vazio!");
+				} else if (template == "") {
+					alert("Template vazio!");
+				} else if (temAnexo && anexoBase == "") {
+					alert("Base do nome do anexo vazio!");
+				} else if (temAnexo && complemento == undefined) {
+					alert("Complemento não escolhido!");
+				} else if (temAnexo && extencao == undefined) {
+					alert("Extenção não escolhida!");
+				} else if (selecionados.length == 0) {
+					alert("Ninguém foi selecionado!");
 				} else {
-					t.hide();
-				}
-			}
-		});
+					if(confirm("Deseja realmente enviar?")){
 
-		// Sorting das tables
-		$("#baseColumnNome").click(function() {
-			console.log("Sort Nome");
-		});
-
-		$("#baseColumnId").click(function() {
-			console.log("Sort ID");
-		});
-
-		$("#baseColumnEmail").click(function() {
-			console.log("Sort Email");
-		});
-
-		// Enviar emails
-		$("#btnEnviar").click(function() {
-			var assunto = $("#assunto").val().trim();
-			var titulo = $("#titulo").val().trim();
-			var template = $("#template").val().trim();
-			var temAnexo = $("#incluirAnexo").prop('checked');
-			var anexo = $("#anexo").val();
-			var anexoPasta = $("#anexoPasta").val();
-			var complemento = dComplemento[$("#tipoComplementoAnexo").val()];
-			var extencao = $("#extencao").val();
-
-			// Verifica erros nos campos
-			if (assunto == "") {
-				alert("Assunto vazio!");
-				$("#assunto").css('background-color', '#dddddd');
-			} else if (titulo == "") {
-				alert("Título vazio!");
-				$("#titulo").css('background-color', '#dddddd');
-			} else if (template == "") {
-				alert("Template vazio!");
-				$("#template").css('background-color', '#dddddd');
-			} else if (temAnexo && anexo == "") {
-				alert("Anexo vazio!");
-				$("#anexo").css('background-color', '#dddddd');
-			} else if (!temAnexo && anexo != "") {
-				alert("Anexo editado mas não selecionado!");
-			} else if (selecionados.length == 0) {
-				alert("Ninguem foi selecionado!");
-			} else if (extencao == "") {
-				alert("Extenção foi selecionado!");
-			} else {
-				if (extencao[0] != '.') {
-					extencao= "";
-				}
-
-				// Envia as informações
-				$.ajax({
-					dataType : 'json',
-					data : {
-						'assunto' : assunto,
-						'titulo' : titulo,
-						'template' : template,
-						'temAnexo' : temAnexo,
-						'anexo' : function() {
-							a = [];
-									
-							anexo.split(";").forEach(function(s) {
-								a.push(anexoPasta + s.trim());
-							});
-
-							return a;	
-						},
-						'complemento' : complemento,
-						'extencao' : extencao,
-						'selecionados' : function() {
+						var data = {};
+						data.assunto = assunto;
+						data.titulo = titulo;
+						data.template = template;
+						data.temAnexo = temAnexo;
+						data.anexoBase = anexoBase;
+						data.anexoPasta = anexoPasta;
+						data.complemento = complemento;
+						data.extencao = extencao;
+						data.selecionados = function() {
 							a = [];
 									
 							selecionados.forEach(function(s) {
@@ -365,27 +448,48 @@
 							});
 
 							return a;	
-						},
-					},
-					type : 'POST',
-					url : '/gerenciar/executa-email-custon'
-				}).done(function(data) {
-					alert(data);
-				});
-			}
+						};
+						enviarEmails(data).done(function(data) {
+							alert(data);
+						});
+				    }
+				}				
+			});
 
-			alert("Executando...");
-		});
+			cbxTemAnexo.change(function() {
+					if(this.checked) {
+						divAnexo.show();
+					} else {
+						divAnexo.hide();
+					}
+			});
 
-		// Modifica a visibilidade da parte do anexo
-		$("#incluirAnexo").change(function() {
-				if(this.checked) {
-					$("#divAnexo").show();
-				} else {
-					$("#divAnexo").hide();
-				}
+			// Sorting das tables
+			thColNomeR.click(function() {
+				console.log("Sort Nome");
+			});
+
+			thColIdR.click(function() {
+				console.log("Sort ID");
+			});
+
+			thColEmailR.click(function() {
+				console.log("Sort Email");
+			});
+
+			thColNomeS.click(function() {
+				console.log("Sort Nome");
+			});
+
+			thColIdS.click(function() {
+				console.log("Sort ID");
+			});
+
+			thColEmailS.click(function() {
+				console.log("Sort Email");
+			});
 		});
-	});
+	})); // <- Se houser erro aqui, é por conta das tags do jinja
 </script>
 
 {% endblock %}

@@ -4,6 +4,9 @@ from flask import render_template, request, redirect, abort, url_for, Blueprint
 from flask import jsonify
 from app.controllers.functions.dictionaries import *
 
+from app.controllers.functions.helpers import get_participantes_da_atividade_json
+from app.controllers.functions.email import enviar_email_custon
+
 import json
 
 from app.models.models import *
@@ -29,4 +32,53 @@ def patrocinadores():
 def retornaImg(url):
     return url #TODO (quando estiver no servidor) hospedagem de imagens
 
+@api.route('/executa-email-custon',methods=['POST'])
+# @login_required
+def executa_email_custon():
+    '''
+    Rota para acesso remoto que executa o envio de emails
+    '''
+    # permissoes = current_user.getPermissoes()
+    # if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+    if True:
+        try:
+            pkg = request.form
 
+            assunto = pkg['assunto']
+            titulo = pkg['titulo']
+            template = pkg['template']
+            temAnexo = pkg['temAnexo']
+            anexoBase = pkg['anexoBase']
+            anexoPasta= pkg['anexoPasta']
+            complemento = int(pkg['complemento'])
+            extencao = int(pkg['extencao'])
+            selecionados = pkg['selecionados'].split(',')
+
+            if extencao == 0:
+                extencao = ""
+            elif extencao == 1:
+                extencao = ".pdf"
+
+            enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPasta, complemento, selecionados, extencao)
+
+            return jsonify('Sucesso')
+        except Exception as e:
+            print(e)
+            return jsonify('Falha')
+    else:
+        print("NAO PODE")
+
+
+@api.route('/pesquisa-usuario-por-atividade',methods=['POST'])
+# @login_required
+def pesquisa_usuario_por_atividade():
+    '''
+    Retorna os usuários que participaram de uma atividade
+    '''
+    # permissoes = current_user.getPermissoes()
+    # if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+    if True:
+        atividadeID = request.form['id']
+
+        participantes = get_participantes_da_atividade_json(int(atividadeID))
+        return jsonify(participantes)
