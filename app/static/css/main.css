@@ -9,23 +9,39 @@ header {
     header a:hover {
       color: rgba(255, 255, 255, 0.7); }
 
-.content {
-  min-height: 70vh;
+/* Responsividade da navbar e dos titulos */
+@media (orientation: portrait) {
+  .nav-responsiva {
+    min-height: 8vh; }
+  .pad-inicio {
+    padding-top: 8vh; }
 }
 
-.small {
-  font-size: 14px; }
+@media (orientation: landscape) {
+  .nav-responsiva {
+    min-height: 8vh; }
+  .pad-inicio {
+    padding-top: 8vh; }
+}
+
+@media (orientation: landscape) and (max-height: 325px) {
+  .pad-inicio {
+    padding-top: 15vh; }
+}
+
+@media (orientation: landscape) and (min-height: 325px) and (max-height: 400px) {
+  .pad-inicio {
+    padding-top: 12vh; }
+}
+/* fim-navbar */
 
 .bg-gradient-secomp {
   background-image: linear-gradient(to right, #008cb5, #00cfa1); }
 
-.pad-inicio {
-  padding-top: 10vh; }
-
+  /* Imagens com texto em cima */
 .overlay {
   background-color: #000000;
-  position: relative;
-  margin-top: 57px; }
+  position: relative; }
 
 .opac {
   filter: opacity(0.4); }
@@ -44,11 +60,11 @@ header {
   }
   .overlay-text h1 {
     font-weight: 600;
-    font-size: 350%;
+    font-size: 8vh;
   }
   .overlay-text h2 {
     font-weight: 600;
-    font-size: 200%;
+    font-size: 4.5vh;
   }
 }
 
@@ -58,28 +74,11 @@ header {
   }
   .overlay-text h1 {
     font-weight: 600;
-    font-size: 100%;
+    font-size: 3vh;
   }
   .overlay-text h2 {
     font-weight: 600;
-    font-size: 70%;
-  }
-  div.text-center.overlay-text h1 {
-    font-weight: 600;
-    font-size: 170%;
-  }
-  div.text-center.overlay-text h2 {
-    font-weight: 600;
-    font-size: 95%;
-  }
-  .teste {
-    display: none !important;
-  }
-  h2.text-center.pb-3 {
-    margin-top: 15px;
-  }
-  p.text-justify {
-    margin-right: 15px;
+    font-size: 2vh;
   }
   div.embed-responsive.embed-responsive-21by9 video {
     width: 100%;
@@ -89,6 +88,7 @@ header {
     margin-bottom: -90%;
   }
 }
+/* fim-imagens */
 
 @media (orientation: portrait) and (min-width: 320px) and (max-width: 320px){
   div.text-center.overlay-text h1 {
