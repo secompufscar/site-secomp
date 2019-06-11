@@ -5,7 +5,7 @@ from flask_login import current_user
 from flask_mail import Mail, Message
 
 from app.models.models import db, Usuario
-from app.controllers.functions.helpers import get_usuarios_query, get_paths_anexo
+from app.controllers.functions.helpers import get_usuarios_query, get_path_anexo
 
 mail = Mail()
 
@@ -53,9 +53,11 @@ def enviar_email_generico(info=None, anexo=None):
                     fp.close()
                 except Exception as e:
                     print(e)
+                    return
 
     except Exception as e:
         print(e)
+        return
 
     try:
         global mail
@@ -132,7 +134,8 @@ def email_confirmado():
         print(e)
         return None
 
-def enviar_email_custon(assunto, titulo, template, temAnexo, anexo, complemento, selecionados, extencao):
+
+def enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPasta, complemento, selecionados, extencao):
     '''
     Envia um ou mais emails customizados
     Podendo ou não ter anexo
@@ -151,6 +154,9 @@ def enviar_email_custon(assunto, titulo, template, temAnexo, anexo, complemento,
             "footer": 'TI X SECOMP UFSCar'
         }
 
-        files = get_paths_anexo(anexo, complemento, usuario, extencao)
-
-        enviar_email_generico(info, files)
+        if (temAnexo):
+            files = []
+            files.append(get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao))
+            enviar_email_generico(info, files)
+        else:
+            enviar_email_generico(info, None)

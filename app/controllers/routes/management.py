@@ -5,9 +5,9 @@ from flask_login import login_required, current_user
 
 from app.controllers.forms.forms import *
 from app.models.models import *
-from app.controllers.functions.helpers import get_usuarios_query, get_atividades_json, get_participantes_da_atividade_json
 from app.controllers.functions.email import enviar_email_custon
 
+import json
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
@@ -159,72 +159,29 @@ def listas():
         abort(403)
 
 
-@management.route('/pesquisa-usuario-email-custon',methods=['POST'])
-@login_required
-def pesquisa_usuario_email_custon():
-    '''
-    Retorna os usuários que participaram de uma atividade
-    '''
-    permissoes = current_user.getPermissoes()
-    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
-        atividadeID = request.form['id']
-
-        participantes = get_participantes_da_atividade_json(int(atividadeID))
-        return jsonify({'output': participantes})
-
-
-@management.route('/atividades-json-email-custon',methods=['POST'])
-@login_required
-def atividades_json_email_custon():
-    '''
-    Retorna um json com informações sobre as atividades
-    '''
-    permissoes = current_user.getPermissoes()
-    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
-        atividades = get_atividades_json()
-        return jsonify({'output': atividades})
-
-
-@management.route('/executa-email-custon',methods=['POST'])
-@login_required
-def executa_email_custon():
-    '''
-    Rota para acesso remoto que executa o envio de emails
-    '''
-    permissoes = current_user.getPermissoes()
-    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
-        try:
-            pkg = request.form
-
-            assunto = pkg['assunto']
-            titulo = pkg['titulo']
-            template = pkg['template']
-            temAnexo = pkg['temAnexo']
-            anexo = pkg['anexo'].split(',')
-            complemento = pkg['complemento']
-            selecionados = pkg['selecionados'].split(',')
-            extencao = pkg['extencao']
-
-            enviar_email_custon(assunto, titulo, template, temAnexo, anexo, complemento, selecionados, extencao)
-
-            return jsonify('Sucesso')
-        except Exception as e:
-            print(e)
-            return jsonify('Falha')
-    else:
-        print("NAO PODE")
-
-
 @management.route("/email-custom", methods=["GET"])
-@login_required
+# @login_required
 def email_custom():
     '''
     Página para envio de email
     '''
-    permissoes = current_user.getPermissoes()
-    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+    # permissoes = current_user.getPermissoes()
+    # if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+    if True:
         form_login = LoginForm(request.form)
 
-        return render_template('management/email_custom.html', form_login=form_login)
+        dictComplemento = {'Mesmo arquivo para todos' : 0, 'Nome do usuário, CamelCase' : 1}
+        dictExtencao = {'Sem extenção' : 0, '.pdf' : 1}
+
+        query = db.session.query(Atividade)
+
+        dictAtividades = {}
+        nomesAtividades = []
+
+        for a in query:
+            dictAtividades[a.titulo] = a.id
+            nomesAtividades.append(a.titulo)
+
+        return render_template('management/email_custom.html', form_login=form_login, dictAtividades=dictAtividades, dictComplemento=dictComplemento, dictExtencao=dictExtencao)
     else:
         abort(403)

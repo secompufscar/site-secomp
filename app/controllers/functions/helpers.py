@@ -43,23 +43,6 @@ def get_atividades():
         print(e)
         return None
 
-def get_atividades_json():
-    '''
-    Retorna uma lista de dicionários de atividades para ser usado na página de email customizado
-    '''
-    try:
-        query = db.session.query(Atividade)
-        atividades = []
-
-        for a in query:
-            atividade = {'id':a.id, 'ativo':a.ativo, 'tipe':a.tipo, 'titulo':a.titulo}
-            atividades.append(atividade)
-
-        return atividades
-    except Exception as e:
-        print(e)
-        return None
-
 def get_participantes_da_atividade_json(id):
     '''
     Retorna uma lista de dicionários de usuários para ser usado na página de email cusmotizado
@@ -116,16 +99,16 @@ def verifica_outro_escolhido(campo, objeto):
     else:
         return campo.data
 
-def get_paths_anexo(anexo, complemento, usuario, extencao):
+
+def get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao):
     '''
     Retorna uma lista dos arquivos que serão anexados.
     '''
-    files = []
-    # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aki
-    for file in anexo:
-        if complemento == '0': # Mesmo arquivo para todos
-            files.append((file + extencao))
-        if complemento == '1': # Nome CamelCase
-            files.append((file + usuario.primeiro_nome + usuario.sobrenome + extencao))
 
-    return files
+    # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aki
+    if complemento == 0: # Mesmo arquivo para todos
+        return (anexoPasta + anexoBase + extencao)
+    elif complemento == 1: # Nome CamelCase
+        return (filanexoPasta + anexoBase + usuario.primeiro_nome + usuario.sobrenome + extencao)
+    else:
+        return None
