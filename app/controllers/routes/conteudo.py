@@ -85,8 +85,6 @@ def gerar_url_cadastro():
     else:
         abort(403)
 
-#TODO adicionar ministrantes
-#TODO adicionar areas
 @conteudo.route('/cadastro-atividade/minicurso', methods=['POST', 'GET'])
 @login_required
 def cadastro_minicurso():
@@ -107,8 +105,6 @@ def cadastro_minicurso():
         return render_template('conteudo/cadastro_minicurso.html', form=form)
     abort(403)
 
-#TODO adicionar ministrante
-#TODO adicionar areas
 @conteudo.route('/cadastro-atividade/palestra', methods=['POST', 'GET'])
 @login_required
 def cadastro_palestra():
@@ -144,8 +140,6 @@ def cadastro_mesa_redonda():
         return render_template('conteudo/cadastro_mesa_redonda.html')
     abort(403)
 
-#TODO adicionar ministrante
-#TODO adicionar areas
 @conteudo.route('/cadastro-atividade/feira-pesquisas', methods=['POST', 'GET'])
 @login_required
 def cadastro_feira_pesquisas():

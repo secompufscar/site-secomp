@@ -150,7 +150,6 @@ class CadastroMinistranteForm(FlaskForm):
     github = StringField('GitHub', id='github')
     recaptcha = RecaptchaField()
 
-
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
     area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
@@ -166,7 +165,6 @@ class CadastroInformacoesMinicurso(FlaskForm):
     dicas_instalacao = StringField('Dicas para instalação dos softwares necessários')
     observacoes = StringField('Observações')
 
-
 class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=64)])
     area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
@@ -178,7 +176,6 @@ class CadastroInformacoesPalestra(FlaskForm):
     perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired()])
     observacoes = StringField('Observações')
 
-
 class CadastroFeiraDePesquisas(FlaskForm):
     titulo = StringField('Título da Pesquisa', validators=[InputRequired()])
     area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
@@ -187,14 +184,9 @@ class CadastroFeiraDePesquisas(FlaskForm):
     planejamento = StringField('Planejamento', validators=[InputRequired()])
     observacoes = StringField('Observações')
 
-
-class CadastroMesaRedonda(FlaskForm):
-    titulo = StringField('Título da Pesquisa', validators=[InputRequired()])
-    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
-    descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
-    observacoes = StringField('Observações')
-
-
+#TODO fazer validator para campo opcoes_transporte_ida_volta ser obrigatorio caso transporte_ida_volta seja verdadeiro
+#TODO fazer validator para campo opcoes_transporte_sanca ser obrigatorio caso transporte_sanca seja verdadeiro
+#TODO fazer validator para campo necessidades_hospedagem ser obrigatorio caso hospedagem seja verdadeiro
 class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
     cidade_origem = StringField('Cidade de Origem', validators=[InputRequired(), Length(min=1,max=64)])
     data_chegada_sanca = DateField('Data de Chegada em São Carlos', format='%d/%m/%Y', id='data_chegada_sanca',
@@ -215,7 +207,6 @@ class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
         id='necessidades_hospedagem', validators=[Length(max=256), hospedagem_selecionada()])
     observacoes = StringField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)])
-
 
 class GerarURLCadastroForm(FlaskForm):
     descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1,max=100)])
