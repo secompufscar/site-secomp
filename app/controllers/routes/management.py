@@ -160,14 +160,13 @@ def listas():
 
 
 @management.route("/email-custom", methods=["GET"])
-# @login_required
+@login_required
 def email_custom():
     '''
     Página para envio de email
     '''
-    # permissoes = current_user.getPermissoes()
-    # if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
-    if True:
+    permissoes = current_user.getPermissoes()
+    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
 
         dictComplemento = {'Mesmo arquivo para todos' : 0, 'Nome do usuário, CamelCase' : 1}

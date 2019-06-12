@@ -33,14 +33,12 @@ def retornaImg(url):
     return url #TODO (quando estiver no servidor) hospedagem de imagens
 
 @api.route('/executa-email-custon',methods=['POST'])
-# @login_required
 def executa_email_custon():
     '''
     Rota para acesso remoto que executa o envio de emails
     '''
-    # permissoes = current_user.getPermissoes()
-    # if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
-    if True:
+    permissoes = current_user.getPermissoes()
+    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         try:
             pkg = request.form
 
@@ -70,14 +68,12 @@ def executa_email_custon():
 
 
 @api.route('/pesquisa-usuario-por-atividade',methods=['POST'])
-# @login_required
 def pesquisa_usuario_por_atividade():
     '''
     Retorna os usuários que participaram de uma atividade
     '''
-    # permissoes = current_user.getPermissoes()
-    # if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
-    if True:
+    permissoes = current_user.getPermissoes()
+    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         atividadeID = request.form['id']
 
         participantes = get_participantes_da_atividade_json(int(atividadeID))
