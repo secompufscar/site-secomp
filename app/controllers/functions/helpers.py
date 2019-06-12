@@ -104,8 +104,7 @@ def get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao):
     '''
     Retorna uma lista dos arquivos que serão anexados.
     '''
-
-    # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aki
+    # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aqui
     if complemento == 0: # Mesmo arquivo para todos
         return (anexoPasta + anexoBase + extencao)
     elif complemento == 1: # Nome CamelCase
