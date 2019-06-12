@@ -3,7 +3,7 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
-
+from sqlalchemy.ext.declarative import declared_attr
 
 db = SQLAlchemy()
 
@@ -37,6 +37,12 @@ relacao_atividade_ministrante = db.Table('relacao_atividade_ministrante',
                                        Column('id', Integer, primary_key=True),
                                        Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
                                        Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
+
+relacao_atividade_patrocinador = db.Table('relacao_atividade_patrocinador',
+                                       Column('id', Integer, primary_key=True),
+                                       Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
+                                       Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')))
+
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
@@ -155,20 +161,38 @@ class AreaAtividade(db.Model):
     atividades = db.relationship('Atividade', secondary=relacao_atividade_area, lazy=True,
                                     back_populates='areas')
 
+class TipoAtividade(db.Model):
+    __tablename__ = 'tipo_atividade'
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+    atividades = db.relationship('Atividade', backref='tipo', lazy=True)
+
+
 #TODO: remover campo tipo, mas que envolve outras partes do sistema
 class Atividade(db.Model):
     __tablename__ = 'atividade'
     id = Column(Integer, primary_key=True)
     id_evento = Column(Integer, db.ForeignKey('evento.id'))
+    id_tipo = Column(Integer, db.ForeignKey('tipo_atividade.id'))
     vagas_totais = Column(Integer, nullable=False)
     vagas_disponiveis = Column(Integer, nullable=False)
     ativo = Column(Boolean, nullable=False, default=True)
-    tipo = Column(Integer, nullable=False)
     data_hora = Column(DateTime, nullable=True)
     local = Column(String(64), nullable=True)
     titulo = Column(String(64), nullable=False)
     descricao = Column(String(1024), nullable=False)
     observacoes = Column(String(512))
+
+    url_codigo = Column(String(255))
+    url_valida = Column(Boolean, default=True)
+
+    info_minicurso = db.relationship('InfoMinicurso', backref='atividade', lazy=True)
+    info_palestra = db.relationship('InfoPalestra', backref='atividade', lazy=True)
+    info_feira_de_pesquisas = db.relationship('InfoFeiraDePesquisas', backref='atividade', lazy=True)
+
+    patrocinadores = db.relationship('Patrocinador', secondary=relacao_atividade_patrocinador, lazy=True,
+                            back_populates='atividades')
+
     areas = db.relationship('AreaAtividade', secondary=relacao_atividade_area, lazy=True,
                             back_populates='atividades')
     ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
@@ -177,13 +201,14 @@ class Atividade(db.Model):
                                     back_populates='atividades')
     presencas = db.relationship('Presenca', backref='atividade')
 
+
     def __repr__(self):
         return self.titulo
 
-
-class Minicurso(Atividade):
-    __tablename__ = 'minicurso'
-    id = Column(Integer, db.ForeignKey('atividade.id'),primary_key=True)
+class InfoMinicurso(db.Model):
+    __tablename__ = 'info_minicurso'
+    id = Column(Integer, primary_key=True)
+    id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
     pre_requisitos = Column(String(128))
     planejamento = Column(String(128))
     apresentacao_extra = Column(String(128))
@@ -193,34 +218,22 @@ class Minicurso(Atividade):
     dicas_instalacao = Column(String(1024))
 
 
-class Palestra(Atividade):
-    __tablename__ = 'palestra'
-    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
+class InfoPalestra(db.Model):
+    __tablename__ = 'info_palestra'
+    id = Column(Integer, primary_key=True)
+    id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
     planejamento = Column(String(128))
     apresentacao_extra = Column(String(128))
     material = Column(String(128))
     requisitos_tecnicos = Column(String(1024))
 
 
-class PalestraEmpresarial(Atividade):
-    __tablename__ = 'palestra_empresarial'
-    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
-    id_patrocinador = Column(Integer, db.ForeignKey('patrocinador.id'))
-
-
-class FeiraDePesquisas(Atividade):
-    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
+class InfoFeiraDePesquisas(db.Model):
+    __tablename__ = 'info_feira_de_pesquisas'
+    id = Column(Integer, primary_key=True)
+    id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
     necessidades = Column(String(1024))
     planejamento = Column(String(1024))
-
-
-class MesaRedonda(Atividade):
-    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
-
-
-class Workshop(Atividade):
-    id = Column(Integer, db.ForeignKey('atividade.id'), primary_key=True)
-    id_patrocinador = Column(Integer, db.ForeignKey('patrocinador.id'))
 
 
 class Evento(db.Model):
@@ -302,6 +315,9 @@ class Patrocinador(db.Model):
     ultima_atualizacao_em = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
                               back_populates='patrocinadores')
+    atividades = db.relationship('Atividade', secondary=relacao_atividade_patrocinador, lazy=True,
+                            back_populates='patrocinadores')
+
     def __repr__(self):
         return self.nome_empresa
 
@@ -366,13 +382,3 @@ class Permissao(db.Model):
 
     def __repr__(self):
         return self.nome
-
-
-class URLConteudo(db.Model):
-    __tablename__ = 'urlconteudo'
-    id = Column(Integer, primary_key=True)
-    descricao = Column(String(100), nullable=False)
-    codigo = Column(String(200), nullable=False)
-    ultimo_gerado = Column(Boolean, default=False, nullable=False)
-    valido = Column(Boolean, default=True, nullable=False)
-    numero_cadastros = Column(Integer, default=1)
