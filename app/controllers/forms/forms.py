@@ -207,8 +207,3 @@ class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
         id='necessidades_hospedagem', validators=[Length(max=256), hospedagem_selecionada()])
     observacoes = StringField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)])
-
-class GerarURLCadastroForm(FlaskForm):
-    descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1,max=100)])
-    numero_cadastros = IntegerField('Numero de cadastros', validators=[InputRequired()])
-    gerar = HiddenField("", id='gerar',validators=[tem_valor()], default="1")
