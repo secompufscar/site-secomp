@@ -7,6 +7,8 @@ from app.controllers.forms.forms import *
 from app.models.models import *
 from app.controllers.functions.email import enviar_email_custon
 
+from app.controllers.constants import dictComplemento, dictExtencao
+
 import json
 
 management = Blueprint('management', __name__, static_folder='static',
@@ -169,9 +171,7 @@ def email_custom():
     if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
 
-        dictComplemento = {'Mesmo arquivo para todos' : 0, 'Nome do usuário, CamelCase' : 1}
-        dictExtencao = {'Sem extenção' : 0, '.pdf' : 1}
-
+        # Cria um dict de atividades para ser usado na página
         query = db.session.query(Atividade)
 
         dictAtividades = {}

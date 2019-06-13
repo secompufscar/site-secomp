@@ -42,27 +42,69 @@ def executa_email_custon():
         try:
             pkg = request.form
 
-            assunto = pkg['assunto']
-            titulo = pkg['titulo']
-            template = pkg['template']
-            temAnexo = pkg['temAnexo']
-            anexoBase = pkg['anexoBase']
-            anexoPasta= pkg['anexoPasta']
-            complemento = int(pkg['complemento'])
-            extencao = int(pkg['extencao'])
-            selecionados = pkg['selecionados'].split(',')
+            # Atribuição e verificação dos dados
+            assunto = pkg['assunto'].strip()
+            if assunto == "":
+                return jsonify('Falha. Sem assunto!')
 
+            titulo = pkg['titulo'].strip()
+            if titulo == "":
+                return jsonify('Falha. Sem título!')
+
+            template = pkg['template'].strip()
+            if template == "":
+                return jsonify('Falha. Sem template!')
+
+            try:
+                temAnexo = bool(pkg['temAnexo'])
+            except Exception as e:
+                print("Erro ao converter temAnexo para bool. {}".format(e))
+                return jsonify('Falha. Erro ao converter temAnexo para bool!')
+
+            anexoBase = pkg['anexoBase'].strip()
+            if temAnexo and anexoBase == "":
+                return jsonify('Falha')
+
+            anexoPasta= pkg['anexoPasta']
+
+            try:
+                complemento = int(pkg['complemento'])
+            except Exception as e:
+                print("Erro ao converter complemento para int. {}".format(e))
+                return jsonify('Falha. Erro ao converter complemento para int!')
+
+            try:
+                extencao = int(pkg['extencao'])
+            except Exception as e:
+                print("Erro ao converter extenção para int. {}".format(e))
+                return jsonify('Falha. Erro ao converter extenção para int!')
+
+            selecionados = pkg['selecionados'].split(',')
+            if len(selecionados) == 0:
+                return jsonify('Falha. Nínguem foi selecionado!')
+
+            # Verificação da extenção, novas extenções adicionadas no dictExtencao devem ser suportadas aqui
             if extencao == 0:
                 extencao = ""
             elif extencao == 1:
                 extencao = ".pdf"
+            else:
+                return jsonify('Falha. Extenção não reconhecida!')
 
-            enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPasta, complemento, selecionados, extencao)
+            # Retorna possíveis erros
+            erros = enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPasta, complemento, selecionados, extencao)
 
-            return jsonify('Sucesso')
+            # Cuida dos erros, no caso de algum, retorna uma string com o email em que ocorreu o erro e o erro
+            if len(erros) == 0:
+                return jsonify('Sucesso')
+            else:
+                r = ""
+                for e in erros:
+                    r += ("Email: {email} {erro}").format(email=e[0]['email'], erro=str(e[1]))
+                return jsonify('Falha. \n {}'.format(r))
         except Exception as e:
             print(e)
-            return jsonify('Falha')
+            return jsonify('Falha.')
     else:
         print("NAO PODE")
 
@@ -71,6 +113,7 @@ def executa_email_custon():
 def pesquisa_usuario_por_atividade():
     '''
     Retorna os usuários que participaram de uma atividade
+    Pesquisa usando o id da atividade
     '''
     permissoes = current_user.getPermissoes()
     if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):

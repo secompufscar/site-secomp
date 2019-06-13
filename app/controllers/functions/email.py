@@ -40,24 +40,29 @@ def enviar_email_generico(info=None, anexo=None):
         if not (anexo is None or anexo == []):
             for fileName in anexo:
                 try:
-                    fp = open(fileName, "r")
+                    fp = open(fileName, "rb")
 
-                    # Verifica a extenção do arquivo
-                    if not fileName.find(".png") == -1:
-                        msg.attach(fileName, "image/png", fp.read())
-                    elif not fileName.find(".pdf") == -1:
-                        msg.attach(fileName, "application/pdf", fp.read())
-                    else:
-                        msg.attach(fileName, "text/plain", fp.read())
+                    try:
+                        # Verifica a extenção do arquivo
+                        if not fileName.find(".png") == -1:
+                            msg.attach(fileName, "image/png", fp.read())
+                        elif not fileName.find(".pdf") == -1:
+                            print("PDF");
+                            msg.attach(fileName, "application/pdf", fp.read())
+                        else:
+                            msg.attach(fileName, "text/plain", fp.read())
+                    except Exception as e:
+                        print("Erro no anexo. {}".format(e))
+                        return (info, e)
 
                     fp.close()
                 except Exception as e:
-                    print(e)
-                    return
+                    print("Erro ao abrir arquivo do anexo. {}".format(e))
+                    return (info, e)
 
     except Exception as e:
-        print(e)
-        return
+        print("Erro no template. {}".format(e))
+        return (info, e)
 
     try:
         global mail
@@ -69,7 +74,7 @@ def enviar_email_generico(info=None, anexo=None):
             log.write(f"{str(e)} {info['email']} {strftime('%a, %d %b %Y %H:%M:%S', gmtime())}\n")
             log.close()
         except Exception:
-            return
+            return (info, e)
 
 
 def enviar_email_confirmacao(usuario, token):
@@ -142,21 +147,35 @@ def enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPas
     '''
     usuarios = get_usuarios_query()
 
+    naoEnviados = []
+
     for i in selecionados:
         usuario = usuarios.filter_by(id=i).first()
 
         info = {
             "assunto": assunto,
-            "nome": usuario.primeiro_nome + " " + usuario.sobrenome,
+            "nome": usuario.primeiro_nome,
             "titulo": titulo,
             "email": usuario.email,
             "template": "email/" + template,
             "footer": 'TI X SECOMP UFSCar'
         }
 
+        # Verifica a existencia de anexo
         if (temAnexo):
             files = []
             files.append(get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao))
-            enviar_email_generico(info, files)
+            
+            temp = enviar_email_generico(info, files)
+
+            # Cria a lista de erros
+            if not (temp == None or temp == []):
+                naoEnviados.append(temp)
         else:
-            enviar_email_generico(info, None)
+            temp = enviar_email_generico(info, None)
+
+            # Cria a lista de erros
+            if not (temp == None or temp == []):
+                naoEnviados.append(temp)
+
+    return naoEnviados
