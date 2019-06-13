@@ -2,7 +2,13 @@
 
 {% block content %}
 <style>
-	#div_anexo { display: none;}
+	#div_anexo {
+		display: none;
+	}
+	input.cbox { 
+		width: 20px; 
+		height: 20px; 
+	}
 </style>
 
 <div class="pad-inicio container pb-5">
@@ -14,7 +20,7 @@
 	<input id="text_template_email" type="text"></input></br>
 
 	Anexo
-	<input id="cbox_tem_anexo" type="checkbox"></input></br>
+	<input id="cbox_tem_anexo" type="checkbox" class="cbox"></input></br>
 	<div id="div_anexo">
 		Caminho da pasta
 		<input id="text_path_anexo" type="text"></input></br>
@@ -56,7 +62,7 @@
 
 	Resultado</br>
 	Nome: <input id="text_pesquisa_em_resultado" type="text">
-	<input id="cbox_todos_os_usuarios" type="checkbox"></input>Todos</br>
+	<input id="cbox_todos_os_usuarios" type="checkbox" class="cbox"></input>Todos</br>
 	<div >
 		<table id="tbl_resultado">
 			<tr>
@@ -175,7 +181,7 @@
 					usuarios[usuario.id]['remove'] = undefined;
 
 					// HTML que será adicionado de uma vez posteriormente
-					toAppendTableR += "<tr id=resultado" + id + " class=resultado><td><input id=cbox" + id + " class=cboxUsuario type=checkbox value=" + id + " " + check + "></td><td>" + nome + "</td><td>" + id + "</td><td>" + email + "</td></tr>";
+					toAppendTableR += "<tr id=resultado" + id + " class=resultado><td><input id=cbox" + id + " class='cbox cboxUsuario' type=checkbox value=" + id + " " + check + "></td><td>" + nome + "</td><td>" + id + "</td><td>" + email + "</td></tr>";
 					toAppendTableS += "<tr id=selecionado" + id + "><td>" + nome + "</td><td>" + id + "</td><td>" + email + "</td><td><button id=remove" + id + ">Remover</button></td></tr>";
 				}
 			});
