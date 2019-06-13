@@ -109,5 +109,7 @@ def get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao):
         return (anexoPasta + anexoBase + extencao)
     elif complemento == 1: # Nome CamelCase
         return (anexoPasta + anexoBase + usuario.primeiro_nome + usuario.sobrenome.replace(" ", "") + extencao)
+    elif complemento == 2: # ID
+        return (anexoPasta + anexoBase + usuario.id + extencao)
     else:
         return None
