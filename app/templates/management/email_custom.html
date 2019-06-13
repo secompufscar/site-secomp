@@ -446,7 +446,6 @@
 					alert("Ninguém foi selecionado!");
 				} else {
 					if(confirm("Deseja realmente enviar?")){
-
 						// Monta o pacote
 						var data = {};
 						data.assunto = assunto;
@@ -466,6 +465,9 @@
 
 							return a;	
 						};
+
+						console.log(data);
+
 
 						// Chama o envio dos emails e retorna o resultado
 						enviarEmails(data).done(function(data) {

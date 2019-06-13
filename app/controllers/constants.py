@@ -38,3 +38,9 @@ secomp_email = "ti@secompufscar.com.br"
 # Edição atual da secomp
 secomp_edition = "X"
 EDICAO_ATUAL = 10
+
+# Dict de opções de complemento do envio customizado de emails
+dictComplemento = {'Mesmo arquivo para todos' : 0, 'Nome do usuário, CamelCase' : 1}
+
+# Dict de opções de extenção do envio customizado de emails
+dictExtencao = {'Sem extenção' : 0, '.pdf' : 1}

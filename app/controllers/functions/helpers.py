@@ -108,6 +108,6 @@ def get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao):
     if complemento == 0: # Mesmo arquivo para todos
         return (anexoPasta + anexoBase + extencao)
     elif complemento == 1: # Nome CamelCase
-        return (filanexoPasta + anexoBase + usuario.primeiro_nome + usuario.sobrenome + extencao)
+        return (anexoPasta + anexoBase + usuario.primeiro_nome + usuario.sobrenome.replace(" ", "") + extencao)
     else:
         return None
