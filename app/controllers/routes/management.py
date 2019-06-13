@@ -1,15 +1,12 @@
 from random import SystemRandom
 
-from flask import render_template, request, redirect, abort, url_for, Blueprint, jsonify
+from flask import render_template, request, redirect, abort, url_for, Blueprint
 from flask_login import login_required, current_user
 
 from app.controllers.forms.forms import *
 from app.models.models import *
-from app.controllers.functions.email import enviar_email_custon
 
 from app.controllers.constants import dictComplemento, dictExtencao
-
-import json
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')

@@ -165,7 +165,7 @@ def enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPas
         if (temAnexo):
             files = []
             files.append(get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao))
-            
+
             temp = enviar_email_generico(info, files)
 
             # Cria a lista de erros
