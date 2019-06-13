@@ -32,7 +32,7 @@ def patrocinadores():
 def retornaImg(url):
     return url #TODO (quando estiver no servidor) hospedagem de imagens
 
-@api.route('/executa-email-custon',methods=['POST'])
+@api.route('/executa-email-custon', methods=['POST'])
 def executa_email_custon():
     '''
     Rota para acesso remoto que executa o envio de emails
@@ -65,7 +65,7 @@ def executa_email_custon():
             if temAnexo and anexoBase == "":
                 return jsonify('Falha')
 
-            anexoPasta= pkg['anexoPasta']
+            anexoPasta = pkg['anexoPasta']
 
             try:
                 complemento = int(pkg['complemento'])
@@ -109,7 +109,7 @@ def executa_email_custon():
         print("NAO PODE")
 
 
-@api.route('/pesquisa-usuario-por-atividade',methods=['POST'])
+@api.route('/pesquisa-usuario-por-atividade', methods=['POST'])
 def pesquisa_usuario_por_atividade():
     '''
     Retorna os usuários que participaram de uma atividade

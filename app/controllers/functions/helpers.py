@@ -49,13 +49,13 @@ def get_participantes_da_atividade_json(id):
     '''
     query = None
 
-    if (id == 0): 
+    if (id == 0):
         query = db.session.query(Atividade)
     else:
         query = db.session.query(Atividade).filter_by(id=id)
-    
+
     query = query.first()
-    ativParticipantes =  query.participantes
+    ativParticipantes = query.participantes
 
     participantes = []
 
