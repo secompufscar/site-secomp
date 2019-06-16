@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="row align-items-center cronograma">
-        <div class="col-md-1 text-center setaEsquerda">
+        <div class="col-md-1 text-center setaEsquerda" onclick="left_arrow()">
             <i class="fas fa-2x fa-chevron-left"></i>
         </div>
         <div class="col-md-8 center">
@@ -28,7 +28,7 @@
                         <thead>
                             <tr>
                                 <div class="collapse navbar-collapse" id="navbarContent">
-                                    <th scope="col-md-2">
+                                    <th scope="col-md-2" id="th_seg" class="nav_on">
                                         <a onclick="toggle_visibility('seg');">
 
                                             <h5>09.09.2019</h5>
@@ -36,7 +36,7 @@
 
                                         </a>
                                     </th>
-                                    <th scope="col-md-2" class="teste2">
+                                    <th scope="col-md-2" id="th_ter" class="nav_off">
                                         <a onclick="toggle_visibility('ter');">
 
                                             <h5>10.09.2019</h5>
@@ -44,7 +44,7 @@
 
                                         </a>
                                     </th>
-                                    <th scope="col-md-2" class="teste2">
+                                    <th scope="col-md-2" id="th_qua" class="nav_off">
                                         <a onclick="toggle_visibility('qua');">
 
                                             <h5>11.09.2019</h5>
@@ -52,7 +52,7 @@
 
                                         </a>
                                     </th>
-                                    <th scope="col-md-2" class="teste2">
+                                    <th scope="col-md-2" id="th_qui" class="nav_off">
                                         <a onclick="toggle_visibility('qui');">
 
                                             <h5>12.09.2019</h5>
@@ -60,7 +60,7 @@
 
                                         </a>
                                     </th>
-                                    <th scope="col-md-2" class="teste2">
+                                    <th scope="col-md-2" id="th_sex" class="nav_off">
                                         <a onclick="toggle_visibility('sex');">
 
                                             <h5>13.09.2019</h5>
@@ -75,13 +75,13 @@
                 </nav>
             </div>
         </div>
-        <div class="col-md-1 text-center setaDireita">
+        <div class="col-md-1 text-center setaDireita" onclick="right_arrow()">
             <i class="fas fa-2x fa-chevron-right"></i>
         </div>
     </div>
 
 
-    <div id="seg">
+    <div id="seg" style="display: block;">
         <div class="col-md-12">
             <div class="card">
 
@@ -218,7 +218,7 @@
                         <div class="card-body">
                             <p class="card-subtitle text-muted">
                                 Descrição gigantesca daquela palestra de terça feira...
-                            </p>
+                            </p>href="javascript:seta_direita
                         </div>
                     </div>
 
@@ -239,7 +239,7 @@
                             <span>08:00 - 10:00</span>
                         </div>
                         <div class="col-md-3">
-                            <button type="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
+                            <button thref="javascript:seta_direitaype="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
                                 data-target="#modal2">
                                 Detalhes
                             </button>
@@ -289,7 +289,113 @@
     <div id="sex"></div>
 </div>
 
-<script type="text/javascript">
+<script>
+    function right_arrow() {
+        var seg = document.getElementById("seg");
+        var ter = document.getElementById("ter");
+        var qua = document.getElementById("qua");
+        var qui = document.getElementById("qui");
+        var sex = document.getElementById("sex");
+        if (seg.style.display === "block") {
+            seg.style.display = "none";
+            ter.style.display = "block";
+            document.getElementById("nav-seg").className = "day";
+            document.getElementById("nav-ter").className = "day selected";
+            $('#th_seg').removeClass("nav_on");
+            $('#th_seg').addClass("nav_off");
+            $('#th_ter').removeClass("nav_off");
+            $('#th_ter').addClass("nav_on");
+        } else if (ter.style.display === "block") {
+            ter.style.display = "none";
+            qua.style.display = "block";
+            document.getElementById("nav-ter").className = "day";
+            document.getElementById("nav-qua").className = "day selected";
+            $('#th_ter').removeClass("nav_on");
+            $('#th_ter').addClass("nav_off");
+            $('#th_qua').removeClass("nav_off");
+            $('#th_qua').addClass("nav_on");
+        } else if (qua.style.display === "block") {
+            qua.style.display = "none";
+            qui.style.display = "block";
+            document.getElementById("nav-qua").className = "day";
+            document.getElementById("nav-qui").className = "day selected";
+            $('#th_qua').removeClass("nav_on");
+            $('#th_qua').addClass("nav_off");
+            $('#th_qui').removeClass("nav_off");
+            $('#th_qui').addClass("nav_on");
+        } else if (qui.style.display === "block") {
+            qui.style.display = "none";
+            sex.style.display = "block";
+            document.getElementById("nav-qui").className = "day";
+            document.getElementById("nav-sex").className = "day selected";
+            $('#th_qui').removeClass("nav_on");
+            $('#th_qui').addClass("nav_off");
+            $('#th_sex').removeClass("nav_off");
+            $('#th_sex').addClass("nav_on");
+        } else if (sex.style.display === "block") {
+            sex.style.display = "none";
+            seg.style.display = "block";
+            document.getElementById("nav-sex").className = "day";
+            document.getElementById("nav-seg").className = "day selected";
+            $('#th_sex').removeClass("nav_on");
+            $('#th_sex').addClass("nav_off");
+            $('#th_seg').removeClass("nav_off");
+            $('#th_seg').addClass("nav_on");
+        }
+    }
+    function left_arrow() {
+        var seg = document.getElementById("seg");
+        var ter = document.getElementById("ter");
+        var qua = document.getElementById("qua");
+        var qui = document.getElementById("qui");
+        var sex = document.getElementById("sex");
+        if (seg.style.display === "block") {
+            seg.style.display = "none";
+            sex.style.display = "block";
+            document.getElementById("nav-seg").className = "day";
+            document.getElementById("nav-sex").className = "day selected";
+            $('#th_seg').removeClass("nav_on");
+            $('#th_seg').addClass("nav_off");
+            $('#th_sex').removeClass("nav_off");
+            $('#th_sex').addClass("nav_on");
+        } else if (ter.style.display === "block") {
+            ter.style.display = "none";
+            seg.style.display = "block";
+            document.getElementById("nav-ter").className = "day";
+            document.getElementById("nav-seg").className = "day selected";
+            $('#th_ter').removeClass("nav_on");
+            $('#th_ter').addClass("nav_off");
+            $('#th_seg').removeClass("nav_off");
+            $('#th_seg').addClass("nav_on");
+        } else if (qua.style.display === "block") {
+            qua.style.display = "none";
+            ter.style.display = "block";
+            document.getElementById("nav-qua").className = "day";
+            document.getElementById("nav-ter").className = "day selected";
+            $('#th_qua').removeClass("nav_on");
+            $('#th_qua').addClass("nav_off");
+            $('#th_ter').removeClass("nav_off");
+            $('#th_ter').addClass("nav_on");
+        } else if (qui.style.display === "block") {
+            qui.style.display = "none";
+            qua.style.display = "block";
+            document.getElementById("nav-qui").className = "day";
+            document.getElementById("nav-qua").className = "day selected";
+            $('#th_qui').removeClass("nav_on");
+            $('#th_qui').addClass("nav_off");
+            $('#th_qua').removeClass("nav_off");
+            $('#th_qua').addClass("nav_on");
+        } else if (sex.style.display === "block") {
+            sex.style.display = "none";
+            qui.style.display = "block";
+            document.getElementById("nav-sex").className = "day";
+            document.getElementById("nav-qui").className = "day selected";
+            $('#th_sex').removeClass("nav_on");
+            $('#th_sex').addClass("nav_off");
+            $('#th_qui').removeClass("nav_off");
+            $('#th_qui').addClass("nav_on");
+        }
+    }
     function toggle_visibility(id) {
         var listaDias = ['seg', 'ter', 'qua', 'qui', 'sex'];
         var i;
