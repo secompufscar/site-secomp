@@ -38,6 +38,7 @@ class CadastroForm(FlaskForm):
     outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe(), so_letras()])
     data_nasc = DateField("Data de Nascimento",
                           format="%d/%m/%Y", id="data_nasc")
+    como_conheceu = SelectField('Como você conheceu a SECOMP?', choices=get_opcoes_como_conheceu(), coerce=int)
     recaptcha = RecaptchaField()
 
 
