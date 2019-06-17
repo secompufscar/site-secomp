@@ -51,13 +51,25 @@ def cadastro():
 @users.route('/verificar-email')
 @login_required
 def verificar_email():
+    permissoes = current_user.getPermissoes()
+    view_atividade = ''
+    if "MINISTRANTE" in permissoes:
+        ministrante = True
+        atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(current_user)
+        if atividade_confirmada == False:
+            codigo = atividade.url_codigo
+        else:
+            codigo = ''
+    else:
+        ministrante = False
+        codigo = ''
     if email_confirmado():
         msg = 'Seu email foi verificado com sucesso!'
         status = True
     else:
         msg = 'Confirme o email de verificação que foi enviado ao endereço de email fornecido'
         status = False
-    return render_template('users/confirma_email.html', resultado=msg, status=status)
+    return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante, codigo=codigo, view_atividade=view_atividade)
 
 
 @users.route('/cadastro-participante', methods=['POST', 'GET'])

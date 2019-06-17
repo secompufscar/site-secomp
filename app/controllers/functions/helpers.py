@@ -1,5 +1,5 @@
 from app.models.models import *
-
+from app.controllers.constants import EDICAO_ATUAL
 
 def get_score_evento(edicao):
     return 10000
@@ -63,3 +63,45 @@ def verifica_outro_escolhido(campo, objeto):
     else:
         return campo.data
 
+
+def valida_url_codigo(usuario, codigo):
+    atividade = db.session.query(Atividade).filter_by(url_codigo=codigo).first()
+    ministrante = db.session.query(Ministrante).filter_by(usuario=usuario).first()
+    emails = []
+    for m in atividade.ministrantes:
+        emails.append(m.usuario.email)
+    if(usuario is None):
+        if (atividade is not None):
+            return True, atividade, emails
+        else:
+            return False, atividade, emails
+    else:
+        if(atividade is not None and ministrante.usuario.email in emails):
+            return True, atividade, emails
+        else:
+            return False, atividade, emails
+
+
+def get_id_evento_atual():
+    evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
+    return evento.id
+
+def confirmacao_atividade_ministrante(usuario):
+    atividade = None
+    if(len(usuario.ministrante) != 0):
+        atividade = db.session.query(Atividade).join(Ministrante, Atividade.ministrantes).filter(RelacaoAtividadeMinistrante.id_ministrante == usuario.ministrante[0].id,
+                                                                                                 RelacaoAtividadeMinistrante.confirmado == None).first()
+    if atividade is not None:
+        if atividade.tipo[0].nome == "Palestra":
+            view = 'cadastro_palestra'
+        elif atividade.tipo[0].nome == "Palestra Empresarial":
+            view = 'cadastro_palestra_empresarial'
+        elif atividade.tipo[0].nome == "Minicurso":
+            view = 'cadastro_minicurso'
+        elif atividade.tipo[0].nome == "Mesa Redonda":
+            view = 'cadastro_mesa_redonda'
+        elif atividade.tipo[0].nome == "Feira de Pesquisas":
+            view = 'cadastro_feira_pesquisas'
+        return False, atividade, view
+    else:
+        return True, None, None

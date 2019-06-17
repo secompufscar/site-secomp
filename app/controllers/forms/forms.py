@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from app.controllers.forms.options import *
@@ -129,18 +129,18 @@ class CadastroMinistranteForm(FlaskForm):
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=100), so_letras()], id="sobrenome")
     email = StringField('Email', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254), email_existe()], id="email")
+        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254), valida_email_ministrante()], id="email")
     senha = PasswordField('Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), EqualTo(
         'confirmacao', message=ERRO_COMPARA_SENHAS), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)], id="senha")
     confirmacao = PasswordField('Confirmação de Senha', validators=[
         InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
     data_nascimento = DateField("Data de Nascimento",
                           format="%d/%m/%Y", id="data_nascimento")
-    telefone = StringField('Telefone', validators=[InputRequired(), Length(min=8, max=11)], id='telefone')
+    telefone = StringField('Telefone', validators=[InputRequired(), Length(min=8, max=14)], id='telefone')
     profissao = StringField('Profissão', validators=[InputRequired(), Length(min=1, max=64)], id='profissao')
     empresa_universidade = StringField('Empresa/Universidade', id='empresa_universidade',
         validators=[Length(max=64)])
-    biografia = StringField('Breve descrição biográfica, a ser utilizada na divulgação', validators=[InputRequired(),
+    biografia = TextAreaField('Breve descrição biográfica, a ser utilizada na divulgação', validators=[InputRequired(),
         Length(min=1, max=1500)], id='biografia')
     foto = StringField('Foto', id='foto')
     tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=get_opcoes_camisetas(), id='tamanho_camiseta', coerce=int)
@@ -149,32 +149,33 @@ class CadastroMinistranteForm(FlaskForm):
     linkedin = StringField('Linkedin', id='linkedin')
     github = StringField('GitHub', id='github')
     recaptcha = RecaptchaField()
+    codigo_url = ''
 
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
     area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
-    descricao = StringField('Descrição', validators=[InputRequired(),
+    descricao = TextAreaField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)])
-    pre_requisitos = StringField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
-        Length(max=128)])
-    planejamento = StringField('Descrição da estrutura do minicurso', validators=[InputRequired()])
+    pre_requisitos = TextAreaField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
+        Length(max=300)])
+    planejamento = TextAreaField('Descrição da estrutura do minicurso', validators=[InputRequired()])
     apresentacao_extra = StringField('Previa da apresentação', validators=[Length(max=128)])
-    material = StringField('Material', validators=[Length(max=128)])
-    requisitos_hardware = StringField('Requisitos de Hardware', validators=[InputRequired(), Length(max=128)])
-    requisitos_software = StringField('Requisitos de Software', validators=[InputRequired(), Length(max=128)])
-    dicas_instalacao = StringField('Dicas para instalação dos softwares necessários')
-    observacoes = StringField('Observações')
+    material = TextAreaField('Material', validators=[Length(max=128)])
+    requisitos_hardware = TextAreaField('Requisitos de Hardware', validators=[InputRequired(), Length(max=128)])
+    requisitos_software = TextAreaField('Requisitos de Software', validators=[InputRequired(), Length(max=128)])
+    dicas_instalacao = TextAreaField('Dicas para instalação dos softwares necessários')
+    observacoes = TextAreaField('Observações')
 
 class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=64)])
     area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
-    descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)])
-    requisitos_tecnicos = StringField('Requisitos de Hardware/Software')
-    planejamento = StringField('Planejamento', validators=[InputRequired()])
+    descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)])
+    requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software')
+    planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
     apresentacao_extra = StringField('Apresentação Extra')
-    material = StringField('Descrição')
+    material = TextAreaField('Descrição')
     perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired()])
-    observacoes = StringField('Observações')
+    observacoes = TextAreaField('Observações')
 
 class CadastroFeiraDePesquisas(FlaskForm):
     titulo = StringField('Título da Pesquisa', validators=[InputRequired()])
@@ -207,3 +208,9 @@ class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
         id='necessidades_hospedagem', validators=[Length(max=256), hospedagem_selecionada()])
     observacoes = StringField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)])
+
+class GerarUrlConteudoForm(FlaskForm):
+    tipo_atividade = SelectField("Tipo da Atividade", choices=get_opcoes_tipo_atividade(), id="tipo_atividade", coerce=int, validators=[InputRequired()])
+
+class ConfirmarAtividadeMinistranteForm(FlaskForm):
+    vazio = ''

@@ -4,6 +4,7 @@ from passlib.hash import pbkdf2_sha256
 
 from app.controllers.forms.forms import *
 from app.controllers.functions.email import enviar_email_dm
+from app.controllers.functions.helpers import *
 from app.controllers.constants import *
 
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
@@ -73,12 +74,15 @@ def login():
     if form.validate_on_submit():
         user = db.session.query(Usuario).filter_by(
             email=form.email.data).first()
+        atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(user)
         if user:
             if pbkdf2_sha256.verify(form.senha.data, user.senha):
                 user.autenticado = True
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
+                if atividade_confirmada == False:
+                    return redirect(url_for('conteudo.' + view_atividade, codigo=atividade.url_codigo))
                 return redirect(url_for('users.dashboard'))
         return render_template('views/login.html', form=form, erro=True)
     return render_template('views/login.html', form=form)
@@ -105,4 +109,3 @@ def senhas():
 def patrocinadores():
     patrocinadores = db.session.query(Patrocinador)
     return render_template('views/patrocinadores.html', patrocinadores=patrocinadores)
-

@@ -5,7 +5,7 @@
 
 <div class="pad-inicio container pb-2">
   <h1>Cadastro de Palestra</h1>
-  <form method="POST" action="{{url_for('conteudo.cadastro_palestra')}}">
+  <form method="POST" action="{{url_for('conteudo.cadastro_palestra', codigo=codigo)}}">
     {{ form.hidden_tag() }}
     {{ wtf.form_field(form.titulo) }}
     {{ wtf.form_field(form.descricao) }}

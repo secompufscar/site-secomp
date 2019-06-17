@@ -19,7 +19,7 @@ def create_app(config=None):
     }
 
     if config not in configs:
-        config = getenv("FLASK_CONFIGURATION", "default")
+        config = getenv("FLASK_CONFIGURATION", "development")
 
     config = 'app.config' + configs[config]
 
@@ -69,9 +69,10 @@ def create_app(config=None):
 
     mail.init_app(app)
 
-    from app.controllers.routes import admin, management, users, views, api
+    from app.controllers.routes import admin, management, users, views, conteudo, api
 
     app.register_blueprint(management.management)
+    app.register_blueprint(conteudo.conteudo)
     app.register_blueprint(users.users)
     app.register_blueprint(views.views)
     app.register_blueprint(api.api)
@@ -99,4 +100,3 @@ def create_app(config=None):
         return "pt"
 
     return app
-

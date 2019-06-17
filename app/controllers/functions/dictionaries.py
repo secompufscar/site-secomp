@@ -3,7 +3,7 @@ import datetime
 from flask_login import current_user
 
 from app.controllers.constants import *
-from app.controllers.functions.helpers import get_score_evento
+from app.controllers.functions.helpers import get_score_evento, get_id_evento_atual
 from app.models.models import *
 
 
@@ -113,3 +113,24 @@ def get_patrocinadores():
         return pat_json
     except Exception as e:
         return "Erro"
+
+def get_urls_conteudo():
+    atividades = db.session.query(Atividade).filter_by(id_evento=get_id_evento_atual()).all()
+    info_urls = []
+    for atividade in atividades:
+        titulo = atividade.titulo
+
+        if atividade.titulo is None or atividade.titulo == '':
+            titulo = "-"
+        emails = []
+        for ministrante in atividade.ministrantes:
+            emails.append(ministrante.usuario.email)
+        info = {
+                "id" : atividade.id,
+                "tipo" : atividade.tipo[0].nome,
+                "titulo_atividade": titulo,
+                "codigo_url" : atividade.url_codigo,
+                "emails": emails
+        }
+        info_urls.append(info)
+    return info_urls

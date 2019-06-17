@@ -83,3 +83,28 @@ def tem_valor():
         if field.data is '' and field.data is not '1':
             raise ValidationError("Preencha com algum valor")
     return _tem_valor
+
+def valida_email_ministrante():
+    def _valida_email_ministrante(form, field):
+        atividade = db.session.query(Atividade).filter_by(url_codigo=form.codigo_url).first()
+        emails = []
+        for m in atividade.ministrantes:
+            emails.append(m.usuario.email)
+        if field.data not in emails:
+            raise ValidationError("Entre com um email válido")
+    return _valida_email_ministrante
+
+def is_valid_email(email):
+    if len(email) > 7:
+        return bool(re.match("^.+@(\[?)[a-zA-Z0-9-.]+.([a-zA-Z]{2,3}|[0-9]{1,3})(]?)$", email))
+
+def verifica_lista_emails(emails):
+    if len(emails) == 0:
+        return False
+    for email in emails:
+        usuario = db.session.query(Usuario).filter_by(email=email).first()
+        if usuario is not None:
+            return False
+        if not is_valid_email(email):
+            return False
+    return True
