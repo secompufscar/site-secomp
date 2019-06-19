@@ -9,6 +9,10 @@ header {
     header a:hover {
       color: rgba(255, 255, 255, 0.7); }
 
+.content {
+  min-height: 75vh;
+}
+
 /* Responsividade da navbar e dos titulos */
 @media (orientation: portrait) {
   .nav-responsiva {
