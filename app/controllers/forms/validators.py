@@ -102,9 +102,6 @@ def verifica_lista_emails(emails):
     if len(emails) == 0:
         return False
     for email in emails:
-        usuario = db.session.query(Usuario).filter_by(email=email).first()
-        if usuario is not None:
-            return False
         if not is_valid_email(email):
             return False
     return True

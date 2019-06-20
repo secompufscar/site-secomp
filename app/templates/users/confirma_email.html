@@ -9,7 +9,7 @@
 			<p>{{ resultado }}</p>
 			{% if status == True: %}
 				{% if ministrante == True: %}
-				<button onclick="location.href='{{url_for('conteudo.' + view_atividade, codigo=codigo)}}'">Continuar</button>
+				<button onclick="location.href='{{url_for('conteudo.dados_hospedagem_transporte')}}'">Continuar</button>
 				{% else: %}
 				<button onclick="location.href='dashboard'">Continuar</button>
 				{% endif %}
