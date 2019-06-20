@@ -18,15 +18,6 @@ limiter = Limiter(current_app, key_func=get_remote_address)
 conteudo = Blueprint('conteudo', __name__, static_folder='static',
                   template_folder='templates', url_prefix='/area-conteudo')
 
-@conteudo.route('/', methods=['POST', 'GET'])
-@login_required
-def index():
-    permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or current_user.is_admin()):
-        return render_template('conteudo/index.html')
-    else:
-        abort(403)
-
 @limiter.limit("20/day")
 @conteudo.route('/cadastro-ministrante/<codigo>', methods=['POST', 'GET'])
 def cadastro_ministrante(codigo):
@@ -109,7 +100,7 @@ def dados_hospedagem_transporte():
             print(atividade.url_codigo)
             return redirect(url_for('conteudo.' + view_atividade, codigo=atividade.url_codigo))
         return render_template("conteudo/dados_hospedagem_transporte.html", form=form)
-    abort(403)
+    abort(404)
 
 
 @limiter.limit("20/day")
@@ -150,7 +141,7 @@ def cadastro_minicurso(codigo):
                 return render_template('conteudo/cadastro_minicurso.html', form=form, codigo=codigo)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
-    abort(403)
+    abort(404)
 
 @limiter.limit("20/day")
 @conteudo.route('/cadastro-atividade/palestra/<codigo>', methods=['POST', 'GET'])
@@ -188,7 +179,7 @@ def cadastro_palestra(codigo):
                 return render_template('conteudo/cadastro_palestra.html', form=form, codigo=codigo)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
-    abort(403)
+    abort(404)
 
 @conteudo.route('/cadastro-atividade/mesa-redonda/<codigo>', methods=['POST', 'GET'])
 @login_required
@@ -220,7 +211,7 @@ def cadastro_mesa_redonda(codigo):
                 return render_template('conteudo/cadastro_mesa_redonda.html', codigo=codigo, form=form)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
-    abort(403)
+    abort(404)
 
 @conteudo.route('/cadastro-atividade/feira-pesquisas/<codigo>', methods=['POST', 'GET'])
 @login_required
@@ -255,7 +246,7 @@ def cadastro_feira_pesquisas(codigo):
                 return render_template('conteudo/cadastro_feira_pesquisas.html', codigo=codigo, form=form)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
-    abort(403)
+    abort(404)
 
 @limiter.limit("20/day")
 @conteudo.route('/confirmar-atividade/<codigo>', methods=['POST', 'GET'])
@@ -278,4 +269,4 @@ def confirmar_atividade(codigo):
                 db.session.commit()
                 return redirect(url_for('users.dashboard'))
             return render_template('conteudo/confirmar_atividade.html', codigo=codigo, titulo_atividade=atividade.titulo, form=form)
-    abort(403)
+    abort(404)
