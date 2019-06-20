@@ -179,7 +179,7 @@ class CadastroInformacoesPalestra(FlaskForm):
 
 class CadastroFeiraDePesquisas(FlaskForm):
     titulo = StringField('Título da Pesquisa', validators=[InputRequired()])
-    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
+    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     necessidades = TextAreaField('Necessidades', validators=[InputRequired()])
     planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
@@ -210,9 +210,9 @@ class CadastroInformacoesLocomocaoEstadia(FlaskForm):
         id='opcoes_transporte_sanca', validators=[transporte_sanca_selecionado()], coerce=int)
     hospedagem = BooleanField('Requer que a SECOMP UFSCar arque com os custos de sua hospedagem?',
         validators=[InputRequired()], id='hospedagem')
-    necessidades_hospedagem = StringField('Quais são as necessidades básicas a serem atendidas pela estadia?',
+    necessidades_hospedagem = TextAreaField('Quais são as necessidades básicas a serem atendidas pela estadia?',
         id='necessidades_hospedagem', validators=[Length(max=256), hospedagem_selecionada()])
-    observacoes = StringField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
+    observacoes = TextAreaField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)])
 
 class GerarUrlConteudoForm(FlaskForm):
