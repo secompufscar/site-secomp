@@ -148,12 +148,12 @@ class CadastroMinistranteForm(FlaskForm):
     twitter = StringField('Twitter', id='twitter')
     linkedin = StringField('Linkedin', id='linkedin')
     github = StringField('GitHub', id='github')
-    recaptcha = RecaptchaField()
     codigo_url = ''
+    recaptcha = RecaptchaField()
 
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
+    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
     descricao = TextAreaField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)])
     pre_requisitos = TextAreaField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
@@ -168,7 +168,7 @@ class CadastroInformacoesMinicurso(FlaskForm):
 
 class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
+    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)])
     requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software')
     planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
@@ -180,15 +180,21 @@ class CadastroInformacoesPalestra(FlaskForm):
 class CadastroFeiraDePesquisas(FlaskForm):
     titulo = StringField('Título da Pesquisa', validators=[InputRequired()])
     area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade())
-    descricao = StringField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
-    necessidades = StringField('Necessidades', validators=[InputRequired()])
-    planejamento = StringField('Planejamento', validators=[InputRequired()])
-    observacoes = StringField('Observações')
+    descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
+    necessidades = TextAreaField('Necessidades', validators=[InputRequired()])
+    planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
+    observacoes = TextAreaField('Observações')
+
+class CadastroAtividadeGenerica(FlaskForm):
+    titulo = StringField('Título da Atividade', validators=[InputRequired()])
+    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
+    descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
+    observacoes = TextAreaField('Observações')
 
 #TODO fazer validator para campo opcoes_transporte_ida_volta ser obrigatorio caso transporte_ida_volta seja verdadeiro
 #TODO fazer validator para campo opcoes_transporte_sanca ser obrigatorio caso transporte_sanca seja verdadeiro
 #TODO fazer validator para campo necessidades_hospedagem ser obrigatorio caso hospedagem seja verdadeiro
-class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
+class CadastroInformacoesLocomocaoEstadia(FlaskForm):
     cidade_origem = StringField('Cidade de Origem', validators=[InputRequired(), Length(min=1,max=64)])
     data_chegada_sanca = DateField('Data de Chegada em São Carlos', format='%d/%m/%Y', id='data_chegada_sanca',
         validators=[InputRequired()])
@@ -196,12 +202,12 @@ class CadastroInformaçõesLocomoçõesEstadia(FlaskForm):
         validators=[InputRequired()])
     transporte_ida_volta = BooleanField('Requer que a SECOMP UFSCar pague por seu transporte de ida e volta',
         id='transporte_ida_volta', validators=[InputRequired()])
-    opcoes_transporte_ida_volta = SelectField('De qual modo este ocorrerá?', choices='opcoes_transporte_ida_volta',
-        id='opcoes_transporte_ida_volta', validators=[transporte_ida_volta_selecionado()])
+    opcoes_transporte_ida_volta = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte(),
+        id='opcoes_transporte_ida_volta', validators=[transporte_ida_volta_selecionado()], coerce=int)
     transporte_sanca = BooleanField('Requer que a SECOMP UFSCar se encarregue do seu transporte dentro de São Carlos?',
         validators=[InputRequired()], id='transporte_sanca')
-    opcoes_transporte_sanca = SelectField('De qual modo este ocorrerá?', choices='opcoes_transporte_sanca',
-        id='opcoes_transporte_sanca', validators=[transporte_sanca_selecionado()])
+    opcoes_transporte_sanca = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte(),
+        id='opcoes_transporte_sanca', validators=[transporte_sanca_selecionado()], coerce=int)
     hospedagem = BooleanField('Requer que a SECOMP UFSCar arque com os custos de sua hospedagem?',
         validators=[InputRequired()], id='hospedagem')
     necessidades_hospedagem = StringField('Quais são as necessidades básicas a serem atendidas pela estadia?',

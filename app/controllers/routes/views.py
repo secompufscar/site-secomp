@@ -82,7 +82,7 @@ def login():
                 db.session.commit()
                 login_user(user, remember=True)
                 if atividade_confirmada == False:
-                    return redirect(url_for('conteudo.' + view_atividade, codigo=atividade.url_codigo))
+                    return redirect(url_for('conteudo.dados_hospedagem_transporte'))
                 return redirect(url_for('users.dashboard'))
         return render_template('views/login.html', form=form, erro=True)
     return render_template('views/login.html', form=form)

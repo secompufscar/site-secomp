@@ -55,11 +55,6 @@ def verificar_email():
     view_atividade = ''
     if "MINISTRANTE" in permissoes:
         ministrante = True
-        atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(current_user)
-        if atividade_confirmada == False:
-            codigo = atividade.url_codigo
-        else:
-            codigo = ''
     else:
         ministrante = False
         codigo = ''
@@ -69,7 +64,7 @@ def verificar_email():
     else:
         msg = 'Confirme o email de verificação que foi enviado ao endereço de email fornecido'
         status = False
-    return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante, codigo=codigo, view_atividade=view_atividade)
+    return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante)
 
 
 @users.route('/cadastro-participante', methods=['POST', 'GET'])

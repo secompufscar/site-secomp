@@ -184,11 +184,15 @@ def gerar_url_conteudo():
                 atividade = Atividade(url_codigo=codigo, id_evento=get_id_evento_atual(), id_tipo=tipo.id)
                 atividade.tipo.append(tipo)
                 for email in emails:
-                    usuario = Usuario(email=email, primeiro_nome='', sobrenome='')
-                    ministrante = Ministrante(usuario=usuario)
-                    usuario.ministrante.append(ministrante)
-                    db.session.add(usuario)
-                    db.session.add(ministrante)
+                    usuario = db.session.query(Usuario).filter_by(email=email).first()
+                    if usuario is None:
+                        usuario = Usuario(email=email, primeiro_nome='', sobrenome='')
+                        ministrante = Ministrante(usuario=usuario)
+                        usuario.ministrante.append(ministrante)
+                        db.session.add(usuario)
+                        db.session.add(ministrante)
+                    else:
+                        ministrante = usuario.ministrante[0]
                     db.session.commit()
                     atividade.ministrantes.append(ministrante)
                 db.session.add(atividade)

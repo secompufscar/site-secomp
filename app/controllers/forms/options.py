@@ -126,3 +126,6 @@ def get_opcoes_tipo_atividade():
         return tipos_atividade
     except Exception as e:
         return None
+
+def get_opcoes_transporte():
+    return [(1, 'Carro'), (2, 'Moto'), (3, 'Ônibus')]

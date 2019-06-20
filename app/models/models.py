@@ -127,6 +127,7 @@ class Ministrante(db.Model):
     twitter = Column(String(64))
     linkedin = Column(String(64))
     github = Column(String(64))
+    dados_hospedagem_transporte =  db.relationship('DadosHospedagemTransporte', back_populates='ministrante', lazy=True)
     atividades = db.relationship('Atividade', secondary='relacao_atividade_ministrante', lazy=True,
                                 back_populates='ministrantes')
     usuario =  db.relationship('Usuario', back_populates='ministrante', lazy=True)
@@ -149,6 +150,7 @@ class DadosHospedagemTransporte(db.Model):
     hospedagem = Column(Boolean, nullable=False)
     necessidades_hospedagem = Column(String(256))
     observacoes = Column(String(256))
+    ministrante =  db.relationship('Ministrante', back_populates='dados_hospedagem_transporte', lazy=True)
 
 
 class AreaAtividade(db.Model):
@@ -198,7 +200,10 @@ class Atividade(db.Model):
 
 
     def __repr__(self):
-        return self.titulo
+        if self.titulo != None:
+            return self.titulo
+        else:
+            return 'Atividade <' + str(self.id) + '>'
 
 class InfoMinicurso(db.Model):
     __tablename__ = 'info_minicurso'
@@ -385,3 +390,4 @@ class RelacaoAtividadeMinistrante(db.Model):
     id_atividade = Column('id_atividade', Integer, db.ForeignKey('atividade.id'))
     id_ministrante = Column('id_ministrante', Integer, db.ForeignKey('ministrante.id'))
     confirmado = Column('confirmado', Boolean, nullable=True)
+    admin_atividade = Column('admin_atividade', Boolean, nullable=True)

@@ -1,6 +1,7 @@
 from app.models.models import *
 from app.controllers.constants import EDICAO_ATUAL
 
+
 def get_score_evento(edicao):
     return 10000
 
@@ -68,6 +69,8 @@ def valida_url_codigo(usuario, codigo):
     atividade = db.session.query(Atividade).filter_by(url_codigo=codigo).first()
     ministrante = db.session.query(Ministrante).filter_by(usuario=usuario).first()
     emails = []
+    if atividade is None:
+        return False, None, None
     for m in atividade.ministrantes:
         emails.append(m.usuario.email)
     if(usuario is None):
