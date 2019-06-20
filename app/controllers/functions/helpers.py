@@ -92,8 +92,9 @@ def get_id_evento_atual():
 def confirmacao_atividade_ministrante(usuario):
     atividade = None
     if(len(usuario.ministrante) != 0):
-        atividade = db.session.query(Atividade).join(Ministrante, Atividade.ministrantes).filter(RelacaoAtividadeMinistrante.id_ministrante == usuario.ministrante[0].id,
-                                                                                                 RelacaoAtividadeMinistrante.confirmado == None).first()
+        r = db.session.query(RelacaoAtividadeMinistrante).filter(RelacaoAtividadeMinistrante.id_ministrante == usuario.ministrante[0].id,
+                                                                                                RelacaoAtividadeMinistrante.confirmado == None).first()
+        atividade = db.session.query(Atividade).get(r.id_atividade)
     if atividade is not None:
         if atividade.tipo[0].nome == "Palestra":
             view = 'cadastro_palestra'
