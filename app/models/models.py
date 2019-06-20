@@ -159,12 +159,15 @@ class AreaAtividade(db.Model):
     nome = Column(String(24), nullable=False)
     atividades = db.relationship('Atividade', secondary=relacao_atividade_area, lazy=True,
                                     back_populates='areas')
-
+    def __repr__(self):
+        return self.nome + ' <' + str(self.id) + '>'
+        
 class TipoAtividade(db.Model):
     __tablename__ = 'tipo_atividade'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
-
+    def __repr__(self):
+        return self.nome + ' <' + str(self.id) + '>'
 
 class Atividade(db.Model):
     __tablename__ = 'atividade'
