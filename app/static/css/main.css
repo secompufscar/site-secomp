@@ -9,35 +9,9 @@ header {
     header a:hover {
       color: rgba(255, 255, 255, 0.7); }
 
-.content {
+#content {
   min-height: 75vh;
 }
-
-/* Responsividade da navbar e dos titulos */
-@media (orientation: portrait) {
-  .nav-responsiva {
-    min-height: 8vh; }
-  .pad-inicio {
-    padding-top: 8vh; }
-}
-
-@media (orientation: landscape) {
-  .nav-responsiva {
-    min-height: 8vh; }
-  .pad-inicio {
-    padding-top: 8vh; }
-}
-
-@media (orientation: landscape) and (max-height: 325px) {
-  .pad-inicio {
-    padding-top: 15vh; }
-}
-
-@media (orientation: landscape) and (min-height: 325px) and (max-height: 400px) {
-  .pad-inicio {
-    padding-top: 12vh; }
-}
-/* fim-navbar */
 
 .bg-gradient-secomp {
   background-image: linear-gradient(to right, #008cb5, #00cfa1); }
@@ -227,7 +201,7 @@ footer {
   max-height: 70vh;
   width: 100vh; }
 
-/* CSS para os cards da página '/equipe' */
+/* CSS para os cards de equipe */
 .frontside {
   position: relative;
   -webkit-transform: rotateY(0deg);
@@ -309,7 +283,7 @@ footer {
   min-height: 250px; }
 
 .backside .card p {
-  font-size: 0.8em; }
+  font-size: 1.5vh; }
 
 .frontside .card .card-title,
 .backside .card .card-title {
@@ -319,6 +293,12 @@ footer {
   width: 20vh;
   height: 20vh;
   border-radius: 50%; }
+
+.bg-diretor {
+  background-color: #000000;
+}
+
+/* Fim CSS dos cards de equipe*/
 
 #portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption {
   opacity: 0.8; }
