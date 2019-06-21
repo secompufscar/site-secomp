@@ -11,6 +11,7 @@ header {
 
 #content {
   min-height: 75vh;
+  padding-top: 6.5vh;
 }
 
 .bg-gradient-secomp {
