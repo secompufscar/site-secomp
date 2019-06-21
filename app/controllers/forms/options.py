@@ -115,3 +115,17 @@ def get_opcoes_area_atividade():
         return areas
     except Exception as e:
         return None
+
+def get_opcoes_tipo_atividade():
+    try:
+        tipos = db.session.query(TipoAtividade).all()
+        tipos_atividade = []
+        for tipo in tipos:
+            info_tipo = (tipo.id, tipo.nome)
+            tipos_atividade.append(info_tipo)
+        return tipos_atividade
+    except Exception as e:
+        return None
+
+def get_opcoes_transporte():
+    return [(1, 'Carro'), (2, 'Moto'), (3, 'Ônibus')]

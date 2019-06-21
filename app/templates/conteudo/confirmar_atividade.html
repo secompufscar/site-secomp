@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+
+<div class="pad-inicio container pb-2">
+  <h1>Deseja confirmar participação na atividade:</h1>
+  <h3>{{ titulo_atividade }}</h3>
+  <form method="POST" action="{{url_for('conteudo.confirmar_atividade', codigo=codigo)}}">
+    {{ form.hidden_tag() }}
+    <button style="width: 20%" type="submit" name="confirmar" value='1' class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Confirmar</button>
+    <button style="width: 20%" type="submit" name="confirmar" value='0' class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Não Confirmar</button>
+  </form>
+</div>
+
+{% endblock %}

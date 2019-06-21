@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+
+<div class="pad-inicio container pb-2">
+  <h1>Dados de Hospedagem e Transporte</h1>
+  <form method="POST" action="{{url_for('conteudo.dados_hospedagem_transporte')}}">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.cidade_origem) }}
+    {{ wtf.form_field(form.data_chegada_sanca) }}
+    {{ wtf.form_field(form.data_partida_sanca) }}
+    {{ wtf.form_field(form.transporte_ida_volta) }}
+    {{ wtf.form_field(form.opcoes_transporte_ida_volta) }}
+    {{ wtf.form_field(form.transporte_sanca) }}
+    {{ wtf.form_field(form.opcoes_transporte_sanca) }}
+    {{ wtf.form_field(form.hospedagem) }}
+    {{ wtf.form_field(form.necessidades_hospedagem) }}
+    {{ wtf.form_field(form.observacoes) }}
+    <button style="width: 20%" type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Cadastrar</button>
+  </form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $('#data_chegada_sanca').mask('00/00/0000');
+  $('#data_partida_sanca').mask('00/00/0000');
+</script>
+{% endblock %}

@@ -4,9 +4,10 @@
 {% block content %}
 <div class="pad-inicio container pb-2">
   <h1>Cadastro de Feira de Pesquisas</h1>
-  <form method="POST" action="{{url_for('conteudo.cadastro_feira_pesquisas')}}">
+  <form method="POST" action="{{url_for('conteudo.cadastro_feira_pesquisas', codigo=codigo)}}">
     {{ form.hidden_tag() }}
     {{ wtf.form_field(form.titulo) }}
+    {{ wtf.form_field(form.area) }}
     {{ wtf.form_field(form.descricao) }}
     {{ wtf.form_field(form.necessidades) }}
     {{ wtf.form_field(form.planejamento) }}

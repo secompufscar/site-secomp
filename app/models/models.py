@@ -33,10 +33,6 @@ relacao_atividade_participante = db.Table('relacao_atividade_participante',
                                        Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
                                        Column('id_participante', Integer, db.ForeignKey('participante.id')))
 
-relacao_atividade_ministrante = db.Table('relacao_atividade_ministrante',
-                                       Column('id', Integer, primary_key=True),
-                                       Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
-                                       Column('id_ministrante', Integer, db.ForeignKey('ministrante.id')))
 
 relacao_atividade_patrocinador = db.Table('relacao_atividade_patrocinador',
                                        Column('id', Integer, primary_key=True),
@@ -48,21 +44,21 @@ class Usuario(db.Model):
     __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True)
     email = Column(String(64), unique=True, nullable=False)
-    senha = Column(String(256), nullable=False)
-    primeiro_nome = Column(String(64), nullable=False)
-    sobrenome = Column(String(64), nullable=False)
-    id_curso = Column(Integer, db.ForeignKey('curso.id'), nullable=False)
-    id_cidade = Column(Integer, db.ForeignKey('cidade.id'), nullable=False)
-    id_instituicao = Column(Integer, db.ForeignKey('instituicao.id'), nullable=False)
-    token_email = Column(String(90), nullable=False)
-    data_nascimento = Column(Date, nullable=False)
+    senha = Column(String(256), nullable=True)
+    primeiro_nome = Column(String(64), nullable=True)
+    sobrenome = Column(String(64), nullable=True)
+    id_curso = Column(Integer, db.ForeignKey('curso.id'), nullable=True)
+    id_cidade = Column(Integer, db.ForeignKey('cidade.id'), nullable=True)
+    id_instituicao = Column(Integer, db.ForeignKey('instituicao.id'), nullable=True)
+    token_email = Column(String(90), nullable=True)
+    data_nascimento = Column(Date, nullable=True)
     admin = Column(Boolean, default=False)
     autenticado = Column(Boolean, default=False)
     email_verificado = Column(Boolean, default=False)
     ultimo_login = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     data_cadastro = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
-    salt = Column(String(30), nullable=False)
+    salt = Column(String(30), nullable=True)
     token_alteracao_senha = Column(String(90), nullable=True)
     salt_alteracao_senha = Column(String(30), nullable=True)
     permissoes_usuario = db.relationship('Permissao', secondary=relacao_permissao_usuario, lazy=True,
@@ -120,20 +116,22 @@ class Participante(db.Model):
 class Ministrante(db.Model):
     __tablename__ = 'ministrante'
     id = Column(Integer, primary_key=True)
-    id_usuario = Column(Integer, db.ForeignKey('usuario.id'))
-    telefone = Column(String(11), nullable=False)
-    profissao = Column(String(64), nullable=False)
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=False)
+    telefone = Column(String(15), nullable=True)
+    profissao = Column(String(64), nullable=True)
     empresa_universidade = Column(String(64))
-    biografia = Column(String(1500), nullable=False)
+    biografia = Column(String(1500), nullable=True)
     foto = Column(String(128))
     tamanho_camiseta = Column(Integer)
     facebook = Column(String(64))
     twitter = Column(String(64))
     linkedin = Column(String(64))
     github = Column(String(64))
-    atividades = db.relationship('Atividade', secondary=relacao_atividade_ministrante, lazy=True,
+    dados_hospedagem_transporte =  db.relationship('DadosHospedagemTransporte', back_populates='ministrante', lazy=True)
+    atividades = db.relationship('Atividade', secondary='relacao_atividade_ministrante', lazy=True,
                                 back_populates='ministrantes')
     usuario =  db.relationship('Usuario', back_populates='ministrante', lazy=True)
+
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
 
@@ -152,6 +150,7 @@ class DadosHospedagemTransporte(db.Model):
     hospedagem = Column(Boolean, nullable=False)
     necessidades_hospedagem = Column(String(256))
     observacoes = Column(String(256))
+    ministrante =  db.relationship('Ministrante', back_populates='dados_hospedagem_transporte', lazy=True)
 
 
 class AreaAtividade(db.Model):
@@ -160,31 +159,32 @@ class AreaAtividade(db.Model):
     nome = Column(String(24), nullable=False)
     atividades = db.relationship('Atividade', secondary=relacao_atividade_area, lazy=True,
                                     back_populates='areas')
-
+    def __repr__(self):
+        return self.nome + ' <' + str(self.id) + '>'
+        
 class TipoAtividade(db.Model):
     __tablename__ = 'tipo_atividade'
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
-    atividades = db.relationship('Atividade', backref='tipo', lazy=True)
+    def __repr__(self):
+        return self.nome + ' <' + str(self.id) + '>'
 
-
-#TODO: remover campo tipo, mas que envolve outras partes do sistema
 class Atividade(db.Model):
     __tablename__ = 'atividade'
     id = Column(Integer, primary_key=True)
     id_evento = Column(Integer, db.ForeignKey('evento.id'))
     id_tipo = Column(Integer, db.ForeignKey('tipo_atividade.id'))
-    vagas_totais = Column(Integer, nullable=False)
-    vagas_disponiveis = Column(Integer, nullable=False)
+    vagas_totais = Column(Integer, nullable=True)
+    vagas_disponiveis = Column(Integer, nullable=True)
     ativo = Column(Boolean, nullable=False, default=True)
     data_hora = Column(DateTime, nullable=True)
     local = Column(String(64), nullable=True)
-    titulo = Column(String(64), nullable=False)
-    descricao = Column(String(1024), nullable=False)
+    titulo = Column(String(64), nullable=True)
+    descricao = Column(String(1024), nullable=True)
     observacoes = Column(String(512))
-
+    tipo = db.relationship('TipoAtividade', backref='atividades', lazy=True, uselist=True)
     url_codigo = Column(String(255))
-    url_valida = Column(Boolean, default=True)
+    atividade_cadastrada = Column(Boolean, default=False)
 
     info_minicurso = db.relationship('InfoMinicurso', backref='atividade', lazy=True)
     info_palestra = db.relationship('InfoPalestra', backref='atividade', lazy=True)
@@ -195,7 +195,7 @@ class Atividade(db.Model):
 
     areas = db.relationship('AreaAtividade', secondary=relacao_atividade_area, lazy=True,
                             back_populates='atividades')
-    ministrantes = db.relationship('Ministrante', secondary=relacao_atividade_ministrante, lazy=True,
+    ministrantes = db.relationship('Ministrante', secondary='relacao_atividade_ministrante', lazy=True,
                                    back_populates='atividades')
     participantes = db.relationship('Participante', secondary=relacao_atividade_participante, lazy=True,
                                     back_populates='atividades')
@@ -203,7 +203,10 @@ class Atividade(db.Model):
 
 
     def __repr__(self):
-        return self.titulo
+        if self.titulo != None:
+            return self.titulo
+        else:
+            return 'Atividade <' + str(self.id) + '>'
 
 class InfoMinicurso(db.Model):
     __tablename__ = 'info_minicurso'
@@ -226,6 +229,7 @@ class InfoPalestra(db.Model):
     apresentacao_extra = Column(String(128))
     material = Column(String(128))
     requisitos_tecnicos = Column(String(1024))
+    perguntas = Column(String(1024))
 
 
 class InfoFeiraDePesquisas(db.Model):
@@ -382,3 +386,11 @@ class Permissao(db.Model):
 
     def __repr__(self):
         return self.nome
+
+class RelacaoAtividadeMinistrante(db.Model):
+    __tablename__ = 'relacao_atividade_ministrante'
+    id = Column('id', Integer, primary_key=True)
+    id_atividade = Column('id_atividade', Integer, db.ForeignKey('atividade.id'))
+    id_ministrante = Column('id_ministrante', Integer, db.ForeignKey('ministrante.id'))
+    confirmado = Column('confirmado', Boolean, nullable=True)
+    admin_atividade = Column('admin_atividade', Boolean, nullable=True)
