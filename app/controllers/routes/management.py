@@ -5,6 +5,12 @@ from flask_login import login_required, current_user
 
 from app.controllers.forms.forms import *
 from app.models.models import *
+from app.controllers.functions.dictionaries import *
+from app.controllers.functions.helpers import *
+from app.controllers.forms.validators import *
+
+import string
+import random
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
@@ -152,5 +158,45 @@ def listas():
                 return render_template('management/listas_participante.html', atividade=form.atividades.data, tipo='presentes', lista=lista, form=form)
         else:
             return render_template('management/listas_participante.html', form=form)
+    else:
+        abort(403)
+
+@management.route('/gerar-url-conteudo', methods=['POST', 'GET'])
+@login_required
+def gerar_url_conteudo():
+    permissoes = current_user.getPermissoes()
+    if("CONTEUDO" in permissoes or current_user.is_admin()):
+        form = GerarUrlConteudoForm(request.form)
+        emails = request.form.getlist('emails[]')
+        if form.validate_on_submit():
+            atividade_removida = request.form.getlist('removido')
+            if len(atividade_removida) > 0:
+                atividade_removida = db.session.query(Atividade).get(atividade_removida[0])
+                for ministrante in atividade_removida.ministrantes:
+                    if ministrante.usuario.senha == None:
+                        db.session.delete(ministrante.usuario)
+                        db.session.delete(ministrante)
+                db.session.delete(atividade_removida)
+                db.session.commit()
+            if verifica_lista_emails(emails):
+                codigo = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(100))
+                tipo = db.session.query(TipoAtividade).filter_by(id=form.tipo_atividade.data).first()
+                atividade = Atividade(url_codigo=codigo, id_evento=get_id_evento_atual(), id_tipo=tipo.id)
+                atividade.tipo.append(tipo)
+                for email in emails:
+                    usuario = db.session.query(Usuario).filter_by(email=email).first()
+                    if usuario is None:
+                        usuario = Usuario(email=email, primeiro_nome='', sobrenome='')
+                        ministrante = Ministrante(usuario=usuario)
+                        usuario.ministrante.append(ministrante)
+                        db.session.add(usuario)
+                        db.session.add(ministrante)
+                    else:
+                        ministrante = usuario.ministrante[0]
+                    db.session.commit()
+                    atividade.ministrantes.append(ministrante)
+                db.session.add(atividade)
+                db.session.commit()
+        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo())
     else:
         abort(403)

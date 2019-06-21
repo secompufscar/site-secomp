@@ -5,152 +5,268 @@ from flask import request, redirect, flash, Blueprint, current_app, abort
 from flask_login import login_required, login_user
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
-import string
-import random
 from app.controllers.forms.forms import *
 from app.controllers.functions.email import *
+from app.controllers.functions.helpers import *
 from app.models.models import *
-from app.controllers.functions.dictionaries import *
+
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+limiter = Limiter(current_app, key_func=get_remote_address)
+
 
 conteudo = Blueprint('conteudo', __name__, static_folder='static',
                   template_folder='templates', url_prefix='/area-conteudo')
 
-@conteudo.route('/', methods=['POST', 'GET'])
-@login_required
-def index():
-    permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or current_user.is_admin()):
-        return render_template('conteudo/index.html')
-    else:
-        abort(403)
-
-
+@limiter.limit("20/day")
 @conteudo.route('/cadastro-ministrante/<codigo>', methods=['POST', 'GET'])
 def cadastro_ministrante(codigo):
-    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-
-    url = db.session.query(URLConteudo).filter_by(codigo=str(codigo), valido=True).first()
-    if(url is not None and url.codigo == codigo and url.numero_cadastros != 0):
+    permitido, atividade, emails = valida_url_codigo(None, codigo)
+    if(permitido == True):
         form = CadastroMinistranteForm(request.form)
-        if form.validate_on_submit():
+        form.codigo_url = codigo
+        print(emails)
+        if form.validate_on_submit() and form.email.data in emails:
+            serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
             email = form.email.data
             salt = gensalt().decode('utf-8')
             token = serializer.dumps(email, salt=salt)
             agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
-            usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
-                            data_cadastro=agora, primeiro_nome=form.primeiro_nome.data, sobrenome=form.sobrenome.data,
-                            data_nascimento=form.data_nascimento.data, token_email=token, autenticado=True, salt=salt)
-            ministrante = Ministrante(telefone=form.telefone.data, profissao=form.profissao.data,
-                                    empresa_universidade=form.empresa_universidade.data, biografia=form.biografia.data,
-                                    foto=form.foto.data, tamanho_camiseta=form.tamanho_camiseta.data, facebook=form.facebook.data,
-                                    twitter=form.twitter.data, linkedin=form.linkedin.data, github=form.github.data,
-                                    usuario=usuario, id_usuario=usuario.id)
-            permissao = db.session.query(Permissao).filter_by(nome="MINISTRANTE").first()
-            usuario.permissoes_usuario.append(permissao)
-            url.numero_cadastros = url.numero_cadastros - 1
-            usuario.ministrante = ministrante
+            permissao_ministrante = db.session.query(Permissao).filter_by(nome="MINISTRANTE").first()
+
+            usuario = db.session.query(Usuario).filter_by(email=form.email.data).first()
+            ministrante = usuario.ministrante[0]
+
+            if permissao_ministrante is not None:
+                usuario.permissoes_usuario.append(permissao_ministrante)
+
+            usuario.email = form.email.data
+            usuario.senha = hash
+            usuario.ultimo_login = agora
+            usuario.data_cadastro = agora
+            usuario.primeiro_nome = form.primeiro_nome.data
+            usuario.sobrenome = form.sobrenome.data
+            usuario.data_nascimento = form.data_nascimento.data
+            usuario.token_email = token
+            usuario.autenticado = True
+            usuario.salt = salt
+
             db.session.add(usuario)
             db.session.commit()
+
+            ministrante.id_usuario =  usuario.id
+            ministrante.telefone = form.telefone.data
+            ministrante.profissao = form.profissao.data
+            ministrante.empresa_universidade = form.empresa_universidade.data
+            ministrante.biografia = form.biografia.data
+            ministrante.foto = form.foto.data
+            ministrante.tamanho_camiseta = form.tamanho_camiseta.data
+            ministrante.facebook = form.facebook.data
+            ministrante.twitter = form.twitter.data
+            ministrante.linkedin = form.linkedin.data
+            ministrante.github = form.github.data
+
             db.session.add(ministrante)
-            db.session.commit()
-            db.session.add(url)
             db.session.commit()
             enviar_email_confirmacao(usuario, token)
             login_user(usuario, remember=True)
             return redirect(url_for('users.verificar_email'))
-        print(form.errors)
         return render_template("conteudo/cadastro_ministrante.html", form=form, codigo=codigo)
+    else:
+        abort(404)
+
+@limiter.limit("20/day")
+@conteudo.route('/dados-hospedagem-transporte/', methods=['POST', 'GET'])
+@login_required
+def dados_hospedagem_transporte():
+    permissoes = current_user.getPermissoes()
+    if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+        atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(current_user)
+        dados_hospedagem_transporte = db.session.query(DadosHospedagemTransporte).filter_by(id_evento=get_id_evento_atual(), id_ministrante=current_user.ministrante[0].id).first()
+        if dados_hospedagem_transporte is not None and atividade_confirmada == False:
+            return redirect(url_for('conteudo.' + view_atividade, codigo=atividade.url_codigo))
+        form = CadastroInformacoesLocomocaoEstadia(request.form)
+        if form.validate_on_submit():
+            dados_hospedagem_transporte = DadosHospedagemTransporte(id_evento=get_id_evento_atual(), cidade_origem=form.cidade_origem.data,
+            data_chegada_origem=form.data_chegada_sanca.data, data_chegada_partida=form.data_partida_sanca.data,
+            transporte_ida_volta=form.transporte_ida_volta.data, opcoes_transporte_ida_volta=str(form.opcoes_transporte_ida_volta.data),
+            transporte_sanca=form.transporte_sanca.data, opcoes_transporte_sanca=str(form.opcoes_transporte_sanca.data),
+            hospedagem=form.hospedagem.data, necessidades_hospedagem=form.necessidades_hospedagem.data, observacoes=form.observacoes.data)
+            current_user.ministrante[0].dados_hospedagem_transporte.append(dados_hospedagem_transporte)
+            db.session.add(dados_hospedagem_transporte)
+            db.session.add(current_user)
+            db.session.commit()
+            print(atividade.url_codigo)
+            return redirect(url_for('conteudo.' + view_atividade, codigo=atividade.url_codigo))
+        return render_template("conteudo/dados_hospedagem_transporte.html", form=form)
     abort(404)
 
-@conteudo.route('/gerar-url-cadastro', methods=['POST', 'GET'])
-@login_required
-def gerar_url_cadastro():
-    permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or current_user.is_admin()):
-        form = GerarURLCadastroForm(request.form)
-        url_em_uso = db.session.query(URLConteudo).filter_by(ultimo_gerado=True, valido=True).first()
-        dict_urls = get_dicionario_urls_cadastro_ministrante(request.url_root + 'area-conteudo/cadastro-ministrante/')
-        if form.validate_on_submit() or url_em_uso is None:
-            codigo = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(200))
-            url_conteudo = URLConteudo(codigo=codigo, ultimo_gerado=True, valido=True,
-                                       numero_cadastros=form.numero_cadastros.data, descricao=form.descricao.data)
-            db.session.add(url_conteudo)
-            if  url_em_uso is not None and url_em_uso.numero_cadastros == 0:
-                db.session.delete(url_em_uso)
-            db.session.commit()
-            dict_urls = get_dicionario_urls_cadastro_ministrante(request.url_root + 'area-conteudo/cadastro-ministrante/')
-            return render_template("conteudo/gerar_url_cadastro.html", form=form, dict_urls=dict_urls)
-        return render_template("conteudo/gerar_url_cadastro.html", form=form, dict_urls=dict_urls)
-    else:
-        abort(403)
 
-@conteudo.route('/cadastro-atividade/minicurso', methods=['POST', 'GET'])
+@limiter.limit("20/day")
+@conteudo.route('/cadastro-atividade/minicurso/<codigo>', methods=['POST', 'GET'])
 @login_required
-def cadastro_minicurso():
+def cadastro_minicurso(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
-        form = CadastroInformacoesMinicurso(request.form)
-        if form.validate_on_submit():
-            id_evento = db.session.query(Evento).filter_by(
-                edicao=EDICAO_ATUAL).first().id
-            minicurso = Minicurso(id_evento= id_evento, titulo=form.titulo.data,
-                                  descricao=form.descricao.data,
-                                  pre_requisitos=form.pre_requisitos.data, planejamento=form.planejamento.data,
-                                  apresentacao_extra=form.apresentacao_extra.data, material=form.material.data,
-                                  requisitos_hardware=form.requisitos_hardware.data,
-                                  requisitos_software=form.requisitos_software.data,
-                                  dicas_instalacao=form.dicas_instalacao.data, observacoes=form.observacoes.data)
+        permitido, atividade, emails = valida_url_codigo(current_user, codigo)
+        ministrante = current_user.ministrante[0]
+        if permitido == True:
+            r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            if r_atividade_ministrante.admin_atividade is not False:
+                form = CadastroInformacoesMinicurso(request.form)
+                if form.validate_on_submit():
+                    info_minicurso = InfoMinicurso(pre_requisitos=form.pre_requisitos.data, planejamento=form.planejamento.data,
+                                                    apresentacao_extra=form.apresentacao_extra.data, material=form.material.data,
+                                                    requisitos_hardware=form.requisitos_hardware.data, requisitos_software=form.requisitos_software.data,
+                                                    dicas_instalacao=form.dicas_instalacao.data)
+                    for ministrante in atividade.ministrantes:
+                        r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                        r.admin_atividade = False
+                        db.session.add(r)
+                        db.session.commit()
+                    r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                    r_atividade_ministrante.confirmado = True
+                    r_atividade_ministrante.admin_atividade = True
+                    atividade.titulo = form.titulo.data
+                    atividade.areas.append(db.session.query(AreaAtividade).get(form.area.data))
+                    atividade.descricao = form.descricao.data
+                    atividade.observacoes = form.observacoes.data
+                    atividade.info_minicurso.append(info_minicurso)
+                    db.session.add(r_atividade_ministrante)
+                    db.session.add(info_minicurso)
+                    db.session.add(atividade)
+                    db.session.commit()
+                    return redirect(url_for('users.dashboard'))
+                return render_template('conteudo/cadastro_minicurso.html', form=form, codigo=codigo)
+            else:
+                return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
+    abort(404)
 
-        return render_template('conteudo/cadastro_minicurso.html', form=form)
-    abort(403)
-
-@conteudo.route('/cadastro-atividade/palestra', methods=['POST', 'GET'])
+@limiter.limit("20/day")
+@conteudo.route('/cadastro-atividade/palestra/<codigo>', methods=['POST', 'GET'])
 @login_required
-def cadastro_palestra():
+def cadastro_palestra(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
-        form = CadastroInformacoesPalestra(request.form)
-        if form.validate_on_submit():
-            id_evento = db.session.query(Evento).filter_by(
-                edicao=EDICAO_ATUAL).first().id
-            palestra = Palestra(id_evento= id_evento, titulo=form.titulo.data,
-                                areas=form.area.data, descricao=form.descricao.data,
-                                observacoes=form.observacoes.data, planejamento=form.planejamento.data,
-                                apresentacao_extra=form.apresentacao_extra.data,
-                                material=form.material.data, perguntas=form.perguntas.data)
-        return render_template('conteudo/cadastro_palestra.html', form=form)
-    abort(403)
+        permitido, atividade, emails = valida_url_codigo(current_user, codigo)
+        ministrante = current_user.ministrante[0]
+        if permitido == True:
+            r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            if r_atividade_ministrante.admin_atividade is not False:
+                form = CadastroInformacoesPalestra(request.form)
+                if form.validate_on_submit():
+                    info_palestra = InfoPalestra(requisitos_tecnicos=form.requisitos_tecnicos.data, planejamento=form.planejamento.data,
+                                                apresentacao_extra=form.apresentacao_extra.data, material=form.material.data,
+                                                perguntas=form.perguntas.data)
+                    for ministrante in atividade.ministrantes:
+                        r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                        r.admin_atividade = False
+                        db.session.add(r)
+                        db.session.commit()
+                    r_atividade_ministrante.confirmado = True
+                    r_atividade_ministrante.admin_atividade = True
+                    atividade.titulo = form.titulo.data
+                    atividade.areas.append(db.session.query(AreaAtividade).get(form.area.data))
+                    atividade.descricao = form.descricao.data
+                    atividade.observacoes = form.observacoes.data
+                    atividade.info_palestra.append(info_palestra)
+                    db.session.add(r_atividade_ministrante)
+                    db.session.add(info_palestra)
+                    db.session.add(atividade)
+                    db.session.commit()
+                    return redirect(url_for('users.dashboard'))
+                return render_template('conteudo/cadastro_palestra.html', form=form, codigo=codigo)
+            else:
+                return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
+    abort(404)
 
-#TODO adicionar ministrante
-#TODO adicionar areas
-@conteudo.route('/cadastro-atividade/mesa-redonda', methods=['POST', 'GET'])
+@conteudo.route('/cadastro-atividade/mesa-redonda/<codigo>', methods=['POST', 'GET'])
 @login_required
-def cadastro_mesa_redonda():
+def cadastro_mesa_redonda(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
-        form = CadastroMesaRedonda(request.form)
-        if form.validate_on_submit():
-            id_evento = db.session.query(Evento).filter_by(
-                edicao=EDICAO_ATUAL).first().id
-            mesa_redonda = MesaRedonda(id_evento=id_evento, titulo=form.titulo.data,
-                                       areas=form.area.data, descricao=form.descricao.data,
-                                       observacoes=form.observacoes.data, necessidades=form.necessidades.data,
-                                       planejamento=form.planejamento.data)
-        return render_template('conteudo/cadastro_mesa_redonda.html')
-    abort(403)
+        permitido, atividade, emails = valida_url_codigo(current_user, codigo)
+        ministrante = current_user.ministrante[0]
+        if permitido == True:
+            r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            if r_atividade_ministrante.admin_atividade is not False:
+                form = CadastroAtividadeGenerica(request.form)
+                if form.validate_on_submit():
+                    for ministrante in atividade.ministrantes:
+                        r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                        r.admin_atividade = False
+                        db.session.add(r)
+                        db.session.commit()
+                    r_atividade_ministrante.confirmado = True
+                    r_atividade_ministrante.admin_atividade = True
+                    atividade.titulo = form.titulo.data
+                    atividade.areas.append(db.session.query(AreaAtividade).get(form.area.data))
+                    atividade.descricao = form.descricao.data
+                    atividade.observacoes = form.observacoes.data
+                    db.session.add(r_atividade_ministrante)
+                    db.session.add(atividade)
+                    db.session.commit()
+                    return redirect(url_for('users.dashboard'))
+                return render_template('conteudo/cadastro_mesa_redonda.html', codigo=codigo, form=form)
+            else:
+                return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
+    abort(404)
 
-@conteudo.route('/cadastro-atividade/feira-pesquisas', methods=['POST', 'GET'])
+@conteudo.route('/cadastro-atividade/feira-pesquisas/<codigo>', methods=['POST', 'GET'])
 @login_required
-def cadastro_feira_pesquisas():
+def cadastro_feira_pesquisas(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
-        form = CadastroFeiraDePesquisas(request.form)
-        if form.validate_on_submit():
-            id_evento = db.session.query(Evento).filter_by(
-                edicao=EDICAO_ATUAL).first().id
-            feira_pesquisas = FeiraDePesquisas(id_evento= id_evento, titulo=form.titulo.data,
-                                               areas=form.area.data, descricao=form.descricao.data,
-                                               planejamento=form.planejamento.data)
-        return render_template('conteudo/cadastro_feira_pesquisas.html', form=form)
-    abort(403)
+        permitido, atividade, emails = valida_url_codigo(current_user, codigo)
+        ministrante = current_user.ministrante[0]
+        if(permitido == True):
+            r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            if r_atividade_ministrante.admin_atividade is not False:
+                form = CadastroFeiraDePesquisas(request.form)
+                if form.validate_on_submit():
+                    info_feira_de_pesquisas = InfoFeiraDePesquisas(necessidades=form.necessidades.data, planejamento=form.planejamento.data)
+                    for ministrante in atividade.ministrantes:
+                        r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                        r.admin_atividade = False
+                        db.session.add(r)
+                        db.session.commit()
+                    r_atividade_ministrante.confirmado = True
+                    r_atividade_ministrante.admin_atividade = True
+                    atividade.titulo = form.titulo.data
+                    atividade.areas.append(db.session.query(AreaAtividade).get(form.area.data))
+                    atividade.descricao = form.descricao.data
+                    atividade.observacoes = form.observacoes.data
+                    atividade.info_feira_de_pesquisas.append(info_feira_de_pesquisas)
+                    db.session.add(r_atividade_ministrante)
+                    db.session.add(info_feira_de_pesquisas)
+                    db.session.add(atividade)
+                    db.session.commit()
+                    return redirect(url_for('users.dashboard'))
+                return render_template('conteudo/cadastro_feira_pesquisas.html', codigo=codigo, form=form)
+            else:
+                return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
+    abort(404)
+
+@limiter.limit("20/day")
+@conteudo.route('/confirmar-atividade/<codigo>', methods=['POST', 'GET'])
+@login_required
+def confirmar_atividade(codigo):
+    permissoes = current_user.getPermissoes()
+    if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+        permitido, atividade, emails = valida_url_codigo(current_user, codigo)
+        ministrante = current_user.ministrante[0]
+        r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+        if permitido == True and r_atividade_ministrante.confirmado is not False:
+            form = ConfirmarAtividadeMinistranteForm(request.form)
+            if form.validate_on_submit():
+                confirmar = request.form.getlist('confirmar')[0]
+                if confirmar == '1':
+                    r_atividade_ministrante.confirmado = True
+                else:
+                    r_atividade_ministrante.confirmado = False
+                db.session.add(r_atividade_ministrante)
+                db.session.commit()
+                return redirect(url_for('users.dashboard'))
+            return render_template('conteudo/confirmar_atividade.html', codigo=codigo, titulo_atividade=atividade.titulo, form=form)
+    abort(404)
