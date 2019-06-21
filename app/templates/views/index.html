@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="overlay pad-inicio" style="margin-top: 0;">
+<div class="overlay" style="margin-top: 0;">
 	<img class="opac img-responsive" src="{{url_for('static', filename='images/fundoctf.gif')}}">
 	<div class="text-center overlay-text">
 		<img class="w-50 pb-4" src="{{url_for('static', filename='images/logo-colorida.png')}}">
@@ -314,4 +314,10 @@
 <script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/flipclock.min.js') }}"></script>
+
+<script>
+	$(document).ready(function(){
+    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
+  });
+</script>
 {% endblock %}

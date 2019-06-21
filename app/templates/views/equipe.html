@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<section id="team" class="pad-inicio pb-5">
+<section id="team" class="pb-5">
     <div class="container">
         {% for array in data %}
         <h2 class="section-title text-center pb-4">{{ array }}</h2>
@@ -29,7 +29,7 @@
 
                         <div class="backside">
                             {% if loop.index == 1 or array == 'Coordenação Geral' %}
-                            <div class="card border-info bg-dark text-white">
+                            <div class="card border-info bg-diretor text-white">
                             {% else %}
                             <div class="card">
                             {% endif %}
