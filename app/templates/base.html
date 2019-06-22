@@ -47,7 +47,7 @@
 {% block navbar %}
 <header>
   <nav class="nav-responsiva navbar shadow fixed-top navbar-expand-lg bg-gradient-secomp">
-    <div class="container-fluid">
+    <div id="navTop" class="container-fluid">
       {# Marca d'água para a home #}
       <a class="navbar-brand mr-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
                                                                                src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30"
@@ -147,7 +147,7 @@
 </div>
 
 <main>
-  <div class="content">
+  <div id="content">
     {% block content %}{% endblock %}
   </div>
 </main>
@@ -158,8 +158,8 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-sm-8 text-center">
-        <p>Desenvolvido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Igor Lúcio,
-        Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Nathan Oliveira e Victória De
+        <p>Desenvolvido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Guilherme Villar, Igor Lúcio,
+        Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Nathan Oliveira, Rafael Murata e Victória De
         Martini.
         </p>
 
@@ -198,6 +198,12 @@
 <script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
+
+<script>
+	$(document).ready(function(){
+    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
+  });
+</script>
 
 {% endblock %}
 {% endblock %}
