@@ -47,7 +47,7 @@
   }
 </style>
 
-<div class="pad-inicio container pb-2">
+<div class="container pb-2">
   <div class="tab-form">
     <div class="tabmenu" id="firsttab"></div>
     <div class="tabmenu" id="secondtab"></div>
@@ -210,6 +210,12 @@
       };
     }
   })
+</script>
+
+<script>
+	$(document).ready(function(){
+    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
+  });
 </script>
 {% endblock %}
 
