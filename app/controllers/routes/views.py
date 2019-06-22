@@ -74,8 +74,8 @@ def login():
     if form.validate_on_submit():
         user = db.session.query(Usuario).filter_by(
             email=form.email.data).first()
-        atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(user)
         if user:
+            atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(user)
             if pbkdf2_sha256.verify(form.senha.data, user.senha):
                 user.autenticado = True
                 db.session.add(user)
