@@ -143,7 +143,8 @@ header {
   margin: 0 auto;
   padding: 10px;
   position: relative;
-  width: 120%;
+  width: auto;
+  display: inline-flex;
 }
 
 @media (orientation: portrait) {
@@ -365,4 +366,14 @@ a.portfolio-box:hover {
 
 .clock {
   width: 100%;
+}
+
+.btn-link:hover, .btn-link:focus{
+  text-decoration: none;
+}
+
+.setaDireita{
+  text-align: right !important;
+  width: auto;
+  margin-left: auto;
 }

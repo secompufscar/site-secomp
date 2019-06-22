@@ -17,66 +17,68 @@
             <h2>Cronograma</h2>
         </div>
     </div>
-    <div class="row align-items-center cronograma">
-        <div class="col-md-1 text-center setaEsquerda" onclick="left_arrow()">
-            <i class="fas fa-2x fa-chevron-left"></i>
-        </div>
-        <div class="col-md-8 center">
-            <div class="col-md-12 text-center nav_cronograma">
-                <nav class="navbar nav-crono navbar-light navbar-expand-lg">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <div class="collapse navbar-collapse" id="navbarContent">
-                                    <th scope="col-md-2" id="th_seg" class="nav_on">
-                                        <a onclick="toggle_visibility('seg');">
-
-                                            <h5>09.09.2019</h5>
-                                            <h4><span id="nav-seg" class="day selected">Seg</span></h4>
-
-                                        </a>
-                                    </th>
-                                    <th scope="col-md-2" id="th_ter" class="nav_off">
-                                        <a onclick="toggle_visibility('ter');">
-
-                                            <h5>10.09.2019</h5>
-                                            <h4><span id="nav-ter" class="day">Ter</span></h4>
-
-                                        </a>
-                                    </th>
-                                    <th scope="col-md-2" id="th_qua" class="nav_off">
-                                        <a onclick="toggle_visibility('qua');">
-
-                                            <h5>11.09.2019</h5>
-                                            <h4><span id="nav-qua" class="day">Qua</span></h4>
-
-                                        </a>
-                                    </th>
-                                    <th scope="col-md-2" id="th_qui" class="nav_off">
-                                        <a onclick="toggle_visibility('qui');">
-
-                                            <h5>12.09.2019</h5>
-                                            <h4><span id="nav-qui" class="day">Qui</span></h4>
-
-                                        </a>
-                                    </th>
-                                    <th scope="col-md-2" id="th_sex" class="nav_off">
-                                        <a onclick="toggle_visibility('sex');">
-
-                                            <h5>13.09.2019</h5>
-                                            <h4><span id="nav-sex" class="day">Sex</span></h4>
-
-                                        </a>
-                                    </th>
-                                </div>
-                            </tr>
-                            <thead>
-                    </table>
-                </nav>
+    <div style="width: 100%; text-align: center">
+        <div style="width: auto; display: inline-flex;" class="row align-items-center cronograma">
+            <div class="col-md-1 text-center setaEsquerda" onclick="left_arrow()">
+                <i class="fas fa-2x fa-chevron-left"></i>
             </div>
-        </div>
-        <div class="col-md-1 text-center setaDireita" onclick="right_arrow()">
-            <i class="fas fa-2x fa-chevron-right"></i>
+            <div style="padding-left: 0px;" class="col-md-8 center">
+                <div class="col-md-12 text-center nav_cronograma">
+                    <nav class="navbar nav-crono navbar-light navbar-expand-lg">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <div class="collapse navbar-collapse" id="navbarContent">
+                                        <th scope="col-md-2" id="th_seg" class="nav_on selected">
+                                            <a onclick="toggle_visibility('seg');">
+
+                                                <h5>09.09.2019</h5>
+                                                <h4><span id="nav-seg">Seg</span></h4>
+
+                                            </a>
+                                        </th>
+                                        <th scope="col-md-2" id="th_ter" class="nav_off">
+                                            <a onclick="toggle_visibility('ter');">
+
+                                                <h5>10.09.2019</h5>
+                                                <h4><span id="nav-ter">Ter</span></h4>
+
+                                            </a>
+                                        </th>
+                                        <th scope="col-md-2" id="th_qua" class="nav_off">
+                                            <a onclick="toggle_visibility('qua');">
+
+                                                <h5>11.09.2019</h5>
+                                                <h4><span id="nav-qua">Qua</span></h4>
+
+                                            </a>
+                                        </th>
+                                        <th scope="col-md-2" id="th_qui" class="nav_off">
+                                            <a onclick="toggle_visibility('qui');">
+
+                                                <h5>12.09.2019</h5>
+                                                <h4><span id="nav-qui">Qui</span></h4>
+
+                                            </a>
+                                        </th>
+                                        <th scope="col-md-2" id="th_sex" class="nav_off">
+                                            <a onclick="toggle_visibility('sex');">
+
+                                                <h5>13.09.2019</h5>
+                                                <h4><span id="nav-sex">Sex</span></h4>
+
+                                            </a>
+                                        </th>
+                                    </div>
+                                </tr>
+                                <thead>
+                        </table>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-md-1 text-center setaDireita" onclick="right_arrow()">
+                <i class="fas fa-2x fa-chevron-right"></i>
+            </div>
         </div>
     </div>
 
@@ -299,8 +301,8 @@
         if (seg.style.display === "block") {
             seg.style.display = "none";
             ter.style.display = "block";
-            document.getElementById("nav-seg").className = "day";
-            document.getElementById("nav-ter").className = "day selected";
+            $('#th_seg').removeClass("selected");
+            $('#th_ter').addClass("selected");
             $('#th_seg').removeClass("nav_on");
             $('#th_seg').addClass("nav_off");
             $('#th_ter').removeClass("nav_off");
@@ -308,8 +310,8 @@
         } else if (ter.style.display === "block") {
             ter.style.display = "none";
             qua.style.display = "block";
-            document.getElementById("nav-ter").className = "day";
-            document.getElementById("nav-qua").className = "day selected";
+            $('#th_ter').removeClass("selected");
+            $('#th_qua').addClass("selected");
             $('#th_ter').removeClass("nav_on");
             $('#th_ter').addClass("nav_off");
             $('#th_qua').removeClass("nav_off");
@@ -317,8 +319,8 @@
         } else if (qua.style.display === "block") {
             qua.style.display = "none";
             qui.style.display = "block";
-            document.getElementById("nav-qua").className = "day";
-            document.getElementById("nav-qui").className = "day selected";
+            $('#th_qua').removeClass("selected");
+            $('#th_qui').addClass("selected");
             $('#th_qua').removeClass("nav_on");
             $('#th_qua').addClass("nav_off");
             $('#th_qui').removeClass("nav_off");
@@ -326,8 +328,8 @@
         } else if (qui.style.display === "block") {
             qui.style.display = "none";
             sex.style.display = "block";
-            document.getElementById("nav-qui").className = "day";
-            document.getElementById("nav-sex").className = "day selected";
+            $('#th_qui').removeClass("selected");
+            $('#th_sex').addClass("selected");
             $('#th_qui').removeClass("nav_on");
             $('#th_qui').addClass("nav_off");
             $('#th_sex').removeClass("nav_off");
@@ -335,8 +337,8 @@
         } else if (sex.style.display === "block") {
             sex.style.display = "none";
             seg.style.display = "block";
-            document.getElementById("nav-sex").className = "day";
-            document.getElementById("nav-seg").className = "day selected";
+            $('#th_sex').removeClass("selected");
+            $('#th_seg').addClass("selected");
             $('#th_sex').removeClass("nav_on");
             $('#th_sex').addClass("nav_off");
             $('#th_seg').removeClass("nav_off");
@@ -352,8 +354,8 @@
         if (seg.style.display === "block") {
             seg.style.display = "none";
             sex.style.display = "block";
-            document.getElementById("nav-seg").className = "day";
-            document.getElementById("nav-sex").className = "day selected";
+            $('#th_seg').removeClass("selected");
+            $('#th_sex').addClass("selected");
             $('#th_seg').removeClass("nav_on");
             $('#th_seg').addClass("nav_off");
             $('#th_sex').removeClass("nav_off");
@@ -361,8 +363,8 @@
         } else if (ter.style.display === "block") {
             ter.style.display = "none";
             seg.style.display = "block";
-            document.getElementById("nav-ter").className = "day";
-            document.getElementById("nav-seg").className = "day selected";
+            $('#th_ter').removeClass("selected");
+            $('#th_seg').addClass("selected");
             $('#th_ter').removeClass("nav_on");
             $('#th_ter').addClass("nav_off");
             $('#th_seg').removeClass("nav_off");
@@ -370,8 +372,8 @@
         } else if (qua.style.display === "block") {
             qua.style.display = "none";
             ter.style.display = "block";
-            document.getElementById("nav-qua").className = "day";
-            document.getElementById("nav-ter").className = "day selected";
+            $('#th_qua').removeClass("selected");
+            $('#th_ter').addClass("selected");
             $('#th_qua').removeClass("nav_on");
             $('#th_qua').addClass("nav_off");
             $('#th_ter').removeClass("nav_off");
@@ -379,8 +381,8 @@
         } else if (qui.style.display === "block") {
             qui.style.display = "none";
             qua.style.display = "block";
-            document.getElementById("nav-qui").className = "day";
-            document.getElementById("nav-qua").className = "day selected";
+            $('#th_qui').removeClass("selected");
+            $('#th_qua').addClass("selected");
             $('#th_qui').removeClass("nav_on");
             $('#th_qui').addClass("nav_off");
             $('#th_qua').removeClass("nav_off");
@@ -388,8 +390,8 @@
         } else if (sex.style.display === "block") {
             sex.style.display = "none";
             qui.style.display = "block";
-            document.getElementById("nav-sex").className = "day";
-            document.getElementById("nav-qui").className = "day selected";
+            $("th_sex").removeClass("selected");
+            $("th_qui").addClass("selected");
             $('#th_sex').removeClass("nav_on");
             $('#th_sex').addClass("nav_off");
             $('#th_qui').removeClass("nav_off");
@@ -404,7 +406,7 @@
         for (i = 0; i < 5; i++) {
 
             var dia = document.getElementById(listaDias[i]);
-            var nav = document.getElementById('nav-' + listaDias[i]);
+            var nav = document.getElementById('th_' + listaDias[i]);
 
             if (dia == target) {
                 dia.style.display = 'block';
