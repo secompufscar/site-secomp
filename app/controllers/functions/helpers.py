@@ -94,7 +94,8 @@ def confirmacao_atividade_ministrante(usuario):
     if(len(usuario.ministrante) != 0):
         r = db.session.query(RelacaoAtividadeMinistrante).filter(RelacaoAtividadeMinistrante.id_ministrante == usuario.ministrante[0].id,
                                                                                                 RelacaoAtividadeMinistrante.confirmado == None).first()
-        atividade = db.session.query(Atividade).get(r.id_atividade)
+        if r is not None:
+            atividade = db.session.query(Atividade).get(r.id_atividade)
     if atividade is not None:
         if atividade.tipo[0].nome == "Palestra":
             view = 'cadastro_palestra'
