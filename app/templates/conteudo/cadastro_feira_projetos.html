@@ -3,8 +3,8 @@
 
 {% block content %}
 <div class="pad-inicio container pb-2">
-  <h1>Cadastro de Feira de Pesquisas</h1>
-  <form method="POST" action="{{url_for('conteudo.cadastro_feira_pesquisas', codigo=codigo)}}">
+  <h1>Cadastro de Feira de Projetos</h1>
+  <form method="POST" action="{{url_for('conteudo.cadastro_feira_projetos', codigo=codigo)}}">
     {{ form.hidden_tag() }}
     {{ wtf.form_field(form.titulo) }}
     {{ wtf.form_field(form.area) }}

@@ -179,8 +179,8 @@ class CadastroInformacoesPalestra(FlaskForm):
     perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired()])
     observacoes = TextAreaField('Observações')
 
-class CadastroFeiraDePesquisas(FlaskForm):
-    titulo = StringField('Título da Pesquisa', validators=[InputRequired()])
+class CadastroFeiraDeProjetos(FlaskForm):
+    titulo = StringField('Título do Projeto', validators=[InputRequired()])
     area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     necessidades = TextAreaField('Necessidades', validators=[InputRequired()])

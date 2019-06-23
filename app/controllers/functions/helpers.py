@@ -105,8 +105,8 @@ def confirmacao_atividade_ministrante(usuario):
             view = 'cadastro_minicurso'
         elif atividade.tipo[0].nome == "Mesa Redonda":
             view = 'cadastro_mesa_redonda'
-        elif atividade.tipo[0].nome == "Feira de Pesquisas":
-            view = 'cadastro_feira_pesquisas'
+        elif atividade.tipo[0].nome == "Feira de Projetos":
+            view = 'cadastro_feira_projetos'
         return False, atividade, view
     else:
         return True, None, None
