@@ -60,23 +60,6 @@ def erro_cidade_existe():
                 raise ValidationError(ERRO_CIDADE_EXISTE)
     return _erro_cidade_existe
 
-def transporte_ida_volta_selecionado():
-    def _transporte_ida_volta_selecionado(form, field):
-        if form.transporte_ida_volta.data is not True and field.data is not '':
-            raise ValidationError("Selecione a opção de usar transporte de ida e volta")
-    return _transporte_ida_volta_selecionado
-
-def transporte_sanca_selecionado():
-    def _transporte_sanca_selecionado(form, field):
-        if form.transporte_sanca.data is not True and field.data is not '':
-            raise ValidationError("Selecione a opção de usar transporte para São Carlos")
-    return _transporte_sanca_selecionado
-
-def hospedagem_selecionada():
-    def _hospedagem_selecionada(form, field):
-        if form.hospedagem.data is not True and field.data is not '':
-            raise ValidationError("Selecione a opção de hospedagem")
-    return _hospedagem_selecionada
 
 def tem_valor():
     def _tem_valor(form, field):

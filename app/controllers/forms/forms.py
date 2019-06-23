@@ -129,7 +129,8 @@ class CadastroMinistranteForm(FlaskForm):
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=100), so_letras()], id="sobrenome")
     email = StringField('Email', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254), valida_email_ministrante()], id="email")
+        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254),
+        valida_email_ministrante()], id="email")
     senha = PasswordField('Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), EqualTo(
         'confirmacao', message=ERRO_COMPARA_SENHAS), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)], id="senha")
     confirmacao = PasswordField('Confirmação de Senha', validators=[
@@ -142,8 +143,9 @@ class CadastroMinistranteForm(FlaskForm):
         validators=[Length(max=64)])
     biografia = TextAreaField('Breve descrição biográfica, a ser utilizada na divulgação', validators=[InputRequired(),
         Length(min=1, max=1500)], id='biografia')
-    foto = StringField('Foto', id='foto')
-    tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=get_opcoes_camisetas(), id='tamanho_camiseta', coerce=int)
+    foto = StringField('Foto')
+    tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=get_opcoes_camisetas(),
+        id='tamanho_camiseta', coerce=int)
     facebook = StringField('Facebook', id='facebook')
     twitter = StringField('Twitter', id='twitter')
     linkedin = StringField('Linkedin', id='linkedin')
@@ -191,9 +193,7 @@ class CadastroAtividadeGenerica(FlaskForm):
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     observacoes = TextAreaField('Observações')
 
-#TODO fazer validator para campo opcoes_transporte_ida_volta ser obrigatorio caso transporte_ida_volta seja verdadeiro
-#TODO fazer validator para campo opcoes_transporte_sanca ser obrigatorio caso transporte_sanca seja verdadeiro
-#TODO fazer validator para campo necessidades_hospedagem ser obrigatorio caso hospedagem seja verdadeiro
+
 class CadastroInformacoesLocomocaoEstadia(FlaskForm):
     cidade_origem = StringField('Cidade de Origem', validators=[InputRequired(), Length(min=1,max=64)])
     data_chegada_sanca = DateField('Data de Chegada em São Carlos', format='%d/%m/%Y', id='data_chegada_sanca',
@@ -201,17 +201,17 @@ class CadastroInformacoesLocomocaoEstadia(FlaskForm):
     data_partida_sanca = DateField('Data de Partida de São Carlos', format='%d/%m/%Y', id='data_partida_sanca',
         validators=[InputRequired()])
     transporte_ida_volta = BooleanField('Requer que a SECOMP UFSCar pague por seu transporte de ida e volta',
-        id='transporte_ida_volta', validators=[InputRequired()])
-    opcoes_transporte_ida_volta = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte(),
-        id='opcoes_transporte_ida_volta', validators=[transporte_ida_volta_selecionado()], coerce=int)
+        id='transporte_ida_volta')
+    opcoes_transporte_ida_volta = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte_ida_volta(),
+        id='opcoes_transporte_ida_volta', coerce=int)
     transporte_sanca = BooleanField('Requer que a SECOMP UFSCar se encarregue do seu transporte dentro de São Carlos?',
-        validators=[InputRequired()], id='transporte_sanca')
-    opcoes_transporte_sanca = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte(),
-        id='opcoes_transporte_sanca', validators=[transporte_sanca_selecionado()], coerce=int)
+        id='transporte_sanca')
+    opcoes_transporte_sanca = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte_sanca(),
+        id='opcoes_transporte_sanca', coerce=int)
     hospedagem = BooleanField('Requer que a SECOMP UFSCar arque com os custos de sua hospedagem?',
-        validators=[InputRequired()], id='hospedagem')
+        id='hospedagem')
     necessidades_hospedagem = TextAreaField('Quais são as necessidades básicas a serem atendidas pela estadia?',
-        id='necessidades_hospedagem', validators=[Length(max=256), hospedagem_selecionada()])
+        id='necessidades_hospedagem', validators=[Length(max=256)])
     observacoes = TextAreaField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)])
 
