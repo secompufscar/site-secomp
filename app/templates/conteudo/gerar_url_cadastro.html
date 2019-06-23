@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+<style>
+  .url-container {
+    overflow-x: scroll;
+    max-width:500px;
+}
+.url-text{
+  display:inline-block;
+     white-space:nowrap;
+}
+
+</style>
+<br>
+<div class="pad-inicio container pb-2">
+<h2>URL para cadastro de ministrante</h2>
+<hr>
+<form method="POST" action="{{url_for('conteudo.gerar_url_cadastro')}}">
+  {{ form.hidden_tag() }}
+  {{ wtf.form_field(form.descricao) }}
+  {{ wtf.form_field(form.numero_cadastros) }}
+  {{ wtf.form_field(form.gerar) }}
+  <button style="width: 20%" type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Gerar Nova URL</button>
+</form>
+<hr>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Descricao</th>
+      <th scope="col">URL</th>
+      <th scope="col">Número de Cadastros Restantes</th>
+      <th scope="col">Válida</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for url in dict_urls %}
+    <tr>
+      <td scope="col">{{ url.descricao }}</td>
+      <td scope="col"  class="col-md-6"><div class="url-container"><div class="url-text">{{ url.url }}</div></div></td>
+      <td scope="col">{{ url.numero_cadastros }}</td>
+      <td scope="col">{{ url.valido }}</td>
+    {% endfor %}
+    </tr>
+  </tbody>
+</table>
+</div>
+{% endblock %}
