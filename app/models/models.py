@@ -188,7 +188,7 @@ class Atividade(db.Model):
 
     info_minicurso = db.relationship('InfoMinicurso', backref='atividade', lazy=True)
     info_palestra = db.relationship('InfoPalestra', backref='atividade', lazy=True)
-    info_feira_de_pesquisas = db.relationship('InfoFeiraDePesquisas', backref='atividade', lazy=True)
+    info_feira_de_projetos = db.relationship('InfoFeiraDeProjetos', backref='atividade', lazy=True)
 
     patrocinadores = db.relationship('Patrocinador', secondary=relacao_atividade_patrocinador, lazy=True,
                             back_populates='atividades')
@@ -232,8 +232,8 @@ class InfoPalestra(db.Model):
     perguntas = Column(String(1024))
 
 
-class InfoFeiraDePesquisas(db.Model):
-    __tablename__ = 'info_feira_de_pesquisas'
+class InfoFeiraDeProjetos(db.Model):
+    __tablename__ = 'info_feira_de_projetos'
     id = Column(Integer, primary_key=True)
     id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
     necessidades = Column(String(1024))

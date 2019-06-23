@@ -213,9 +213,9 @@ def cadastro_mesa_redonda(codigo):
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
 
-@conteudo.route('/cadastro-atividade/feira-pesquisas/<codigo>', methods=['POST', 'GET'])
+@conteudo.route('/cadastro-atividade/feira-projetos/<codigo>', methods=['POST', 'GET'])
 @login_required
-def cadastro_feira_pesquisas(codigo):
+def cadastro_feira_projetos(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
@@ -223,9 +223,9 @@ def cadastro_feira_pesquisas(codigo):
         if(permitido == True):
             r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
             if r_atividade_ministrante.admin_atividade is not False:
-                form = CadastroFeiraDePesquisas(request.form)
+                form = CadastroFeiraDeProjetos(request.form)
                 if form.validate_on_submit():
-                    info_feira_de_pesquisas = InfoFeiraDePesquisas(necessidades=form.necessidades.data, planejamento=form.planejamento.data)
+                    info_feira_de_projetos = InfoFeiraDeProjetos(necessidades=form.necessidades.data, planejamento=form.planejamento.data)
                     for ministrante in atividade.ministrantes:
                         r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
                         r.admin_atividade = False
@@ -237,13 +237,13 @@ def cadastro_feira_pesquisas(codigo):
                     atividade.areas.append(db.session.query(AreaAtividade).get(form.area.data))
                     atividade.descricao = form.descricao.data
                     atividade.observacoes = form.observacoes.data
-                    atividade.info_feira_de_pesquisas.append(info_feira_de_pesquisas)
+                    atividade.info_feira_de_projetos.append(info_feira_de_projetos)
                     db.session.add(r_atividade_ministrante)
-                    db.session.add(info_feira_de_pesquisas)
+                    db.session.add(info_feira_de_projetos)
                     db.session.add(atividade)
                     db.session.commit()
                     return redirect(url_for('users.dashboard'))
-                return render_template('conteudo/cadastro_feira_pesquisas.html', codigo=codigo, form=form)
+                return render_template('conteudo/cadastro_feira_projetos.html', codigo=codigo, form=form)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
