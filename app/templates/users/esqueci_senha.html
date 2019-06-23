@@ -1,25 +1,16 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 
-
-{% block styles %}
-{{ super() }}
-
-<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css"/>
-{% endblock %}
-
-
 {% block content %}
 
-<div class="pad-inicio container">
+<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css" />
+
+<div class="container">
     <div class="row justify-content-center pt-3">
 
-        <div class="col-md-12">
-            <h3 class="text-center">Recuperação de senha</h3>
-        </div>
+        <div class="col-md-8 pb-5">
 
-
-        <div class="col-md-6 pt-3">
+                <h3 class="text-center">Recuperação de senha</h3>
 
             {% if status_envio_email == False: %}
             <form action="{{url_for('users.esqueci_senha')}}" method="POST">
@@ -30,7 +21,7 @@
                 <span class="help-block">{{ error }}</span>
                 {% endfor %}
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-4">Enviar</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Enviar</button>
                 </div>
             </form>
             {% else: %}
