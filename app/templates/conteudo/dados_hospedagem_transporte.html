@@ -24,8 +24,59 @@
 {% endblock %}
 
 {% block scripts %}
+
 <script>
+$(document).ready(function ($) {
   $('#data_chegada_sanca').mask('00/00/0000');
   $('#data_partida_sanca').mask('00/00/0000');
+
+  if(!(('#transporte_ida_volta').checked)) {
+    $('label[for="opcoes_transporte_ida_volta"]').hide();
+    $('#opcoes_transporte_ida_volta').hide();
+  }
+
+  $('#transporte_ida_volta').change(function () {
+      if(this.checked) {
+        $('label[for="opcoes_transporte_ida_volta"]').show();
+        $('#opcoes_transporte_ida_volta').show();
+      } else {
+        $('label[for="opcoes_transporte_ida_volta"]').hide();
+        $('#opcoes_transporte_ida_volta').hide();
+      }
+  });
+
+
+  if(!(('#transporte_sanca').checked)) {
+    $('label[for="opcoes_transporte_sanca"]').hide();
+    $('#opcoes_transporte_sanca').hide();
+  }
+
+  $('#transporte_sanca').change(function () {
+      if(this.checked) {
+        $('label[for="opcoes_transporte_sanca"]').show();
+        $('#opcoes_transporte_sanca').show();
+      } else {
+        $('label[for="opcoes_transporte_sanca"]').hide();
+        $('#opcoes_transporte_sanca').hide();
+      }
+  });
+
+
+  if(!(('#hospedagem').checked)) {
+    $('label[for="necessidades_hospedagem"]').hide();
+    $('#necessidades_hospedagem').hide();
+  }
+
+  $('#hospedagem').change(function () {
+      if(this.checked) {
+        $('label[for="necessidades_hospedagem"]').show();
+        $('#necessidades_hospedagem').show();
+      } else {
+        $('label[for="necessidades_hospedagem"]').hide();
+        $('#necessidades_hospedagem').hide();
+      }
+  });
+});
 </script>
+
 {% endblock %}
