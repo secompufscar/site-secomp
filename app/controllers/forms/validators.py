@@ -1,6 +1,6 @@
 import re
 
-from wtforms.validators import ValidationError
+from wtforms.validators import ValidationError, DataRequired, Optional
 
 from app.models.models import *
 
@@ -88,3 +88,24 @@ def verifica_lista_emails(emails):
         if not is_valid_email(email):
             return False
     return True
+
+
+class RequiredIf(DataRequired):
+    """Validator which makes a field required if another field is set and has a truthy value.
+    """
+    field_flags = ('requiredif',)
+
+    def __init__(self, message=None, *args, **kwargs):
+        super(RequiredIf).__init__()
+        self.message = message
+        self.conditions = kwargs
+
+    # field is requiring that name field in the form is data value in the form
+    def __call__(self, form, field):
+        for name, data in self.conditions.items():
+            other_field = form[name]
+            if other_field is None:
+                raise ValidationError("Preencha o campo.")
+            if other_field.data == data and not field.data:
+                DataRequired.__call__(self, form, field)
+            Optional()(form, field)
