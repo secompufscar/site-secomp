@@ -161,7 +161,7 @@ class AreaAtividade(db.Model):
                                     back_populates='areas')
     def __repr__(self):
         return self.nome + ' <' + str(self.id) + '>'
-        
+
 class TipoAtividade(db.Model):
     __tablename__ = 'tipo_atividade'
     id = Column(Integer, primary_key=True)
@@ -216,8 +216,13 @@ class InfoMinicurso(db.Model):
     planejamento = Column(String(128))
     apresentacao_extra = Column(String(128))
     material = Column(String(128))
+    requisitos_ide = Column(String(1024))
+    requisitos_bibliotecas_pacotes = Column(String(1024))
+    requisitos_dependencias = Column(String(1024))
+    requisitos_sistema = Column(String(1024))
+    requisitos_observacoes = Column(String(1024))
+    requisitos_github = Column(String(1024))
     requisitos_hardware = Column(String(1024))
-    requisitos_software = Column(String(1024))
     dicas_instalacao = Column(String(1024))
 
 

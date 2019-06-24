@@ -155,7 +155,7 @@ class CadastroMinistranteForm(FlaskForm):
 
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
+    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)])
     pre_requisitos = TextAreaField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
@@ -163,14 +163,26 @@ class CadastroInformacoesMinicurso(FlaskForm):
     planejamento = TextAreaField('Descrição da estrutura do minicurso', validators=[InputRequired()])
     apresentacao_extra = StringField('Previa da apresentação', validators=[Length(max=128)])
     material = TextAreaField('Material', validators=[Length(max=128)])
-    requisitos_hardware = TextAreaField('Requisitos de Hardware', validators=[InputRequired(), Length(max=128)])
-    requisitos_software = TextAreaField('Requisitos de Software', validators=[InputRequired(), Length(max=128)])
+    requisitos_ide  = TextAreaField('Existe alguma preferência de IDE (Ambiente Integral de Desenvolvimento) para o minicurso?',
+                                    validators=[InputRequired(), Length(max=128)])
+    requisitos_bibliotecas_pacotes = TextAreaField('Caso existam, especifique todos os pacotes e/ou bibliotecas adicionais que serão utilizados no decorrer do minicurso',
+                                                   validators=[InputRequired(), Length(max=128)])
+    requisitos_dependencias = TextAreaField('Especifique todos os programas e dependências que serão necessários no decorrer do minicurso',
+                                                   validators=[InputRequired(), Length(max=128)])
+    requisitos_sistema = TextAreaField('Caso exista, especifique alguma limitação de uso de algum sistema operacional específico',
+                                                   validators=[Length(max=128)])
+    requisitos_observacoes = TextAreaField('Existe alguma observação em relação aos requisitos do minicurso?',
+                                                   validators=[Length(max=128)])
+    requisitos_github = StringField('No caso da existência de código disponível no github ou em outros repositórios, forneça o link para este repositório ',
+                                                   validators=[Length(max=128)])
+    requisitos_hardware = TextAreaField('Caso o minicurso envolva hardware, forneça os requisitos de hardware',
+                                        validators=[Length(max=128)])
     dicas_instalacao = TextAreaField('Dicas para instalação dos softwares necessários')
-    observacoes = TextAreaField('Observações')
+    observacoes = TextAreaField('Observações em geral')
 
 class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
+    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)])
     requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software')
     planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
@@ -181,7 +193,7 @@ class CadastroInformacoesPalestra(FlaskForm):
 
 class CadastroFeiraDeProjetos(FlaskForm):
     titulo = StringField('Título do Projeto', validators=[InputRequired()])
-    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
+    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     necessidades = TextAreaField('Necessidades', validators=[InputRequired()])
     planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
@@ -189,7 +201,7 @@ class CadastroFeiraDeProjetos(FlaskForm):
 
 class CadastroAtividadeGenerica(FlaskForm):
     titulo = StringField('Título da Atividade', validators=[InputRequired()])
-    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
+    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     observacoes = TextAreaField('Observações')
 

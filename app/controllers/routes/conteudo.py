@@ -118,7 +118,10 @@ def cadastro_minicurso(codigo):
                 if form.validate_on_submit():
                     info_minicurso = InfoMinicurso(pre_requisitos=form.pre_requisitos.data, planejamento=form.planejamento.data,
                                                     apresentacao_extra=form.apresentacao_extra.data, material=form.material.data,
-                                                    requisitos_hardware=form.requisitos_hardware.data, requisitos_software=form.requisitos_software.data,
+                                                    requisitos_hardware=form.requisitos_hardware.data, requisitos_ide=form.requisitos_ide.data,
+                                                    requisitos_bibliotecas_pacotes=form.requisitos_bibliotecas_pacotes.data,
+                                                    requisitos_dependencias=form.requisitos_dependencias.data, requisitos_sistema=form.requisitos_sistema.data,
+                                                    requisitos_observacoes=form.requisitos_observacoes.data, requisitos_github=form.requisitos_github.data,
                                                     dicas_instalacao=form.dicas_instalacao.data)
                     for ministrante in atividade.ministrantes:
                         r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
