@@ -21,6 +21,7 @@ conteudo = Blueprint('conteudo', __name__, static_folder='static',
 @limiter.limit("20/day")
 @conteudo.route('/cadastro-ministrante/<codigo>', methods=['POST', 'GET'])
 def cadastro_ministrante(codigo):
+    form_login = LoginForm(request.form)
     permitido, atividade, emails = valida_url_codigo(None, codigo)
     if(permitido == True):
         form = CadastroMinistranteForm(request.form)
@@ -72,7 +73,7 @@ def cadastro_ministrante(codigo):
             enviar_email_confirmacao(usuario, token)
             login_user(usuario, remember=True)
             return redirect(url_for('users.verificar_email'))
-        return render_template("conteudo/cadastro_ministrante.html", form=form, codigo=codigo)
+        return render_template("conteudo/cadastro_ministrante.html", form=form, codigo=codigo, form_login=form_login)
     else:
         abort(404)
 
@@ -82,6 +83,7 @@ def cadastro_ministrante(codigo):
 def dados_hospedagem_transporte():
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
         atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(current_user)
         dados_hospedagem_transporte = db.session.query(DadosHospedagemTransporte).filter_by(id_evento=get_id_evento_atual(), id_ministrante=current_user.ministrante[0].id).first()
         if dados_hospedagem_transporte is not None and atividade_confirmada == False:
@@ -99,7 +101,7 @@ def dados_hospedagem_transporte():
             db.session.commit()
             print(atividade.url_codigo)
             return redirect(url_for('conteudo.' + view_atividade, codigo=atividade.url_codigo))
-        return render_template("conteudo/dados_hospedagem_transporte.html", form=form)
+        return render_template("conteudo/dados_hospedagem_transporte.html", form=form, form_login=form_login)
     abort(404)
 
 
@@ -109,6 +111,7 @@ def dados_hospedagem_transporte():
 def cadastro_minicurso(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante[0]
         if permitido == True:
@@ -142,7 +145,7 @@ def cadastro_minicurso(codigo):
                     db.session.add(atividade)
                     db.session.commit()
                     return redirect(url_for('users.dashboard'))
-                return render_template('conteudo/cadastro_minicurso.html', form=form, codigo=codigo)
+                return render_template('conteudo/cadastro_minicurso.html', form=form, codigo=codigo, form_login=form_login)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
@@ -153,6 +156,7 @@ def cadastro_minicurso(codigo):
 def cadastro_palestra(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante[0]
         if permitido == True:
@@ -181,7 +185,7 @@ def cadastro_palestra(codigo):
                     db.session.add(atividade)
                     db.session.commit()
                     return redirect(url_for('users.dashboard'))
-                return render_template('conteudo/cadastro_palestra.html', form=form, codigo=codigo)
+                return render_template('conteudo/cadastro_palestra.html', form=form, codigo=codigo, form_login=form_login)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
@@ -191,6 +195,7 @@ def cadastro_palestra(codigo):
 def cadastro_mesa_redonda(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante[0]
         if permitido == True:
@@ -214,7 +219,7 @@ def cadastro_mesa_redonda(codigo):
                     db.session.add(atividade)
                     db.session.commit()
                     return redirect(url_for('users.dashboard'))
-                return render_template('conteudo/cadastro_mesa_redonda.html', codigo=codigo, form=form)
+                return render_template('conteudo/cadastro_mesa_redonda.html', codigo=codigo, form=form, form_login=form_login)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
@@ -224,6 +229,7 @@ def cadastro_mesa_redonda(codigo):
 def cadastro_feira_projetos(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante[0]
         if(permitido == True):
@@ -250,7 +256,7 @@ def cadastro_feira_projetos(codigo):
                     db.session.add(atividade)
                     db.session.commit()
                     return redirect(url_for('users.dashboard'))
-                return render_template('conteudo/cadastro_feira_projetos.html', codigo=codigo, form=form)
+                return render_template('conteudo/cadastro_feira_projetos.html', codigo=codigo, form=form, form_login=form_login)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
@@ -261,6 +267,7 @@ def cadastro_feira_projetos(codigo):
 def confirmar_atividade(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante[0]
         r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
@@ -275,5 +282,5 @@ def confirmar_atividade(codigo):
                 db.session.add(r_atividade_ministrante)
                 db.session.commit()
                 return redirect(url_for('users.dashboard'))
-            return render_template('conteudo/confirmar_atividade.html', codigo=codigo, titulo_atividade=atividade.titulo, form=form)
+            return render_template('conteudo/confirmar_atividade.html', codigo=codigo, titulo_atividade=atividade.titulo, form=form, form_login=form_login)
     abort(404)
