@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList
+from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from app.controllers.forms.options import *
@@ -155,7 +155,7 @@ class CadastroMinistranteForm(FlaskForm):
 
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
+    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
     descricao = TextAreaField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)])
     pre_requisitos = TextAreaField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
@@ -170,7 +170,7 @@ class CadastroInformacoesMinicurso(FlaskForm):
 
 class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
+    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)])
     requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software')
     planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
@@ -181,7 +181,7 @@ class CadastroInformacoesPalestra(FlaskForm):
 
 class CadastroFeiraDeProjetos(FlaskForm):
     titulo = StringField('Título do Projeto', validators=[InputRequired()])
-    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
+    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     necessidades = TextAreaField('Necessidades', validators=[InputRequired()])
     planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
@@ -189,7 +189,7 @@ class CadastroFeiraDeProjetos(FlaskForm):
 
 class CadastroAtividadeGenerica(FlaskForm):
     titulo = StringField('Título da Atividade', validators=[InputRequired()])
-    area = SelectField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
+    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int)
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     observacoes = TextAreaField('Observações')
 
@@ -203,15 +203,15 @@ class CadastroInformacoesLocomocaoEstadia(FlaskForm):
     transporte_ida_volta = BooleanField('Requer que a SECOMP UFSCar pague por seu transporte de ida e volta',
         id='transporte_ida_volta')
     opcoes_transporte_ida_volta = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte_ida_volta(),
-        id='opcoes_transporte_ida_volta', coerce=int)
+        id='opcoes_transporte_ida_volta', coerce=int, validators=[RequiredIf(transporte_ida_volta=True)])
     transporte_sanca = BooleanField('Requer que a SECOMP UFSCar se encarregue do seu transporte dentro de São Carlos?',
         id='transporte_sanca')
     opcoes_transporte_sanca = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte_sanca(),
-        id='opcoes_transporte_sanca', coerce=int)
+        id='opcoes_transporte_sanca', coerce=int, validators=[RequiredIf(transporte_sanca=True)])
     hospedagem = BooleanField('Requer que a SECOMP UFSCar arque com os custos de sua hospedagem?',
         id='hospedagem')
     necessidades_hospedagem = TextAreaField('Quais são as necessidades básicas a serem atendidas pela estadia?',
-        id='necessidades_hospedagem', validators=[Length(max=256)])
+        id='necessidades_hospedagem', validators=[Length(max=256), RequiredIf(hospedagem=True)])
     observacoes = TextAreaField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)])
 

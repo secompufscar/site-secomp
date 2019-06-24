@@ -129,7 +129,8 @@ def cadastro_minicurso(codigo):
                     r_atividade_ministrante.confirmado = True
                     r_atividade_ministrante.admin_atividade = True
                     atividade.titulo = form.titulo.data
-                    atividade.areas.append(db.session.query(AreaAtividade).get(form.area.data))
+                    for id in form.area.data:
+                        atividade.areas.append(db.session.query(AreaAtividade).get(id))
                     atividade.descricao = form.descricao.data
                     atividade.observacoes = form.observacoes.data
                     atividade.info_minicurso.append(info_minicurso)
@@ -167,7 +168,8 @@ def cadastro_palestra(codigo):
                     r_atividade_ministrante.confirmado = True
                     r_atividade_ministrante.admin_atividade = True
                     atividade.titulo = form.titulo.data
-                    atividade.areas.append(db.session.query(AreaAtividade).get(form.area.data))
+                    for id in form.area.data:
+                        atividade.areas.append(db.session.query(AreaAtividade).get(id))
                     atividade.descricao = form.descricao.data
                     atividade.observacoes = form.observacoes.data
                     atividade.info_palestra.append(info_palestra)
@@ -201,7 +203,8 @@ def cadastro_mesa_redonda(codigo):
                     r_atividade_ministrante.confirmado = True
                     r_atividade_ministrante.admin_atividade = True
                     atividade.titulo = form.titulo.data
-                    atividade.areas.append(db.session.query(AreaAtividade).get(form.area.data))
+                    for id in form.area.data:
+                        atividade.areas.append(db.session.query(AreaAtividade).get(id))
                     atividade.descricao = form.descricao.data
                     atividade.observacoes = form.observacoes.data
                     db.session.add(r_atividade_ministrante)
@@ -234,7 +237,8 @@ def cadastro_feira_projetos(codigo):
                     r_atividade_ministrante.confirmado = True
                     r_atividade_ministrante.admin_atividade = True
                     atividade.titulo = form.titulo.data
-                    atividade.areas.append(db.session.query(AreaAtividade).get(form.area.data))
+                    for id in form.area.data:
+                        atividade.areas.append(db.session.query(AreaAtividade).get(id))
                     atividade.descricao = form.descricao.data
                     atividade.observacoes = form.observacoes.data
                     atividade.info_feira_de_projetos.append(info_feira_de_projetos)
