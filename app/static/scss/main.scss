@@ -26,11 +26,6 @@ header{
     @include main-gradient;
 }
 
-.pad-inicio {
-    padding-top: 10vh;
-}
-
-
 .carousel{ 
     &-item {
 	height: 100vh;
