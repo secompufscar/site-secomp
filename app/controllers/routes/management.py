@@ -9,8 +9,7 @@ from app.controllers.functions.dictionaries import *
 from app.controllers.functions.helpers import *
 from app.controllers.forms.validators import *
 
-import string
-import random
+from secrets import token_urlsafe
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
@@ -192,10 +191,10 @@ def gerar_url_conteudo():
                 db.session.delete(atividade_removida)
                 db.session.commit()
             if verifica_lista_emails(emails):
-                codigo = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(100))
+                codigo = token_urlsafe(150)
                 tipo = db.session.query(TipoAtividade).filter_by(id=form.tipo_atividade.data).first()
                 atividade = Atividade(url_codigo=codigo, id_evento=get_id_evento_atual(), id_tipo=tipo.id)
-                atividade.tipo.append(tipo)
+                atividade.tipo = tipo
                 for email in emails:
                     usuario = db.session.query(Usuario).filter_by(email=email).first()
                     if usuario is None:

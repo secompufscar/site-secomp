@@ -110,3 +110,21 @@ def confirmacao_atividade_ministrante(usuario):
         return False, atividade, view
     else:
         return True, None, None
+
+def get_tipos_atividade():
+    minicurso = db.session.query(TipoAtividade).filter_by(nome='Minicurso').first()
+    palestra = db.session.query(TipoAtividade).filter_by(nome='Palestra').first()
+    mesa_redonda = db.session.query(TipoAtividade).filter_by(nome='Mesa Redonda').first()
+    palestra_empresarial = db.session.query(TipoAtividade).filter_by(nome='Palestra Empresarial').first()
+    feira_projetos = db.session.query(TipoAtividade).filter_by(nome='Feira Projetos').first()
+    workshop = db.session.query(TipoAtividade).filter_by(nome='Workshop').first()
+
+    tipo_atividade = {
+        'minicurso': minicurso,
+        'palestra' : palestra,
+        'mesa_redonda': mesa_redonda,
+        'palestra_empresarial': palestra_empresarial,
+        'feira_projetos': feira_projetos,
+        'workshop': workshop
+    }
+    return tipo_atividade

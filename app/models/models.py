@@ -3,15 +3,8 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date
-from sqlalchemy.ext.declarative import declared_attr
 
 db = SQLAlchemy()
-
-TipoAtividade = {
-    'minicurso': 0,
-    'workshop': 1,
-    'palestra': 2
-}
 
 relacao_atividade_area = db.Table('relacao_atividade_area',
                                     Column('id', Integer, primary_key=True),
@@ -64,7 +57,7 @@ class Usuario(db.Model):
     permissoes_usuario = db.relationship('Permissao', secondary=relacao_permissao_usuario, lazy=True,
                                          back_populates='usuarios')
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
-    ministrante =  db.relationship('Ministrante', back_populates='usuario', lazy=True)
+    ministrante = db.relationship('Ministrante', back_populates='usuario', lazy=True)
 
     @classmethod
     def is_active(cls):
@@ -127,10 +120,10 @@ class Ministrante(db.Model):
     twitter = Column(String(64))
     linkedin = Column(String(64))
     github = Column(String(64))
-    dados_hospedagem_transporte =  db.relationship('DadosHospedagemTransporte', back_populates='ministrante', lazy=True)
+    dados_hospedagem_transporte = db.relationship('DadosHospedagemTransporte', back_populates='ministrante', lazy=True)
     atividades = db.relationship('Atividade', secondary='relacao_atividade_ministrante', lazy=True,
                                 back_populates='ministrantes')
-    usuario =  db.relationship('Usuario', back_populates='ministrante', lazy=True)
+    usuario = db.relationship('Usuario', back_populates='ministrante', lazy=True)
 
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
@@ -150,7 +143,7 @@ class DadosHospedagemTransporte(db.Model):
     hospedagem = Column(Boolean, nullable=False)
     necessidades_hospedagem = Column(String(256))
     observacoes = Column(String(256))
-    ministrante =  db.relationship('Ministrante', back_populates='dados_hospedagem_transporte', lazy=True)
+    ministrante = db.relationship('Ministrante', back_populates='dados_hospedagem_transporte', lazy=True)
 
 
 class AreaAtividade(db.Model):
@@ -182,7 +175,7 @@ class Atividade(db.Model):
     titulo = Column(String(64), nullable=True)
     descricao = Column(String(1024), nullable=True)
     observacoes = Column(String(512))
-    tipo = db.relationship('TipoAtividade', backref='atividades', lazy=True, uselist=True)
+    tipo = db.relationship('TipoAtividade', backref='atividades', lazy=True, uselist=False)
     url_codigo = Column(String(255))
     atividade_cadastrada = Column(Boolean, default=False)
 

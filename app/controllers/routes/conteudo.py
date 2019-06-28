@@ -9,7 +9,7 @@ from app.controllers.forms.forms import *
 from app.controllers.functions.email import *
 from app.controllers.functions.helpers import *
 from app.models.models import *
-
+from flask_wtf import FlaskForm
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 limiter = Limiter(current_app, key_func=get_remote_address)
@@ -272,7 +272,7 @@ def confirmar_atividade(codigo):
         ministrante = current_user.ministrante[0]
         r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
         if permitido == True and r_atividade_ministrante.confirmado is not False:
-            form = ConfirmarAtividadeMinistranteForm(request.form)
+            form = FlaskForm(request.form)
             if form.validate_on_submit():
                 confirmar = request.form.getlist('confirmar')[0]
                 if confirmar == '1':
