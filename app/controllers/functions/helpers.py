@@ -97,15 +97,15 @@ def confirmacao_atividade_ministrante(usuario):
         if r is not None:
             atividade = db.session.query(Atividade).get(r.id_atividade)
     if atividade is not None:
-        if atividade.tipo[0].nome == "Palestra":
+        if atividade.tipo.nome == "Palestra":
             view = 'cadastro_palestra'
-        elif atividade.tipo[0].nome == "Palestra Empresarial":
+        elif atividade.tipo.nome == "Palestra Empresarial":
             view = 'cadastro_palestra_empresarial'
-        elif atividade.tipo[0].nome == "Minicurso":
+        elif atividade.tipo.nome == "Minicurso":
             view = 'cadastro_minicurso'
-        elif atividade.tipo[0].nome == "Mesa Redonda":
+        elif atividade.tipo.nome == "Mesa Redonda":
             view = 'cadastro_mesa_redonda'
-        elif atividade.tipo[0].nome == "Feira de Projetos":
+        elif atividade.tipo.nome == "Feira de Projetos":
             view = 'cadastro_feira_projetos'
         return False, atividade, view
     else:

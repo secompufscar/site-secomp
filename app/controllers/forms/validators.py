@@ -109,4 +109,3 @@ class RequiredIf(DataRequired):
             if other_field.data == data and not field.data:
                 DataRequired.__call__(self, form, field)
             Optional()(form, field)
-            

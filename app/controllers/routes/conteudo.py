@@ -22,7 +22,8 @@ conteudo = Blueprint('conteudo', __name__, static_folder='static',
 @conteudo.route('/cadastro-ministrante/<codigo>', methods=['POST', 'GET'])
 def cadastro_ministrante(codigo):
     form_login = LoginForm(request.form)
-    permitido, atividade, emails = valida_url_codigo(None, codigo)
+    r = valida_url_codigo(None, codigo)
+    permitido, emails = r[0], r[2]
     if(permitido == True):
         form = CadastroMinistranteForm(request.form)
         form.codigo_url = codigo
@@ -56,7 +57,7 @@ def cadastro_ministrante(codigo):
             db.session.add(usuario)
             db.session.commit()
 
-            ministrante.id_usuario =  usuario.id
+            ministrante.id_usuario = usuario.id
             ministrante.telefone = form.telefone.data
             ministrante.profissao = form.profissao.data
             ministrante.empresa_universidade = form.empresa_universidade.data
@@ -275,10 +276,7 @@ def confirmar_atividade(codigo):
             form = FlaskForm(request.form)
             if form.validate_on_submit():
                 confirmar = request.form.getlist('confirmar')[0]
-                if confirmar == '1':
-                    r_atividade_ministrante.confirmado = True
-                else:
-                    r_atividade_ministrante.confirmado = False
+                r_atividade_ministrante.confirmado = bool(confirmar == '1')
                 db.session.add(r_atividade_ministrante)
                 db.session.commit()
                 return redirect(url_for('users.dashboard'))
