@@ -127,7 +127,7 @@ def get_urls_conteudo():
             emails.append(ministrante.usuario.email)
         info = {
                 "id" : atividade.id,
-                "tipo" : atividade.tipo[0].nome,
+                "tipo" : atividade.tipo.nome,
                 "titulo_atividade": titulo,
                 "codigo_url" : atividade.url_codigo,
                 "emails": emails

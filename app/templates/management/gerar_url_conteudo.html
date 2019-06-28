@@ -15,14 +15,14 @@
 </style>
 <br>
 <div class="pad-inicio container pb-2">
-<h2>URL para formulários do conteúdo</h2>
+<h2>URL para formulários do Conteúdo</h2>
 <hr>
 <form method="POST" id="form" action="{{url_for('management.gerar_url_conteudo')}}">
   {{ form.hidden_tag() }}
   {{ wtf.form_field(form.tipo_atividade) }}
   <table class="table table-borderless" >
     <tr>
-      <td scope='col' class='col-sm-4'>Insira o email do ministrante<br><input id="email" type="text"/></td>
+      <td scope='col' class='col-sm-4'>Insira o email do ministrante<br><input id="email2" type="text"/></td>
       <td scope='col' class='col-sm-2'><button id="email_adder" style="width: 20%" type="button" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">+</button></td>
     </tr>
   </table>
@@ -67,16 +67,16 @@ function validateEmail($email) {
 }
 
 function remover(num){
-  $('#email' + parseInt(num)).remove();
+  $('#email2' + parseInt(num)).remove();
   email_count = email_count - 1;
 }
 
   $('#email_adder').click(function () {
-    valor = $('#email').val()
+    valor = $('#email2').val()
     if(valor != '' && validateEmail(valor)){
       email_count = email_count + 1;
-      $('#email').val('');
-      $("#email-container").append("<div id='email" + email_count.toString() + "'><input type='text' name='emails[]' value='" + valor + "' readonly='readonly'><button onclick='remover(" + email_count.toString() + ")'>X</button></div>");
+      $('#email2').val('');
+      $("#email-container").append("<div id='email-div" + email_count.toString() + "'><input type='text' name='emails[]' value='" + valor + "' readonly='readonly'><button onclick='remover(" + email_count.toString() + ")'>X</button></div>");
     }
     else{
       alert('Entre com um email válido')

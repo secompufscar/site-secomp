@@ -177,12 +177,13 @@ def verificacao(token):
 @login_required
 def inscricao_atividades():
     form_login = LoginForm(request.form)
+    tipo_atividade = get_tipos_atividade()
     minicursos = db.session.query(Atividade).filter_by(
-        tipo=TipoAtividade['minicurso'])
+        tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
     workshops = db.session.query(Atividade).filter_by(
-        tipo=TipoAtividade['workshop'])
+        tipo=tipo_atividade['workshop'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
     palestras = db.session.query(Atividade).filter_by(
-        tipo=TipoAtividade['palestra'])
+        tipo=tipo_atividade['palestra'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
     return render_template('users/inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
                                usuario=current_user).first(), usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
@@ -192,12 +193,16 @@ def inscricao_atividades():
 @login_required
 def inscricao_atividades_com_filtro(filtro):
     form_login = LoginForm(request.form)
+    tipo_atividade = get_tipos_atividade()
     minicursos = db.session.query(Atividade).filter(
-        Atividade.tipo.like(TipoAtividade['minicurso']), Atividade.titulo.like("%" + filtro + "%"))
+        Atividade.tipo == tipo_atividade['minicurso'], Atividade.titulo.like("%" + filtro + "%"),
+        Atividade.id_evento==get_id_evento_atual(), Atividade.titulo != None)
     workshops = db.session.query(Atividade).filter(
-        Atividade.tipo.like(TipoAtividade['workshop']), Atividade.titulo.like("%" + filtro + "%"))
+        Atividade.tipo == tipo_atividade['workshop'], Atividade.titulo.like("%" + filtro + "%"),
+        Atividade.id_evento==get_id_evento_atual(), Atividade.titulo != None)
     palestras = db.session.query(Atividade).filter(
-        Atividade.tipo.like(TipoAtividade['palestra']), Atividade.titulo.like("%" + filtro + "%"))
+        Atividade.tipo == tipo_atividade['palestra'], Atividade.titulo.like("%" + filtro + "%"),
+        Atividade.id_evento==get_id_evento_atual(), Atividade.titulo != None)
 
     return render_template('users/inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
@@ -209,6 +214,7 @@ def inscricao_atividades_com_filtro(filtro):
 @login_required
 def inscrever(id):
     form_login = LoginForm(request.form)
+    tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if atv.vagas_disponiveis > 0:
         atv.participantes.append(db.session.query(
@@ -217,11 +223,11 @@ def inscrever(id):
         db.session.flush()
         db.session.commit()
         minicursos = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['minicurso'])
+            tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
         workshops = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['workshop'])
+            tipo=tipo_atividade['workshop'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
         palestras = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['palestra'])
+            tipo=tipo_atividade['palestra'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
 
         return render_template('users/inscricao_atividades.html',
                                participante=db.session.query(Participante).filter_by(
@@ -236,6 +242,7 @@ def inscrever(id):
 @login_required
 def desinscrever(id):
     form_login = LoginForm(request.form)
+    tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
         atv.participantes.remove(db.session.query(
@@ -244,11 +251,11 @@ def desinscrever(id):
         db.session.flush()
         db.session.commit()
         minicursos = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['minicurso'])
+            tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
         workshops = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['workshop'])
+            tipo=tipo_atividade['workshop'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
         palestras = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['palestra'])
+            tipo=tipo_atividade['palestra'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
         return render_template('users/inscricao_atividades.html',
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),

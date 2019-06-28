@@ -28,24 +28,28 @@ def create_app(config=None):
 
     Bootstrap(app)
 
-    @app.errorhandler(400)
-    def bad_request(error):
-        return render_template('400.html'), 400
-
-    @app.errorhandler(404)
-    def page_not_found(error):
-        return render_template('404.html'), 404
-
-    @app.errorhandler(500)
-    def internal_server_error(error):
-        return render_template('500.html'), 500
-
     from app.models.models import db, Usuario
     from app.models.commands import populate
 
     app.app_context().push()
     db.init_app(app)
     migrate = Migrate(app, db)
+
+    from app.controllers.forms.forms import LoginForm
+    @app.errorhandler(400)
+    def bad_request(error):
+        form_login = LoginForm(request.form)
+        return render_template('400.html', form_login=form_login), 400
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        form_login = LoginForm(request.form)
+        return render_template('404.html', form_login=form_login), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        form_login = LoginForm(request.form)
+        return render_template('500.html', form_login=form_login), 500
 
     @app.cli.command()
     def create():
