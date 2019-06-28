@@ -2,13 +2,105 @@
     border-radius: 50%;
 }
 
+.day {
+    height: 0.3rem;
+    margin: 0 -7% -7% -7%;
+    border-radius: 10%;
+}
 
 .selected {
-    background-color: #008cb5;
+    background-color: #00cfa1;
     color: #fff;
     text-align: center;
 }
 
 .nav-crono a {
     cursor: default;
+}
+
+@media (max-width: 375px) {
+    .nav_on {
+        display: block;
+    }
+    .nav_off {
+        display: none;
+    }
+    .setaDireita {
+        text-align: right !important;
+        width: auto;
+        margin-right: 4%;
+    }
+    .setaEsquerda {
+        text-align: left !important;
+        width: auto;
+        margin-left: 5%;
+    }
+    .nav_cronograma {
+        height: auto;
+        margin: 0 auto;
+        padding: 10px;
+        position: relative;
+    }
+    .selected {
+        background-color: #fff;
+        color: #000000;
+    }
+    .center {
+        width: 60%;
+        height: auto;
+        margin: 0 auto;
+        padding: 10px;
+        position: relative;
+    }
+    .cronograma {
+        width: 100% !important;
+    }
+}
+
+@media (min-width: 376px) and (max-width: 1199px) {
+    .nav_on {
+        display: block;
+    }
+    .nav_off {
+        display: none;
+    }
+    .setaDireita {
+        text-align: right !important;
+        width: auto;
+        margin-right: 5%;
+    }
+    .setaEsquerda {
+        text-align: left !important;
+        width: auto;
+        margin-left: 5%;
+    }
+    .nav_cronograma {
+        height: auto;
+        margin: 0 auto;
+        padding: 10px;
+        position: relative;
+    }
+    .selected {
+        background-color: #fff;
+        color: #000000;
+    }
+    .center {
+        width: 60%;
+        height: auto;
+        margin: 0 auto;
+        padding: 10px;
+        position: relative;
+    }
+    .cronograma {
+        width: 100% !important;
+    }
+}
+
+.cronograma {
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+    width: auto;
+    display: inline-flex;
 }

@@ -293,109 +293,33 @@
 
 <script>
     function right_arrow() {
-        var seg = document.getElementById("seg");
-        var ter = document.getElementById("ter");
-        var qua = document.getElementById("qua");
-        var qui = document.getElementById("qui");
-        var sex = document.getElementById("sex");
-        if (seg.style.display === "block") {
-            seg.style.display = "none";
-            ter.style.display = "block";
-            $('#th_seg').removeClass("selected");
-            $('#th_ter').addClass("selected");
-            $('#th_seg').removeClass("nav_on");
-            $('#th_seg').addClass("nav_off");
-            $('#th_ter').removeClass("nav_off");
-            $('#th_ter').addClass("nav_on");
-        } else if (ter.style.display === "block") {
-            ter.style.display = "none";
-            qua.style.display = "block";
-            $('#th_ter').removeClass("selected");
-            $('#th_qua').addClass("selected");
-            $('#th_ter').removeClass("nav_on");
-            $('#th_ter').addClass("nav_off");
-            $('#th_qua').removeClass("nav_off");
-            $('#th_qua').addClass("nav_on");
-        } else if (qua.style.display === "block") {
-            qua.style.display = "none";
-            qui.style.display = "block";
-            $('#th_qua').removeClass("selected");
-            $('#th_qui').addClass("selected");
-            $('#th_qua').removeClass("nav_on");
-            $('#th_qua').addClass("nav_off");
-            $('#th_qui').removeClass("nav_off");
-            $('#th_qui').addClass("nav_on");
-        } else if (qui.style.display === "block") {
-            qui.style.display = "none";
-            sex.style.display = "block";
-            $('#th_qui').removeClass("selected");
-            $('#th_sex').addClass("selected");
-            $('#th_qui').removeClass("nav_on");
-            $('#th_qui').addClass("nav_off");
-            $('#th_sex').removeClass("nav_off");
-            $('#th_sex').addClass("nav_on");
-        } else if (sex.style.display === "block") {
-            sex.style.display = "none";
-            seg.style.display = "block";
-            $('#th_sex').removeClass("selected");
-            $('#th_seg').addClass("selected");
-            $('#th_sex').removeClass("nav_on");
-            $('#th_sex').addClass("nav_off");
-            $('#th_seg').removeClass("nav_off");
-            $('#th_seg').addClass("nav_on");
+        switch (document.querySelector('.selected').id) {
+            case "th_seg":
+                toggle_visibility('ter'); break;
+            case "th_ter":
+                toggle_visibility('qua'); break;
+            case "th_qua":
+                toggle_visibility('qui'); break;
+            case "th_qui":
+                toggle_visibility('sex'); break;
+            case "th_sex":
+                toggle_visibility('seg'); break;
+            default: break;
         }
     }
     function left_arrow() {
-        var seg = document.getElementById("seg");
-        var ter = document.getElementById("ter");
-        var qua = document.getElementById("qua");
-        var qui = document.getElementById("qui");
-        var sex = document.getElementById("sex");
-        if (seg.style.display === "block") {
-            seg.style.display = "none";
-            sex.style.display = "block";
-            $('#th_seg').removeClass("selected");
-            $('#th_sex').addClass("selected");
-            $('#th_seg').removeClass("nav_on");
-            $('#th_seg').addClass("nav_off");
-            $('#th_sex').removeClass("nav_off");
-            $('#th_sex').addClass("nav_on");
-        } else if (ter.style.display === "block") {
-            ter.style.display = "none";
-            seg.style.display = "block";
-            $('#th_ter').removeClass("selected");
-            $('#th_seg').addClass("selected");
-            $('#th_ter').removeClass("nav_on");
-            $('#th_ter').addClass("nav_off");
-            $('#th_seg').removeClass("nav_off");
-            $('#th_seg').addClass("nav_on");
-        } else if (qua.style.display === "block") {
-            qua.style.display = "none";
-            ter.style.display = "block";
-            $('#th_qua').removeClass("selected");
-            $('#th_ter').addClass("selected");
-            $('#th_qua').removeClass("nav_on");
-            $('#th_qua').addClass("nav_off");
-            $('#th_ter').removeClass("nav_off");
-            $('#th_ter').addClass("nav_on");
-        } else if (qui.style.display === "block") {
-            qui.style.display = "none";
-            qua.style.display = "block";
-            $('#th_qui').removeClass("selected");
-            $('#th_qua').addClass("selected");
-            $('#th_qui').removeClass("nav_on");
-            $('#th_qui').addClass("nav_off");
-            $('#th_qua').removeClass("nav_off");
-            $('#th_qua').addClass("nav_on");
-        } else if (sex.style.display === "block") {
-            sex.style.display = "none";
-            qui.style.display = "block";
-            $('#th_sex').removeClass("selected");
-            $('#th_qui').addClass("selected");
-            $('#th_sex').removeClass("nav_on");
-            $('#th_sex').addClass("nav_off");
-            $('#th_qui').removeClass("nav_off");
-            $('#th_qui').addClass("nav_on");
+        switch (document.querySelector('.selected').id) {
+            case "th_seg":
+                toggle_visibility('sex'); break;
+            case "th_ter":
+                toggle_visibility('seg'); break;
+            case "th_qua":
+                toggle_visibility('ter'); break;
+            case "th_qui":
+                toggle_visibility('qua'); break;
+            case "th_sex":
+                toggle_visibility('qui'); break;
+            default: break;
         }
     }
     function toggle_visibility(id) {
@@ -410,11 +334,11 @@
 
             if (dia == target) {
                 dia.style.display = 'block';
-                nav.className = "day selected";
+                nav.className = "nav_on selected";
             }
             else {
                 dia.style.display = 'none';
-                nav.className = "day";
+                nav.className = "nav_off";
             }
         }
     }
