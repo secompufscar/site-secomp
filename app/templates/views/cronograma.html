@@ -17,23 +17,24 @@
             <h2>Cronograma</h2>
         </div>
     </div>
-    <div style="width: 100%; text-align: center">
-        <div style="width: auto; display: inline-flex;" class="row align-items-center cronograma">
-            <div class="col-md-1 text-center setaEsquerda" onclick="left_arrow()">
+    <div class="text-center">
+        <div class="row align-items-center cronograma">
+            <div class="text-center setaEsquerda" onclick="left_arrow()">
                 <i class="fas fa-2x fa-chevron-left"></i>
             </div>
-            <div style="padding-left: 0px;" class="col-md-8 center">
-                <div class="col-md-12 text-center nav_cronograma">
+            <div class="col-md-8 center">
+                <div class="col-md-12 text-center">
                     <nav class="navbar nav-crono navbar-light navbar-expand-lg">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <div class="collapse navbar-collapse" id="navbarContent">
-                                        <th scope="col-md-2" id="th_seg" class="nav_on selected">
+                                        <th scope="col-md-2" id="th_seg" class="nav_on">
                                             <a onclick="toggle_visibility('seg');">
 
                                                 <h5>09.09.2019</h5>
                                                 <h4><span id="nav-seg">Seg</span></h4>
+                                                <div id="div_seg" class="day selected"></div>
 
                                             </a>
                                         </th>
@@ -42,6 +43,7 @@
 
                                                 <h5>10.09.2019</h5>
                                                 <h4><span id="nav-ter">Ter</span></h4>
+                                                <div id="div_ter" class="day"></div>
 
                                             </a>
                                         </th>
@@ -50,6 +52,7 @@
 
                                                 <h5>11.09.2019</h5>
                                                 <h4><span id="nav-qua">Qua</span></h4>
+                                                <div id="div_qua" class="day"></div>
 
                                             </a>
                                         </th>
@@ -58,6 +61,7 @@
 
                                                 <h5>12.09.2019</h5>
                                                 <h4><span id="nav-qui">Qui</span></h4>
+                                                <div id="div_qui" class="day"></div>
 
                                             </a>
                                         </th>
@@ -66,6 +70,7 @@
 
                                                 <h5>13.09.2019</h5>
                                                 <h4><span id="nav-sex">Sex</span></h4>
+                                                <div id="div_sex" class="day"></div>
 
                                             </a>
                                         </th>
@@ -76,7 +81,7 @@
                     </nav>
                 </div>
             </div>
-            <div class="col-md-1 text-center setaDireita" onclick="right_arrow()">
+            <div class="text-center setaDireita" onclick="right_arrow()">
                 <i class="fas fa-2x fa-chevron-right"></i>
             </div>
         </div>
@@ -294,30 +299,30 @@
 <script>
     function right_arrow() {
         switch (document.querySelector('.selected').id) {
-            case "th_seg":
+            case "div_seg":
                 toggle_visibility('ter'); break;
-            case "th_ter":
+            case "div_ter":
                 toggle_visibility('qua'); break;
-            case "th_qua":
+            case "div_qua":
                 toggle_visibility('qui'); break;
-            case "th_qui":
+            case "div_qui":
                 toggle_visibility('sex'); break;
-            case "th_sex":
+            case "div_sex":
                 toggle_visibility('seg'); break;
             default: break;
         }
     }
     function left_arrow() {
         switch (document.querySelector('.selected').id) {
-            case "th_seg":
+            case "div_seg":
                 toggle_visibility('sex'); break;
-            case "th_ter":
+            case "div_ter":
                 toggle_visibility('seg'); break;
-            case "th_qua":
+            case "div_qua":
                 toggle_visibility('ter'); break;
-            case "th_qui":
+            case "div_qui":
                 toggle_visibility('qua'); break;
-            case "th_sex":
+            case "div_sex":
                 toggle_visibility('qui'); break;
             default: break;
         }
@@ -329,16 +334,19 @@
 
         for (i = 0; i < 5; i++) {
 
-            var dia = document.getElementById(listaDias[i]);
-            var nav = document.getElementById('th_' + listaDias[i]);
+            var content = document.getElementById(listaDias[i]);
+            var th = document.getElementById('th_' + listaDias[i]);
+            var div = document.getElementById('div_' + listaDias[i]);
 
-            if (dia == target) {
-                dia.style.display = 'block';
-                nav.className = "nav_on selected";
+            if (content == target) {
+                content.style.display = 'block';
+                th.className = "nav_on";
+                div.className = "day selected";
             }
             else {
-                dia.style.display = 'none';
-                nav.className = "nav_off";
+                content.style.display = 'none';
+                th.className = "nav_off";
+                div.className = "day";
             }
         }
     }
