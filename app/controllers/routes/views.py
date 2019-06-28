@@ -94,7 +94,7 @@ def login():
             email=form.email.data).first()
         if user:
             atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(user)
-            if pbkdf2_sha256.verify(form.senha.data, user.senha):
+            if user.senha is not None and pbkdf2_sha256.verify(form.senha.data, user.senha):
                 user.autenticado = True
                 db.session.add(user)
                 db.session.commit()

@@ -151,7 +151,7 @@ def alterar_camiseta():
     else:
         abort(403)
 
-@management.route('/listas', methods=["GET","POST"])
+@management.route('/listas', methods=["GET", "POST"])
 @login_required
 def listas():
     permissoes = current_user.getPermissoes()

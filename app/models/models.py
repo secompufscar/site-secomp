@@ -103,7 +103,7 @@ class Participante(db.Model):
                                  back_populates='participantes')
 
     def __repr__(self):
-        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.email + ">"
+        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
 
 
 class Ministrante(db.Model):
