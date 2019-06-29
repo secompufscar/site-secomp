@@ -69,85 +69,6 @@ header {
   }
 }
 
-@media (max-width: 375px){
-  .nav_on{
-    display: block;
-  }
-  .nav_off{
-    display: none;
-  }
-  .setaDireita{
-    text-align: right !important;
-    width: auto;
-    margin-right: 4%;
-  }
-  .setaEsquerda{
-    text-align: left !important;
-    width: auto;
-    margin-left: 5%;
-  }
-  .nav_cronograma{
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-  }
-  .center{
-    width: 60%;
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-  }
-  .cronograma{
-    width: 100% !important;
-  }
-}
-
-@media (min-width: 376px) and (max-width: 1199px){
-  .nav_on{
-    display: block;
-  }
-  .nav_off{
-    display: none;
-  }
-  .setaDireita{
-    text-align: right !important;
-    width: auto;
-    margin-right: 5%;
-  }
-  .setaEsquerda{
-    text-align: left !important;
-    width: auto;
-    margin-left: 5%;
-  }
-  .nav_cronograma{
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-  }
-  .center{
-    width: 60%;
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-  }
-  .cronograma{
-    width: 100% !important;
-  }
-}
-
-.cronograma{
-  height: auto;
-  margin: 0 auto;
-  padding: 10px;
-  position: relative;
-  width: auto;
-  display: inline-flex;
-}
-
 @media (orientation: portrait) {
   div.embed-responsive.embed-responsive-21by9 video {
     width: 100%;
@@ -253,6 +174,7 @@ footer {
   -o-transition: 1s;
   -ms-transition: 1s;
   transition: 1s;
+  transform: perspective(1000px);
   -moz-transform: perspective(1000px);
   position: relative; }
 
