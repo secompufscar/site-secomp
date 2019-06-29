@@ -5,80 +5,90 @@
 <style>
   .url-container {
     overflow-x: scroll;
-    max-width:500px;
-}
-.url-text{
-  display:inline-block;
-     white-space:nowrap;
-}
+    max-width: 500px;
+  }
 
+  .url-text {
+    display: inline-block;
+    white-space: nowrap;
+  }
 </style>
-<br>
-<div class="pad-inicio container pb-2">
-<h2>URL para formulários do Conteúdo</h2>
-<hr>
-<form method="POST" id="form" action="{{url_for('management.gerar_url_conteudo')}}">
-  {{ form.hidden_tag() }}
-  {{ wtf.form_field(form.tipo_atividade) }}
-  <table class="table table-borderless" >
-    <tr>
-      <td scope='col' class='col-sm-4'>Insira o email do ministrante<br><input id="email2" type="text"/></td>
-      <td scope='col' class='col-sm-2'><button id="email_adder" style="width: 20%" type="button" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">+</button></td>
-    </tr>
-  </table>
-  <hr>
-  <div id='email-container'></div>
-  <hr>
-  <button style="width: 20%" type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Gerar Nova URL</button>
-<hr>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Remover</th>
-      <th scope="col">Tipo da atividade</th>
-      <th scope="col">Título da atividade</th>
-      <th scope="col">Código da URL</th>
-      <th scope="col">Emails</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for url in dict_urls %}
-    <tr>
-      <td scope="col"><button type='submit' name='removido' value='{{ url.id }}'>X</button></td>
-      <td scope="col">{{ url.tipo }}</td>
-      <td scope="col">{{ url.titulo_atividade }}</td>
-      <td scope="col"  class="col-md-6"><div class="url-container"><div class="url-text">{{ url.codigo_url }}</div></div></td>
-      <td scope="col">
-      {% for email in url.emails %}
-        {{ email }},&nbsp
-      {% endfor %}
-      </td>
-    {% endfor %}
-    </tr>
-  </tbody>
-</table>
-</form>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="text-center">URL para formulários do Conteúdo</h2>
+      <hr>
+
+      <form method="POST" id="form" action="{{url_for('management.gerar_url_conteudo')}}">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.tipo_atividade) }}
+        <table class="table table-borderless">
+          <tr>
+            <td scope='col' class='col-sm-4'>Insira o email do ministrante<br><input id="email2" type="text" /></td>
+            <td scope='col' class='col-sm-2'><button id="email_adder" type="button"
+                class="btn btn-primary w-50 m-2">+</button></td>
+          </tr>
+        </table>
+        <hr>
+        <div id='email-container'></div>
+        <hr>
+        <button type="submit" class="btn btn-primary w-50 m-2">Gerar Nova URL</button>
+        <hr>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Remover</th>
+              <th scope="col">Tipo da atividade</th>
+              <th scope="col">Título da atividade</th>
+              <th scope="col">Código da URL</th>
+              <th scope="col">Emails</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for url in dict_urls %}
+            <tr>
+              <td scope="col"><button type='submit' name='removido' value='{{ url.id }}'>X</button></td>
+              <td scope="col">{{ url.tipo }}</td>
+              <td scope="col">{{ url.titulo_atividade }}</td>
+              <td scope="col" class="col-md-6">
+                <div class="url-container">
+                  <div class="url-text">{{ url.codigo_url }}</div>
+                </div>
+              </td>
+              <td scope="col">
+                {% for email in url.emails %}
+                {{ email }},&nbsp
+                {% endfor %}
+              </td>
+              {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
 </div>
 <script>
   email_count = 0;
-function validateEmail($email) {
-  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-  return emailReg.test( $email );
-}
+  function validateEmail($email) {
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailReg.test($email);
+  }
 
-function remover(num){
-  $('#email2' + parseInt(num)).remove();
-  email_count = email_count - 1;
-}
+  function remover(num) {
+    $('#email2' + parseInt(num)).remove();
+    email_count = email_count - 1;
+  }
 
   $('#email_adder').click(function () {
     valor = $('#email2').val()
-    if(valor != '' && validateEmail(valor)){
+    if (valor != '' && validateEmail(valor)) {
       email_count = email_count + 1;
       $('#email2').val('');
       $("#email-container").append("<div id='email-div" + email_count.toString() + "'><input type='text' name='emails[]' value='" + valor + "' readonly='readonly'><button onclick='remover(" + email_count.toString() + ")'>X</button></div>");
     }
-    else{
+    else {
       alert('Entre com um email válido')
     }
   })
