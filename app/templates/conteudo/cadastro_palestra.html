@@ -3,26 +3,29 @@
 
 {% block content %}
 
-<div class="pad-inicio container pb-2">
-  <h1>Cadastro de Palestra</h1>
-  <form method="POST" action="{{url_for('conteudo.cadastro_palestra', codigo=codigo)}}">
-    {{ form.hidden_tag() }}
-    {{ wtf.form_field(form.titulo) }}
-    {{ wtf.form_field(form.area) }}
-    {{ wtf.form_field(form.descricao) }}
-    {{ wtf.form_field(form.requisitos_tecnicos) }}
-    {{ wtf.form_field(form.planejamento) }}
-    {{ wtf.form_field(form.apresentacao_extra) }}
-    {{ wtf.form_field(form.material) }}
-    {{ wtf.form_field(form.perguntas) }}
-    {{ wtf.form_field(form.observacoes) }}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="text-center">Cadastro de Palestra</h2>
+      <form method="POST" action="{{url_for('conteudo.cadastro_palestra', codigo=codigo)}}">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.titulo) }}
+        {{ wtf.form_field(form.area) }}
+        {{ wtf.form_field(form.descricao) }}
+        {{ wtf.form_field(form.requisitos_tecnicos) }}
+        {{ wtf.form_field(form.planejamento) }}
+        {{ wtf.form_field(form.apresentacao_extra) }}
+        {{ wtf.form_field(form.material) }}
+        {{ wtf.form_field(form.perguntas) }}
+        {{ wtf.form_field(form.observacoes) }}
 
-    <button style="width: 20%" type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Cadastrar</button>
-  </form>
+        <button type="submit" class="btn btn-primary w-50 m-2">Cadastrar</button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <script>
   $("#areas").select2();
 </script>
-
 {% endblock %}

@@ -2,19 +2,24 @@
 {% import "wtf.html" as wtf %}
 
 {% block content %}
-<div class="pad-inicio container pb-2">
-  <h1>Cadastro de Feira de Projetos</h1>
-  <form method="POST" action="{{url_for('conteudo.cadastro_feira_projetos', codigo=codigo)}}">
-    {{ form.hidden_tag() }}
-    {{ wtf.form_field(form.titulo) }}
-    {{ wtf.form_field(form.area) }}
-    {{ wtf.form_field(form.descricao) }}
-    {{ wtf.form_field(form.necessidades) }}
-    {{ wtf.form_field(form.planejamento) }}
-    {{ wtf.form_field(form.observacoes) }}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="text-center">Cadastro de Feira de Projetos</h2>
 
-    <button style="width: 20%" type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Cadastrar</button>
-  </form>
+      <form method="POST" action="{{url_for('conteudo.cadastro_feira_projetos', codigo=codigo)}}">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.titulo) }}
+        {{ wtf.form_field(form.area) }}
+        {{ wtf.form_field(form.descricao) }}
+        {{ wtf.form_field(form.necessidades) }}
+        {{ wtf.form_field(form.planejamento) }}
+        {{ wtf.form_field(form.observacoes) }}
+
+        <button type="submit" class="btn btn-primary w-50 m-2">Cadastrar</button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <script>
