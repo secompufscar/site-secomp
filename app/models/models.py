@@ -149,7 +149,7 @@ class DadosHospedagemTransporte(db.Model):
 class AreaAtividade(db.Model):
     __tablename__ = 'area'
     id = Column(Integer, primary_key=True)
-    nome = Column(String(24), nullable=False)
+    nome = Column(String(48), nullable=False)
     atividades = db.relationship('Atividade', secondary=relacao_atividade_area, lazy=True,
                                     back_populates='areas')
     def __repr__(self):
