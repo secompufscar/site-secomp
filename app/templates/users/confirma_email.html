@@ -4,7 +4,7 @@
 <div class="container pt-4 pb-4">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			<h4 class="text-center">Email: {{ resultado }}</h4>
+			<h4 class="text-center">{{ resultado }}</h4>
 			{% if status == True: %}
 				{% if ministrante == True: %}
 				<button onclick="location.href='{{url_for('conteudo.dados_hospedagem_transporte')}}'">Continuar</button>
