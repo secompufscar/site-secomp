@@ -3,9 +3,10 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container pt-4 pb-4">
   <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-7">
+      <h3 class="text-center">Cadastro</h3>
       <form method="POST" action="{{url_for('conteudo.cadastro_ministrante', codigo=codigo)}}"
         enctype="multipart/form-data">
         {{ form.hidden_tag() }}
@@ -25,8 +26,10 @@
         {{ wtf.form_field(form.twitter) }}
         {{ wtf.form_field(form.linkedin) }}
         {{ wtf.form_field(form.github) }}
-        {{ wtf.form_field(form.recaptcha) }}
-        <button type="submit" class="btn btn-primary w-50 m-2">Cadastrar</button>
+        <div class="recaptcha-responsive">
+          {{ wtf.form_field(form.recaptcha) }}
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
       </form>
     </div>
   </div>
