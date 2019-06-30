@@ -169,11 +169,11 @@ class CadastroInformacoesMinicurso(FlaskForm):
                                                    validators=[InputRequired(), Length(max=128)])
     requisitos_dependencias = TextAreaField('Especifique todos os programas e dependências que serão necessários no decorrer do minicurso',
                                                    validators=[InputRequired(), Length(max=128)])
-    requisitos_sistema = TextAreaField('Caso exista, especifique alguma limitação de uso de algum sistema operacional específico',
+    requisitos_sistema = TextAreaField('Caso exista, especifique alguma limitação de uso de algum sistema operacional',
                                                    validators=[Length(max=128)])
     requisitos_observacoes = TextAreaField('Existe alguma observação em relação aos requisitos do minicurso?',
                                                    validators=[Length(max=128)])
-    requisitos_github = StringField('No caso da existência de código disponível no github ou em outros repositórios, forneça o link para este repositório ',
+    requisitos_github = StringField('No caso da existência de código disponível no GitHub ou em outros repositórios, forneça o link para este repositório ',
                                                    validators=[Length(max=128)])
     requisitos_hardware = TextAreaField('Caso o minicurso envolva hardware, forneça os requisitos de hardware',
                                         validators=[Length(max=128)])
@@ -207,10 +207,10 @@ class CadastroAtividadeGenerica(FlaskForm):
 
 
 class CadastroInformacoesLocomocaoEstadia(FlaskForm):
-    cidade_origem = StringField('Cidade de Origem', validators=[InputRequired(), Length(min=1,max=64)])
-    data_chegada_sanca = DateField('Data de Chegada em São Carlos', format='%d/%m/%Y', id='data_chegada_sanca',
+    cidade_origem = StringField('Cidade de origem', validators=[InputRequired(), Length(min=1,max=64)])
+    data_chegada_sanca = DateField('Data de chegada em São Carlos', format='%d/%m/%Y', id='data_chegada_sanca',
         validators=[InputRequired()])
-    data_partida_sanca = DateField('Data de Partida de São Carlos', format='%d/%m/%Y', id='data_partida_sanca',
+    data_partida_sanca = DateField('Data de partida de São Carlos', format='%d/%m/%Y', id='data_partida_sanca',
         validators=[InputRequired()])
     transporte_ida_volta = BooleanField('Requer que a SECOMP UFSCar pague por seu transporte de ida e volta',
         id='transporte_ida_volta')
