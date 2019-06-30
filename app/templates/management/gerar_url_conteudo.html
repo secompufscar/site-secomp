@@ -9,25 +9,32 @@
   <form method="POST" id="form" action="{{url_for('management.gerar_url_conteudo')}}">
     {{ form.hidden_tag() }}
 
-    <div class="row">
+    <div class="row justify-content-center">
       <div class="col-md-6 form-group">
         <label class="control-label" for="email2">Insira o email do(a) ministrante</label>
         <input type="text" class="form-control pb-1" id="email2" placeholder="name@example.com">
-        <button id="email_adder" type="button" class="btn btn-primary">Adicionar ministrante</button>
+        <div class="text-right">
+          <button id="email_adder" type="button" class="btn btn-primary">Adicionar ministrante</button>
+        </div>
       </div>
       <div class="col-md-1"></div>
       <div class="col-md-3">
         {{ wtf.form_field(form.tipo_atividade) }}
       </div>
+      <div class="col-md-2"></div>
     </div>
 
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="pt-2 pb-2" id='email-container'></div>
+      <div class="col-md-6 pt-2 pb-2" id='email-containerL'></div>
+      <div class="col-md-6 pt-2 pb-2" id='email-containerR'></div>
+    </div>
+
+    <div class="row justify-content-center pt-3">
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary btn-block">Gerar Nova URL</button>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary w-25">Gerar Nova URL</button>
 
     <div class="row justify-content-center pt-4">
       <div class="col-md-12">
@@ -35,8 +42,8 @@
           <thead>
             <tr>
               <th scope="col">Remover</th>
-              <th scope="col">Tipo da atividade</th>
-              <th scope="col">Título da atividade</th>
+              <th scope="col">Atividade</th>
+              <th scope="col">Título</th>
               <th scope="col">Código da URL</th>
               <th scope="col">Emails</th>
             </tr>
@@ -81,10 +88,19 @@
     if (valor != '' && validateEmail(valor)) {
       email_count = email_count + 1;
       $('#email2').val('');
-      $("#email-container").append("<div class='input-group pt-2 pb-2'" + email_count.toString() +
-        "'><input type='text' class='form-control' name='emails[]' value='" + valor +
-        "' readonly='readonly'><span class='input-group-btn'><button class='btn btn-default' onclick='remover(" +
-        email_count.toString() + ")'><i class='fa fa-times' aria-hidden='true'></i></button></span></div>");
+
+      if (email_count % 2 == 1) {
+        $("#email-containerL").append("<div class='input-group pt-2 pb-2'" + email_count.toString() +
+          "'><span class='input-group-btn'><button class='btn btn-default' onclick='remover(" +
+          email_count.toString() + ")'><i class='fa fa-times' aria-hidden='true'></i></button></span><input type='text' class='form-control' name='emails[]' value='" + valor +
+          "' readonly='readonly'></div>");
+      } else {
+        $("#email-containerR").append("<div class='input-group pt-2 pb-2'" + email_count.toString() +
+          "'><input type='text' class='form-control' name='emails[]' value='" + valor +
+          "' readonly='readonly'><span class='input-group-btn'><button class='btn btn-default' onclick='remover(" +
+          email_count.toString() + ")'><i class='fa fa-times' aria-hidden='true'></i></button></span></div>");
+      }
+
     }
     else {
       alert('Entre com um email válido')
