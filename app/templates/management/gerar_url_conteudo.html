@@ -12,10 +12,8 @@
     <div class="row">
       <div class="col-md-6 form-group">
         <label class="control-label" for="email2">Insira o email do(a) ministrante</label>
-        <input type="text" class="form-control" id="email2" placeholder="name@example.com">
-        <div class="col-md-12 m-0 p-0 text-right">
-          <button id="email_adder" type="button" class="btn btn-primary">Adicionar ministrante</button>
-        </div>
+        <input type="text" class="form-control pb-1" id="email2" placeholder="name@example.com">
+        <button id="email_adder" type="button" class="btn btn-primary">Adicionar ministrante</button>
       </div>
       <div class="col-md-1"></div>
       <div class="col-md-3">
@@ -23,7 +21,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row justify-content-center">
       <div class="col-md-6">
         <div class="pt-2 pb-2" id='email-container'></div>
       </div>
@@ -84,9 +82,9 @@
       email_count = email_count + 1;
       $('#email2').val('');
       $("#email-container").append("<div class='input-group pt-2 pb-2'" + email_count.toString() +
-        "'><span class='input-group-btn'><button class='btn btn-default' onclick='remover(" +
-        email_count.toString() + ")'><i class='fa fa-times' aria-hidden='true'></i></button></span><input type='text' class='form-control' name='emails[]' value='" + valor +
-        "' readonly='readonly'></div>");
+        "'><input type='text' class='form-control' name='emails[]' value='" + valor +
+        "' readonly='readonly'><span class='input-group-btn'><button class='btn btn-default' onclick='remover(" +
+        email_count.toString() + ")'><i class='fa fa-times' aria-hidden='true'></i></button></span></div>");
     }
     else {
       alert('Entre com um email válido')
