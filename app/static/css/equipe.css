@@ -1,0 +1,78 @@
+.frontside {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.backside {
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    background: white;
+}
+
+.backside:hover, .backside.hover {
+    -webkit-animation: fadeIn 0.4s;
+    -moz-animation: fadeIn 0.4s;
+    -o-animation: fadeIn 0.4s;
+    animation: fadeIn 0.4s;
+    opacity: 1;
+}
+
+.frontside:hover, .frontside.hover {
+    opacity: 0;
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.backside .card p {
+    font-size: 1rem;
+}
+
+.frontside .card .card-title, .backside .card .card-title {
+    color: #007b5e !important;
+}
+
+.frontside .card .card-body img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+}
+
+.bg-diretor {
+    background-color: #000000;
+}
