@@ -184,31 +184,33 @@ def gerar_url_conteudo():
             atividade_removida = request.form.getlist('removido')
             if len(atividade_removida) > 0:
                 atividade_removida = db.session.query(Atividade).get(atividade_removida[0])
-                for ministrante in atividade_removida.ministrantes:
-                    if ministrante.usuario.senha == None:
-                        db.session.delete(ministrante.usuario)
-                        db.session.delete(ministrante)
-                db.session.delete(atividade_removida)
-                db.session.commit()
+                if atividade_removida is not None:
+                    for ministrante in atividade_removida.ministrantes:
+                        if ministrante.usuario.senha is None:
+                            db.session.delete(ministrante.usuario)
+                            db.session.delete(ministrante)
+                        db.session.delete(atividade_removida)
+                        db.session.commit()
             if verifica_lista_emails(emails):
                 codigo = token_urlsafe(150)
                 tipo = db.session.query(TipoAtividade).filter_by(id=form.tipo_atividade.data).first()
                 atividade = Atividade(url_codigo=codigo, id_evento=get_id_evento_atual(), id_tipo=tipo.id)
-                atividade.tipo = tipo
-                for email in emails:
-                    usuario = db.session.query(Usuario).filter_by(email=email).first()
-                    if usuario is None:
-                        usuario = Usuario(email=email, primeiro_nome='', sobrenome='')
-                        ministrante = Ministrante(usuario=usuario)
-                        usuario.ministrante.append(ministrante)
-                        db.session.add(usuario)
-                        db.session.add(ministrante)
-                    else:
-                        ministrante = usuario.ministrante[0]
+                if atividade is not None and tipo is not None:
+                    atividade.tipo = tipo
+                    for email in emails:
+                        usuario = db.session.query(Usuario).filter_by(email=email).first()
+                        if usuario is None:
+                            usuario = Usuario(email=email, primeiro_nome='', sobrenome='')
+                            ministrante = Ministrante(usuario=usuario)
+                            usuario.ministrante = ministrante
+                            db.session.add(usuario)
+                            db.session.add(ministrante)
+                        else:
+                            ministrante = usuario.ministrante
+                        db.session.commit()
+                        atividade.ministrantes.append(ministrante)
+                    db.session.add(atividade)
                     db.session.commit()
-                    atividade.ministrantes.append(ministrante)
-                db.session.add(atividade)
-                db.session.commit()
         return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(), form_login=form_login)
     else:
         abort(403)

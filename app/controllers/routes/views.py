@@ -1,4 +1,4 @@
-from flask import render_template, request, Blueprint, url_for, redirect
+from flask import render_template, request, Blueprint, url_for, redirect, current_app
 from flask_login import login_required, login_user, logout_user, current_user
 from passlib.hash import pbkdf2_sha256
 
@@ -6,7 +6,10 @@ from app.controllers.forms.forms import *
 from app.controllers.functions.email import enviar_email_dm
 from app.controllers.functions.helpers import *
 from app.controllers.constants import *
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
+limiter = Limiter(current_app, key_func=get_remote_address)
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
 
 
@@ -85,6 +88,7 @@ def teste():
     form_login = LoginForm(request.form)
     return render_template('teste.html', title='Teste', form_login=form_login)
 
+@limiter.limit("50/day")
 @views.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm(request.form)
