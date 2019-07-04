@@ -101,6 +101,6 @@ def create_app(config=None):
     def get_locale():
         if request.args.get('lang'):
             session['lang'] = request.args.get('lang')
-        return "pt"
+        return "pt_BR"
 
     return app

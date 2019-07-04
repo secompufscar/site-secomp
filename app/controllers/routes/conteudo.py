@@ -27,7 +27,6 @@ def cadastro_ministrante(codigo):
     if(permitido == True):
         form = CadastroMinistranteForm(request.form)
         form.codigo_url = codigo
-        print(emails)
         if form.validate_on_submit() and form.email.data in emails:
             serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
             email = form.email.data
@@ -38,7 +37,7 @@ def cadastro_ministrante(codigo):
             permissao_ministrante = db.session.query(Permissao).filter_by(nome="MINISTRANTE").first()
 
             usuario = db.session.query(Usuario).filter_by(email=form.email.data).first()
-            ministrante = usuario.ministrante[0]
+            ministrante = usuario.ministrante
 
             if permissao_ministrante is not None:
                 usuario.permissoes_usuario.append(permissao_ministrante)
@@ -86,7 +85,7 @@ def dados_hospedagem_transporte():
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(current_user)
-        dados_hospedagem_transporte = db.session.query(DadosHospedagemTransporte).filter_by(id_evento=get_id_evento_atual(), id_ministrante=current_user.ministrante[0].id).first()
+        dados_hospedagem_transporte = db.session.query(DadosHospedagemTransporte).filter_by(id_evento=get_id_evento_atual(), id_ministrante=current_user.ministrante.id).first()
         if dados_hospedagem_transporte is not None and atividade_confirmada == False:
             return redirect(url_for('conteudo.' + view_atividade, codigo=atividade.url_codigo))
         form = CadastroInformacoesLocomocaoEstadia(request.form)
@@ -96,7 +95,7 @@ def dados_hospedagem_transporte():
             transporte_ida_volta=form.transporte_ida_volta.data, opcoes_transporte_ida_volta=str(form.opcoes_transporte_ida_volta.data),
             transporte_sanca=form.transporte_sanca.data, opcoes_transporte_sanca=str(form.opcoes_transporte_sanca.data),
             hospedagem=form.hospedagem.data, necessidades_hospedagem=form.necessidades_hospedagem.data, observacoes=form.observacoes.data)
-            current_user.ministrante[0].dados_hospedagem_transporte.append(dados_hospedagem_transporte)
+            current_user.ministrante.dados_hospedagem_transporte.append(dados_hospedagem_transporte)
             db.session.add(dados_hospedagem_transporte)
             db.session.add(current_user)
             db.session.commit()
@@ -114,7 +113,7 @@ def cadastro_minicurso(codigo):
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
-        ministrante = current_user.ministrante[0]
+        ministrante = current_user.ministrante
         if permitido == True:
             r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
             if r_atividade_ministrante.admin_atividade is not False:
@@ -159,7 +158,7 @@ def cadastro_palestra(codigo):
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
-        ministrante = current_user.ministrante[0]
+        ministrante = current_user.ministrante
         if permitido == True:
             r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
             if r_atividade_ministrante.admin_atividade is not False:
@@ -198,7 +197,7 @@ def cadastro_mesa_redonda(codigo):
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
-        ministrante = current_user.ministrante[0]
+        ministrante = current_user.ministrante
         if permitido == True:
             r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
             if r_atividade_ministrante.admin_atividade is not False:
@@ -232,7 +231,7 @@ def cadastro_feira_projetos(codigo):
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
-        ministrante = current_user.ministrante[0]
+        ministrante = current_user.ministrante
         if(permitido == True):
             r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
             if r_atividade_ministrante.admin_atividade is not False:
@@ -270,7 +269,7 @@ def confirmar_atividade(codigo):
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
-        ministrante = current_user.ministrante[0]
+        ministrante = current_user.ministrante
         r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
         if permitido == True and r_atividade_ministrante.confirmado is not False:
             form = FlaskForm(request.form)

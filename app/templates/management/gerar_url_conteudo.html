@@ -2,7 +2,9 @@
 {% import "wtf.html" as wtf %}
 
 {% block content %}
-
+<style>
+  .clipboard {background-color: #cccccc;}
+</style>
 <div class="container pt-4">
   <h2 class="text-center pb-2">URL para formulários do Conteúdo</h2>
 
@@ -12,10 +14,12 @@
     <div class="row justify-content-center">
       <div class="col-md-6 form-group">
         <label class="control-label" for="email2">Insira o email do(a) ministrante</label>
-        <input type="text" class="form-control pb-1" id="email2" placeholder="name@example.com">
-        <div class="text-right">
-          <button id="email_adder" type="button" class="btn btn-primary">Adicionar ministrante</button>
-        </div>
+        <div class='input-group'>
+          <input type="text" class="form-control pb-1" id="email2" placeholder="name@example.com" >
+          <div class="text-right input-group-btn">
+            <button id="email_adder" type="button" class="btn btn-primary">Adicionar ministrante</button>
+          </div>
+      </div>
       </div>
       <div class="col-md-1"></div>
       <div class="col-md-3">
@@ -52,11 +56,18 @@
             {% for url in dict_urls %}
             <tr>
               <td scope="col"><button type='submit' class="btn btn-default" name='removido' value='{{ url.id }}'><i
-                    class="fa fa-times" aria-hidden="true"></i></button></td>
+                    class="fa fa-times"></i></button></td>
               <td scope="col">{{ url.tipo }}</td>
               <td scope="col">{{ url.titulo_atividade }}</td>
               <td scope="col" class="col-md-6">
-                <input type="text" readonly="readonly" class="w-75" value="{{ url.codigo_url }}" />
+                <div class="input-group">
+                <input id='url{{url.id}}' type="text" readonly="readonly" class="w-75" value="{{ url.codigo_url }}" />
+                  <span class='input-group-btn'>
+                  <button type='button' class="btn clipboard" data-clipboard-target="#url{{url.id}}" aria-hidden=true>
+                      <img src="{{url_for('static', filename='images/clippy.svg')}}" width=16>
+                  </button>
+                  </span>
+                </div>
               </td>
               <td scope="col">
                 {% for email in url.emails %}
@@ -107,6 +118,16 @@
     }
   })
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+<script>
+ var clipboard = new ClipboardJS('.btn');
+ clipboard.on('success', function(e) {
+     console.log(e);
+ });
+ clipboard.on('error', function(e) {
+     console.log(e);
+ });
+ </script>
 {% endblock %}
 
 FAZER UM ENABLE = FALSE no javascript dos emails

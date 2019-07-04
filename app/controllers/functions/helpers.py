@@ -91,8 +91,8 @@ def get_id_evento_atual():
 
 def confirmacao_atividade_ministrante(usuario):
     atividade = None
-    if(len(usuario.ministrante) != 0):
-        r = db.session.query(RelacaoAtividadeMinistrante).filter(RelacaoAtividadeMinistrante.id_ministrante == usuario.ministrante[0].id,
+    if usuario.ministrante is not None:
+        r = db.session.query(RelacaoAtividadeMinistrante).filter(RelacaoAtividadeMinistrante.id_ministrante == usuario.ministrante.id,
                                                                                                 RelacaoAtividadeMinistrante.confirmado == None).first()
         if r is not None:
             atividade = db.session.query(Atividade).get(r.id_atividade)
