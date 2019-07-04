@@ -1,4 +1,5 @@
 from app.models.models import *
+from os import path
 
 
 def get_score_evento(edicao):
@@ -43,13 +44,13 @@ def get_atividades():
         print(e)
         return None
 
-def get_participantes_da_atividade_json(id):
+def get_participantes_da_atividade_json(id=0):
     '''
     Retorna uma lista de dicionários de usuários para ser usado na página de email cusmotizado
     '''
     query = None
 
-    if (id == 0):
+    if (id == -1):
         query = db.session.query(Atividade)
     else:
         query = db.session.query(Atividade).filter_by(id=id)
@@ -57,13 +58,8 @@ def get_participantes_da_atividade_json(id):
     query = query.first()
     ativParticipantes = query.participantes
 
-    participantes = []
-
-    for p in ativParticipantes:
-        usuario = p.usuario
-        participante = {'id':usuario.id, 'nome':(usuario.primeiro_nome + " " + usuario.sobrenome), 'email':usuario.email}
-        participantes.append(participante)
-
+    participantes = [{'id': p.usuario.id, 'nome': f'{p.usuario.primeiro_nome} {p.usuario.sobrenome}', 'email': p.usuario.email} for p in ativParticipantes]
+ 
     return participantes
 
 
@@ -104,12 +100,13 @@ def get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao):
     '''
     Retorna uma lista dos arquivos que serão anexados.
     '''
+
     # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aqui
     if complemento == 0: # Mesmo arquivo para todos
-        return (anexoPasta + anexoBase + extencao)
+        return path.join(anexoPasta, (anexoBase + extencao))
     elif complemento == 1: # Nome CamelCase
-        return (anexoPasta + anexoBase + usuario.primeiro_nome + usuario.sobrenome.replace(" ", "") + extencao)
+        return path.join(anexoPasta, (anexoBase + usuario.primeiro_nome + usuario.sobrenome.replace(" ", "") + extencao))
     elif complemento == 2: # ID
-        return (anexoPasta + anexoBase + usuario.id + extencao)
+        return path.join(anexoPasta, (anexoBase + usuario.id + extencao))
     else:
         return None

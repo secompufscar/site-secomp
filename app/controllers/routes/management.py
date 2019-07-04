@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 from app.controllers.forms.forms import *
 from app.models.models import *
 
-from app.controllers.constants import dictComplemento, dictExtencao
+from app.controllers.forms.options import get_opcoes_ecustom_atividade, get_opcoes_ecustom_extencao, get_opcoes_ecustom_complemento
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
@@ -167,17 +167,12 @@ def email_custom():
     permissoes = current_user.getPermissoes()
     if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
+        form = EmailCuston(request.form)
 
-        # Cria um dict de atividades para ser usado na página
-        query = db.session.query(Atividade)
+        dictAtividades = {key : value for (value, key) in get_opcoes_ecustom_atividade()}
+        dictComplemento = {key : value for (value, key) in get_opcoes_ecustom_complemento()}
+        dictExtencao = {key : value for (value, key) in get_opcoes_ecustom_extencao()}
 
-        dictAtividades = {}
-        nomesAtividades = []
-
-        for a in query:
-            dictAtividades[a.titulo] = a.id
-            nomesAtividades.append(a.titulo)
-
-        return render_template('management/email_custom.html', form_login=form_login, dictAtividades=dictAtividades, dictComplemento=dictComplemento, dictExtencao=dictExtencao)
+        return render_template('management/email_custom.html', form=form, form_login=form_login, dictAtividades=dictAtividades, dictComplemento=dictComplemento, dictExtencao=dictExtencao)
     else:
         abort(403)

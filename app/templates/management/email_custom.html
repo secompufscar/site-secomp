@@ -12,34 +12,17 @@
 </style>
 
 <div class="pad-inicio container pb-5">
-	Assunto
-	<input id="text_assunto" type="text"></input></br>
-	Título
-	<input id="text_titulo" type="text"></input></br>
-	Template do email
-	<input id="text_template_email" type="text"></input></br>
+    {{ form.hidden_tag() }}
+	{{ wtf.form_field(form.assunto) }}
+	{{ wtf.form_field(form.titulo) }}
+	{{ wtf.form_field(form.template) }}
 
-	Anexo
-	<input id="cbox_tem_anexo" type="checkbox" class="cbox"></input></br>
+	{{ wtf.form_field(form.anexo) }}
 	<div id="div_anexo">
-		Caminho da pasta
-		<input id="text_path_anexo" type="text"></input></br>
-		Base do nome do arquivo
-		<input id="text_base_anexo" type="text"></input></br>
-		Complemento
-		<input id="list_complemento_anexo" list="listaCompAnexo"/></br>
-		<datalist id="listaCompAnexo">
-			{% for i in dictComplemento %}
-			<option value="{{i}}"></option>
-			{% endfor %}
-		</datalist>
-		Extenção
-		<input id="list_extencao_anexo" list="listaExtencaoAnexo"/></br>
-		<datalist id="listaExtencaoAnexo">
-			{% for i in dictExtencao %}
-			<option value="{{i}}"></option>
-			{% endfor %}
-		</datalist>
+		{{ wtf.form_field(form.pastaAnexo) }}
+		{{ wtf.form_field(form.baseAnexo) }}
+		{{ wtf.form_field(form.complemento) }}
+		{{ wtf.form_field(form.extencao) }}
 	</div>
 	
 	<button id="btn_enviar">Enviar</button></br>
@@ -47,22 +30,17 @@
 	</br>
 	
 	Pesquisar Usuários</br>
-	Atividade
-	<input id="list_atividades" list="listaAtividades"/></br>
-	<datalist id="listaAtividades">
-		<option value="Todas"></option>
-		{% for i in dictAtividades %}
-		<option value="{{i}}"></option>
-		{% endfor %}
-	</datalist>
-
+	{{ wtf.form_field(form.atividades) }}
+	
 	<button id="btn_pesquisar">Pesquisar</button></br>
 
 	</br>
 
 	Resultado</br>
-	Nome: <input id="text_pesquisa_em_resultado" type="text">
-	<input id="cbox_todos_os_usuarios" type="checkbox" class="cbox"></input>Todos</br>
+
+	{{ wtf.form_field(form.pesquisaResultado) }}
+	{{ wtf.form_field(form.todosresultado) }}
+	
 	<div >
 		<table id="tbl_resultado">
 			<tr>
@@ -77,7 +55,7 @@
 	</br>
 
 	Selecionados</br>
-	Nome: <input id="text_pesquisa_em_selecionados" type="text">
+	{{ wtf.form_field(form.pesquisaSelecionados) }}
 	<button id="btn_remove_todos_os_relecionados" >Remover Todos</button></br>
 	<div >
 		<table id="tbl_selecionados">
@@ -134,13 +112,7 @@
 		function pesquisarUsuarios(nomeAtiv) {
 			return $.ajax({
 				data : {
-					id : function() {
-						if (nomeAtiv == "Todas") {
-							return 0;
-						} else {
-							return atividades[nomeAtiv];
-						}
-					},
+					id : nomeAtiv,
 				},
 				type : 'POST',
 				url : '/api/pesquisa-usuario-por-atividade'
@@ -306,7 +278,7 @@
 
 			// Botão pesquisar
 			btnPesquisar.click(function() {
-				var nomeAtiv = lstAtividades.val().trim();
+				var nomeAtiv = lstAtividades.val();
 				if (nomeAtiv != "") {
 					pesquisarUsuarios(nomeAtiv).done(function(data) {
 						criaUsuarios(tblResultados, tblSelecionados, data, cbxTUsuarios);
@@ -426,8 +398,8 @@
 				var temAnexo = cbxTemAnexo.prop('checked');
 				var anexoBase = iptBaseAnexo.val();
 				var anexoPasta = iptPathAnexo.val();
-				var complemento = complementoAnexo[lstCompAnexo.val()];
-				var extencao = extencaoAnexo[lstExtencaoAnexo.val()];
+				var complemento = lstCompAnexo.val();
+				var extencao = lstExtencaoAnexo.val();
 
 				// Testes de validade
 				if (assunto == "") {
