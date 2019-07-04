@@ -22,6 +22,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="{{url_for('static', filename='js/select2.js')}}"></script>
 <script src="{{url_for('static', filename='js/pt-BR.js')}}" type="typescript"></script>
+<script src="{{url_for('static', filename='js/flipclock.js')}}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 {% endblock %}
 
 <title>{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}</title>
@@ -32,7 +34,8 @@
 <link href="{{ url_for('static', filename='bs/css/bootstrap-reboot.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ url_for('static', filename='fa/css/all.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{url_for('static', filename='css/select2.css')}}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='css/select2.css')}}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='css/flipclock.css')}}" rel="stylesheet" />
 {% endblock %}
 
 {% block favicon %}
@@ -43,10 +46,10 @@
 {% block body %}
 {% block navbar %}
 <header>
-  <nav class="navbar shadow fixed-top navbar-expand-lg bg-gradient-secomp">
-    <div class="container-fluid">
-      {# Marca d'água para a home  #}
-      <a class="navbar-brand ml-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
+  <nav class="nav-responsiva navbar shadow fixed-top navbar-expand-lg bg-gradient-secomp">
+    <div id="navTop" class="container-fluid">
+      {# Marca d'água para a home #}
+      <a class="navbar-brand mr-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
                                                                                src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30"
                                                                                                                                                         alt="Logo atual da SECOMP" /></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens"
@@ -54,7 +57,7 @@
         <i class="fas fa-bars text-white"></i>
       </button>
       <div class="collapse mr-auto navbar-collapse" id="navbarItens">
-        <ul class="navbar-nav mr-auto">
+        <ul class="ml-3 navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.index') }}"><i class="mr-1 fas fa-home"></i>
               HOME</a>
@@ -68,7 +71,7 @@
                                        class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
               <a class="dropdown-item" href="{{ url_for('views.equipe') }}"><i
                                        class="mr-1 fas fa-users"></i> EQUIPE</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+              <a class="dropdown-item" href="{{ url_for('views.contato_dm') }}"><i
                                        class="mr-1 fas fa-comments"></i> CONTATO</a>
               <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
                                        class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
@@ -81,7 +84,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{{ url_for('views.cronograma') }}"><i
                                        class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+              <a class="dropdown-item" href="{{ url_for('views.ctf') }}"><i
                                        class="mr-1 fas fa-flag"></i> CTF</a>
               <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
                                        class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
@@ -91,10 +94,8 @@
             <a class="nav-link" href="{{ url_for('views.faq') }}"><i
                                 class="mr-1 fas fa-question-circle"></i> FAQ</a>
           </li>
-          {# TODO adicionar eventos, a secomp, equipe (caravanas, patrocínio?) #}
         </ul>
 
-        {# TODO: Corrigir o espaçamento #}
         <!-- Lado direito da Navbar -->
         <div class="navbar-nav">
           {% if current_user.is_authenticated %}
@@ -138,7 +139,7 @@
         </div>
         <div class="modal-footer">
           <a href="{{url_for('users.esqueci_senha')}}">Esqueci minha senha</a>
-          <button name="submit" type="submit" class="btn btn-primary bg-gradient-secomp"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
+          <button name="submit" type="submit" class="btn btn-primary"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
         </div>
       </form>
     </div>
@@ -146,7 +147,7 @@
 </div>
 
 <main>
-  <div class="content">
+  <div id="content">
     {% block content %}{% endblock %}
   </div>
 </main>
@@ -157,8 +158,8 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-sm-8 text-center">
-        <p>Desenvolvido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Igor Lúcio,
-        Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Matheus Victorello, Nathan Oliveira e Victória De
+        <p>Desenvolvido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Guilherme Villar, Igor Lúcio,
+        Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Nathan Oliveira, Rafael Murata e Victória De
         Martini.
         </p>
 
@@ -197,6 +198,12 @@
 <script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
+
+<script>
+	$(document).ready(function(){
+    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
+  });
+</script>
 
 {% endblock %}
 {% endblock %}
