@@ -2,16 +2,8 @@
     border-radius: 50%;
 }
 
-.day {
-    height: 2em;
-    width: 2em;
-    line-height: 2em;
-}
 
 .selected {
-    display: inline-block;
-    text-align: center;
-    border-radius: 50%;
     background-color: #008cb5;
     color: #fff;
     text-align: center;
