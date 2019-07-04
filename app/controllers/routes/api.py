@@ -7,6 +7,8 @@ from app.controllers.functions.dictionaries import *
 from app.controllers.functions.helpers import get_participantes_da_atividade_json
 from app.controllers.functions.email import enviar_email_custon
 
+from app.controllers.forms.options import get_opcoes_ecustom_extencao
+
 import json
 
 from app.models.models import *
@@ -84,12 +86,15 @@ def executa_email_custon():
                 return jsonify('Falha. Nínguem foi selecionado!')
 
             # Verificação da extenção, novas extenções adicionadas no dictExtencao devem ser suportadas aqui
+            extencaoDict = {key : value for (key, value) in get_opcoes_ecustom_extencao()}
+            
             if extencao == 0:
                 extencao = ""
-            elif extencao == 1:
-                extencao = ".pdf"
             else:
-                return jsonify('Falha. Extenção não reconhecida!')
+                try:
+                    extencao = extencaoDict[extencao]
+                except:
+                    return jsonify('Falha. Extenção não reconhecida!')
 
             # Retorna possíveis erros
             erros = enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPasta, complemento, selecionados, extencao)
@@ -119,5 +124,7 @@ def pesquisa_usuario_por_atividade():
     if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         atividadeID = request.form['id']
 
+        print(request.form)
+        print("PRINT {}".format(atividadeID))
         participantes = get_participantes_da_atividade_json(int(atividadeID))
         return jsonify(participantes)

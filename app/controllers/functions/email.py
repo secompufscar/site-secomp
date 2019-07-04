@@ -40,22 +40,20 @@ def enviar_email_generico(info=None, anexo=None):
         if not (anexo is None or anexo == []):
             for fileName in anexo:
                 try:
-                    fp = open(fileName, "rb")
-
-                    try:
-                        # Verifica a extenção do arquivo
-                        if not fileName.find(".png") == -1:
-                            msg.attach(fileName, "image/png", fp.read())
-                        elif not fileName.find(".pdf") == -1:
-                            print("PDF");
-                            msg.attach(fileName, "application/pdf", fp.read())
-                        else:
-                            msg.attach(fileName, "text/plain", fp.read())
-                    except Exception as e:
-                        print("Erro no anexo. {}".format(e))
-                        return (info, e)
-
-                    fp.close()
+                    with open(fileName, "rb") as fp:
+	                    try:
+	                        # Verifica a extenção do arquivo
+	                        if not fileName.find(".png") == -1:
+	                            msg.attach(fileName, "image/png", fp.read())
+	                        elif not fileName.find(".pdf") == -1:
+	                            print("PDF");
+	                            msg.attach(fileName, "application/pdf", fp.read())
+	                        else:
+	                            msg.attach(fileName, "text/plain", fp.read())
+	                    except Exception as e:
+	                        print("Erro no anexo. {}".format(e))
+	                        return (info, e)
+	                        
                 except Exception as e:
                     print("Erro ao abrir arquivo do anexo. {}".format(e))
                     return (info, e)
