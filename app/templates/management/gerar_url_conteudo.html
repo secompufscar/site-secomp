@@ -101,13 +101,12 @@
       $('#email2').val('');
 
       if (email_count % 2 == 1) {
-        $("#email-containerL").append("<div class='input-group pt-2 pb-2'" + email_count.toString() +
-          "'><span class='input-group-btn'><button class='btn btn-default' onclick='remover(" +
+        $("#email-containerL").append("<div class='input-group pt-2 pb-2' id='email2" + email_count.toString() +
+          "'><span class='input-group-btn'><button type='button' class='btn btn-default' onclick='remover(" +
           email_count.toString() + ")'><i class='fa fa-times' aria-hidden='true'></i></button></span><input type='text' class='form-control' name='emails[]' value='" + valor +
           "' readonly='readonly'></div>");
       } else {
-        $("#email-containerR").append("<div class='input-group pt-2 pb-2'" + email_count.toString() +
-          "'><input type='text' class='form-control' name='emails[]' value='" + valor +
+        $("#email-containerR").append("<div class='input-group pt-2 pb-2' id='email2"+ email_count.toString() +"'><input type='text' class='form-control' name='emails[]' value='" + valor +
           "' readonly='readonly'><span class='input-group-btn'><button class='btn btn-default' onclick='remover(" +
           email_count.toString() + ")'><i class='fa fa-times' aria-hidden='true'></i></button></span></div>");
       }
