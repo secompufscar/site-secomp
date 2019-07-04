@@ -47,7 +47,7 @@
   }
 </style>
 
-<div class="pad-inicio container pb-2">
+<div class="container pb-2">
   <div class="tab-form">
     <div class="tabmenu" id="firsttab"></div>
     <div class="tabmenu" id="secondtab"></div>
@@ -66,7 +66,7 @@
           {{ wtf.form_field(form.email) }}
           {{ wtf.form_field(form.senha) }}
           {{ wtf.form_field(form.confirmacao) }}
-          <button id="continuar" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3"
+          <button id="continuar" class="btn btn-primary btn-block mt-3 mb-3"
             type="button">Continuar</button>
         </div>
       </div>
@@ -94,9 +94,10 @@
               <button type="button" id="voltar" class="btn text-white btn-secondary pb-1">Voltar</button>
             </div>
             <div class="col-md-6">
-              <button type="submit" class="btn text-white bg-gradient-secomp pb-1">Cadastrar</button>
+              <button type="submit" class="btn btn-primary text-white pb-1">Cadastrar</button>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -209,6 +210,12 @@
       };
     }
   })
+</script>
+
+<script>
+	$(document).ready(function(){
+    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
+  });
 </script>
 {% endblock %}
 

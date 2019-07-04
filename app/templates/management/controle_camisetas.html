@@ -3,7 +3,7 @@
 
 
 {% block content %}
-<div class="pad-inicio container">
+<div class=" container">
 
     <div class="row">
 		<div class="col-sm-3">
@@ -67,5 +67,11 @@
 	var nome = $("#filtro").val();
 	$(location).attr('href', '/estoque-camisetas/'+nome);
     });
+</script>
+
+<script>
+	$(document).ready(function(){
+    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
+  });
 </script>
 {% endblock %}

@@ -35,7 +35,7 @@ a:hover {
 }
 
 .btn:hover {
-  background-image: linear-gradient(to right, #008cb5, #00cfa1);
+  background-color: #00cfa1;
 }
 
 .help-block {
