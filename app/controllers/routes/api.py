@@ -87,14 +87,14 @@ def executa_email_custon():
 
             # Verificação da extenção, novas extenções adicionadas no dictExtencao devem ser suportadas aqui
             extencaoDict = {key : value for (key, value) in get_opcoes_ecustom_extencao()}
-            
+
             if extencao == 0:
                 extencao = ""
             else:
                 try:
                     extencao = extencaoDict[extencao]
-                except:
-                    return jsonify('Falha. Extenção não reconhecida!')
+                except Exception as e:
+                    return jsonify('Falha. Extenção não reconhecida!\n{}'.format(str(e)))
 
             # Retorna possíveis erros
             erros = enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPasta, complemento, selecionados, extencao)

@@ -59,7 +59,7 @@ def get_participantes_da_atividade_json(id=0):
     ativParticipantes = query.participantes
 
     participantes = [{'id': p.usuario.id, 'nome': f'{p.usuario.primeiro_nome} {p.usuario.sobrenome}', 'email': p.usuario.email} for p in ativParticipantes]
- 
+
     return participantes
 
 
