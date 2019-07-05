@@ -181,10 +181,6 @@ def email_custom():
         form_login = LoginForm(request.form)
         form = EmailCuston(request.form)
 
-        dictAtividades = {key : value for (value, key) in get_opcoes_ecustom_atividade()}
-        dictComplemento = {key : value for (value, key) in get_opcoes_ecustom_complemento()}
-        dictExtencao = {key : value for (value, key) in get_opcoes_ecustom_extencao()}
-
-        return render_template('management/email_custom.html', form=form, form_login=form_login, dictAtividades=dictAtividades, dictComplemento=dictComplemento, dictExtencao=dictExtencao)
+        return render_template('management/email_custom.html', form=form, form_login=form_login)
     else:
         abort(403)

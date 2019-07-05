@@ -214,15 +214,23 @@ class GerarURLCadastroForm(FlaskForm):
     gerar = HiddenField("", id='gerar',validators=[tem_valor()], default="1")
 
 class EmailCuston(FlaskForm):
+    listComplemento = get_opcoes_ecustom_complemento()
+    listExtencao = get_opcoes_ecustom_extencao()
+    listAtividade = get_opcoes_ecustom_atividade()
+
+    dictComplemento = {key : value for (value, key) in listComplemento}
+    dictExtencao = {key : value for (value, key) in listExtencao}
+    dictAtividades = {key : value for (value, key) in listAtividade}
+
     assunto = StringField('Assunto', id='text_assunto');
     titulo = StringField('Título', id='text_titulo');
     template = StringField('Template do Email', id='text_template_email');
     anexo = BooleanField('Anexo', id='cbox_tem_anexo');
     pastaAnexo = StringField('Nome da pasta', id='text_path_anexo');
     baseAnexo = StringField('Base do nome do anexo', id='text_base_anexo');
-    complemento = SelectField('Complemento', id='list_complemento_anexo', choices=get_opcoes_ecustom_complemento());
-    extencao = SelectField('Extenção', id='list_extencao_anexo', choices=get_opcoes_ecustom_extencao());
-    atividades = SelectField('Atividades', id='list_atividades', choices=get_opcoes_ecustom_atividade());
+    complemento = SelectField('Complemento', id='list_complemento_anexo', choices=listComplemento);
+    extencao = SelectField('Extenção', id='list_extencao_anexo', choices=listExtencao);
+    atividades = SelectField('Atividades', id='list_atividades', choices=listAtividade);
     pesquisaResultado = StringField('Nome: ', id='text_pesquisa_em_resultado');
     todosresultado = BooleanField('Todos', id='cbox_todos_os_usuarios');
     pesquisaSelecionados = StringField('Nome: ', id='text_pesquisa_em_selecionados');
