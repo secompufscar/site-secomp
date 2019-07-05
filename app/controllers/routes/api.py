@@ -58,7 +58,14 @@ def executa_email_custon():
                 return jsonify('Falha. Sem template!')
 
             try:
-                temAnexo = bool(pkg['temAnexo'])
+                if (pkg['temAnexo'] == 'true'):
+                    temAnexo = True
+                elif (pkg['temAnexo'] == 'false'):
+                    temAnexo = False
+                else:
+                    print("Erro ao converter temAnexo para bool.")
+                    return jsonify('Falha. Erro ao converter temAnexo para bool!')
+
             except Exception as e:
                 print("Erro ao converter temAnexo para bool. {}".format(e))
                 return jsonify('Falha. Erro ao converter temAnexo para bool!')
@@ -108,8 +115,7 @@ def executa_email_custon():
                     r += ("Email: {email} {erro}").format(email=e[0]['email'], erro=str(e[1]))
                 return jsonify('Falha. \n {}'.format(r))
         except Exception as e:
-            print(e)
-            return jsonify('Falha.')
+            return jsonify('Falha. \n {}'.format(str(e)))
     else:
         print("NAO PODE")
 
@@ -124,7 +130,5 @@ def pesquisa_usuario_por_atividade():
     if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         atividadeID = request.form['id']
 
-        print(request.form)
-        print("PRINT {}".format(atividadeID))
         participantes = get_participantes_da_atividade_json(int(atividadeID))
         return jsonify(participantes)

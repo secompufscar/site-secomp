@@ -214,14 +214,14 @@ class GerarURLCadastroForm(FlaskForm):
     gerar = HiddenField("", id='gerar',validators=[tem_valor()], default="1")
 
 class EmailCuston(FlaskForm):
-    assunto = StringField('Assunto', id='text_assunto', validators=[InputRequired(), Length(min=1,max=100)]);
-    titulo = StringField('Título', id='text_titulo', validators=[InputRequired(), Length(min=1,max=100)]);
-    template = StringField('Template do Email', id='text_template_email', validators=[InputRequired(), Length(min=1,max=100)]);
+    assunto = StringField('Assunto', id='text_assunto');
+    titulo = StringField('Título', id='text_titulo');
+    template = StringField('Template do Email', id='text_template_email');
     anexo = BooleanField('Anexo', id='cbox_tem_anexo');
-    pastaAnexo = StringField('Nome da pasta', id='text_path_anexo', validators=[InputRequired(), Length(min=1,max=30)]);
-    baseAnexo = StringField('Base do nome do anexo', id='text_base_anexo', validators=[InputRequired(), Length(min=1,max=30)]);
-    complemento = SelectField('Complemento', id='list_complemento_anexo', choices=get_opcoes_ecustom_complemento(), validators=[InputRequired()]);
-    extencao = SelectField('Extenção', id='list_extencao_anexo', choices=get_opcoes_ecustom_extencao(), validators=[InputRequired()]);
+    pastaAnexo = StringField('Nome da pasta', id='text_path_anexo');
+    baseAnexo = StringField('Base do nome do anexo', id='text_base_anexo');
+    complemento = SelectField('Complemento', id='list_complemento_anexo', choices=get_opcoes_ecustom_complemento());
+    extencao = SelectField('Extenção', id='list_extencao_anexo', choices=get_opcoes_ecustom_extencao());
     atividades = SelectField('Atividades', id='list_atividades', choices=get_opcoes_ecustom_atividade());
     pesquisaResultado = StringField('Nome: ', id='text_pesquisa_em_resultado');
     todosresultado = BooleanField('Todos', id='cbox_todos_os_usuarios');
