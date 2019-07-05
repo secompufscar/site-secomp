@@ -143,14 +143,16 @@ class CadastroMinistranteForm(FlaskForm):
         validators=[Length(max=64)])
     biografia = TextAreaField('Breve descrição biográfica, a ser utilizada na divulgação', validators=[InputRequired(),
         Length(min=1, max=1500)], id='biografia')
-    foto = StringField('Foto')
+    foto = FileField('Foto', validators=[
+            FileRequired(message=ERRO_INPUT_REQUIRED),
+            FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
+        ])
     tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=get_opcoes_camisetas(),
         id='tamanho_camiseta', coerce=int)
     facebook = StringField('Facebook', id='facebook')
     twitter = StringField('Twitter', id='twitter')
     linkedin = StringField('Linkedin', id='linkedin')
     github = StringField('GitHub', id='github')
-    codigo_url = ''
     recaptcha = RecaptchaField()
 
 class CadastroInformacoesMinicurso(FlaskForm):
