@@ -61,7 +61,7 @@ def verificar_email():
         msg = 'Seu email foi verificado com sucesso!'
         status = True
     else:
-        msg = 'Confirme o email de verificação que foi enviado ao endereço de email fornecido'
+        msg = 'Confirme o email de verificação que te enviamos!'
         status = False
     return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante, form_login=form_login)
 
