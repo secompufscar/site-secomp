@@ -154,6 +154,7 @@ class CadastroMinistranteForm(FlaskForm):
     linkedin = StringField('Linkedin', id='linkedin')
     github = StringField('GitHub', id='github')
     recaptcha = RecaptchaField()
+    codigo_url = ''
 
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])

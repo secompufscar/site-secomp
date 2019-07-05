@@ -27,6 +27,7 @@ def cadastro_ministrante(codigo):
     permitido, emails = r[0], r[2]
     if(permitido == True):
         form = CadastroMinistranteForm()
+        form.codigo_url = codigo
         if form.validate_on_submit() and form.email.data in emails:
             serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
             email = form.email.data
