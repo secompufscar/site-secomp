@@ -3,7 +3,7 @@ import datetime
 from flask_login import current_user
 
 from app.controllers.constants import *
-from app.controllers.functions.helpers import get_score_evento
+from app.controllers.functions.helpers import get_score_evento, get_id_evento_atual
 from app.models.models import *
 
 
@@ -94,23 +94,6 @@ def get_dicionario_info_evento(edicao):
         print(e)
         return None
 
-def get_dicionario_urls_cadastro_ministrante(base_url):
-    urls = db.session.query(URLConteudo).filter_by().order_by(URLConteudo.id.desc()).all()
-    dict_urls = []
-    for url in urls:
-        if url.valido == True:
-            valido = "Sim"
-        else:
-            valido = "Não"
-        dict = {
-            'descricao': url.descricao,
-            'url' : base_url + url.codigo,
-            'numero_cadastros': url.numero_cadastros,
-            'valido': valido,
-            'ultimo': url.ultimo_gerado
-        }
-        dict_urls.append(dict)
-    return dict_urls
 
 def get_patrocinadores():
     try:
@@ -130,3 +113,24 @@ def get_patrocinadores():
         return pat_json
     except Exception as e:
         return "Erro"
+
+def get_urls_conteudo():
+    atividades = db.session.query(Atividade).filter_by(id_evento=get_id_evento_atual()).all()
+    info_urls = []
+    for atividade in atividades:
+        titulo = atividade.titulo
+
+        if atividade.titulo is None or atividade.titulo == '':
+            titulo = "-"
+        emails = []
+        for ministrante in atividade.ministrantes:
+            emails.append(ministrante.usuario.email)
+        info = {
+                "id" : atividade.id,
+                "tipo" : atividade.tipo.nome,
+                "titulo_atividade": titulo,
+                "codigo_url" : atividade.url_codigo,
+                "emails": emails
+        }
+        info_urls.append(info)
+    return info_urls
