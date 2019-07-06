@@ -277,7 +277,7 @@ def alterar_senha():
             usuario.senha = enc
             db.session.add(usuario)
             db.session.commit()
-            return redirect(url_for('.login'))
+            return redirect(url_for('views.login'))
         else:
             return render_template('users/alterar_senha.html', form=form, action=request.base_url, form_login=form_login)
     else:
@@ -325,5 +325,5 @@ def confirmar_alteracao_senha(token):
         except Exception as e:
             print(e)
             flash("Falha na confirmação de link do email.")
-        return redirect(url_for('.login'))
+        return redirect(url_for('views.login'))
     return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login)
