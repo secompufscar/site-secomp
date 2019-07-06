@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="container">
-	<div class="pt-3 text-center">
+<div class="pt-3 text-center container-fluid" style="background: #212121; color: white; padding-bottom: 1%;">
 		<h2>SOBRE A SECOMP</h2>
-	</div>
-	<hr>
+</div>
+<hr>
+<div class="container">
 	<div class="row">
 		<div class="col-md-6 text-justify">
 			<p>A Semana Acadêmica da Computação da Universidade Federal de São Carlos surgiu da
@@ -36,13 +35,11 @@
 </div>
 </div>
 
-
-<div class="container">
-	<div class="pt-3 text-center">
+<div class="pt-3 text-center container-fluid" style="background: #212121; color: white; padding-bottom: 1%;">
 		<h2>SOBRE A UFSCAR</h2>
 	</div>
 	<hr>
-
+<div class="container">
 	<div class="text-justify">
 		<p>Fundada em 1968, a Universidade Federal de São Carlos (UFSCar), única instituição federal
 			de Ensino Superior localizada no interior do Estado de São Paulo, destaca-se pelo alto
@@ -90,15 +87,12 @@
 	</div>
 </div>
 <br>
-
+<div class="pt-3 text-center" style="background: #212121; color: white; padding-bottom: 1%;">
+	<h2>O DEPARTAMENTO DE COMPUTAÇÃO</h2>
+</div>
+<hr>
 <div class="container d-md-flex">
 	<div class="col-md-6">
-		<div class="pt-3 text-center">
-			<br><br>
-			<h2>O DEPARTAMENTO DE COMPUTAÇÃO</h2>
-		</div>
-		<hr>
-
 		<div class="text-justify d-inline">
 			<p>O Departamento de Computação existe desde 1972, sendo responsável por habilitar e colocar com
 				excelência anualmente no mercado de trabalho cerca de uma centena de profissionais, que
@@ -111,7 +105,7 @@
 					em <a href="http://www.dc.ufscar.br" target="_blank">www.dc.ufscar.br</a>.</i><br><br></p>
 		</div>
 	</div>
-	<div class="col-md-6 py-4">
+	<div class="col-md-6 py-4" style="padding-top: 0 !important">
 		<img class="sobre-img h-100 w-100" src="{{url_for('static', filename='images/sobre-dc.jpg')}}">
 	</div>
 </div>

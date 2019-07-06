@@ -9,154 +9,11 @@ header {
     header a:hover {
       color: rgba(255, 255, 255, 0.7); }
 
-#content {
-  min-height: 75vh;
-  padding-top: 6.5vh; }
-
-.btn {
-  border: #00000000; }
-
-.btn-primary {
-  background-color: #008cb5; }
-
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
-  background-color: #00cfa1 !important; }
+.small {
+  font-size: 14px; }
 
 .bg-gradient-secomp {
   background-image: linear-gradient(to right, #008cb5, #00cfa1); }
-
-  /* Imagens com texto em cima */
-.overlay {
-  background-color: #000000;
-  position: relative; }
-
-.opac {
-  filter: opacity(0.4); }
-
-.overlay-text {
-  position: absolute;
-  color: #fff;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); }
-
-@media (orientation: landscape) {
-  .img-responsive {
-    width: 100%;
-    height: 100vh;
-  }
-  .overlay-text h1 {
-    font-weight: 600;
-    font-size: 8vh;
-  }
-  .overlay-text h2 {
-    font-weight: 500;
-    font-size: 4.5vh;
-  }
-}
-
-@media (orientation: portrait) {
-  .img-responsive {
-    width: 100vw;
-  }
-  .overlay-text h1 {
-    font-weight: 600;
-    font-size: 3.5vh;
-  }
-  .overlay-text h2 {
-    font-weight: 500;
-    font-size: 2.5vh;
-  }
-}
-
-@media (max-width: 375px){
-  .nav_on{
-    display: block;
-  }
-  .nav_off{
-    display: none;
-  }
-  .setaDireita{
-    text-align: right !important;
-    width: auto;
-    margin-right: 4%;
-  }
-  .setaEsquerda{
-    text-align: left !important;
-    width: auto;
-    margin-left: 5%;
-  }
-  .nav_cronograma{
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-  }
-  .center{
-    width: 60%;
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-  }
-  .cronograma{
-    width: 100% !important;
-  }
-}
-
-@media (min-width: 376px) and (max-width: 1199px){
-  .nav_on{
-    display: block;
-  }
-  .nav_off{
-    display: none;
-  }
-  .setaDireita{
-    text-align: right !important;
-    width: auto;
-    margin-right: 5%;
-  }
-  .setaEsquerda{
-    text-align: left !important;
-    width: auto;
-    margin-left: 5%;
-  }
-  .nav_cronograma{
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-  }
-  .center{
-    width: 60%;
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-  }
-  .cronograma{
-    width: 100% !important;
-  }
-}
-
-.cronograma{
-  height: auto;
-  margin: 0 auto;
-  padding: 10px;
-  position: relative;
-  width: auto;
-  display: inline-flex;
-}
-
-@media (orientation: portrait) {
-  div.embed-responsive.embed-responsive-21by9 video {
-    width: 100%;
-    height: 40%;
-  }
-  #video {
-    margin-bottom: -90%;
-  }
-}
 
 .carousel-item {
   height: 100vh;
@@ -167,7 +24,7 @@ header {
 .dropdown-menu a {
   font-size: 12px; }
 
-.dropdown-toggle:active {
+> .dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: visible; }
 
@@ -198,8 +55,8 @@ footer {
   max-height: 70vh;
   width: 100vh; }
 
-/* CSS para os cards de equipe */
-.frontside {
+/* CSS para os cards da página '/equipe' */
+/* .frontside {
   position: relative;
   -webkit-transform: rotateY(0deg);
   -moz-transform: rotateY(0deg);
@@ -208,6 +65,15 @@ footer {
   transform: rotateY(0deg);
   z-index: 2;
   margin-bottom: 30px; }
+  @media (min-width: 576px) {
+    .frontside {
+      height: 250px;
+      width: 250px; } }
+
+.img-equipe {
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover; }
 
 .backside {
   position: absolute;
@@ -224,6 +90,10 @@ footer {
   -o-box-shadow: 5px, 7px, 9px, -4px #9e9e9e;
   -ms-box-shadow: 5px, 7px, 9px, -4px #9e9e9e;
   box-shadow: 5px, 7px, 9px, -4px #9e9e9e; }
+  @media (min-width: 576px) {
+    .backside {
+      height: 250px;
+      width: 250px; } }
 
 .image-flip:hover .backside,
 .image-flip.hover .backside {
@@ -276,11 +146,10 @@ footer {
 
 .frontside .card,
 .backside .card {
-  /* Ajustar para ficar responsivo com a largura da tela */
   min-height: 250px; }
 
 .backside .card p {
-  font-size: 1.5vh; }
+  font-size: 0.8em; }
 
 .frontside .card .card-title,
 .backside .card .card-title {
@@ -289,13 +158,7 @@ footer {
 .frontside .card .card-body img {
   width: 20vh;
   height: 20vh;
-  border-radius: 50%; }
-
-.bg-diretor {
-  background-color: #000000;
-}
-
-/* Fim CSS dos cards de equipe*/
+  border-radius: 50%; } */
 
 #portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption {
   opacity: 0.8; }
@@ -339,21 +202,3 @@ a.portfolio-box:hover {
   -webkit-transition: opacity .25s ease;
   transition: opacity .25s ease;
   text-align: center; }
-
-.modal_portifolio {
-  display: inline-block;
-  margin: 15px;}
-
-.clock {
-  width: 100%;
-}
-
-.btn-link:hover, .btn-link:focus{
-  text-decoration: none;
-}
-
-.setaDireita{
-  text-align: right !important;
-  width: auto;
-  margin-left: auto;
-}
