@@ -144,7 +144,6 @@ class CadastroMinistranteForm(FlaskForm):
     biografia = TextAreaField('Breve descrição biográfica, a ser utilizada na divulgação', validators=[InputRequired(),
         Length(min=1, max=1500)], id='biografia')
     foto = FileField('Foto', validators=[
-            FileRequired(message=ERRO_INPUT_REQUIRED),
             FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
         ])
     tamanho_camiseta = SelectField('Tamanho de Camiseta', choices=get_opcoes_camisetas(),
