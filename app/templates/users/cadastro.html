@@ -69,6 +69,10 @@
       $('label[for="outra_cidade"]').hide();
       $("#outra_cidade").hide();
     }
+    if ($("#como_conheceu option:selected").val() !== '4') {
+      $('label[for="outro_como_conheceu"]').hide();
+      $("#outro_como_conheceu").hide();
+    }
     $('#data_nasc').mask('00/00/0000');
     $("#curso").change(function () {
       if ($("#curso option:selected").val() === '0') {
@@ -96,6 +100,15 @@
         $('label[for="outra_cidade"]').hide();
         $("#outra_cidade").hide();
       }
+    });
+    $("#como_conheceu").change(function () {
+        if ($("#como_conheceu option:selected").val() ==='5') {
+            $('label[for="outro_como_conheceu"]').show();
+            $("#outro_como_conheceu").show();
+        } else {
+            $('label[for="outro_como_conheceu"]').show();
+            $("#outro_como_conheceu").show();
+        }
     });
   });
 
