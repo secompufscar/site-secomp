@@ -122,6 +122,19 @@ def dashboard():
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
 
+@users.route('/dados', methods=['POST', 'GET'])
+@login_required
+def dados():
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
+    form_login = LoginForm(request.form)
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    ministrante = db.session.query(Ministrante).filter_by(
+        usuario=current_user).first()
+    return render_template('users/dados.html', title='Dados', usuario=usuario,
+                            participante=participante, ministrante=ministrante, form_login=form_login)
+
 
 @users.route('/enviar-comprovante', methods=['POST', 'GET'])
 @login_required
@@ -277,7 +290,7 @@ def alterar_senha():
             usuario.senha = enc
             db.session.add(usuario)
             db.session.commit()
-            return redirect(url_for('.login'))
+            return redirect(url_for('views.login'))
         else:
             return render_template('users/alterar_senha.html', form=form, action=request.base_url, form_login=form_login)
     else:
@@ -325,5 +338,5 @@ def confirmar_alteracao_senha(token):
         except Exception as e:
             print(e)
             flash("Falha na confirmação de link do email.")
-        return redirect(url_for('.login'))
+        return redirect(url_for('views.login'))
     return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login)
