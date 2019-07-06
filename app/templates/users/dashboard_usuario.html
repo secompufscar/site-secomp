@@ -9,48 +9,6 @@
             <h2>Área do participante</h2>
             <h5>QR Code ainda não disponível</h5>
         </div>
-
-        {% if (participante != None): %}
-        <div class="col-md-6">
-            <table class="table table-borderless">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Kit</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">Pago</th>
-                        <td>{% if participante.kit_pago == True: %}
-                            Sim
-                            {% else: %}
-                            Não
-                            {% endif %}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Camiseta</th>
-                        <td>{{ participante.camiseta.tamanho }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Opção do Coffee</th>
-                        <td>{{ participante.opcao_coffee }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    {% endif %}
-
-    <div class="row justify-content-center">
-        {% if (participante != None): %}
-        <a href="{{url_for('.inscricao_atividades')}}" class="btn btn-primary">Atividades</a>
-
-        {% if not(participante.pagamento): %}
-        <a href="{{url_for('users.envio_comprovante')}}" class="btn btn-primary">Enviar comprovante</a>
-        {% endif %}
-        <a href="{{url_for('views.logout')}}" class="btn btn-primary">Logout</a>
-        {% endif %}
     </div>
 </div>
 

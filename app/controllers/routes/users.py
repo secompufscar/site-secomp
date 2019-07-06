@@ -135,6 +135,20 @@ def dados():
     return render_template('users/dados.html', title='Dados', usuario=usuario,
                             participante=participante, ministrante=ministrante, form_login=form_login)
 
+@users.route('/kit', methods=['POST', 'GET'])
+@login_required
+def kit():
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
+    form_login = LoginForm(request.form)
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    if participante != None:
+        return render_template('users/kit.html', title='Kit', usuario=usuario,
+                            participante=participante, form_login=form_login)
+    else:
+        return redirect(url_for('.cadastro_participante'))
+
 
 @users.route('/enviar-comprovante', methods=['POST', 'GET'])
 @login_required
