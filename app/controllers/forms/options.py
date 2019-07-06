@@ -18,6 +18,14 @@ opcoes_transporte_sanca = [
     (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')
 ]
 
+opcoes_como_conheceu = [
+        (0, "Pelo Departamento de Computação da UFSCar"),
+        (1, "Através de amigos"),
+        (2, "Pela nossa página do facebook"),
+        (3, "Por cartazes espalhados em São Carlos"),
+        (4, "Outro")
+]
+
 def get_opcoes_cidades():
     try:
         cidades = db.session.query(Cidade).all()
@@ -105,6 +113,7 @@ def get_opcoes_cotas_patrocinadores():
     except Exception as e:
         return None
 
+
 def get_opcoes_area_atividade():
     try:
         areas_data = db.session.query(AreaAtividade).all()
@@ -115,3 +124,4 @@ def get_opcoes_area_atividade():
         return areas
     except Exception as e:
         return None
+

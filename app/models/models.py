@@ -62,6 +62,7 @@ class Usuario(db.Model):
     permissoes_usuario = db.relationship('Permissao', secondary=relacao_permissao_usuario, lazy=True,
                                          back_populates='usuarios')
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
+    como_conheceu = db.relationship('ComoConheceu', lazy=True, back_populates='usuario')
 
     @classmethod
     def is_active(cls):
@@ -375,3 +376,12 @@ class URLConteudo(db.Model):
     ultimo_gerado = Column(Boolean, default=False, nullable=False)
     valido = Column(Boolean, default=True, nullable=False)
     numero_cadastros = Column(Integer, default=1)
+
+
+class ComoConheceu(db.Model):
+    __tablename__ = 'como_conheceu'
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=True)
+    opcao = Column(Integer, nullable=False)
+    outro = Column(String(200))
+    usuario = db.relationship('Usuario', lazy=True, back_populates='como_conheceu')
+
