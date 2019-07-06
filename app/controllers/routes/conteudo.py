@@ -57,19 +57,21 @@ def cadastro_ministrante(codigo):
             db.session.add(usuario)
             db.session.commit()
 
-            foto = form.foto.data
-            filename = secure_filename(foto.filename)
-            filename = f'{usuario.id}_{usuario.primeiro_nome}_{usuario.sobrenome}_{filename}'
-            upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'fotos_ministrantes')
-            if not path.exists(upload_path):
-                makedirs(upload_path)
+            if form.foto.data:
+                foto = form.foto.data
+                filename = secure_filename(foto.filename)
+                filename = f'{usuario.id}_{usuario.primeiro_nome}_{usuario.sobrenome}_{filename}'
+                upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'fotos_ministrantes')
+                if not path.exists(upload_path):
+                    makedirs(upload_path)
 
             ministrante.id_usuario = usuario.id
             ministrante.telefone = form.telefone.data
             ministrante.profissao = form.profissao.data
             ministrante.empresa_universidade = form.empresa_universidade.data
             ministrante.biografia = form.biografia.data
-            ministrante.foto = filename
+            if form.foto.data:
+                ministrante.foto = filename
             ministrante.tamanho_camiseta = form.tamanho_camiseta.data
             ministrante.facebook = form.facebook.data
             ministrante.twitter = form.twitter.data
@@ -78,7 +80,8 @@ def cadastro_ministrante(codigo):
 
             db.session.add(ministrante)
             db.session.commit()
-            foto.save(path.join(upload_path, filename))
+            if form.foto.data:
+                foto.save(path.join(upload_path, filename))
             enviar_email_confirmacao(usuario, token)
             login_user(usuario, remember=True)
             return redirect(url_for('users.verificar_email'))
