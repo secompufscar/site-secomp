@@ -9,6 +9,12 @@
     top: 0;
     left: 0;
     background: white;
+}   
+
+.img-equipe {
+    width: 1rem;
+    height: 1rem;
+    object-fit: cover; 
 }
 
 .backside:hover, .backside.hover {
