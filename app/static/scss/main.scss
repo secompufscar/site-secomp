@@ -88,6 +88,16 @@ footer {
     @include vert-rotate(0deg); 
     z-index: 2;
     margin-bottom: 30px;
+    @media (min-width: 576px) {
+        height: 250px;
+        width: 250px;
+    }
+}
+
+.img-equipe {
+    width: 6rem;
+    height: 6rem;
+    object-fit: cover; 
 }
 
 .backside {
@@ -95,6 +105,10 @@ footer {
     top: 0;
     left: 0;
     background: white;
+    @media (min-width: 576px) {
+        height: 250px;
+        width: 250px;
+    }
     @include vert-rotate(-180deg); 
     @include box-shadow((5px, 7px, 9px, -4px), rgb(158, 158, 158));
 }
