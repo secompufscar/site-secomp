@@ -1,8 +1,8 @@
-{% extends "base.html" %}
+{% extends "users/sidebar.html" %}
 
-{% block content %}
+{% block sidebar_content %}
 
-<div class="pb-3 container dash">
+<div class="container">
     <div class="row justify-content-center">
 
         <div class="col-lg-12 text-center p-2">
@@ -10,46 +10,6 @@
             <h5>QR Code ainda não disponível</h5>
         </div>
 
-        <div class="col-md-6">
-            <table class="table table-borderless">
-
-            <!--<br>Curso: {{usuario.curso.nome}}
-            <br>Instituição: {{usuario.instituicao.nome}}
-            <br>Data de nascimento: {{usuario.data_nasc}}
-            <br>Cidade: {{usuario.cidade.nome}}-->
-
-
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Dados</th>
-                        <th scope="col">Editar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">Nome</th>
-                        <td>{{usuario.primeiro_nome + ' ' + usuario.sobrenome}}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Email</th>
-                        <td>{{usuario.email}}</td>
-                    </tr>
-                    <tr>
-                        {% if (participante == None): %}
-
-                        <th scope="row">Inscrição</th>
-                        <td><a href="{{url_for('.cadastro_participante')}}">Inscrever-se na SECOMP 2019</a></td>
-                            
-                        {% else: %}
-
-                        <th scope="row">Inscrição realizada em</th>
-                        <td>{{ participante.data_inscricao }}</td>
-
-                        {% endif %}
-                    </tr>
-                </tbody>
-            </table>
-        </div>
         {% if (participante != None): %}
         <div class="col-md-6">
             <table class="table table-borderless">
@@ -63,9 +23,9 @@
                     <tr>
                         <th scope="row">Pago</th>
                         <td>{% if participante.kit_pago == True: %}
-                                Sim
+                            Sim
                             {% else: %}
-                                Não
+                            Não
                             {% endif %}</td>
                     </tr>
                     <tr>
@@ -79,44 +39,17 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="col-md-12">
-        
-            <table class="table table-borderless table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Score</th>
-                        <th><!--{{ participante.score_geral }}-->8000</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for atividade in participante.atividades %}
-                    <tr>
-                        <th scope="row">{ atividade.valor }</th>
-                        <td>{{ atividade }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>        
-        </div>
     </div>
     {% endif %}
 
-    <div class="row text-center">
-        <div class="col-md-4">
-            <a href="{{url_for('.alterar_senha')}}" class="btn btn-primary">Alterar senha</a>
-        </div>
+    <div class="row justify-content-center">
         {% if (participante != None): %}
-        <div class="col-md-4">
-            <a href="{{url_for('.inscricao_atividades')}}" class="btn btn-primary">Atividades</a>
-        </div>
+        <a href="{{url_for('.inscricao_atividades')}}" class="btn btn-primary">Atividades</a>
 
-        <div class="col-md-4">
-            {% if not(participante.pagamento): %}
-            <a href="{{url_for('users.envio_comprovante')}}" class="btn btn-primary">Enviar comprovante</a>
-            {% endif %}
-            <a href="{{url_for('views.logout')}}" class="btn btn-primary">Logout</a>
-        </div>
+        {% if not(participante.pagamento): %}
+        <a href="{{url_for('users.envio_comprovante')}}" class="btn btn-primary">Enviar comprovante</a>
+        {% endif %}
+        <a href="{{url_for('views.logout')}}" class="btn btn-primary">Logout</a>
         {% endif %}
     </div>
 </div>
