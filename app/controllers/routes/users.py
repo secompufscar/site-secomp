@@ -358,7 +358,7 @@ def confirmar_pagamento_kit():
     #join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email).first()
     participante = db.session.query(Participante).filter_by(usuario=current_user).first()
     if pagamento is None:
-        payment = criar_pagamento("Kit", "Este pagamento é um teste", "1.00")
+        payment = criar_pagamento("Kit", "Este pagamento é um teste", "1.00", request.url_root)
         pagamento = Pagamento(id_participante = participante.id, payment_id=str(payment.id),\
         descricao="Kit", valor=1.00, efetuado=False)
         db.session.add(pagamento)
