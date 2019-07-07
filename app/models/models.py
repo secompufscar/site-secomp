@@ -58,6 +58,7 @@ class Usuario(db.Model):
                                          back_populates='usuarios')
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
     ministrante = db.relationship('Ministrante', back_populates='usuario', lazy=True, uselist=False)
+    is_anonymous = False
 
     @classmethod
     def is_active(cls):
@@ -68,10 +69,6 @@ class Usuario(db.Model):
 
     def is_authenticated(self):
         return self.autenticado
-
-    @classmethod
-    def is_anonymous(cls):
-        return False
 
     def is_admin(self):
         return self.admin
@@ -402,4 +399,5 @@ class Pagamento(db.Model):
     descricao = Column(String(200), nullable=False)
     valor = Column(Float(precision=2), nullable=False)
     efetuado = Column(Boolean, nullable=False)
+    arquivo_comprovante = Column(String(100), nullable=True)
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)

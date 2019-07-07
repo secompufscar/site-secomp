@@ -160,6 +160,7 @@ def envio_comprovante():
     form_login = LoginForm(request.form)
     form = ComprovanteForm()
     if form.validate_on_submit():
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
         filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
@@ -167,6 +168,14 @@ def envio_comprovante():
         if not path.exists(upload_path):
             makedirs(upload_path)
         comprovante.save(path.join(upload_path, filename))
+        pagamento = db.session.query(Pagamento).filter_by(id_participante=participante.id, descricao='Kit').first()
+        if pagamento is None:
+            pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=1.00,
+                              efetuado=False, arquivo_comprovante=filename)
+        elif pagamento.payment_id is None:
+            pagamento.arquivo_comprovante = filename
+        db.session.add(pagamento)
+        db.session.commit()
         flash('Comprovante enviado com sucesso!')
         return redirect(url_for('.dashboard'))
     return render_template('users/enviar_comprovante.html', form=form, form_login=form_login)
