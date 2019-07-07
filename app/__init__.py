@@ -19,7 +19,7 @@ def create_app(config=None):
     }
 
     if config not in configs:
-        config = getenv("FLASK_CONFIGURATION", "default")
+        config = getenv("FLASK_CONFIGURATION", "development")
 
     config = 'app.config' + configs[config]
 
@@ -99,4 +99,3 @@ def create_app(config=None):
         return "pt"
 
     return app
-
