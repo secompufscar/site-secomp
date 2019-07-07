@@ -12,6 +12,8 @@ from app.controllers.functions.dictionaries import *
 from app.controllers.functions.email import *
 from app.controllers.functions.helpers import *
 from app.models.models import *
+from sqlalchemy.orm import aliased
+from app.controllers.functions.paypal import *
 
 users = Blueprint('users', __name__, static_folder='static',
                   template_folder='templates', url_prefix='/participante')
@@ -69,10 +71,10 @@ def verificar_email():
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
+    form_login = LoginForm(request.form)
     id_evento = db.session.query(Evento).filter_by(
         edicao=EDICAO_ATUAL).first().id
-    if email_confirmado():
-        form_login = LoginForm(request.form)
+    if current_user.email_verificado:
         participante = db.session.query(Participante).filter_by(
             id_usuario=current_user.id, id_evento=id_evento).first()
         if participante is None:
@@ -82,13 +84,12 @@ def cadastro_participante():
             if form.validate_on_submit() and participante is None:
                 agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 usuario = current_user
-                participante = Participante(id_usuario=usuario.id, id_evento=id_evento, pacote=form.kit.data,
-                                            pagamento=False, id_camiseta=form.camiseta.data, data_inscricao=agora, credenciado=False,
-                                            opcao_coffee=form.restricao_coffee.data)
+                participante = Participante(id_usuario=usuario.id, id_evento=id_evento, data_inscricao=agora, credenciado=False,
+                                            pacote=False, opcao_coffee=0)
                 db.session.add(participante)
                 db.session.flush()
                 db.session.commit()
-                return redirect(url_for('.dashboard'))
+                return redirect(url_for('.comprar_kit'))
             else:
                 return render_template('users/cadastro_participante.html', form=form, form_login=form_login)
         else:
@@ -354,3 +355,86 @@ def confirmar_alteracao_senha(token):
             flash("Falha na confirmação de link do email.")
         return redirect(url_for('views.login'))
     return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login)
+
+@users.route('/comprar-kit', methods=["POST", "GET"])
+@login_required
+def comprar_kit():
+    form_login = LoginForm(request.form)
+    id_evento = db.session.query(Evento).filter_by(
+        edicao=EDICAO_ATUAL).first().id
+    if current_user.email_verificado is True:
+        participante = db.session.query(Participante).filter_by(
+            id_usuario=current_user.id, id_evento=id_evento).first()
+        if participante is not None and kit_pago(participante) == False:
+            form = ComprarKitForm(request.form)
+            if form.validate_on_submit():
+                if form.comprar.data == 1:
+                    usuario = current_user
+                    participante.id_camiseta = form.camiseta.data
+                    participante.opcao_coffee = form.restricao_coffee.data
+                    participante.pacote = form.comprar.data == 1
+                    db.session.add(participante)
+                    db.session.flush()
+                    db.session.commit()
+                    if form.forma_pagamento.data == 2:
+                        return redirect(url_for('.confirmar_pagamento_kit'))
+                    elif form.forma_pagamento.data == 1:
+                        return redirect(url_for('.envio_comprovante'))
+            else:
+                return render_template('users/comprar_kit.html', form=form, form_login=form_login)
+        else:
+            return redirect(url_for('.dashboard'))
+    else:
+        return redirect(url_for('.verificar_email'))
+
+@users.route('/confirmar-pagamento-kit', methods=["POST", "GET"])
+@login_required
+def confirmar_pagamento_kit():
+    pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
+    Participante.usuario).join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email,\
+    Pagamento.descricao == "Kit").first()
+
+    #participante = db.session.query(Participante).join(aliased(Participante.usuario), Participante.usuario).\
+    #join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email).first()
+    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    if pagamento is None:
+        payment = criar_pagamento("Kit", "Este pagamento é um teste", "1.00", request.url_root)
+        pagamento = Pagamento(id_participante = participante.id, payment_id=str(payment.id),\
+        descricao="Kit", valor=1.00, efetuado=False)
+        db.session.add(pagamento)
+        db.session.commit()
+        print(payment.id)
+    else:
+        payment = encontrar_pagamento(pagamento.payment_id)
+    if payment is not None and pagamento.efetuado == False:
+        for link in payment.links:
+            if link.rel == "approval_url":
+                approval_url = str(link.href)
+                return redirect(approval_url)
+    return "O Pagamento já foi efetuado"
+
+
+@users.route('/executar-pagamento-kit', methods=["POST", "GET"])
+@login_required
+def executar_pagamento_kit():
+    pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
+    Participante.usuario).join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email,\
+    Pagamento.descricao == "Kit").first()
+    payer_id = request.args.get('PayerID')
+    if pagamento is not None:
+        if pagamento.efetuado is False:
+            if payer_id is not None:
+                payment = encontrar_pagamento(pagamento.payment_id)
+                if payment.execute({"payer_id": payer_id}):
+                    print("Payment execute successfully")
+                    pagamento.payer_id, pagamento.efetuado = payer_id, True
+                    db.session.add(pagamento)
+                    db.session.commit()
+                    return "Sucesso"
+                else:
+                    return "Erro"
+                    print(payment.error)
+        else:
+            return "O Pagamento já foi efetuado"
+    else:
+        return "Erro"

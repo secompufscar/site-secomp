@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField
+from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField, RadioField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from app.controllers.forms.options import *
@@ -42,12 +42,16 @@ class CadastroForm(FlaskForm):
 
 
 class ParticipanteForm(FlaskForm):
-    kit = BooleanField('Kit', id="kit")
+    leu_termos = BooleanField('Li e concordo com os termos de uso', id="li_termos")
+
+
+class ComprarKitForm(FlaskForm):
+    comprar = RadioField('Deseja comprar o kit da SECOMP UFSCar?', id='comprar', choices=[(1,'Sim'),(2,'Não')], coerce=int, default=2)
     camiseta = SelectField('Camiseta', choices=get_opcoes_camisetas(
     ), id="camiseta", default="P Feminino", coerce=int)
     restricao_coffee = SelectField(
         'Restrição para o Coffee-Break', choices=opcoes_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
-
+    forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Enviar Comprovante'),(2,'Paypal')], coerce=int, default=2)
 
 class EditarUsuarioForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
