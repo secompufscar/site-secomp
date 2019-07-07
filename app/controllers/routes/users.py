@@ -71,6 +71,7 @@ def verificar_email():
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
+    form_login = LoginForm(request.form)
     id_evento = db.session.query(Evento).filter_by(
         edicao=EDICAO_ATUAL).first().id
     if current_user.email_verificado:
