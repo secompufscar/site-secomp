@@ -46,25 +46,31 @@ def cadastro():
         enviar_email_confirmacao(usuario, token)
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
+
     return render_template('users/cadastro.html', form=form, form_login=form_login)
 
 
 @users.route('/verificar-email')
+@login_required
 def verificar_email():
     form_login = LoginForm(request.form)
+    permissoes = current_user.getPermissoes()
+    if "MINISTRANTE" in permissoes:
+        ministrante = True
+    else:
+        ministrante = False
     if email_confirmado():
         msg = 'Seu email foi verificado com sucesso!'
         status = True
     else:
-        msg = 'Confirme o email de verificação que foi enviado ao endereço de email fornecido'
+        msg = 'Confirme o email de verificação que te enviamos!'
         status = False
-    return render_template('users/confirma_email.html', resultado=msg, status=status, form_login=form_login)
+    return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante, form_login=form_login)
 
 
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
-    form_login = LoginForm(request.form)
     id_evento = db.session.query(Evento).filter_by(
         edicao=EDICAO_ATUAL).first().id
     if current_user.email_verificado:
@@ -94,9 +100,9 @@ def cadastro_participante():
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    form_login = LoginForm(request.form)
     usuario = db.session.query(Usuario).filter_by(
         id=current_user.id).first()
+    form_login = LoginForm(request.form)
     if email_confirmado():
         participante = db.session.query(Participante).filter_by(
             usuario=current_user).first()
@@ -115,6 +121,33 @@ def dashboard():
         enviar_email_confirmacao(usuario.email, token)
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
+
+@users.route('/dados', methods=['POST', 'GET'])
+@login_required
+def dados():
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
+    form_login = LoginForm(request.form)
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    ministrante = db.session.query(Ministrante).filter_by(
+        usuario=current_user).first()
+    return render_template('users/dados.html', title='Dados', usuario=usuario,
+                            participante=participante, ministrante=ministrante, form_login=form_login)
+
+@users.route('/kit', methods=['POST', 'GET'])
+@login_required
+def kit():
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
+    form_login = LoginForm(request.form)
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    if participante != None:
+        return render_template('users/kit.html', title='Kit', usuario=usuario,
+                            participante=participante, form_login=form_login)
+    else:
+        return redirect(url_for('.cadastro_participante'))
 
 
 @users.route('/enviar-comprovante', methods=['POST', 'GET'])
@@ -143,10 +176,10 @@ def verificacao(token):
     """
     Página do link enviado para o usuário
     """
+    form_login = LoginForm(request.form)
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     try:
         # Acha o usuário que possui o token
-
         user = db.session.query(Usuario).filter_by(token_email=token).first()
         salt = user.salt
         # Gera um email a partir do token do link e do salt do db
@@ -156,13 +189,12 @@ def verificacao(token):
         user.email_verificado = True
         db.session.add(user)
         db.session.commit()
-        login_user(user, remember=True)
     # Tempo definido no max_age
     except SignatureExpired:
-        return redirect(url_for('.cadastro'))
+        return render_template('users/cadastro.html', resultado='O link de ativação expirou.', form_login=form_login)
     except Exception as e:
         print(e)
-        return redirect(url_for('.cadastro'))
+        return render_template('users/cadastro.html', resultado='Falha na ativação.', form_login=form_login)
     return redirect(url_for('.verificar_email'))
 
 
@@ -170,12 +202,13 @@ def verificacao(token):
 @login_required
 def inscricao_atividades():
     form_login = LoginForm(request.form)
+    tipo_atividade = get_tipos_atividade()
     minicursos = db.session.query(Atividade).filter_by(
-        tipo=TipoAtividade['minicurso'])
+        tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
     workshops = db.session.query(Atividade).filter_by(
-        tipo=TipoAtividade['workshop'])
+        tipo=tipo_atividade['workshop'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
     palestras = db.session.query(Atividade).filter_by(
-        tipo=TipoAtividade['palestra'])
+        tipo=tipo_atividade['palestra'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
     return render_template('users/inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
                                usuario=current_user).first(), usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
@@ -185,12 +218,16 @@ def inscricao_atividades():
 @login_required
 def inscricao_atividades_com_filtro(filtro):
     form_login = LoginForm(request.form)
+    tipo_atividade = get_tipos_atividade()
     minicursos = db.session.query(Atividade).filter(
-        Atividade.tipo.like(TipoAtividade['minicurso']), Atividade.titulo.like("%" + filtro + "%"))
+        Atividade.tipo == tipo_atividade['minicurso'], Atividade.titulo.like("%" + filtro + "%"),
+        Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None)
     workshops = db.session.query(Atividade).filter(
-        Atividade.tipo.like(TipoAtividade['workshop']), Atividade.titulo.like("%" + filtro + "%"))
+        Atividade.tipo == tipo_atividade['workshop'], Atividade.titulo.like("%" + filtro + "%"),
+        Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None)
     palestras = db.session.query(Atividade).filter(
-        Atividade.tipo.like(TipoAtividade['palestra']), Atividade.titulo.like("%" + filtro + "%"))
+        Atividade.tipo == tipo_atividade['palestra'], Atividade.titulo.like("%" + filtro + "%"),
+        Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None)
 
     return render_template('users/inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
@@ -202,6 +239,7 @@ def inscricao_atividades_com_filtro(filtro):
 @login_required
 def inscrever(id):
     form_login = LoginForm(request.form)
+    tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if atv.vagas_disponiveis > 0:
         atv.participantes.append(db.session.query(
@@ -210,11 +248,11 @@ def inscrever(id):
         db.session.flush()
         db.session.commit()
         minicursos = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['minicurso'])
+            tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo!=None)
         workshops = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['workshop'])
+            tipo=tipo_atividade['workshop'], id_evento=get_id_evento_atual()).filter(Atividade.titulo!=None)
         palestras = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['palestra'])
+            tipo=tipo_atividade['palestra'], id_evento=get_id_evento_atual()).filter(Atividade.titulo!=None)
 
         return render_template('users/inscricao_atividades.html',
                                participante=db.session.query(Participante).filter_by(
@@ -229,6 +267,7 @@ def inscrever(id):
 @login_required
 def desinscrever(id):
     form_login = LoginForm(request.form)
+    tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
         atv.participantes.remove(db.session.query(
@@ -237,11 +276,11 @@ def desinscrever(id):
         db.session.flush()
         db.session.commit()
         minicursos = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['minicurso'])
+            tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo!=None)
         workshops = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['workshop'])
+            tipo=tipo_atividade['workshop'], id_evento=get_id_evento_atual()).filter(Atividade.titulo!=None)
         palestras = db.session.query(Atividade).filter_by(
-            tipo=TipoAtividade['palestra'])
+            tipo=tipo_atividade['palestra'], id_evento=get_id_evento_atual()).filter(Atividade.titulo!=None)
         return render_template('users/inscricao_atividades.html',
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),
@@ -265,7 +304,7 @@ def alterar_senha():
             usuario.senha = enc
             db.session.add(usuario)
             db.session.commit()
-            return redirect(url_for('.login'))
+            return redirect(url_for('views.login'))
         else:
             return render_template('users/alterar_senha.html', form=form, action=request.base_url, form_login=form_login)
     else:
@@ -313,7 +352,7 @@ def confirmar_alteracao_senha(token):
         except Exception as e:
             print(e)
             flash("Falha na confirmação de link do email.")
-        return redirect(url_for('.login'))
+        return redirect(url_for('views.login'))
     return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login)
 
 @users.route('/comprar-kit', methods=["POST", "GET"])

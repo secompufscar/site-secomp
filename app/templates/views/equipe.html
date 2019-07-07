@@ -1,54 +1,55 @@
 {% extends "base.html" %}
 
+
 {% block content %}
 
-<section id="team" class="pb-5">
-    <div class="container">
-        {% for array in data %}
-        <h2 class="section-title text-center pb-4">{{ array }}</h2>
+<link href="{{ url_for('static', filename='css/equipe.css') }}" rel="stylesheet" type="text/css"/>
+
+<style>
+#img-equipe {
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover; 
+}
+</style>
+
+<section id="team" class="pb-5 container">
+    {% for diretoria in data %}
+        <h2 class="section-title text-center pt-4">{{ diretoria }}</h2>
         <div class="row justify-content-center">
-			{% for membro in data[array] %}
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="image-flip">
-                    <div class="mainflip">
+            {% for membro in data[diretoria] %}
+                    <div class="pb-3 pl-2 pr-2">
+                        <div onmouseover="showBackside(id)" onmouseout="showFrontside(id)" class="card text-center" style="width: 18rem; height: 17rem;">
+                            <div class="card-body">
+                                <img id="img-equipe" class="rounded-circle img-membro img-equipe" src="{{ url_for('static', filename='images/equipe/%s' % data[diretoria][membro]['img']) }}" alt="Foto do participante">
+                                <h5 id="titulo-frontside" class="p-3 card-title titulo-frontside">{{ membro }}</h5>
 
-                        <div class="frontside">
-                            {% if loop.index == 1 or array == 'Coordenação Geral' %}
-                            <div class="card border-info">
-                            {% else %}
-                            <div class="card">
-                            {% endif %}
-                                <div class="card-body text-center">
-                                    <p><img class=" img-fluid"
-                                            src="{{ url_for('static', filename='images/equipe/%s' % data[array][membro]['img']) }}"
-                                            alt="card image"></p>
-                                    <h4 class="card-title">{{ membro }}</h4>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="backside">
-                            {% if loop.index == 1 or array == 'Coordenação Geral' %}
-                            <div class="card border-info bg-diretor text-white">
-                            {% else %}
-                            <div class="card">
-                            {% endif %}
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">{{ membro }}</h5>
-                                    <!--<p>{{ data[array][membro]['bio'] }}</p>-->
-                                    <p>Mussum Ipsum, cacilds vidis litro abertis. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Copo furadis é disculpa de bebadis, arcu quam euismod magna.</p>
-                                    {% if data[array][membro]['email'] %}
-                                    <a href="mailto:{{ data[array][membro]['email'] }}"><i class="fa fa-lg fa-envelope"></i></a>
-                                    {% endif %}
-                                </div>
+                                <!-- <h5 id="titulo-backside" class="p-3 card-title">{{ membro }}</h5>
+                                <p id="desc-membro">Mussum Ipsum, cacilds vidis litro abertis. Mais vale um bebadis
+                                        conhecidiss, que um alcoolatra anonimis. Copo furadis é disculpa de
+                                        bebadis, arcu quam euismod magna. Mussum Ipsum, cacilds vidis litro abertis.</p> -->
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-			{% endfor %}
-		</div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
 </section>
+
+<script>
+let cards = document.getElementsByClassName("card-body");
+function showBackside(id) {
+    document.getElementById("img-membro").style.setProperty("display", "none");
+    document.getElementById("titulo-frontside").style.setProperty("display", "none");
+    document.getElementById("titulo-backside").style.setProperty("display", "block");
+    document.getElementById("desc-membro").style.setProperty("display", "block");
+}
+
+function showFrontside() {
+    document.getElementById("img-membro").style.setProperty("display", "block");
+    document.getElementById("titulo-frontside").style.setProperty("display", "block");
+    document.getElementById("titulo-backside").style.setProperty("display", "none");
+    document.getElementById("desc-membro").style.setProperty("display", "none");
+}
+</script>
 {% endblock %}
