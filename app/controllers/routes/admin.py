@@ -3,7 +3,7 @@ from flask_admin import Admin, AdminIndexView, expose
 from flask_admin.contrib.fileadmin import FileAdmin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from app.models.models import *
 
@@ -11,7 +11,8 @@ from app.models.models import *
 class AppIndexView(AdminIndexView):
     @expose('/')
     def index(self):
-        if current_user.autenticado and current_user.admin:
+        print(current_user.is_anonymous)
+        if (not current_user.is_anonymous) and current_user.autenticado and current_user.admin:
             self._template_args['usuario'] = current_user
             return super(AppIndexView, self).index()
         return redirect(url_for('views.index'))
@@ -24,7 +25,7 @@ class AppModelView(ModelView):
 
     @classmethod
     def is_accessible(cls):
-        return current_user.autenticado and current_user.admin
+        return (not current_user.is_anonymous) and current_user.autenticado and current_user.admin
 
     @classmethod
     def inaccessible_callback(cls, name, **kwargs):
@@ -42,5 +43,6 @@ def init_app(service, path):
     admin.add_view(AppModelView(MembroDeEquipe, db.session))
     admin.add_view(AppModelView(AreaAtividade, db.session))
     admin.add_view(AppModelView(TipoAtividade, db.session))
+    admin.add_view(AppModelView(Pagamento, db.session))
     admin.add_view(FileAdmin(path, '/static/', name='Arquivos Estáticos'))
     return admin
