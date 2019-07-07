@@ -63,3 +63,7 @@ def verifica_outro_escolhido(campo, objeto):
     else:
         return campo.data
 
+
+def kit_pago(participante):
+    pagamento = db.session.query(Pagamento).filter_by(efetuado=True, participante=participante, descricao='Kit').first()
+    return pagamento is not None

@@ -3,8 +3,9 @@ import datetime
 from flask_login import current_user
 
 from app.controllers.constants import *
-from app.controllers.functions.helpers import get_score_evento
+from app.controllers.functions.helpers import get_score_evento, kit_pago
 from app.models.models import *
+
 
 
 def get_dicionario_usuario(usuario):
@@ -84,7 +85,7 @@ def get_dicionario_info_evento(edicao):
             "titulo": str(evento.edicao) + "ª SECOMP UFSCar",
             "data_inscricao": participante.data_inscricao,
             "presencas": atividades,
-            "kit_pago": participante.pagamento,
+            "kit_pago": kit_pago(participante),
             "camiseta": participante.camiseta.tamanho,
                 "opcao_coffee": participante.opcao_coffee,
                 "score_geral": get_score_evento(edicao)
