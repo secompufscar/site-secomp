@@ -100,7 +100,7 @@ class Participante(db.Model):
                                  back_populates='participantes')
 
     def __repr__(self):
-        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
+        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + "><" + str(self.evento.edicao) + "ª edição>" 
 
 
 class Ministrante(db.Model):
@@ -244,6 +244,7 @@ class Evento(db.Model):
     inicio_inscricoes_evento = Column(DateTime, nullable=False)
     fim_inscricoes_evento = Column(DateTime, nullable=False)
     ano = Column(Integer, default=datetime.now().year)
+    preco_kit = Column(Float(precision=2), nullable=True)
     participantes = db.relationship('Participante', backref='evento', lazy=True)
     presencas = db.relationship('Presenca', backref='evento', lazy=True)
     atividades = db.relationship('Atividade', backref='evento', lazy=True)
