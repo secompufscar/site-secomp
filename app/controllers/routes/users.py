@@ -170,7 +170,7 @@ def envio_comprovante():
         comprovante.save(path.join(upload_path, filename))
         pagamento = db.session.query(Pagamento).filter_by(id_participante=participante.id, descricao='Kit').first()
         if pagamento is None:
-            pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=1.00,
+            pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=get_preco_kit(),
                               efetuado=False, arquivo_comprovante=filename)
         elif pagamento.payment_id is None:
             pagamento.arquivo_comprovante = filename
@@ -407,9 +407,10 @@ def confirmar_pagamento_kit():
     #join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email).first()
     participante = db.session.query(Participante).filter_by(usuario=current_user).first()
     if pagamento is None:
-        payment = criar_pagamento("Kit", "Este pagamento é um teste", "1.00", request.url_root)
+        print(get_preco_kit())
+        payment = criar_pagamento("Kit", "Este pagamento é um teste", str(get_preco_kit()), request.url_root)
         pagamento = Pagamento(id_participante = participante.id, payment_id=str(payment.id),\
-        descricao="Kit", valor=1.00, efetuado=False)
+        descricao="Kit", valor=get_preco_kit(), efetuado=False)
         db.session.add(pagamento)
         db.session.commit()
         print(payment.id)

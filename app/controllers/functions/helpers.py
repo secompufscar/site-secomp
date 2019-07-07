@@ -132,3 +132,6 @@ def get_tipos_atividade():
 def kit_pago(participante):
     pagamento = db.session.query(Pagamento).filter_by(efetuado=True, participante=participante, descricao='Kit').first()
     return pagamento is not None
+
+def get_preco_kit():
+    return db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().preco_kit
