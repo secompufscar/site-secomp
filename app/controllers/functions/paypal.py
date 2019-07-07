@@ -6,14 +6,14 @@ paypalrestsdk.configure({
   "client_id": PAYPAL_CLIENT_ID,
   "client_secret": PAYPAL_CLIENT_SECRET })
 
-def criar_pagamento(item, descricao, valor):
+def criar_pagamento(item, descricao, valor, base_url):
     payment = paypalrestsdk.Payment({
     "intent": "sale",
     "payer": {
         "payment_method": "paypal"},
     "redirect_urls": {
-        "return_url": "http://localhost:5000/participante/executar-pagamento-kit",
-        "cancel_url": "http://localhost:5000/participante/cancelar-pagamento-kit"},
+        "return_url": base_url + "/participante/executar-pagamento-kit",
+        "cancel_url": base_url + "/participante/cancelar-pagamento-kit"},
     "transactions": [{
         "item_list": {
             "items": [{
