@@ -1,14 +1,42 @@
 .card img {
     border-radius: 50%;
 }
-
-
-.selected {
-    background-color: #008cb5;
-    color: #fff;
-    text-align: center;
+.day {
+    height: 0.3rem;
+    margin: 0 -7% -7% -7%;
+    border-radius: 10%;
 }
-
 .nav-crono a {
     cursor: default;
+}
+
+@media (max-width: 991px) {
+    .nav_on {
+        display: block;
+    }
+    .nav_off {
+        display: none;
+    }
+    .setaDireita {
+        width: auto;
+    }
+    .setaEsquerda {
+        width: auto;
+    }
+    .center {
+        width: 60%;
+    }
+}
+
+@media (min-width: 992px) {
+    .selected {
+        background-color: #00cfa1;
+        color: #fff;
+        text-align: center;
+    }
+}
+
+.cronograma {
+    position: relative;
+    display: inline-flex;
 }

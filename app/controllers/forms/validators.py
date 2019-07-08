@@ -1,6 +1,6 @@
 import re
 
-from wtforms.validators import ValidationError
+from wtforms.validators import ValidationError, DataRequired, Optional
 
 from app.models.models import *
 
@@ -60,26 +60,52 @@ def erro_cidade_existe():
                 raise ValidationError(ERRO_CIDADE_EXISTE)
     return _erro_cidade_existe
 
-def transporte_ida_volta_selecionado():
-    def _transporte_ida_volta_selecionado(form, field):
-        if form.transporte_ida_volta.data is not True and field.data is not '':
-            raise ValidationError("Selecione a opção de usar transporte de ida e volta")
-    return _transporte_ida_volta_selecionado
-
-def transporte_sanca_selecionado():
-    def _transporte_sanca_selecionado(form, field):
-        if form.transporte_sanca.data is not True and field.data is not '':
-            raise ValidationError("Selecione a opção de usar transporte para São Carlos")
-    return _transporte_sanca_selecionado
-
-def hospedagem_selecionada():
-    def _hospedagem_selecionada(form, field):
-        if form.hospedagem.data is not True and field.data is not '':
-            raise ValidationError("Selecione a opção de hospedagem")
-    return _hospedagem_selecionada
 
 def tem_valor():
     def _tem_valor(form, field):
         if field.data is '' and field.data is not '1':
             raise ValidationError("Preencha com algum valor")
     return _tem_valor
+
+def valida_email_ministrante():
+    def _valida_email_ministrante(form, field):
+        atividade = db.session.query(Atividade).filter_by(url_codigo=form.codigo_url).first()
+        emails = []
+        for m in atividade.ministrantes:
+            emails.append(m.usuario.email)
+        if field.data not in emails:
+            raise ValidationError("Entre com um email válido")
+    return _valida_email_ministrante
+
+def is_valid_email(email):
+    if len(email) > 7:
+        return bool(re.match("^.+@(\[?)[a-zA-Z0-9-.]+.([a-zA-Z]{2,3}|[0-9]{1,3})(]?)$", email))
+
+def verifica_lista_emails(emails):
+    if len(emails) == 0:
+        return False
+    for email in emails:
+        if not is_valid_email(email):
+            return False
+    return True
+
+
+class RequiredIf(DataRequired):
+    """Validator which makes a field required if another field is set and has a truthy value.
+    """
+    field_flags = ('requiredif',)
+
+    def __init__(self, message=None, *args, **kwargs):
+        super(RequiredIf).__init__()
+        self.message = message
+        self.conditions = kwargs
+
+    # field is requiring that name field in the form is data value in the form
+    def __call__(self, form, field):
+        for name, data in self.conditions.items():
+            other_field = form[name]
+            if other_field is None:
+                raise ValidationError("Preencha o campo.")
+            if other_field.data == data and not field.data:
+                DataRequired.__call__(self, form, field)
+            Optional()(form, field)

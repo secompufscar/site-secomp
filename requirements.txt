@@ -19,3 +19,4 @@ flask_wtf>=0.14.2
 flask-admin>=1.5.3
 flask-babelex>=0.9.3
 gunicorn>=19.9.0
+flask-limiter>=1.0.1
