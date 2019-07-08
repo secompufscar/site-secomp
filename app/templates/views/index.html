@@ -55,42 +55,36 @@
 
 <div class="text-center text-white p-3 mt-4 bg-dark">
 	<h1>9 a 13 de setembro</h1>
-	<div class="teste" style="display: inline-block;">
-		<div class="clock" style="margin:1em;"></div>
-
-			<script type="text/javascript">
-				var clock;
-				
-				$(document).ready(function() {
-					// Set dates.
-					var futureDate  = new Date("Sep 09, 2019 08:00:00");
-					var currentDate = new Date();
-
-					// Calculate the difference in seconds between the future and current date
-					var diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
-
-					// Calculate day difference and apply class to .clock for extra digit styling.
-					function dayDiff(first, second) {
-						return (second-first)/(1000*60*60*24);
-					}
-
-					if (dayDiff(currentDate, futureDate) < 100) {
-						$('.clock').addClass('twoDayDigits');
-					} else {
-						$('.clock').addClass('threeDayDigits');
-					}
-
-					if(diff < 0) {
-						diff = 0;
-					}
-
-					// Instantiate a coutdown FlipClock
-					clock = $('.clock').FlipClock(diff, {
-						clockFace: 'DailyCounter',
-						countdown: true
-					});
-				});
-			</script>
+	<div class="row justify-content-center counter">
+		<div>
+			<div class="row">
+				<div class="col-3">
+				<h2 id="contador-dias"></h2>
+				</div>
+				<div class="col-3">
+				<h2 id="contador-horas"></h2>
+				</div>
+				<div class="col-3">
+				<h2 id="contador-min"></h2>
+				</div>
+				<div class="col-3">
+				<h2 id="contador-seg"></h2>
+				</div>
+			</div>
+			<div class="row" style="margin-bottom: 5%;">
+				<div class="col-3">
+				  dias
+				</div>
+				<div class="col-3">
+				  horas
+				</div>
+				<div class="col-3">
+				  min
+				</div>
+				<div class="col-3">
+				  seg
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -316,6 +310,29 @@
 <script src="{{ url_for('static', filename='js/flipclock.min.js') }}"></script>
 
 <script>
+	var countDownDate = new Date("Sep 09, 2019 08:00:00").getTime();
+	// Update the count down every 1 second
+	var x = setInterval(function () {
+		// Get todays date and time
+		var now = new Date().getTime();
+		// Find the distance between now and the count down date
+		var distance = countDownDate - now;
+		// Time calculations for days, hours, minutes and seconds
+		var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+		// Display the result in the element with id="demo"
+		document.getElementById("contador-dias").innerHTML = days;
+		document.getElementById("contador-horas").innerHTML = hours;
+		document.getElementById("contador-min").innerHTML = minutes;
+		document.getElementById("contador-seg").innerHTML = seconds;
+		// If the count down is finished, write some text 
+		if (distance < 0) {
+			clearInterval(x);
+			document.getElementById("contador").innerHTML = "Evento já realizado :P";
+		}
+	}, 1000);
 	$(document).ready(function(){
     	$('#content').css("padding-top", $('#navTop').height() * 1.2);
   });
