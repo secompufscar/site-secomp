@@ -9,11 +9,79 @@ header {
     header a:hover {
       color: rgba(255, 255, 255, 0.7); }
 
+#content {
+  min-height: 75vh;
+  padding-top: 6.5vh; }
+
+.btn {
+  border: #00000000; }
+
+.btn-primary {
+  background-color: #008cb5; }
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+  background-color: #00cfa1 !important; }
+
 .small {
   font-size: 14px; }
 
 .bg-gradient-secomp {
   background-image: linear-gradient(to right, #008cb5, #00cfa1); }
+  
+  /* Imagens com texto em cima */
+.overlay {
+  background-color: #000000;
+  position: relative; }
+
+.opac {
+  filter: opacity(0.4); }
+
+.overlay-text {
+  position: absolute;
+  color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+
+@media (orientation: landscape) {
+  .img-responsive {
+    width: 100%;
+    height: 100vh;
+  }
+  .overlay-text h1 {
+    font-weight: 600;
+    font-size: 8vh;
+  }
+  .overlay-text h2 {
+    font-weight: 500;
+    font-size: 4.5vh;
+  }
+}
+
+@media (orientation: portrait) {
+  .img-responsive {
+    width: 100vw;
+  }
+  .overlay-text h1 {
+    font-weight: 600;
+    font-size: 3.5vh;
+  }
+  .overlay-text h2 {
+    font-weight: 500;
+    font-size: 2.5vh;
+  }
+}
+/* fim-imagens */
+
+@media (orientation: portrait) {
+  div.embed-responsive.embed-responsive-21by9 video {
+    width: 100%;
+    height: 40%;
+  }
+  #video {
+    margin-bottom: -90%;
+  }
+}
 
 .carousel-item {
   height: 100vh;
@@ -202,3 +270,20 @@ a.portfolio-box:hover {
   -webkit-transition: opacity .25s ease;
   transition: opacity .25s ease;
   text-align: center; }
+
+.modal_portifolio {
+  display: inline-block;
+  margin: 15px;}
+
+.clock {
+  width: 100%;
+}
+
+.btn-link:hover, .btn-link:focus{
+  text-decoration: none;
+}
+
+.setaDireita{
+  text-align: right !important;
+  width: auto;
+  margin-left: auto;
