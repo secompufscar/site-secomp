@@ -11,22 +11,20 @@ from app.models.models import *
 api = Blueprint('api', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/api')
 
-@api.route('/')
+#@api.route('/')
 def index():
     return "Welcome to SECOMP: API"
 
-@api.route('/equipe')
+#@api.route('/equipe')
 def equipe():
     return "Esperando JSON da Equipe"
 #    with open('./app/config/membros_org.json', 'r') as out:
 #        return out
 
-@api.route('/patrocinadores')
+#@api.route('/patrocinadores')
 def patrocinadores():
     return  jsonify(get_patrocinadores())
 
-@api.route('/img/<url>')
+#@api.route('/img/<url>')
 def retornaImg(url):
     return url #TODO (quando estiver no servidor) hospedagem de imagens
-
-

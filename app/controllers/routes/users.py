@@ -19,7 +19,7 @@ users = Blueprint('users', __name__, static_folder='static',
                   template_folder='templates', url_prefix='/participante')
 
 
-@users.route('/cadastro', methods=['POST', 'GET'])
+#@users.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
     """
     Renderiza a página de cadastro do projeto

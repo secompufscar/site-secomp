@@ -18,14 +18,15 @@ def index():
     """
     Renderiza a página inicial do projeto
     """
+    '''
     form_login = LoginForm(request.form)
     return render_template('views/index.html', title='Página inicial',
                            secomp_now=secomp_now[0], secomp=secomp[0],
                            secomp_email=secomp_email,
                            secompEdition=secomp_edition,
                            form_login=form_login)
-
-
+    '''
+    return redirect(url_for('login'))
 #@views.route('/contato', methods=['POST', 'GET'])
 def contato_dm():
     """
@@ -106,7 +107,7 @@ def login():
                 login_user(user, remember=True)
                 if atividade_confirmada == False:
                     return redirect(url_for('conteudo.dados_hospedagem_transporte'))
-                return redirect(url_for('users.dashboard'))
+                return redirect(url_for('views.constr'))
         return render_template('views/login.html', form_login=form, form=form, erro=True)
     return render_template('views/login.html', form_login=form, form=form)
 
@@ -122,7 +123,7 @@ def logout():
     db.session.add(user)
     db.session.commit()
     logout_user()
-    return redirect(url_for('.index'))
+    return redirect(url_for('views.login'))
 
 #@views.route("/senhas", methods=["GET"])
 def senhas():
