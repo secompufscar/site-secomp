@@ -48,9 +48,9 @@
   <nav class="nav-responsiva navbar fixed-top navbar-expand-lg bg-gradient-secomp">
     <div id="navTop" class="container-fluid">
       {# Marca d'água para a home #}
-      <a class="navbar-brand mr-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
+      <!--<a class="navbar-brand mr-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
                                                                                src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30"
-                                                                                                                                                        alt="Logo atual da SECOMP" /></a>
+                                                                                                                                                        alt="Logo atual da SECOMP" /></a>-->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens"
                                                                           aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars text-white"></i>
@@ -58,7 +58,7 @@
       <div class="collapse mr-auto navbar-collapse" id="navbarItens">
         <ul class="ml-3 navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.index') }}"><i class="mr-1 fas fa-home"></i>
+            <!--<a class="nav-link" href="{{ url_for('views.index') }}"><i class="mr-1 fas fa-home"></i>-->
               HOME</a>
           </li>
           <li class="nav-item dropdown">
@@ -66,14 +66,14 @@
                                                                                 class="mr-1 fas fa-heart"></i> SECOMP
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ url_for('views.sobre') }}"><i
-                                       class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
-              <a class="dropdown-item" href="{{ url_for('views.equipe') }}"><i
-                                       class="mr-1 fas fa-users"></i> EQUIPE</a>
-              <a class="dropdown-item" href="{{ url_for('views.contato_dm') }}"><i
-                                       class="mr-1 fas fa-comments"></i> CONTATO</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
-                                       class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
+              <!--<a class="dropdown-item" href="{{ url_for('views.sobre') }}"><i
+                                       class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>-->
+              <!--<a class="dropdown-item" href="{{ url_for('views.equipe') }}"><i
+                                       class="mr-1 fas fa-users"></i> EQUIPE</a>-->
+              <!--<a class="dropdown-item" href="{{ url_for('views.contato_dm') }}"><i
+                                       class="mr-1 fas fa-comments"></i> CONTATO</a>-->
+              <!--<a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                       class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>-->
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -81,32 +81,32 @@
                                                                                 class="mr-1 fas fa-calendar-alt"></i> EVENTOS
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ url_for('views.cronograma') }}"><i
-                                       class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
-              <a class="dropdown-item" href="{{ url_for('views.ctf') }}"><i
-                                       class="mr-1 fas fa-flag"></i> CTF</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
-                                       class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
+              <!--<a class="dropdown-item" href="{{ url_for('views.cronograma') }}"><i
+                                       class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>-->
+              <!--<a class="dropdown-item" href="{{ url_for('views.ctf') }}"><i
+                                       class="mr-1 fas fa-flag"></i> CTF</a>-->
+              <!--<a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
+                                       class="mr-1 fas fa-utensils"></i> CHURRASCO</a>-->
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.faq') }}"><i
-                                class="mr-1 fas fa-question-circle"></i> FAQ</a>
+            <!--<a class="nav-link" href="{{ url_for('views.faq') }}"><i
+                                class="mr-1 fas fa-question-circle"></i> FAQ</a>-->
           </li>
         </ul>
 
         <!-- Lado direito da Navbar -->
         <div class="navbar-nav">
           {% if current_user.is_authenticated %}
-          <a class="nav-item nav-link" href="{{ url_for('users.dashboard') }}">Participante</a>
+          <!--<a class="nav-item nav-link" href="{{ url_for('users.dashboard') }}">Participante</a>-->
           <a class="nav-item nav-link" href="{{ url_for('views.logout') }}">SAIR</a>
           {% else %}
           <!-- <a class="nav-item nav-link" href="{{ url_for('views.login') }}"><i class="mr-1 fas fa-user"></i>
             ENTRAR</a> -->
           <a class="nav-item nav-link" href=" " data-toggle="modal" data-target="#modal-login"><i class="mr-1 fas fa-user"></i>
             ENTRAR</a>
-          <a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}"><i
-                                       class="mr-1 fas fa-address-card"></i> INSCREVER</a>
+          <!--<a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}"><i
+                                       class="mr-1 fas fa-address-card"></i> INSCREVER</a>-->
           {% endif %}
         </div>
       </div>

@@ -13,7 +13,7 @@ limiter = Limiter(current_app, key_func=get_remote_address)
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
 
 
-@views.route('/', methods=["GET", "POST"])
+#@views.route('/', methods=["GET", "POST"])
 def index():
     """
     Renderiza a página inicial do projeto
@@ -26,7 +26,7 @@ def index():
                            form_login=form_login)
 
 
-@views.route('/contato', methods=['POST', 'GET'])
+#@views.route('/contato', methods=['POST', 'GET'])
 def contato_dm():
     """
     Página de contato
@@ -48,19 +48,19 @@ def constr():
     return render_template('views/em_constr.html', title='Página em construção', form_login=form_login)
 
 
-@views.route('/sobre', methods=["GET", "POST"])
+#@views.route('/sobre', methods=["GET", "POST"])
 def sobre():
     form_login = LoginForm(request.form)
     return render_template('views/sobre.html', title='Sobre a Secomp', form_login=form_login)
 
 
-@views.route('/cronograma', methods=["GET", "POST"])
+#@views.route('/cronograma', methods=["GET", "POST"])
 def cronograma():
     form_login = LoginForm(request.form)
     return render_template('views/cronograma.html', title='Cronograma', form_login=form_login)
 
 
-@views.route('/equipe', methods=["GET", "POST"])
+#@views.route('/equipe', methods=["GET", "POST"])
 def equipe():
     import json
     import os.path as op
@@ -72,23 +72,24 @@ def equipe():
     return render_template('views/equipe.html', title='Equipe', data=data, form_login=form_login)
 
 
-@views.route('/faq', methods=["GET", "POST"])
+#@views.route('/faq', methods=["GET", "POST"])
 def faq():
     form_login = LoginForm(request.form)
     return render_template('views/faq.html', title='FAQ', form_login=form_login)
 
 
-@views.route('/ctf', methods=["GET", "POST"])
+#@views.route('/ctf', methods=["GET", "POST"])
 def ctf():
     form_login = LoginForm(request.form)
     return render_template('views/ctf.html', title='CTF', form_login=form_login)
 
-@views.route('/teste', methods=["GET","POST"])
+#@views.route('/teste', methods=["GET","POST"])
 def teste():
     form_login = LoginForm(request.form)
     return render_template('teste.html', title='Teste', form_login=form_login)
 
 @limiter.limit("50/day")
+@views.route('/', methods=["GET", "POST"])
 @views.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm(request.form)
@@ -123,11 +124,11 @@ def logout():
     logout_user()
     return redirect(url_for('.index'))
 
-@views.route("/senhas", methods=["GET"])
+#@views.route("/senhas", methods=["GET"])
 def senhas():
     return render_template('views/requisito_50.html')
 
-@views.route("/patrocinadores", methods=["GET"])
+#@views.route("/patrocinadores", methods=["GET"])
 def patrocinadores():
     patrocinadores = db.session.query(Patrocinador)
     return render_template('views/patrocinadores.html', patrocinadores=patrocinadores)
