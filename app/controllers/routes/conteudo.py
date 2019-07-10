@@ -156,7 +156,7 @@ def cadastro_minicurso(codigo):
                     db.session.add(info_minicurso)
                     db.session.add(atividade)
                     db.session.commit()
-                    return redirect(url_for('users.dashboard'))
+                    return redirect(url_for('views.constr'))
                 return render_template('conteudo/cadastro_minicurso.html', form=form, codigo=codigo, form_login=form_login)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
@@ -196,7 +196,7 @@ def cadastro_palestra(codigo):
                     db.session.add(info_palestra)
                     db.session.add(atividade)
                     db.session.commit()
-                    return redirect(url_for('users.dashboard'))
+                    return redirect(url_for('views.constr'))
                 return render_template('conteudo/cadastro_palestra.html', form=form, codigo=codigo, form_login=form_login)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
@@ -230,7 +230,7 @@ def cadastro_mesa_redonda(codigo):
                     db.session.add(r_atividade_ministrante)
                     db.session.add(atividade)
                     db.session.commit()
-                    return redirect(url_for('users.dashboard'))
+                    return redirect(url_for('views.constr'))
                 return render_template('conteudo/cadastro_mesa_redonda.html', codigo=codigo, form=form, form_login=form_login)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
@@ -267,7 +267,7 @@ def cadastro_feira_projetos(codigo):
                     db.session.add(info_feira_de_projetos)
                     db.session.add(atividade)
                     db.session.commit()
-                    return redirect(url_for('users.dashboard'))
+                    return redirect(url_for('views.constr'))
                 return render_template('conteudo/cadastro_feira_projetos.html', codigo=codigo, form=form, form_login=form_login)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
@@ -290,6 +290,6 @@ def confirmar_atividade(codigo):
                 r_atividade_ministrante.confirmado = bool(confirmar == '1')
                 db.session.add(r_atividade_ministrante)
                 db.session.commit()
-                return redirect(url_for('users.dashboard'))
+                return redirect(url_for('views.constr'))
             return render_template('conteudo/confirmar_atividade.html', codigo=codigo, titulo_atividade=atividade.titulo, form=form, form_login=form_login)
     abort(404)
