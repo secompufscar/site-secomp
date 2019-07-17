@@ -23,10 +23,9 @@
 <script src="{{url_for('static', filename='js/select2.js')}}"></script>
 <script src="{{url_for('static', filename='js/pt-BR.js')}}" type="typescript"></script>
 <script src="{{url_for('static', filename='js/flipclock.js')}}"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 {% endblock %}
 
-<title>{% block title %}SECOMP UFSCar {{secompEdition}}{% endblock %}</title>
+<title>{% block title %}SECOMP UFSCar{% endblock %}</title>
 {# styles globais #}
 {% block styles %}
 <link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
@@ -46,7 +45,7 @@
 {% block body %}
 {% block navbar %}
 <header>
-  <nav class="nav-responsiva navbar shadow fixed-top navbar-expand-lg bg-gradient-secomp">
+  <nav class="nav-responsiva navbar fixed-top navbar-expand-lg bg-gradient-secomp">
     <div id="navTop" class="container-fluid">
       {# Marca d'água para a home #}
       <a class="navbar-brand mr-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"

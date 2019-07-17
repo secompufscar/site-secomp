@@ -3,24 +3,42 @@
 
 {% block content %}
 
-<div class="pad-inicio container pb-2">
-  <h1>Cadastro de Minicurso</h1>
-  <form method="POST" action="{{url_for('conteudo.cadastro_minicurso')}}">
-    {{ form.hidden_tag() }}
-    {{ wtf.form_field(form.titulo) }}
-    {{ wtf.form_field(form.area) }}
-    {{ wtf.form_field(form.descricao) }}
-    {{ wtf.form_field(form.pre_requisitos) }}
-    {{ wtf.form_field(form.planejamento) }}
-    {{ wtf.form_field(form.apresentacao_extra) }}
-    {{ wtf.form_field(form.material) }}
-    {{ wtf.form_field(form.requisitos_hardware) }}
-    {{ wtf.form_field(form.requisitos_software) }}
-    {{ wtf.form_field(form.dicas_instalacao) }}
-    {{ wtf.form_field(form.observacoes) }}
+<div class="container pt-4 pb-4">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <h2 class="text-center">Cadastro de Minicurso</h2>
 
-    <button style="width: 20%" type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Cadastrar</button>
-  </form>
-</div>
+      <form method="POST" action="{{url_for('conteudo.cadastro_minicurso', codigo=codigo)}}">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.titulo) }}
+        {{ wtf.form_field(form.area) }}
+        {{ wtf.form_field(form.descricao) }}
+        {{ wtf.form_field(form.pre_requisitos) }}
+        {{ wtf.form_field(form.planejamento) }}
+        {{ wtf.form_field(form.apresentacao_extra) }}
+        {{ wtf.form_field(form.material) }}
 
-{% endblock %}
+        <h4 class="pt-2">Para que a organização possa auxiliar da melhor maneira possível,
+          preparando os laboratórios e evitando eventuais problemas,
+          pedimos que você nos informe abaixo todos os
+          requisitos de hardware e software
+          do minicurso.</h4>
+        <h5 class="pb-3">Quanto mais detalhes, melhor para podermos preparar tudo! (:</h5>
+
+        {{ wtf.form_field(form.requisitos_dependencias) }}
+        {{ wtf.form_field(form.requisitos_bibliotecas_pacotes) }}
+        {{ wtf.form_field(form.requisitos_ide) }}
+        {{ wtf.form_field(form.requisitos_sistema) }}
+        {{ wtf.form_field(form.requisitos_observacoes) }}
+        {{ wtf.form_field(form.requisitos_github) }}
+        {{ wtf.form_field(form.requisitos_hardware) }}
+        {{ wtf.form_field(form.dicas_instalacao) }}
+        {{ wtf.form_field(form.observacoes) }}
+
+        <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+      </form>
+    </div>
+    <script>
+      $("#areas").select2();
+    </script>
+    {% endblock %}
