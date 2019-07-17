@@ -5,6 +5,11 @@ from flask_login import login_required, current_user
 
 from app.controllers.forms.forms import *
 from app.models.models import *
+from app.controllers.functions.dictionaries import *
+from app.controllers.functions.helpers import *
+from app.controllers.forms.validators import *
+
+from secrets import token_urlsafe
 
 from app.controllers.forms.options import get_opcoes_ecustom_atividade, get_opcoes_ecustom_extencao, get_opcoes_ecustom_complemento
 
@@ -148,7 +153,7 @@ def alterar_camiseta():
     else:
         abort(403)
 
-@management.route('/listas', methods=["GET","POST"])
+@management.route('/listas', methods=["GET", "POST"])
 @login_required
 def listas():
     permissoes = current_user.getPermissoes()
@@ -169,7 +174,6 @@ def listas():
     else:
         abort(403)
 
-
 @management.route("/email-custom", methods=["GET"])
 @login_required
 def email_custom():
@@ -182,5 +186,48 @@ def email_custom():
         form = EmailCuston(request.form)
 
         return render_template('management/email_custom.html', form=form, form_login=form_login)
+    else:
+        abort(403)
+
+@management.route('/gerar-url-conteudo', methods=['POST', 'GET'])
+@login_required
+def gerar_url_conteudo():
+    permissoes = current_user.getPermissoes()
+    if("CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        form = GerarUrlConteudoForm(request.form)
+        emails = request.form.getlist('emails[]')
+        if form.validate_on_submit():
+            atividade_removida = request.form.getlist('removido')
+            if len(atividade_removida) > 0:
+                atividade_removida = db.session.query(Atividade).get(atividade_removida[0])
+                if atividade_removida is not None:
+                    for ministrante in atividade_removida.ministrantes:
+                        if ministrante.usuario.senha is None:
+                            db.session.delete(ministrante.usuario)
+                            db.session.delete(ministrante)
+                        db.session.delete(atividade_removida)
+                        db.session.commit()
+            if verifica_lista_emails(emails):
+                codigo = token_urlsafe(150)
+                tipo = db.session.query(TipoAtividade).filter_by(id=form.tipo_atividade.data).first()
+                atividade = Atividade(url_codigo=codigo, id_evento=get_id_evento_atual(), id_tipo=tipo.id)
+                if atividade is not None and tipo is not None:
+                    atividade.tipo = tipo
+                    for email in emails:
+                        usuario = db.session.query(Usuario).filter_by(email=email).first()
+                        if usuario is None:
+                            usuario = Usuario(email=email, primeiro_nome='', sobrenome='')
+                            ministrante = Ministrante(usuario=usuario)
+                            usuario.ministrante = ministrante
+                            db.session.add(usuario)
+                            db.session.add(ministrante)
+                        else:
+                            ministrante = usuario.ministrante
+                        db.session.commit()
+                        atividade.ministrantes.append(ministrante)
+                    db.session.add(atividade)
+                    db.session.commit()
+        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(), form_login=form_login)
     else:
         abort(403)
