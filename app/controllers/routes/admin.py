@@ -11,7 +11,7 @@ from app.models.models import *
 class AppIndexView(AdminIndexView):
     @expose('/')
     def index(self):
-        if current_user.is_authenticated and current_user.is_admin:
+        if current_user.autenticado and current_user.admin:
             self._template_args['usuario'] = current_user
             return super(AppIndexView, self).index()
         return redirect(url_for('views.index'))
@@ -24,7 +24,7 @@ class AppModelView(ModelView):
 
     @classmethod
     def is_accessible(cls):
-        return current_user.is_authenticated and current_user.is_admin
+        return current_user.autenticado and current_user.admin
 
     @classmethod
     def inaccessible_callback(cls, name, **kwargs):
@@ -40,7 +40,7 @@ def init_app(service, path):
     admin.add_view(AppModelView(Camiseta, db.session))
     admin.add_view(AppModelView(Permissao, db.session))
     admin.add_view(AppModelView(MembroDeEquipe, db.session))
-    admin.add_view(AppModelView(URLConteudo, db.session))
     admin.add_view(AppModelView(AreaAtividade, db.session))
+    admin.add_view(AppModelView(TipoAtividade, db.session))
     admin.add_view(FileAdmin(path, '/static/', name='Arquivos Estáticos'))
     return admin

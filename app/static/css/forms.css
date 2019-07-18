@@ -31,13 +31,40 @@ a:hover {
 .btn {
   width: 100%;
   font-weight: bold;
-  border: none;  
+  border: none;
 }
 
 .btn:hover {
-  background-image: linear-gradient(to right, #008cb5, #00cfa1);
+  background-color: #00cfa1;
 }
 
-.help-block{
-  color:red;
+.help-block {
+  color: red;
+}
+
+@media(orientation: portrait) and (max-width: 339px) {
+  .recaptcha-responsive {
+    transform: scale(0.75);
+    -webkit-transform: scale(0.75);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
+}
+
+@media(orientation: portrait) and (min-width: 340px) and (max-width: 374px) {
+  .recaptcha-responsive {
+    transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
+}
+
+@media(orientation: portrait) and (min-width: 375px) and (max-width: 450px) {
+  .recaptcha-responsive {
+    transform: scale(0.9);
+    -webkit-transform: scale(0.9);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
 }
