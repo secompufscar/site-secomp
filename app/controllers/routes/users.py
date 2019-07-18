@@ -97,6 +97,27 @@ def cadastro_participante():
     else:
         return redirect(url_for('.verificar_email'))
 
+@users.route('/alterar-dados-usuario', methods=['POST', 'GET'])
+@login_required
+def alterar_usuario():
+    form_login = LoginForm(request.form)
+    id_evento = db.session.query(Evento).filter_by(
+        edicao=EDICAO_ATUAL).first().id
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
+    form = EdicaoUsuarioForm(request.form)
+    if form.validate_on_submit :
+        usuario.primeiro_nome=form.primeiro_nome.data
+        usuario.sobrenome=form.sobrenome.data
+        usuario.id_curso=verifica_outro_escolhido(form.curso, Curso(nome=str(form.outro_curso.data).strip()))
+        usuario.id_instituicao=verifica_outro_escolhido(form.instituicao, Instituicao(nome=form.outra_instituicao.data))
+        usuario.id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data))
+        usuario.data_nascimento=form.data_nasc.data
+        db.session.flush()
+        db.session.commit()
+        return redirect(url_for('.dashboard'))
+    else:
+        return render_template('users/alterar_usuario.html', form=form, form_login=form_login)
 
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
