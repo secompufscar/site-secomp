@@ -162,10 +162,16 @@ class CadastroInformacoesMinicurso(FlaskForm):
         Length(min=1,max=1024)])
     pre_requisitos = TextAreaField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
         Length(max=300)])
-    planejamento = TextAreaField('Descrição da estrutura do minicurso', validators=[InputRequired()])
-    apresentacao_extra = StringField('Previa da apresentação', validators=[Length(max=128)])
-    material = TextAreaField('Material', validators=[Length(max=128)])
-    requisitos_ide  = TextAreaField('Existe alguma preferência de IDE (Ambiente Integral de Desenvolvimento) para o minicurso?',
+    planejamento = TextAreaField('Descrição da estrutura do minicurso', validators=[InputRequired(), Length(max=2056)])
+    apresentacao_extra = FileField('Apresentação extra', validators=[
+        FileAllowed(['pdf', 'doc', 'docx', 'ppt', 'pptx','rar', 'zip', 'tar', 'z', 'gz', 'taz', 'tgz'],
+                    message=ERRO_EXTENSAO_INVALIDA)
+        ])
+    material = FileField('Material', validators=[
+        FileAllowed(['pdf', 'doc', 'docx', 'ppt', 'pptx','rar', 'zip', 'tar', 'z', 'gz', 'taz', 'tgz'],
+                    message=ERRO_EXTENSAO_INVALIDA)
+        ])
+    requisitos_ide = TextAreaField('Existe alguma preferência de IDE (Ambiente Integral de Desenvolvimento) para o minicurso?',
                                     validators=[InputRequired(), Length(max=128)])
     requisitos_bibliotecas_pacotes = TextAreaField('Caso existam, especifique todos os pacotes e/ou bibliotecas adicionais que serão utilizados no decorrer do minicurso',
                                                    validators=[InputRequired(), Length(max=128)])
@@ -181,13 +187,14 @@ class CadastroInformacoesMinicurso(FlaskForm):
                                         validators=[Length(max=128)])
     dicas_instalacao = TextAreaField('Dicas para instalação dos softwares necessários')
     observacoes = TextAreaField('Observações em geral')
+    confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
 class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=64)])
     area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)])
     requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software')
-    planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
+    planejamento = TextAreaField('Planejamento', validators=[InputRequired(), Length(max=2056)])
     apresentacao_extra = StringField('Apresentação Extra')
     material = TextAreaField('Descrição')
     perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired()])
@@ -199,7 +206,7 @@ class CadastroFeiraDeProjetos(FlaskForm):
     area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     necessidades = TextAreaField('Necessidades', validators=[InputRequired()])
-    planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
+    planejamento = TextAreaField('Planejamento', validators=[InputRequired(), Length(max=2056)])
     observacoes = TextAreaField('Observações')
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 

@@ -123,16 +123,36 @@ def dados_hospedagem_transporte():
 def cadastro_minicurso(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
-        form_login = LoginForm(request.form)
+        form_login = LoginForm()
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante
         if permitido == True:
             r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
             if r_atividade_ministrante.admin_atividade is not False:
-                form = CadastroInformacoesMinicurso(request.form)
+                form = CadastroInformacoesMinicurso()
                 if form.validate_on_submit():
+
+                    ae_filename = None
+                    m_filename = None
+
+                    if form.apresentacao_extra.data:
+                        apresentacao_extra = form.apresentacao_extra.data
+                        ae_filename = secure_filename(apresentacao_extra.filename)
+                        ae_filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{ae_filename}'
+                        ae_path = path.join(current_app.config['UPLOAD_FOLDER'], 'minicursos')
+                        if not path.exists(ae_path):
+                            makedirs(ae_path)
+
+                    if form.material.data:
+                        material = form.material.data
+                        m_filename = secure_filename(material.filename)
+                        m_filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{m_filename}'
+                        m_path = path.join(current_app.config['UPLOAD_FOLDER'], 'minicursos')
+                        if not path.exists(m_path):
+                            makedirs(m_path)
+
                     info_minicurso = InfoMinicurso(pre_requisitos=form.pre_requisitos.data, planejamento=form.planejamento.data,
-                                                    apresentacao_extra=form.apresentacao_extra.data, material=form.material.data,
+                                                    apresentacao_extra=ae_filename, material=m_filename,
                                                     requisitos_hardware=form.requisitos_hardware.data, requisitos_ide=form.requisitos_ide.data,
                                                     requisitos_bibliotecas_pacotes=form.requisitos_bibliotecas_pacotes.data,
                                                     requisitos_dependencias=form.requisitos_dependencias.data, requisitos_sistema=form.requisitos_sistema.data,
@@ -156,6 +176,10 @@ def cadastro_minicurso(codigo):
                     db.session.add(info_minicurso)
                     db.session.add(atividade)
                     db.session.commit()
+                    if form.apresentacao_extra.data:
+                        apresentacao_extra.save(path.join(ae_path, ae_filename))
+                    if form.material.data:
+                        material.save(path.join(m_path, m_filename))
                     return redirect(url_for('users.dashboard'))
                 return render_template('conteudo/cadastro_minicurso.html', form=form, codigo=codigo, form_login=form_login)
             else:
