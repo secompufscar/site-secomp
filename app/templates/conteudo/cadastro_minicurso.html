@@ -2,6 +2,30 @@
 {% import "wtf.html" as wtf %}
 
 {% block content %}
+  <style>
+    .tooltip1 {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip1 .tooltiptext1 {
+      visibility: hidden;
+      width: 120px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px 0;
+
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+
+    .tooltip1:hover .tooltiptext1 {
+      visibility: visible;
+    }
+  </style>
 
 <div class="container pt-4 pb-4">
   <div class="row justify-content-center">
@@ -25,7 +49,6 @@
           requisitos de hardware e software
           do minicurso.</h4>
         <h5 class="pb-3">Quanto mais detalhes, melhor para podermos preparar tudo! (:</h5>
-
         {{ wtf.form_field(form.requisitos_dependencias) }}
         {{ wtf.form_field(form.requisitos_bibliotecas_pacotes) }}
         {{ wtf.form_field(form.requisitos_ide) }}
@@ -44,5 +67,8 @@
     </div>
     <script>
       $("#areas").select2();
+
+      $("label[for='requisitos_dependencias']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Tooltip text</span></div>');
+      
     </script>
     {% endblock %}
