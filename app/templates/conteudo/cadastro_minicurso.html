@@ -34,6 +34,9 @@
         {{ wtf.form_field(form.requisitos_hardware) }}
         {{ wtf.form_field(form.dicas_instalacao) }}
         {{ wtf.form_field(form.observacoes) }}
+        <a href="{{ url_for('static', filename='juridic/termo_condicoes_inscricao.pdf') }}" target="_blank">
+          Termo e Condições de Inscrição</a>
+        {{ wtf.form_field(form.confirmacao) }}
 
         <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
       </form>
