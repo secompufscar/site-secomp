@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        overflow-x: hidden;
+    }
+
+    #sidebar-wrapper {
+        min-height: 100vh;
+        margin-left: -15rem;
+        -webkit-transition: margin .25s ease-out;
+        -moz-transition: margin .25s ease-out;
+        -o-transition: margin .25s ease-out;
+        transition: margin .25s ease-out;
+    }
+
+    #sidebar-wrapper .sidebar-heading {
+        padding: 0.875rem 1.25rem;
+        font-size: 1.2rem;
+    }
+
+    #sidebar-wrapper .list-group {
+        width: 15rem;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    .dropdown-container {
+        display: none;
+        padding-left: 10%;
+    }
+
+    .dropdown-btn-active {
+        background-color: red;
+    }
+
+    @media (min-width: 768px) {
+        #sidebar-wrapper {
+            margin-left: 0;
+        }
+
+        #page-content-wrapper {
+            min-width: 0;
+            width: 100%;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: -15rem;
+        }
+    }
+</style>
+<div class="d-flex" id="wrapper">
+
+    <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">{{ usuario.primeiro_nome }}</div>
+        <div class="list-group list-group-flush">
+            <a href="{{ url_for('users.dashboard') }}"
+                class="list-group-item list-group-item-action bg-light">Dashboard</a>
+
+            <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action bg-light">Dados</a>
+
+            {% if participante != None: %}
+
+            <a href="{{ url_for('users.kit') }}" class="list-group-item list-group-item-action bg-light">Kit</a>
+
+            <button class="list-group-item list-group-item-action dropdown-btn bg-light">Inscrições
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="{{ url_for('.inscricao_atividades') }}"
+                    class="list-group-item list-group-item-action bg-light">Atividades</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Desafio de Programadores</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Hackaton</a>
+            </div>
+
+            {% endif %}
+
+            <button class="list-group-item list-group-item-action dropdown-btn bg-light">Gerenciamento
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+                <a href="{{ url_for('management.gerenciar') }}"
+                    class="list-group-item list-group-item-action bg-light">Homepage</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Camisetas</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Venda de kits</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Listagem de participantes</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Sorteio de usuário</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">URL ministrante</a>
+            </div>
+
+            <a href="/admin" class="list-group-item list-group-item-action bg-light">Administração</a>
+            <a href="{{url_for('views.logout')}}" class="list-group-item list-group-item-action bg-light">Logout</a>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        {% block sidebar_content %}{% endblock %}
+    </div>
+
+</div>
+
+<script>
+
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+
+    for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+            this.classList.toggle("dropdown-btn-active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+
+</script>
+{% endblock %}
