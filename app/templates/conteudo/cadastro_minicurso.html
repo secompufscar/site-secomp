@@ -8,7 +8,8 @@
     <div class="col-md-7">
       <h2 class="text-center">Cadastro de Minicurso</h2>
 
-      <form method="POST" action="{{url_for('conteudo.cadastro_minicurso', codigo=codigo)}}">
+      <form method="POST" action="{{url_for('conteudo.cadastro_minicurso', codigo=codigo)}}"
+            enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.area) }}

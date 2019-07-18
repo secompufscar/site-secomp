@@ -149,7 +149,7 @@ class DadosHospedagemTransporte(db.Model):
 class AreaAtividade(db.Model):
     __tablename__ = 'area'
     id = Column(Integer, primary_key=True)
-    nome = Column(String(48), nullable=False)
+    nome = Column(String(128), nullable=False)
     atividades = db.relationship('Atividade', secondary=relacao_atividade_area, lazy=True,
                                     back_populates='areas')
     def __repr__(self):
@@ -206,7 +206,7 @@ class InfoMinicurso(db.Model):
     id = Column(Integer, primary_key=True)
     id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
     pre_requisitos = Column(String(128))
-    planejamento = Column(String(128))
+    planejamento = Column(String(2056))
     apresentacao_extra = Column(String(128))
     material = Column(String(128))
     requisitos_ide = Column(String(1024))
@@ -223,7 +223,7 @@ class InfoPalestra(db.Model):
     __tablename__ = 'info_palestra'
     id = Column(Integer, primary_key=True)
     id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
-    planejamento = Column(String(128))
+    planejamento = Column(String(2056))
     apresentacao_extra = Column(String(128))
     material = Column(String(128))
     requisitos_tecnicos = Column(String(1024))
@@ -235,7 +235,7 @@ class InfoFeiraDeProjetos(db.Model):
     id = Column(Integer, primary_key=True)
     id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
     necessidades = Column(String(1024))
-    planejamento = Column(String(1024))
+    planejamento = Column(String(2056))
 
 
 class Evento(db.Model):
