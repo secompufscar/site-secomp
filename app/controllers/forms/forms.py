@@ -192,6 +192,7 @@ class CadastroInformacoesPalestra(FlaskForm):
     material = TextAreaField('Descrição')
     perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired()])
     observacoes = TextAreaField('Observações')
+    confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
 class CadastroFeiraDeProjetos(FlaskForm):
     titulo = StringField('Título do Projeto', validators=[InputRequired()])
@@ -200,13 +201,14 @@ class CadastroFeiraDeProjetos(FlaskForm):
     necessidades = TextAreaField('Necessidades', validators=[InputRequired()])
     planejamento = TextAreaField('Planejamento', validators=[InputRequired()])
     observacoes = TextAreaField('Observações')
+    confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
 class CadastroAtividadeGenerica(FlaskForm):
     titulo = StringField('Título da Atividade', validators=[InputRequired()])
     area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     observacoes = TextAreaField('Observações')
-
+    confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
 class CadastroInformacoesLocomocaoEstadia(FlaskForm):
     cidade_origem = StringField('Cidade de origem', validators=[InputRequired(), Length(min=1,max=64)])
