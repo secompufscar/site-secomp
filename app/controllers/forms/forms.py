@@ -122,7 +122,6 @@ class ListasParticipantes(FlaskForm):
     atividades = SelectField("Atividades", choices=get_atividades(), id="atividade", coerce=int)
     tipo = SelectField("Modelos", choices=[(0, 'Inscritos'), (1, 'Presentes')], id="tipo", coerce=int)
 
-
 class CadastroMinistranteForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
