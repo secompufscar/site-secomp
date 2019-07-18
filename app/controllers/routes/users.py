@@ -101,10 +101,7 @@ def cadastro_participante():
 @login_required
 def alterar_usuario():
     form_login = LoginForm(request.form)
-    id_evento = db.session.query(Evento).filter_by(
-        edicao=EDICAO_ATUAL).first().id
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
+    usuario = db.session.query(Usuario).filter_by(id=current_user.id).first()
     form = EdicaoUsuarioForm(request.form)
     if form.validate_on_submit :
         usuario.primeiro_nome = form.primeiro_nome.data
@@ -117,6 +114,12 @@ def alterar_usuario():
         db.session.commit()
         return redirect(url_for('.dashboard'))
     else:
+        form.primeiro_nome.data = usuario.primeiro_nome
+        form.sobrenome.data = usuario.sobrenome
+        form.curso.data = usuario.id_curso
+        form.instituicao.data = usuario.id_instituicao
+        form.cidade.data = usuario.id_cidade
+        form.data_nascimento.data = usuario.data_nascimento
         return render_template('users/alterar_usuario.html', form=form, form_login=form_login)
 
 @users.route('/dashboard', methods=['POST', 'GET'])
