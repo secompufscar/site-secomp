@@ -23,7 +23,7 @@ def equipe():
 
 @api.route('/patrocinadores')
 def patrocinadores():
-    return  jsonify(get_patrocinadores())
+    return jsonify(get_patrocinadores())
 
 @api.route('/img/<url>')
 def retornaImg(url):
