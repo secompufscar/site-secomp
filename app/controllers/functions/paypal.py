@@ -1,10 +1,10 @@
-from app.config.development import PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET
+firm flask import current_app
 import paypalrestsdk
 
 paypalrestsdk.configure({
   "mode": "sandbox", # sandbox or live
-  "client_id": PAYPAL_CLIENT_ID,
-  "client_secret": PAYPAL_CLIENT_SECRET })
+  "client_id": current_app.config['PAYPAL_CLIENT_ID'],
+  "client_secret": current_app.config['PAYPAL_CLIENT_SECRET'] })
 
 def criar_pagamento(item, descricao, valor, base_url):
     payment = paypalrestsdk.Payment({
