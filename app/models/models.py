@@ -392,6 +392,8 @@ class RelacaoAtividadeMinistrante(db.Model):
     id_ministrante = Column('id_ministrante', Integer, db.ForeignKey('ministrante.id'))
     confirmado = Column('confirmado', Boolean, nullable=True)
     admin_atividade = Column('admin_atividade', Boolean, nullable=True)
+    ministrante = db.relationship('Ministrante', back_populates='atividades', lazy=True)
+
 
 class Pagamento(db.Model):
     __tablename__ = 'pagamento'

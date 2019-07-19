@@ -19,7 +19,6 @@ def get_participantes():
         return None
 
 
-
 def get_atividades():
     try:
         query = db.session.query(Atividade)
