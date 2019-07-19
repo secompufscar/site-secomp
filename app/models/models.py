@@ -380,7 +380,7 @@ class Permissao(db.Model):
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', secondary=relacao_permissao_usuario, lazy=True,
-                               back_populates='permissoes_usuario')
+                               back_populates='permissoesf_usuario')
 
     def __repr__(self):
         return self.nome
@@ -392,6 +392,8 @@ class RelacaoAtividadeMinistrante(db.Model):
     id_ministrante = Column('id_ministrante', Integer, db.ForeignKey('ministrante.id'))
     confirmado = Column('confirmado', Boolean, nullable=True)
     admin_atividade = Column('admin_atividade', Boolean, nullable=True)
+    ministrante = db.relationship('Ministrante', back_populates='atividades', lazy=True)
+
 
 class Pagamento(db.Model):
     __tablename__ = 'pagamento'
