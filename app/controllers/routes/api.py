@@ -7,8 +7,6 @@ from app.controllers.functions.email import enviar_email_custon
 
 from app.controllers.forms.options import get_opcoes_ecustom_extencao
 
-import json
-
 from app.models.models import *
 
 api = Blueprint('api', __name__, static_folder='static',
