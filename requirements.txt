@@ -19,4 +19,6 @@ flask_wtf>=0.14.2
 flask-admin>=1.5.3
 flask-babelex>=0.9.3
 gunicorn>=19.9.0
+paypalrestsdk>=1.13.1
 flask-limiter>=1.0.1
+requests>=2.22.0
