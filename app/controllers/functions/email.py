@@ -53,7 +53,7 @@ def enviar_email_generico(info=None, anexo=None):
                         except Exception as e:
                             print("Erro no anexo. {}".format(e))
                             return (info, e)
-                            
+
                 except Exception as e:
                     print("Erro ao abrir arquivo do anexo. {}".format(e))
                     return (info, e)
