@@ -38,7 +38,8 @@
 {% endblock %}
 
 {% block favicon %}
-<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo-colorida.png') }}" />
+{# <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo-colorida.png') }}" /> #}
+<link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
 {% endblock %}
 {% endblock %}
 
