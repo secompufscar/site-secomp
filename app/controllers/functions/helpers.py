@@ -33,7 +33,6 @@ def get_participantes():
         return None
 
 
-
 def get_atividades():
     try:
         query = db.session.query(Atividade)
@@ -45,6 +44,7 @@ def get_atividades():
     except Exception as e:
         print(e)
         return None
+
 
 def get_participantes_da_atividade_json(id=0):
     '''
