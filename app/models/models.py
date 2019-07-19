@@ -380,7 +380,7 @@ class Permissao(db.Model):
     id = Column(Integer, primary_key=True)
     nome = Column(String(100), nullable=False)
     usuarios = db.relationship('Usuario', secondary=relacao_permissao_usuario, lazy=True,
-                               back_populates='permissoesf_usuario')
+                               back_populates='permissoes_usuario')
 
     def __repr__(self):
         return self.nome
