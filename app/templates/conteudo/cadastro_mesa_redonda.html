@@ -2,6 +2,45 @@
 {% import "wtf.html" as wtf %}
 
 {% block content %}
+<style>
+  .tooltip1 {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tooltip1 .tooltiptext1 {
+    visibility: hidden;
+    width:500px;
+    background-color: black;
+    color: #fff;
+    text-align: justify;
+    border-radius: 6px;
+    padding: 5px 9px 5px 9px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  @media (max-width:550px){
+    .tooltip1 .tooltiptext1 {
+      visibility: hidden;
+      width:250px;
+      background-color: black;
+      color: #fff;
+      text-align: justify;
+      border-radius: 6px;
+      padding: 5px 9px 5px 9px;
+
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+  }
+
+  .tooltip1:hover .tooltiptext1 {
+    visibility: visible;
+  }
+</style>
 <div class="container pt-4 pb-4">
   <div class="row justify-content-center">
     <div class="col-md-8">
@@ -23,7 +62,9 @@
 </div>
 
 <script>
-  $("#areas").select2();
+  $("#areas").select2({
+    language: "pt-BR"
+  });
 </script>
 
 {% endblock %}
