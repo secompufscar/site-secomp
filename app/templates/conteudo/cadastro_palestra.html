@@ -31,5 +31,13 @@
 
 <script>
   $("#areas").select2();
+
+  $("label[for='area']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Informe qual área/referência esta palestra pertence, a ser utilizada na organização do site.</span></div>');
+  $("label[for='descricao']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Breve descrição da palestra, a ser utilizada na divulgação.</span></div>');
+  $("label[for='requisitos_tecnicos']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Durante o evento, a SECOMP disponibiliza um computador e um projetor para realização das palestras. Caso deseje utilizar seu próprio computador ou necessite de algum recurso e/ou equipamento específico, liste-os aqui.</span></div>');
+  $("label[for='planejamento']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Descrição (o mais detalhada possível) da estrutura da palestra, ou seja, a distribuição em que os conteúdos serão apresentados, bem como o tempo reservado para cada um destes. Informação apenas para organização interna, a qual não será utilizada para divulgação.</span></div>');
+  $("label[for='material']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Se possível, envie-nos com antecedência os materiais a serem utilizados na palestra.</span></div>');
+  $("label[for='perguntas']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Buscando incentivar a presença e participação do público de forma dinâmica, solicitamos que envie algumas perguntas a respeito da palestra. Estas serão utilizadas em um questionário aplicado a platéia, o qual premiará o vencedor.</span></div>');
+  $("label[for='observacoes']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Deixe aqui alguma observação ou informação que julgar necessária.</span></div>');
 </script>
 {% endblock %}
