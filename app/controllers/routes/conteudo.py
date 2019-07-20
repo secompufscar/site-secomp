@@ -139,7 +139,7 @@ def cadastro_minicurso(codigo):
                         apresentacao_extra = form.apresentacao_extra.data
                         ae_filename = secure_filename(apresentacao_extra.filename)
                         ae_filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{ae_filename}'
-                        ae_path = path.join(current_app.config['UPLOAD_FOLDER'], 'minicursos')
+                        ae_path = path.join(current_app.config['UPLOAD_FOLDER'], 'minicursos/apresentacoes_extra')
                         if not path.exists(ae_path):
                             makedirs(ae_path)
 
@@ -147,7 +147,7 @@ def cadastro_minicurso(codigo):
                         material = form.material.data
                         m_filename = secure_filename(material.filename)
                         m_filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{m_filename}'
-                        m_path = path.join(current_app.config['UPLOAD_FOLDER'], 'minicursos')
+                        m_path = path.join(current_app.config['UPLOAD_FOLDER'], 'minicursos/materiais')
                         if not path.exists(m_path):
                             makedirs(m_path)
 
@@ -198,10 +198,21 @@ def cadastro_palestra(codigo):
         if permitido == True:
             r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
             if r_atividade_ministrante.admin_atividade is not False:
-                form = CadastroInformacoesPalestra(request.form)
+                form = CadastroInformacoesPalestra()
                 if form.validate_on_submit():
+
+                    m_filename = None
+
+                    if form.material.data:
+                        material = form.material.data
+                        m_filename = secure_filename(material.filename)
+                        m_filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{m_filename}'
+                        m_path = path.join(current_app.config['UPLOAD_FOLDER'], 'palestras/materiais')
+                        if not path.exists(m_path):
+                            makedirs(m_path)
+
                     info_palestra = InfoPalestra(requisitos_tecnicos=form.requisitos_tecnicos.data, planejamento=form.planejamento.data,
-                                                apresentacao_extra=form.apresentacao_extra.data, material=form.material.data,
+                                                apresentacao_extra=form.apresentacao_extra.data, material=m_filename,
                                                 perguntas=form.perguntas.data)
                     for ministrante in atividade.ministrantes:
                         r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
@@ -220,6 +231,8 @@ def cadastro_palestra(codigo):
                     db.session.add(info_palestra)
                     db.session.add(atividade)
                     db.session.commit()
+                    if form.material.data:
+                        material.save(path.join(m_path, m_filename))
                     return redirect(url_for('users.dashboard'))
                 return render_template('conteudo/cadastro_palestra.html', form=form, codigo=codigo, form_login=form_login)
             else:

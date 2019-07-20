@@ -196,7 +196,10 @@ class CadastroInformacoesPalestra(FlaskForm):
     requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software')
     planejamento = TextAreaField('Planejamento', validators=[InputRequired(), Length(max=2056)])
     apresentacao_extra = StringField('Apresentação Extra')
-    material = TextAreaField('Descrição')
+    material = FileField('Material', validators=[
+        FileAllowed(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'rar', 'zip', 'tar', 'z', 'gz', 'taz', 'tgz'],
+                    message=ERRO_EXTENSAO_INVALIDA)
+        ])
     perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired()])
     observacoes = TextAreaField('Observações')
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
