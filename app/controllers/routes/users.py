@@ -14,7 +14,6 @@ from app.controllers.functions.helpers import *
 from app.models.models import *
 from sqlalchemy.orm import aliased
 from app.controllers.functions.paypal import *
-from flask_qrcode import QRcode
 
 users = Blueprint('users', __name__, static_folder='static',
                   template_folder='templates', url_prefix='/participante')
