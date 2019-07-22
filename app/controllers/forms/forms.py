@@ -45,9 +45,7 @@ class EdicaoUsuarioForm(FlaskForm):
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=100), so_letras()], id="sobrenome")
-    curso = SelectField('Curso', choices=get_opcoes_cursos(), validators=
-    [InputRequired(message=ERRO_INPUT_REQUIRED)],
-                        id="curso", coerce=int)
+    curso = SelectField('Curso', choices=get_opcoes_cursos(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], id="curso", coerce=int)
     outro_curso = StringField("Outro curso", id="outro_curso", validators=[erro_curso_existe(), so_letras()])
     instituicao = SelectField('Instituição', choices=get_opcoes_instituicoes(
     ), id="instituicao", default="UFSCar", coerce=int)
@@ -58,7 +56,6 @@ class EdicaoUsuarioForm(FlaskForm):
     data_nasc = DateField("Data de Nascimento",
                           format="%d/%m/%Y", id="data_nasc")
     recaptcha = RecaptchaField()
-
 
 class ParticipanteForm(FlaskForm):
     leu_termos = BooleanField('Li e concordo com os termos de uso', id="li_termos")
@@ -71,24 +68,6 @@ class ComprarKitForm(FlaskForm):
     restricao_coffee = SelectField(
         'Restrição para o Coffee-Break', choices=opcoes_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
     forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Enviar Comprovante'),(2,'Paypal')], coerce=int, default=2)
-
-class EditarUsuarioForm(FlaskForm):
-    primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
-    sobrenome = StringField('Sobrenome', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
-    email = StringField('Email', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
-    curso = SelectField('Curso', choices=get_opcoes_cursos(),
-                        id='curso', coerce=int)
-    instituicao = SelectField(
-        'Instituição', choices=get_opcoes_instituicoes(), id='instituicao', coerce=int)
-    cidade = SelectField(
-        'Cidade', choices=get_opcoes_cidades(), id='cidade', coerce=int)
-    data_nasc = DateField("Data de Nascimento",
-                          format="%d/%m/%Y", id='data-nasc')
-    senha = PasswordField('Senha', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
 
 
 class AlterarSenhaForm(FlaskForm):
