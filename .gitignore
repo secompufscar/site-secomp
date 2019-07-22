@@ -126,5 +126,6 @@ migrations/
 app.db
 
 app/config/development.py
+app/config/production.py
 uploads/
 
