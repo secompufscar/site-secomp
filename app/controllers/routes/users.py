@@ -114,7 +114,6 @@ def alterar_usuario():
         db.session.commit()
         return redirect(url_for('.dashboard'))
     else:
-        print(usuario.primeiro_nome)
         form.primeiro_nome.data = usuario.primeiro_nome
         form.sobrenome.data = usuario.sobrenome
         form.curso.data = usuario.id_curso
