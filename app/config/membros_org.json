@@ -38,16 +38,8 @@
 			"img": "Igor.jpg",
 			"bio": "bio1"
 		},
-		"Lucas Cruz dos Reis" : {
-			"img": "Lucas.jpg",
-			"bio": "bio1"
-		},
 		"Marcos Felipe" : {
 			"img": "Marcos.jpeg",
-			"bio": "bio1"
-		},
-		"Matheus Victorello" : {
-			"img": "Matheus.jpg",
 			"bio": "bio1"
 		},
 		"Nathan Oliveira" : {
@@ -64,10 +56,6 @@
 			"img": "EstherCH.jpg",
 			"bio": "bio1",
 			"email": "marketing@secompufscar.com.br"
-		},
-		"Daniel Lamounier Henringer": {
-			"img": "DanielLH.jpg",
-			"bio": "bio1"
 		},
 		"Hemilyn Stephanye Aguiar Porfirio": {
 			"img": "HemilynSAP.jpg",
