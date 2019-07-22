@@ -6,11 +6,8 @@
       .help-block{
         color:red;
       }
-      body{
-        padding:50px;
-      }
   </style>
-    <div>
+    <div class="container">
         <form method="POST" action="admin/permissoes">
           {{ form.hidden_tag() }}
           {{ wtf.form_field(form.usuario) }}

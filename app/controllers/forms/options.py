@@ -125,3 +125,27 @@ def get_opcoes_area_atividade():
     except Exception as e:
         return None
 
+
+def get_opcoes_tipo_atividade():
+    try:
+        tipos = db.session.query(TipoAtividade).all()
+        tipos_atividade = []
+        for tipo in tipos:
+            info_tipo = (tipo.id, tipo.nome)
+            tipos_atividade.append(info_tipo)
+        return tipos_atividade
+    except Exception as e:
+        return None
+
+def get_opcoes_transporte_ida_volta():
+    return [(0, 'Selecione uma opção'),
+            (1, 'Carro próprio (combustível + pedágios, calculados pelo Jurídico Financeiro)'),
+            (2, 'Passagem de Ônibus (compra a ser realizada pelo Jurídico Financeiro)'),
+            (3, 'Carro alugado (apenas o valor do aluguel do carro)')]
+
+def get_opcoes_transporte_sanca():
+    return [(0, 'Selecione uma opção'),
+            (1, 'Carro próprio (combustível calculado pelo JF)'),
+            (2, 'Uber/99 (valor gasto na viagem “local de partida → UFSCar”)'),
+            (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')]
+
