@@ -171,13 +171,13 @@ class CadastroInformacoesMinicurso(FlaskForm):
         FileAllowed(['pdf', 'doc', 'docx', 'ppt', 'pptx','rar', 'zip', 'tar', 'z', 'gz', 'taz', 'tgz'],
                     message=ERRO_EXTENSAO_INVALIDA)
         ])
-    requisitos_ide = TextAreaField('Existe alguma preferência de IDE (Ambiente Integral de Desenvolvimento) para o minicurso?',
+    requisitos_ide = TextAreaField('Existe alguma preferência de IDE (Ambiente Integral de Desenvolvimento) ou editor de texto para o minicurso?',
                                     validators=[InputRequired(), Length(max=128)])
     requisitos_bibliotecas_pacotes = TextAreaField('Caso existam, especifique todos os pacotes e/ou bibliotecas adicionais que serão utilizados no decorrer do minicurso',
                                                    validators=[InputRequired(), Length(max=128)])
     requisitos_dependencias = TextAreaField('Especifique todos os programas e dependências que serão necessários no decorrer do minicurso',
                                                    validators=[InputRequired(), Length(max=128)])
-    requisitos_sistema = TextAreaField('Caso exista, especifique alguma limitação de uso de algum sistema operacional',
+    requisitos_sistema = TextAreaField('Caso exista, especifique alguma limitação no uso de algum sistema operacional para o minicurso',
                                                    validators=[Length(max=128)])
     requisitos_observacoes = TextAreaField('Existe alguma observação em relação aos requisitos do minicurso?',
                                                    validators=[Length(max=128)])
