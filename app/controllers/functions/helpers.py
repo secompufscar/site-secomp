@@ -117,7 +117,7 @@ def get_tipos_atividade():
     palestra = db.session.query(TipoAtividade).filter_by(nome='Palestra').first()
     mesa_redonda = db.session.query(TipoAtividade).filter_by(nome='Mesa Redonda').first()
     palestra_empresarial = db.session.query(TipoAtividade).filter_by(nome='Palestra Empresarial').first()
-    feira_projetos = db.session.query(TipoAtividade).filter_by(nome='Feira Projetos').first()
+    feira_projetos = db.session.query(TipoAtividade).filter_by(nome='Feira de Projetos').first()
     workshop = db.session.query(TipoAtividade).filter_by(nome='Workshop').first()
 
     tipo_atividade = {
