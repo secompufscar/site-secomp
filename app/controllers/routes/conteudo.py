@@ -243,7 +243,7 @@ def cadastro_palestra(codigo):
 @login_required
 def cadastro_mesa_redonda(codigo):
     permissoes = current_user.getPermissoes()
-    if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
+    if("CONTEUDO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         form = CadastroAtividadeGenerica(request.form)
