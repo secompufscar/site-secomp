@@ -76,13 +76,14 @@ def valida_url_codigo(usuario, codigo):
     if(usuario is None):
         if (atividade is not None):
             return True, atividade, emails
-        else:
-            return False, atividade, emails
     else:
-        if(atividade is not None and ministrante.usuario.email in emails):
-            return True, atividade, emails
+        if(ministrante is not None):
+            if(atividade is not None and ministrante.usuario.email in emails):
+                return True, atividade, emails
         else:
-            return False, atividade, emails
+            if(atividade is not None and "CONTEUDO" in usuario.getPermissoes()):
+                return True, atividade, emails
+    return False, atividade, emails
 
 
 def get_id_evento_atual():
