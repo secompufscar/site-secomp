@@ -189,6 +189,7 @@ def gerar_url_conteudo():
                         if ministrante.usuario.senha is None:
                             db.session.delete(ministrante.usuario)
                             db.session.delete(ministrante)
+                        atividade_removida.ministrantes.clear()
                         db.session.delete(atividade_removida)
                         db.session.commit()
             if verifica_lista_emails(emails):

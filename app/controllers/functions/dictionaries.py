@@ -136,7 +136,12 @@ def get_urls_conteudo(url_root):
             titulo = "-"
         emails = []
         for ministrante in atividade.ministrantes:
-            emails.append(ministrante.usuario.email)
+            relacao = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            if relacao.confirmado == True:
+                confirmado = True
+            else:
+                confirmado = False
+            emails.append({"email": ministrante.usuario.email, "confirmado": confirmado })
         info = {
                 "id" : atividade.id,
                 "tipo" : atividade.tipo.nome,
