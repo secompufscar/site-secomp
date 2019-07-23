@@ -73,6 +73,13 @@
                 <button type="submit" class="btn btn-primary">Sortear</button>
             </form>
             {% endif %}
+
+            {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CONTEUDO'].usuarios or usuario in permissoes['PATROCINIO'].usuarios %}
+            <form action="{{url_for('.gerar_url_conteudo')}}">
+                <h3>Gerar URL para o cadastro de atividades e ministrantes</h3>
+                <button type="submit" class="btn btn-primary">Gerar URL</button>
+            </form>
+            {% endif %}
         </div>
     </div>
 </div>
