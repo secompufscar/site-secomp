@@ -49,7 +49,6 @@
       <form method="POST" action="{{url_for('conteudo.cadastro_mesa_redonda', codigo=codigo)}}">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.titulo) }}
-        {{ wtf.form_field(form.area) }}
         {{ wtf.form_field(form.descricao) }}
         {{ wtf.form_field(form.observacoes) }}
         <a href="{{ url_for('static', filename='juridic/termo_condicoes_inscricao.pdf') }}" target="_blank">
