@@ -48,6 +48,7 @@
           <thead>
             <tr>
               <th scope="col">Remover</th>
+              <th scope="col">Editar</th>
               <th scope="col">Atividade</th>
               <th scope="col">Título</th>
               <th scope="col">Código da URL</th>
@@ -59,6 +60,8 @@
             <tr>
               <td scope="col"><button type='submit' class="btn btn-default" name='removido' value='{{ url.id }}'><i
                     class="fa fa-times"></i></button></td>
+              <td scope="col"><button type='button' class="btn btn-default" onclick="editar('{{ url.url }}')">
+                <i class="fa fa-pencil-alt"></i></button></td>
               <td scope="col">{{ url.tipo }}</td>
               <td scope="col">{{ url.titulo_atividade }}</td>
               <td scope="col">
@@ -98,6 +101,9 @@
   function remover(num) {
     $('#email2' + parseInt(num)).remove();
     email_count = email_count - 1;
+  }
+  function editar(codigo) {
+    window.open(codigo, '_blank');
   }
 
   $('#email_adder').click(function () {
