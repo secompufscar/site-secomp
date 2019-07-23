@@ -179,9 +179,9 @@ class Atividade(db.Model):
     url_codigo = Column(String(255))
     atividade_cadastrada = Column(Boolean, default=False)
 
-    info_minicurso = db.relationship('InfoMinicurso', backref='atividade', lazy=True)
-    info_palestra = db.relationship('InfoPalestra', backref='atividade', lazy=True)
-    info_feira_de_projetos = db.relationship('InfoFeiraDeProjetos', backref='atividade', lazy=True)
+    info_minicurso = db.relationship('InfoMinicurso', backref='atividade', lazy=True, uselist=False)
+    info_palestra = db.relationship('InfoPalestra', backref='atividade', lazy=True, uselist=False)
+    info_feira_de_projetos = db.relationship('InfoFeiraDeProjetos', backref='atividade', lazy=True, uselist=False)
 
     patrocinadores = db.relationship('Patrocinador', secondary=relacao_atividade_patrocinador, lazy=True,
                             back_populates='atividades')

@@ -127,8 +127,11 @@ def cadastro_minicurso(codigo):
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante
         if permitido == True:
-            r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
-            if r_atividade_ministrante.admin_atividade is not False:
+            if ministrante is not None:
+                r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            else:
+                r_atividade_ministrante = None
+            if "CONTEUDO" in permissoes or r_atividade_ministrante.admin_atividade is not False:
                 form = CadastroInformacoesMinicurso()
                 if form.validate_on_submit():
 
@@ -163,16 +166,14 @@ def cadastro_minicurso(codigo):
                         r.admin_atividade = False
                         db.session.add(r)
                         db.session.commit()
-                    r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
-                    r_atividade_ministrante.confirmado = True
-                    r_atividade_ministrante.admin_atividade = True
+                    if r_atividade_ministrante is not None:
+                        r_atividade_ministrante.confirmado = True
+                        r_atividade_ministrante.admin_atividade = True
+                        db.session.add(r_atividade_ministrante)
                     atividade.titulo = form.titulo.data
-                    for id in form.area.data:
-                        atividade.areas.append(db.session.query(AreaAtividade).get(id))
                     atividade.descricao = form.descricao.data
                     atividade.observacoes = form.observacoes.data
-                    atividade.info_minicurso.append(info_minicurso)
-                    db.session.add(r_atividade_ministrante)
+                    atividade.info_minicurso = info_minicurso
                     db.session.add(info_minicurso)
                     db.session.add(atividade)
                     db.session.commit()
@@ -181,7 +182,7 @@ def cadastro_minicurso(codigo):
                     if form.material.data:
                         material.save(path.join(m_path, m_filename))
                     return redirect(url_for('users.dashboard'))
-                return render_template('conteudo/cadastro_minicurso.html', form=form, codigo=codigo, form_login=form_login)
+                return render_template('conteudo/cadastro_minicurso.html', form=form, codigo=codigo, form_login=form_login, atividade=atividade)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
@@ -196,8 +197,11 @@ def cadastro_palestra(codigo):
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante
         if permitido == True:
-            r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
-            if r_atividade_ministrante.admin_atividade is not False:
+            if ministrante is not None:
+                r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            else:
+                r_atividade_ministrante = None
+            if "CONTEUDO" in permissoes or r_atividade_ministrante.admin_atividade is not False:
                 form = CadastroInformacoesPalestra()
                 if form.validate_on_submit():
 
@@ -219,22 +223,21 @@ def cadastro_palestra(codigo):
                         r.admin_atividade = False
                         db.session.add(r)
                         db.session.commit()
-                    r_atividade_ministrante.confirmado = True
-                    r_atividade_ministrante.admin_atividade = True
+                    if r_atividade_ministrante is not None:
+                        r_atividade_ministrante.confirmado = True
+                        r_atividade_ministrante.admin_atividade = True
+                        db.session.add(r_atividade_ministrante)
                     atividade.titulo = form.titulo.data
-                    for id in form.area.data:
-                        atividade.areas.append(db.session.query(AreaAtividade).get(id))
                     atividade.descricao = form.descricao.data
                     atividade.observacoes = form.observacoes.data
-                    atividade.info_palestra.append(info_palestra)
-                    db.session.add(r_atividade_ministrante)
+                    atividade.info_palestra = info_palestra
                     db.session.add(info_palestra)
                     db.session.add(atividade)
                     db.session.commit()
                     if form.material.data:
                         material.save(path.join(m_path, m_filename))
                     return redirect(url_for('users.dashboard'))
-                return render_template('conteudo/cadastro_palestra.html', form=form, codigo=codigo, form_login=form_login)
+                return render_template('conteudo/cadastro_palestra.html', form=form, codigo=codigo, form_login=form_login, atividade=atividade)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
@@ -247,21 +250,20 @@ def cadastro_mesa_redonda(codigo):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         form = CadastroAtividadeGenerica(request.form)
-        if form.validate_on_submit():
-            for ministrante in atividade.ministrantes:
-                r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
-                r.admin_atividade = False
-                db.session.add(r)
+        if permitido == True:
+            if form.validate_on_submit():
+                for ministrante in atividade.ministrantes:
+                    r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                    r.admin_atividade = False
+                    db.session.add(r)
+                    db.session.commit()
+                atividade.titulo = form.titulo.data
+                atividade.descricao = form.descricao.data
+                atividade.observacoes = form.observacoes.data
+                db.session.add(atividade)
                 db.session.commit()
-            atividade.titulo = form.titulo.data
-            for id in form.area.data:
-                atividade.areas.append(db.session.query(AreaAtividade).get(id))
-            atividade.descricao = form.descricao.data
-            atividade.observacoes = form.observacoes.data
-            db.session.add(atividade)
-            db.session.commit()
-            return redirect(url_for('users.dashboard'))
-        return render_template('conteudo/cadastro_mesa_redonda.html', codigo=codigo, form=form, form_login=form_login)
+                return redirect(url_for('users.dashboard'))
+            return render_template('conteudo/cadastro_mesa_redonda.html', codigo=codigo, form=form, form_login=form_login, atividade=atividade)
     else:
         return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
@@ -275,8 +277,11 @@ def cadastro_feira_projetos(codigo):
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante
         if(permitido == True):
-            r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
-            if r_atividade_ministrante.admin_atividade is not False:
+            if ministrante is not None:
+                r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            else:
+                r_atividade_ministrante = None
+            if "CONTEUDO" in permissoes or r_atividade_ministrante.admin_atividade is not False:
                 form = CadastroFeiraDeProjetos(request.form)
                 if form.validate_on_submit():
                     info_feira_de_projetos = InfoFeiraDeProjetos(necessidades=form.necessidades.data, planejamento=form.planejamento.data)
@@ -285,20 +290,19 @@ def cadastro_feira_projetos(codigo):
                         r.admin_atividade = False
                         db.session.add(r)
                         db.session.commit()
-                    r_atividade_ministrante.confirmado = True
-                    r_atividade_ministrante.admin_atividade = True
+                    if r_atividade_ministrante is not None:
+                        r_atividade_ministrante.confirmado = True
+                        r_atividade_ministrante.admin_atividade = True
+                        db.session.add(r_atividade_ministrante)
                     atividade.titulo = form.titulo.data
-                    for id in form.area.data:
-                        atividade.areas.append(db.session.query(AreaAtividade).get(id))
                     atividade.descricao = form.descricao.data
                     atividade.observacoes = form.observacoes.data
-                    atividade.info_feira_de_projetos.append(info_feira_de_projetos)
-                    db.session.add(r_atividade_ministrante)
+                    atividade.info_feira_de_projetos = info_feira_de_projetos
                     db.session.add(info_feira_de_projetos)
                     db.session.add(atividade)
                     db.session.commit()
                     return redirect(url_for('users.dashboard'))
-                return render_template('conteudo/cadastro_feira_projetos.html', codigo=codigo, form=form, form_login=form_login)
+                return render_template('conteudo/cadastro_feira_projetos.html', codigo=codigo, form=form, form_login=form_login, atividade=atividade)
             else:
                 return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
@@ -332,21 +336,20 @@ def cadastro_roda_conversa(codigo):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         form = CadastroAtividadeGenerica(request.form)
-        if form.validate_on_submit():
-            for ministrante in atividade.ministrantes:
-                r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
-                r.admin_atividade = False
-                db.session.add(r)
+        if permitido == True:
+            if form.validate_on_submit():
+                for ministrante in atividade.ministrantes:
+                    r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                    r.admin_atividade = False
+                    db.session.add(r)
+                    db.session.commit()
+                atividade.titulo = form.titulo.data
+                atividade.descricao = form.descricao.data
+                atividade.observacoes = form.observacoes.data
+                db.session.add(atividade)
                 db.session.commit()
-            atividade.titulo = form.titulo.data
-            for id in form.area.data:
-                atividade.areas.append(db.session.query(AreaAtividade).get(id))
-            atividade.descricao = form.descricao.data
-            atividade.observacoes = form.observacoes.data
-            db.session.add(atividade)
-            db.session.commit()
-            return redirect(url_for('users.dashboard'))
-        return render_template('conteudo/cadastro_roda_conversa.html', codigo=codigo, form=form, form_login=form_login)
+                return redirect(url_for('users.dashboard'))
+            return render_template('conteudo/cadastro_roda_conversa.html', codigo=codigo, form=form, form_login=form_login, atividade=atividade)
     else:
         return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)

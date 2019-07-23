@@ -45,7 +45,11 @@
 <div class="container pt-4 pb-4">
   <div class="row justify-content-center">
     <div class="col-md-7">
-      <h2 class="text-center">Cadastro de Minicurso</h2>
+      {% if atividade.titulo is none: %}
+        <h2 class="text-center">Cadastro de Minicurso</h2>
+      {% else %}
+        <h2 class="text-center">Editar Minicurso: {{ atividade.titulo }}</h2>
+      {% endif %}
 
       <form method="POST" action="{{url_for('conteudo.cadastro_minicurso', codigo=codigo)}}"
             enctype="multipart/form-data">
@@ -98,5 +102,49 @@
       $("label[for='requisitos_github']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">No caso de existir um repositório remoto no github ou em outro site para códigos e projetos a serem desenvolvidos no decorrer do minicurso, digite aqui o link desse repositório.</span></div>');
       $("label[for='requisitos_hardware']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Especifique aqui no caso do minicurso envolver algum tipo de hardware específico</span></div>');
       $("label[for='dicas_instalacao']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Especifique aqui alguma dica ou informação que possa nos auxiliar na instalação desses softwares :)</span></div>');
+
+      {% if atividade.titulo is not none %}
+      $('#titulo').val('{{atividade.titulo}}');
+      {% endif %}
+      {% if atividade.descricao is not none %}
+      $('#descricao').val('{{atividade.descricao}}');
+      {% endif %}
+      {% if atividade.info_minicurso.pre_requisitos is not none %}
+      $('#pre_requisitos').val('{{atividade.info_minicurso.pre_requisitos}}');
+      {% endif %}
+      {% if atividade.info_minicurso.planejamento is not none %}
+      $('#planejamento').val('{{atividade.info_minicurso.planejamento}}');
+      {% endif %}
+      {% if atividade.info_minicurso.apresentacao_extra is not none %}
+      $('#apresentacao_extra').val('{{atividade.info_minicurso.apresentacao_extra}}');
+      {% endif %}
+      {% if atividade.info_minicurso.requisitos_ide is not none %}
+      $('#requisitos_ide').val('{{atividade.info_minicurso.requisitos_ide}}');
+      {% endif %}
+      {% if atividade.info_minicurso.requisitos_bibliotecas_pacotes is not none %}
+      $('#requisitos_bibliotecas_pacotes').val('{{atividade.info_minicurso.requisitos_bibliotecas_pacotes}}');
+      {% endif %}
+      {% if atividade.info_minicurso.requisitos_dependencias is not none %}
+      $('#requisitos_dependencias').val('{{atividade.info_minicurso.requisitos_dependencias}}');
+      {% endif %}
+      {% if atividade.info_minicurso.requisitos_sistema is not none %}
+      $('#requisitos_sistema').val('{{atividade.info_minicurso.requisitos_sistema}}');
+      {% endif %}
+      {% if atividade.info_minicurso.requisitos_observacoes is not none %}
+      $('#requisitos_observacoes').val('{{atividade.info_minicurso.requisitos_observacoes}}');
+      {% endif %}
+      {% if atividade.info_minicurso.requisitos_github is not none %}
+      $('#requisitos_github').val('{{atividade.info_minicurso.requisitos_github}}');
+      {% endif %}
+      {% if atividade.info_minicurso.requisitos_hardware is not none %}
+      $('#requisitos_hardware').val('{{atividade.info_minicurso.requisitos_hardware}}');
+      {% endif %}
+      {% if atividade.info_minicurso.dicas_instalacao is not none %}
+      $('#dicas_instalacao').val('{{atividade.info_minicurso.dicas_instalacao}}');
+      {% endif %}
+      {% if atividade.observacoes is not none %}
+      $('#observacoes').val('{{atividade.observacoes}}');
+      {% endif %}
+
     </script>
     {% endblock %}
