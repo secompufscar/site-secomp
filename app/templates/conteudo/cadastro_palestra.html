@@ -45,7 +45,11 @@
 <div class="container pt-4 pb-4">
   <div class="row justify-content-center">
     <div class="col-md-7">
-      <h2 class="text-center">Cadastro de Palestra</h2>
+      {% if atividade.titulo is none: %}
+        <h2 class="text-center">Cadastro de Palestra</h2>
+      {% else %}
+        <h2 class="text-center">Editar Palestra: {{ atividade.titulo }}</h2>
+      {% endif %}
       <form method="POST" action="{{url_for('conteudo.cadastro_palestra', codigo=codigo)}}"
         enctype="multipart/form-data">
         {{ form.hidden_tag() }}
@@ -79,5 +83,26 @@
   $("label[for='material']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Se possível, envie-nos com antecedência os materiais a serem utilizados na palestra.</span></div>');
   $("label[for='perguntas']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Buscando incentivar a presença e participação do público de forma dinâmica, solicitamos que envie algumas perguntas a respeito da palestra. Estas serão utilizadas em um questionário aplicado a platéia, o qual premiará o vencedor.</span></div>');
   $("label[for='observacoes']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Deixe aqui alguma observação ou informação que julgar necessária.</span></div>');
+  {% if atividade.titulo is not none %}
+  $('#titulo').val('{{atividade.titulo}}');
+  {% endif %}
+  {% if atividade.descricao is not none %}
+  $('#descricao').val('{{atividade.descricao}}');
+  {% endif %}
+  {% if atividade.info_palestra.requisitos_tecnicos is not none %}
+  $('#requisitos_tecnicos').val('{{atividade.info_palestra.requisitos_tecnicos}}');
+  {% endif %}
+  {% if atividade.info_palestra.planejamento is not none %}
+  $('#planejamento').val('{{atividade.info_palestra.planejamento}}');
+  {% endif %}
+  {% if atividade.info_palestra.apresentacao_extra is not none %}
+  $('#apresentacao_extra').val('{{atividade.info_palestra.apresentacao_extra}}');
+  {% endif %}
+  {% if atividade.info_palestra.perguntas is not none %}
+  $('#perguntas').val('{{atividade.info_palestra.perguntas}}');
+  {% endif %}
+  {% if atividade.observacoes is not none %}
+  $('#observacoes').val('{{atividade.observacoes}}');
+  {% endif %}
 </script>
 {% endblock %}
