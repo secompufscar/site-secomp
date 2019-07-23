@@ -114,7 +114,19 @@ def get_patrocinadores():
     except Exception as e:
         return "Erro"
 
-def get_urls_conteudo():
+def get_url_tipo(tipo):
+    if tipo == "Palestra":
+        return "palestra"
+    elif tipo == "Minicurso":
+        return "minicurso"
+    elif tipo == "Mesa Redonda":
+        return "mesa-redonda"
+    elif tipo == "Feira de Projetos":
+        return "feira-projetos"
+    elif tipo == "Roda de Conversa":
+        return "roda-conversa"
+
+def get_urls_conteudo(url_root):
     atividades = db.session.query(Atividade).filter_by(id_evento=get_id_evento_atual()).all()
     info_urls = []
     for atividade in atividades:
@@ -130,6 +142,7 @@ def get_urls_conteudo():
                 "tipo" : atividade.tipo.nome,
                 "titulo_atividade": titulo,
                 "codigo_url" : atividade.url_codigo,
+                "url": url_root + 'area-conteudo/cadastro-atividade/' + get_url_tipo(atividade.tipo.nome) + '/' + atividade.url_codigo,
                 "emails": emails
         }
         info_urls.append(info)
