@@ -323,3 +323,30 @@ def confirmar_atividade(codigo):
                 return redirect(url_for('users.dashboard'))
             return render_template('conteudo/confirmar_atividade.html', codigo=codigo, titulo_atividade=atividade.titulo, form=form, form_login=form_login)
     abort(404)
+
+@conteudo.route('/cadastro-atividade/roda-conversa/<codigo>', methods=['POST', 'GET'])
+@login_required
+def cadastro_roda_conversa(codigo):
+    permissoes = current_user.getPermissoes()
+    if("CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        permitido, atividade, emails = valida_url_codigo(current_user, codigo)
+        form = CadastroAtividadeGenerica(request.form)
+        if form.validate_on_submit():
+            for ministrante in atividade.ministrantes:
+                r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                r.admin_atividade = False
+                db.session.add(r)
+                db.session.commit()
+            atividade.titulo = form.titulo.data
+            for id in form.area.data:
+                atividade.areas.append(db.session.query(AreaAtividade).get(id))
+            atividade.descricao = form.descricao.data
+            atividade.observacoes = form.observacoes.data
+            db.session.add(atividade)
+            db.session.commit()
+            return redirect(url_for('users.dashboard'))
+        return render_template('conteudo/cadastro_roda_conversa.html', codigo=codigo, form=form, form_login=form_login)
+    else:
+        return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
+    abort(404)
