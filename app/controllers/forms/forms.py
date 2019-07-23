@@ -157,7 +157,6 @@ class CadastroMinistranteForm(FlaskForm):
 
 class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)])
     pre_requisitos = TextAreaField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
@@ -191,7 +190,6 @@ class CadastroInformacoesMinicurso(FlaskForm):
 
 class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=64)])
-    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)])
     requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software')
     planejamento = TextAreaField('Planejamento', validators=[InputRequired(), Length(max=2056)])
@@ -206,7 +204,6 @@ class CadastroInformacoesPalestra(FlaskForm):
 
 class CadastroFeiraDeProjetos(FlaskForm):
     titulo = StringField('Título do Projeto', validators=[InputRequired()])
-    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     necessidades = TextAreaField('Necessidades', validators=[InputRequired()])
     planejamento = TextAreaField('Planejamento', validators=[InputRequired(), Length(max=2056)])
@@ -215,7 +212,6 @@ class CadastroFeiraDeProjetos(FlaskForm):
 
 class CadastroAtividadeGenerica(FlaskForm):
     titulo = StringField('Título da Atividade', validators=[InputRequired()])
-    area = SelectMultipleField('Área(s)', validators=[InputRequired()], choices=get_opcoes_area_atividade(), coerce=int, id='areas')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)])
     observacoes = TextAreaField('Observações')
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])

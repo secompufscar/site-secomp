@@ -51,7 +51,6 @@
             enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.titulo) }}
-        {{ wtf.form_field(form.area) }}
         {{ wtf.form_field(form.descricao) }}
         {{ wtf.form_field(form.pre_requisitos) }}
         {{ wtf.form_field(form.planejamento) }}
@@ -85,7 +84,6 @@
         language: "pt-BR"
       });
 
-      $("label[for='area']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Informe qual área/referência este minicurso pertence, a ser utilizada na organização do site.</span></div>');
       $("label[for='descricao']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Breve descrição do minicurso, a ser utilizada na divulgação.</span></div>');
       $("label[for='pre_requisitos']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Liste aqui quais são os pré-requisitos recomendados aos participantes que desejarem se inscrever no minicurso.</span></div>');
       $("label[for='planejamento']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Descrição (o mais detalhada possível) da estrutura do minicurso, ou seja, a distribuição em que os conteúdos serão aplicados, bem como o tempo reservado para cada um destes. Vale destacar a recomendação para que distribua-se ½ teórico e ½ prático. Informação apenas para organização interna, a qual não será utilizada para divulgação.</span></div>');
