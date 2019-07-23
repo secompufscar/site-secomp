@@ -73,10 +73,6 @@
 
 <script>
 
-  $("#areas").select2({
-    language: "pt-BR"
-  });
-
   $("label[for='descricao']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Breve descrição da palestra, a ser utilizada na divulgação.</span></div>');
   $("label[for='requisitos_tecnicos']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Durante o evento, a SECOMP disponibiliza um computador e um projetor para realização das palestras. Caso deseje utilizar seu próprio computador ou necessite de algum recurso e/ou equipamento específico, liste-os aqui.</span></div>');
   $("label[for='planejamento']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Descrição (o mais detalhada possível) da estrutura da palestra, ou seja, a distribuição em que os conteúdos serão apresentados, bem como o tempo reservado para cada um destes. Informação apenas para organização interna, a qual não será utilizada para divulgação.</span></div>');

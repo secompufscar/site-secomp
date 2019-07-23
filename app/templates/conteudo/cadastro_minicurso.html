@@ -84,9 +84,6 @@
       </form>
     </div>
     <script>
-      $("#areas").select2({
-        language: "pt-BR"
-      });
 
       $("label[for='descricao']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Breve descrição do minicurso, a ser utilizada na divulgação.</span></div>');
       $("label[for='pre_requisitos']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Liste aqui quais são os pré-requisitos recomendados aos participantes que desejarem se inscrever no minicurso.</span></div>');
