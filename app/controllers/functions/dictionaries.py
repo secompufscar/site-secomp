@@ -125,6 +125,10 @@ def get_url_tipo(tipo):
         return "feira-projetos"
     elif tipo == "Roda de Conversa":
         return "roda-conversa"
+    elif tipo == "Workshop":
+        return "workshop"
+    elif tipo == "Palestra Empresarial":
+        return "palestra-empresarial"
 
 def get_urls_conteudo(url_root):
     atividades = db.session.query(Atividade).filter_by(id_evento=get_id_evento_atual()).all()

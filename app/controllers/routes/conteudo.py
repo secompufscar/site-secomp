@@ -353,3 +353,55 @@ def cadastro_roda_conversa(codigo):
     else:
         return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
     abort(404)
+
+@conteudo.route('/cadastro-atividade/workshop/<codigo>', methods=['POST', 'GET'])
+@login_required
+def cadastro_workshop(codigo):
+    permissoes = current_user.getPermissoes()
+    if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        permitido, atividade, emails = valida_url_codigo(current_user, codigo)
+        form = CadastroAtividadeGenerica(request.form)
+        if permitido == True:
+            if form.validate_on_submit():
+                for ministrante in atividade.ministrantes:
+                    r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                    r.admin_atividade = False
+                    db.session.add(r)
+                    db.session.commit()
+                atividade.titulo = form.titulo.data
+                atividade.descricao = form.descricao.data
+                atividade.observacoes = form.observacoes.data
+                db.session.add(atividade)
+                db.session.commit()
+                return redirect(url_for('users.dashboard'))
+            return render_template('conteudo/cadastro_workshop.html', codigo=codigo, form=form, form_login=form_login, atividade=atividade)
+    else:
+        return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
+    abort(404)
+
+@conteudo.route('/cadastro-atividade/palestra-empresarial/<codigo>', methods=['POST', 'GET'])
+@login_required
+def cadastro_palestra_empreesarial(codigo):
+    permissoes = current_user.getPermissoes()
+    if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        permitido, atividade, emails = valida_url_codigo(current_user, codigo)
+        form = CadastroAtividadeGenerica(request.form)
+        if permitido == True:
+            if form.validate_on_submit():
+                for ministrante in atividade.ministrantes:
+                    r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                    r.admin_atividade = False
+                    db.session.add(r)
+                    db.session.commit()
+                atividade.titulo = form.titulo.data
+                atividade.descricao = form.descricao.data
+                atividade.observacoes = form.observacoes.data
+                db.session.add(atividade)
+                db.session.commit()
+                return redirect(url_for('users.dashboard'))
+            return render_template('conteudo/cadastro_palestra_empresarial.html', codigo=codigo, form=form, form_login=form_login, atividade=atividade)
+    else:
+        return redirect(url_for('conteudo.confirmar_atividade', codigo=codigo))
+    abort(404)
