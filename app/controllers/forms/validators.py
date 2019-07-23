@@ -1,4 +1,5 @@
 import re
+from flask_login import current_user
 
 from wtforms.validators import ValidationError, DataRequired, Optional
 
@@ -73,7 +74,7 @@ def valida_email_ministrante():
         emails = []
         for m in atividade.ministrantes:
             emails.append(m.usuario.email)
-        if field.data not in emails:
+        if field.data not in emails and "CONTEUDO" not in current_user.getPermissoes():
             raise ValidationError("Entre com um email válido")
     return _valida_email_ministrante
 
