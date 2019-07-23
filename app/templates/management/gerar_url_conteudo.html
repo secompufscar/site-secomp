@@ -6,6 +6,14 @@
   .clipboard {
     background-color: #cccccc;
   }
+  .email-confirmado{
+    display:inline;
+    color:  #006400;
+  }
+  .email-nao-confirmado{
+    display:inline;
+    color:  #8B0000;
+  }
 </style>
 <div class="container pt-4">
   <h2 class="text-center pb-2">URL para formulários do Conteúdo</h2>
@@ -77,9 +85,17 @@
               <td scope="col">
                 {% for email in url.emails %}
                   {% if not loop.last: %}
-                    {{ email }}<br>
+                    {% if email.confirmado == True %}
+                      <div class='email-confirmado'>{{ email.email }}</div><br>
+                    {% else %}
+                      <div class='email-nao-confirmado'>{{ email.email }}</div><br>
+                    {% endif %}
                   {% else: %}
-                    {{ email }}
+                    {% if email.confirmado == True %}
+                      <div class='email-confirmado'>{{ email.email }}</div>
+                    {% else %}
+                      <div class='email-nao-confirmado'>{{ email.email }}</div>
+                    {% endif %}
                   {% endif %}
                 {% endfor %}
               </td>
