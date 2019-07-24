@@ -146,7 +146,7 @@
 </div>
 
 <main>
-  <div id="content">
+  <div id="content" style="padding-top: 53px;">
     {% block content %}{% endblock %}
   </div>
 </main>
@@ -199,9 +199,9 @@
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
 
 <script>
-	$(document).ready(function(){
-    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
-  });
+	/*$(document).ready(function(){
+    	$('#content').css("padding-top", $('#navTop').outerHeight() * 1.2);
+  });*/
 </script>
 
 {% endblock %}
