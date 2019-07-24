@@ -5,10 +5,10 @@
 
 <link href="{{ url_for('static', filename='css/equipe.css') }}" rel="stylesheet" type="text/css"/>
 
-<div class="pb-5 container">
+<div class="container">
     {% for diretoria in data %}
-        <h2 class="section-title text-center pt-4">{{ diretoria }}</h2>
-        <div class="row justify-content-center">
+        <h2 class="section-title text-center pt-1">{{ diretoria }}</h2>
+        <div class="row justify-content-center pb-3">
             {% for membro in data[diretoria] %}
                     <div class="pb-3 pl-2 pr-2">
                         <div onmouseover="showBackside(id)" onmouseout="showFrontside(id)" class="card text-center" style="width: 18rem; height: 17rem;">
