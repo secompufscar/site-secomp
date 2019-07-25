@@ -4,11 +4,9 @@
 {% block content %}
 
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center pt-1">
         <div class="col-md-8">
-            <br><br><br><br>
             <h3 class="text-center">Gerar listas de participantes</h3>
-            <hr>
             <form method="POST" action="{{ form.action }}">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.atividades) }}
@@ -21,7 +19,6 @@
         {% if lista != None and tipo == 'inscritos'%}
         <div class="col-md-8">
             <h3 class="text-center">Lista de inscritos em {{atividade}}</h3>
-            <hr>
             {% for x in lista %}
                 <p>#{{x.id}} - {{x.usuario.nome}}</p>
             {% endfor %}
@@ -30,7 +27,6 @@
         {% if lista != None and tipo == 'presentes'%}
         <div class="col-md-8">
             <h3 class="text-center">Lista de inscritos presentes em {{atividade}}</h3>
-            <hr>
             {% for x in lista %}
                 <p>#{{x.id}} - {{x.usuario.nome}}</p>
             {% endfor %}

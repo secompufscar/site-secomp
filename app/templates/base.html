@@ -21,7 +21,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="{{url_for('static', filename='js/select2.js')}}"></script>
-<script src="{{url_for('static', filename='js/pt-BR.js')}}" type="typescript"></script>
+<script src="{{url_for('static', filename='js/pt-BR.js')}}"></script>
 <script src="{{url_for('static', filename='js/flipclock.js')}}"></script>
 {% endblock %}
 
@@ -144,7 +144,7 @@
 </div>
 
 <main>
-  <div id="content">
+  <div id="content" style="padding-top: 53px;">
     {% block content %}{% endblock %}
   </div>
 </main>
@@ -197,9 +197,9 @@
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
 
 <script>
-	$(document).ready(function(){
+/*	$(document).ready(function(){
     	$('#content').css("padding-top", $('#navTop').height() * 1.2);
-  });
+  }); */
 </script>
 
 {% endblock %}
