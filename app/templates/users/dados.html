@@ -40,7 +40,6 @@
                         <th scope="row">Cidade</th>
                         <td>{{ usuario.cidade }}</td>
                     </tr>
-
                     <tr>
                         <th scope="row">Curso</th>
                         <td>{{ usuario.curso.nome}}</td>
@@ -62,7 +61,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        {% if (participante != None): %}
+                        {% if (participante != None) %}
 
                         <th scope="row">Data de inscrição</th>
                         <td>{{ participante.data_inscricao.strftime('%d/%m/%Y às %H:%M:%S') }}</td>

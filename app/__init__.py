@@ -5,7 +5,7 @@ from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_migrate import Migrate
-
+from flask_qrcode import QRcode as QRCode
 
 def create_app(config=None):
     """
@@ -25,6 +25,8 @@ def create_app(config=None):
 
     app = Flask(__name__)
     app.config.from_object(config)
+
+    QRCode(app)
 
     Bootstrap(app)
 
@@ -80,6 +82,8 @@ def create_app(config=None):
     app.register_blueprint(users.users)
     app.register_blueprint(views.views)
     app.register_blueprint(api.api)
+
+
 
     upload_path = path.join(path.dirname(__file__), 'static')
     adm = admin.init_app(app, upload_path)

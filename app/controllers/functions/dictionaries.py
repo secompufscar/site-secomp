@@ -3,8 +3,9 @@ import datetime
 from flask_login import current_user
 
 from app.controllers.constants import *
-from app.controllers.functions.helpers import get_score_evento, get_id_evento_atual
+from app.controllers.functions.helpers import get_score_evento, get_id_evento_atual, kit_pago
 from app.models.models import *
+
 
 
 def get_dicionario_usuario(usuario):
@@ -84,7 +85,7 @@ def get_dicionario_info_evento(edicao):
             "titulo": str(evento.edicao) + "ª SECOMP UFSCar",
             "data_inscricao": participante.data_inscricao,
             "presencas": atividades,
-            "kit_pago": participante.pagamento,
+            "kit_pago": kit_pago(participante),
             "camiseta": participante.camiseta.tamanho,
                 "opcao_coffee": participante.opcao_coffee,
                 "score_geral": get_score_evento(edicao)
@@ -95,13 +96,11 @@ def get_dicionario_info_evento(edicao):
         return None
 
 
-def get_patrocinadores():
+def get_patrocinadores(edicao):
     try:
-        patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True)
+        patrocinadores = db.session.query(Evento).filter_by(edicao=edicao).patrocinadores
         pat_json = []
-        anoAtual = 2019
         for p in patrocinadores:
-            #TODO: Verificar o ano do patrocinador
             info = {
                 "nome": p.nome_empresa,
                 "logo": "/img/"+p.logo,
@@ -113,6 +112,35 @@ def get_patrocinadores():
         return pat_json
     except Exception as e:
         return "Erro"
+
+def get_atividades(edicao):
+    try:
+        atividades = db.session.query(Evento).filter_by(edicao=edicao).atividades
+        ativ_json = []
+        for a in atividades:
+            ministrantes = []
+            for m in a.ministrantes:
+                ministrantes.append(m.ministrante.nome)
+                ministrantes = []
+                for m in a.ministrantes:
+                    ministrantes.append(m.ministrante.nome)
+            info = {
+                "tipo": a.tipo.nome,
+                "vagas_totais": a.vagas_totais,
+                "vagas_disponiveis": a.vagas_disponiveis,
+                "data_hora": a.data_hora,
+                "local": a.local,
+                "titulo": a.titulo,
+                "descricao": a.descricao,
+                "area": a.areas.nome,
+                "observacoes": a.observacoes,
+                "ministrantes": ministrantes
+            }
+            ativ_json.append(info)
+        return ativ_json
+    except Exception as e:
+        return "Erro"
+
 
 def get_urls_conteudo():
     atividades = db.session.query(Atividade).filter_by(id_evento=get_id_evento_atual()).all()
