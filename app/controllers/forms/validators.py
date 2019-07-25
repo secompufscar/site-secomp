@@ -1,4 +1,5 @@
 import re
+from flask_login import current_user
 
 from wtforms.validators import ValidationError, DataRequired, Optional
 

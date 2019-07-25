@@ -115,7 +115,23 @@ def get_patrocinadores():
     except Exception as e:
         return "Erro"
 
-def get_urls_conteudo():
+def get_url_tipo(tipo):
+    if tipo == "Palestra":
+        return "palestra"
+    elif tipo == "Minicurso":
+        return "minicurso"
+    elif tipo == "Mesa Redonda":
+        return "mesa-redonda"
+    elif tipo == "Feira de Projetos":
+        return "feira-projetos"
+    elif tipo == "Roda de Conversa":
+        return "roda-conversa"
+    elif tipo == "Workshop":
+        return "workshop"
+    elif tipo == "Palestra Empresarial":
+        return "palestra-empresarial"
+
+def get_urls_conteudo(url_root):
     atividades = db.session.query(Atividade).filter_by(id_evento=get_id_evento_atual()).all()
     info_urls = []
     for atividade in atividades:
@@ -125,12 +141,18 @@ def get_urls_conteudo():
             titulo = "-"
         emails = []
         for ministrante in atividade.ministrantes:
-            emails.append(ministrante.usuario.email)
+            relacao = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            if relacao.confirmado == True:
+                confirmado = True
+            else:
+                confirmado = False
+            emails.append({"email": ministrante.usuario.email, "confirmado": confirmado })
         info = {
                 "id" : atividade.id,
                 "tipo" : atividade.tipo.nome,
                 "titulo_atividade": titulo,
                 "codigo_url" : atividade.url_codigo,
+                "url": url_root + 'area-conteudo/cadastro-atividade/' + get_url_tipo(atividade.tipo.nome) + '/' + atividade.url_codigo,
                 "emails": emails
         }
         info_urls.append(info)
