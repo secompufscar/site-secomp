@@ -45,12 +45,12 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       {% if atividade.titulo is none: %}
-        <h2 class="text-center">Cadastro de Mesa Redonda</h2>
+        <h2 class="text-center">Cadastro de Palestra Empresarial</h2>
       {% else %}
-        <h2 class="text-center">Editar Mesa Redonda: {{ atividade.titulo }}</h2>
+        <h2 class="text-center">Editar Palestra Empresarial: {{ atividade.titulo }}</h2>
       {% endif %}
 
-      <form method="POST" action="{{url_for('conteudo.cadastro_mesa_redonda', codigo=codigo)}}">
+      <form method="POST" action="{{url_for('conteudo.cadastro_palestra_empresarial', codigo=codigo)}}">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.descricao) }}

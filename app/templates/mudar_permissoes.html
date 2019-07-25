@@ -2,38 +2,38 @@
 {% import "wtf.html" as wtf %}
 
 {% block content %}
-  <style>
-      .help-block{
-        color:red;
-      }
-  </style>
-    <div class="container">
-        <form method="POST" action="admin/permissoes">
-          {{ form.hidden_tag() }}
-          {{ wtf.form_field(form.usuario) }}
-          {{ wtf.form_field(form.permissoes) }}
+<style>
+  .help-block {
+    color: red;
+  }
+</style>
+<div class="container">
+  <form method="POST" action="admin/permissoes">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.usuario) }}
+    {{ wtf.form_field(form.permissoes) }}
 
-          <button type="submit" class="btn btn-primary">Alterar</button>
-        </form>
-    </div>
+    <button type="submit" class="btn btn-primary">Alterar</button>
+  </form>
+</div>
 
-    <script  type="text/javascript">
-    $(function () {
-      $("#usuario").select2();
-      $("#permissoes").select2();
-    });
-    $('select').select2({
+<script type="text/javascript">
+  $(function () {
+    $("#usuario").select2();
+    $("#permissoes").select2();
+  });
+  $('select').select2({
     width: '100%',
-    });
-    $('select').select2({
-      "language": {
-       "noResults": function(){
-           return "Nenhum resultado encontrado";
-       }
-   },
+  });
+  $('select').select2({
+    "language": {
+      "noResults": function () {
+        return "Nenhum resultado encontrado";
+      }
+    },
     escapeMarkup: function (markup) {
-        return markup;
+      return markup;
     }
-    });
-    </script>
+  });
+</script>
 {% endblock %}

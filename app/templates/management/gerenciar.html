@@ -3,45 +3,61 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div style="text-align: center;">
-            <h1>Área Administrativa</h1>
-            <br>
-            <h2>
-                Olá, {{ usuario.primeiro_nome }}.
-                <a href="{{ url_for('views.logout') }}">
-                    <button type="button" class="btn btn-primary">Fazer logout</button>
-                </a>
-            </h2>
+    <div class="row justify-content-center pt-1">
+        <div class="col-md-12 text-center">
+            <h1>Área Administrativa - {{ usuario.primeiro_nome }}</h1>
         </div>
-        <div>
-            {% if usuario in permissoes['ADMIN'].usuarios %}
+    </div>
+    <div class="row pt-3">
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CONTEUDO'].usuarios or usuario in permissoes['PATROCINIO'].usuarios %}
+        <div class="col-md-6 p-3">
+            <form action="{{url_for('.gerar_url_conteudo')}}">
+                <h4>Gerar URL para o cadastro de atividades e ministrantes</h4>
+                <button type="submit" class="btn btn-primary">Gerar URL</button>
+            </form>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios %}
+        <div class="col-md-6 p-3">
             <form action="">
-                <h3>Envio de emails</h3>
+                <h4>Envio de emails</h4>
                 <button type="submit" class="btn btn-primary">Enviar email</button>
             </form>
-            {% endif %}
-            {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['NOTIFICACOES_APP'].usuarios %}
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['NOTIFICACOES_APP'].usuarios %}
+        <div class="col-md-6 p-3">
             <form action="">
-                <h3>Notificações</h3>
+                <h4>Notificações</h4>
                 <button type="submit" class="btn btn-primary">Enviar notificações</button>
             </form>
-            {% endif %}
-            {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['VENDA_PRESENCIAL'].usuarios %}
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['VENDA_PRESENCIAL'].usuarios %}
+        <div class="col-md-6 p-3">
             <form action="{{url_for('.vender_kits')}}">
-                <h3>Venda de Kits</h3>
+                <h4>Venda de Kits</h4>
                 <button type="submit" class="btn btn-primary">Vender kit</button>
             </form>
-            {% endif %}
-            {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['APROVAR_COMPROVANTES'].usuarios %}
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['APROVAR_COMPROVANTES'].usuarios %}
+        <div class="col-md-6 p-3">
             <form action="">
-                <h3>Pagamentos</h3>
+                <h4>Pagamentos</h4>
                 <button type="submit" class="btn btn-primary">Aprovar/rejeitar pagamentos</button>
             </form>
-            {% endif %}
-            {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['ALTERAR_CAMISETAS'].usuarios %}
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['ALTERAR_CAMISETAS'].usuarios %}
+        <div class="col-md-6 p-3">
             <div>
-                <h3>Camisetas</h3>
+                <h4>Camisetas</h4>
                 <a href="{{ url_for('.alterar_camiseta') }}">
                     <button type="button" class="btn btn-primary">Alterar reservas de camisetas</button>
                 </a>
@@ -49,10 +65,13 @@
                     <button type="button" class="btn btn-primary">Controle de camisetas</button>
                 </a>
             </div>
-            {% endif %}
-            {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_CRACHAS'].usuarios %}
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_CRACHAS'].usuarios %}
+        <div class="col-md-6 p-3">
             <div>
-                <h3>Geração de crachás</h3>
+                <h4>Geração de crachás</h4>
                 <a href="{{ url_for('views.constr') }}">
                     <button type="button" class="btn btn-primary">Gerar crachás</button>
                 </a>
@@ -60,20 +79,27 @@
                     <button type="button" class="btn btn-primary">Gerar um crachá</button>
                 </a>
             </div>
-            {% endif %}
-            {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_LISTAS'].usuarios %}
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_LISTAS'].usuarios %}
+        <div class="col-md-6 p-3">
             <form action="{{url_for('.listas')}}">
-                <h3>Geração de listas</h3>
+                <h4>Geração de listas</h4>
                 <button type="submit" class="btn btn-primary">Gerar Listas</button>
             </form>
-            {% endif %}
-            {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['SORTEAR'].usuarios %}
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['SORTEAR'].usuarios %}
+        <div class="col-md-6 p-3">
             <form action="{{url_for('.sortear')}}">
-                <h3>Sortear participante presente</h3>
+                <h4>Sortear participante presente</h4>
                 <button type="submit" class="btn btn-primary">Sortear</button>
             </form>
-            {% endif %}
         </div>
+        {% endif %}
+
     </div>
 </div>
 {% endblock %}
