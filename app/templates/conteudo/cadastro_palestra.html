@@ -61,7 +61,7 @@
         {{ wtf.form_field(form.material) }}
         {{ wtf.form_field(form.perguntas) }}
         {{ wtf.form_field(form.observacoes) }}
-        <a href="{{ url_for('static', filename='juridic/termo_condicoes_inscricao.pdf') }}" target="_blank">
+        <a href="{{ url_for('views.protected', filename='juridic/termo_condicoes_inscricao.pdf') }}" target="_blank">
           Termo e Condições de Inscrição</a>
         {{ wtf.form_field(form.confirmacao) }}
 
