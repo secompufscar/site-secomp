@@ -30,11 +30,10 @@
 
     .dropdown-container {
         display: none;
-        padding-left: 10%;
     }
 
-    .dropdown-btn-active {
-        background-color: red;
+    .dropdown-container a {
+        padding-left: 12%;
     }
 
     @media (min-width: 768px) {
@@ -67,7 +66,8 @@
 
             <a href="{{ url_for('users.kit') }}" class="list-group-item list-group-item-action bg-light">Kit</a>
 
-            <button class="list-group-item list-group-item-action dropdown-btn bg-light">Inscrições
+            <button style="outline: none;"
+                class="list-group-item list-group-item-action dropdown-btn bg-light">Inscrições
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
@@ -79,14 +79,15 @@
 
             {% endif %}
 
-            <button class="list-group-item list-group-item-action dropdown-btn bg-light">Gerenciamento
+            <button style="outline: none;"
+                class="list-group-item list-group-item-action dropdown-btn bg-light">Gerenciamento
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
                 <a href="{{ url_for('management.gerenciar') }}"
                     class="list-group-item list-group-item-action bg-light">Homepage</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Camisetas</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Venda de kits</a>
+                <a href="{{ url_for('management.estoque-camisetas') }}" class="list-group-item list-group-item-action bg-light">Camisetas</a>
+                <a href="{{ url_for('management.venda-kits') }}" class="list-group-item list-group-item-action bg-light">Venda de kits</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Listagem de participantes</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Sorteio de usuário</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">URL ministrante</a>
