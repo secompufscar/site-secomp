@@ -74,7 +74,7 @@ def valida_email_ministrante():
         emails = []
         for m in atividade.ministrantes:
             emails.append(m.usuario.email)
-        if field.data not in emails and "CONTEUDO" not in current_user.getPermissoes():
+        if field.data not in emails:
             raise ValidationError("Entre com um email válido")
     return _valida_email_ministrante
 
