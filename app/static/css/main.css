@@ -28,9 +28,6 @@ header {
 .bg-gradient-secomp {
   background-image: linear-gradient(to right, #008cb5, #00cfa1); }
 
-.bg-dark {
-  background-color: #212121; }
-
 /* Imagens com texto em cima */
 .overlay {
   background-color: #000000;
