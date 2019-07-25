@@ -78,6 +78,9 @@ class Usuario(db.Model):
     def is_admin(self):
         return self.admin
 
+    def is_admin(self):
+        return self.admin
+
     def getPermissoes(self):
         permissoes = []
         for permissao in self.permissoes_usuario:
