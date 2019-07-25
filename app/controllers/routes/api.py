@@ -1,12 +1,7 @@
-from random import SystemRandom
-
 from flask import render_template, request, redirect, abort, url_for, Blueprint
 from flask import jsonify
 from app.controllers.functions.dictionaries import *
 
-import json
-
-from app.models.models import *
 
 api = Blueprint('api', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/api')
@@ -21,9 +16,13 @@ def equipe():
 #    with open('./app/config/membros_org.json', 'r') as out:
 #        return out
 
-@api.route('/patrocinadores')
-def patrocinadores():
-    return  jsonify(get_patrocinadores())
+@api.route('/patrocinadores/<edicao>')
+def patrocinadores(edicao):
+    return jsonify(get_patrocinadores(edicao))
+
+@api.route('/atividades/<edicao>')
+def atividades(edicao):
+    return jsonify(get_atividades(edicao))
 
 @api.route('/img/<url>')
 def retornaImg(url):

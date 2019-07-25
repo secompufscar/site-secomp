@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField
+from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField, RadioField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from app.controllers.forms.options import *
@@ -40,32 +40,34 @@ class CadastroForm(FlaskForm):
                           format="%d/%m/%Y", id="data_nasc")
     recaptcha = RecaptchaField()
 
+class EdicaoUsuarioForm(FlaskForm):
+    primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
+    sobrenome = StringField('Sobrenome', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100), so_letras()], id="sobrenome")
+    curso = SelectField('Curso', choices=get_opcoes_cursos(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], id="curso", coerce=int)
+    outro_curso = StringField("Outro curso", id="outro_curso", validators=[erro_curso_existe(), so_letras()])
+    instituicao = SelectField('Instituição', choices=get_opcoes_instituicoes(
+    ), id="instituicao", default="UFSCar", coerce=int)
+    outra_instituicao = StringField("Outra instituição", id="outra_instituicao", validators=[erro_instituicao_existe(), so_letras()])
+    cidade = SelectField('Cidade', choices=get_opcoes_cidades(
+    ), id="cidade", default="São Carlos", coerce=int)
+    outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe(), so_letras()])
+    data_nasc = DateField("Data de Nascimento",
+                          format="%d/%m/%Y", id="data_nasc")
+    recaptcha = RecaptchaField()
 
 class ParticipanteForm(FlaskForm):
-    kit = BooleanField('Kit', id="kit")
+    leu_termos = BooleanField('Li e concordo com os termos de uso', id="li_termos")
+
+
+class ComprarKitForm(FlaskForm):
+    comprar = RadioField('Deseja comprar o kit da SECOMP UFSCar?', id='comprar', choices=[(1,'Sim'),(2,'Não')], coerce=int, default=2)
     camiseta = SelectField('Camiseta', choices=get_opcoes_camisetas(
     ), id="camiseta", default="P Feminino", coerce=int)
     restricao_coffee = SelectField(
         'Restrição para o Coffee-Break', choices=opcoes_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
-
-
-class EditarUsuarioForm(FlaskForm):
-    primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
-    sobrenome = StringField('Sobrenome', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
-    email = StringField('Email', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
-    curso = SelectField('Curso', choices=get_opcoes_cursos(),
-                        id='curso', coerce=int)
-    instituicao = SelectField(
-        'Instituição', choices=get_opcoes_instituicoes(), id='instituicao', coerce=int)
-    cidade = SelectField(
-        'Cidade', choices=get_opcoes_cidades(), id='cidade', coerce=int)
-    data_nasc = DateField("Data de Nascimento",
-                          format="%d/%m/%Y", id='data-nasc')
-    senha = PasswordField('Senha', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
+    forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Enviar Comprovante'),(2,'Paypal')], coerce=int, default=2)
 
 
 class AlterarSenhaForm(FlaskForm):
@@ -121,7 +123,6 @@ class VendaKitForm(FlaskForm):
 class ListasParticipantes(FlaskForm):
     atividades = SelectField("Atividades", choices=get_atividades(), id="atividade", coerce=int)
     tipo = SelectField("Modelos", choices=[(0, 'Inscritos'), (1, 'Presentes')], id="tipo", coerce=int)
-
 
 class CadastroMinistranteForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
