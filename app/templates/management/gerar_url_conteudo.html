@@ -6,28 +6,30 @@
   .clipboard {
     background-color: #cccccc;
   }
-  .email-confirmado{
-    display:inline;
-    color:  #006400;
+
+  .email-confirmado {
+    display: inline;
+    color: #006400;
   }
-  .email-nao-confirmado{
-    display:inline;
-    color:  #8B0000;
+
+  .email-nao-confirmado {
+    display: inline;
+    color: #8B0000;
   }
 
   .select2-selection__rendered {
     line-height: 31px !important;
   }
+
   .select2-container .select2-selection--single {
     height: 35px !important;
   }
+
   .select2-selection__arrow {
     height: 34px !important;
   }
-
-
 </style>
-<div class="container pt-4">
+<div class="container pt-1">
   <h2 class="text-center pb-2">URL para formulários do Conteúdo</h2>
 
   <form method="POST" id="form" action="{{url_for('management.gerar_url_conteudo')}}">
@@ -80,8 +82,12 @@
             <tr>
               <td scope="col"><button type='submit' class="btn btn-default" name='removido' value='{{ url.id }}'><i
                     class="fa fa-times"></i></button></td>
-              <td scope="col"><button type='button' class="btn btn-default" onclick="editar('{{ url.url }}')">
-                <i class="fa fa-pencil-alt"></i></button></td>
+              <td scope="col">
+                {% if url.titulo_atividade != '-' %}
+                <button type='button' class="btn btn-default" onclick="editar('{{ url.url }}')">
+                  <i class="fa fa-pencil-alt"></i>
+                </button>
+                {% endif %}</td>
               <td scope="col">{{ url.tipo }}</td>
               <td scope="col">{{ url.titulo_atividade }}</td>
               <td scope="col">
@@ -96,19 +102,19 @@
               </td>
               <td scope="col">
                 {% for email in url.emails %}
-                  {% if not loop.last: %}
-                    {% if email.confirmado == True %}
-                      <div class='email-confirmado'>{{ email.email }}</div><br>
-                    {% else %}
-                      <div class='email-nao-confirmado'>{{ email.email }}</div><br>
-                    {% endif %}
-                  {% else: %}
-                    {% if email.confirmado == True %}
-                      <div class='email-confirmado'>{{ email.email }}</div>
-                    {% else %}
-                      <div class='email-nao-confirmado'>{{ email.email }}</div>
-                    {% endif %}
-                  {% endif %}
+                {% if not loop.last: %}
+                {% if email.confirmado == True %}
+                <div class='email-confirmado'>{{ email.email }}</div><br>
+                {% else %}
+                <div class='email-nao-confirmado'>{{ email.email }}</div><br>
+                {% endif %}
+                {% else: %}
+                {% if email.confirmado == True %}
+                <div class='email-confirmado'>{{ email.email }}</div>
+                {% else %}
+                <div class='email-nao-confirmado'>{{ email.email }}</div>
+                {% endif %}
+                {% endif %}
                 {% endfor %}
               </td>
               {% endfor %}

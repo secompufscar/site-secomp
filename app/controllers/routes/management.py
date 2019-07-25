@@ -147,7 +147,7 @@ def alterar_camiseta():
             else:
                 return render_template('management/alterar_camisetas.html', participante=participante, camiseta=camiseta,
                                        sucesso='n', form=form, form_login=form_login)
-        return render_template('management/alterar_camisetas.html', form=form)
+        return render_template('management/alterar_camisetas.html', form=form, form_login=form_login)
     else:
         abort(403)
 
