@@ -177,7 +177,7 @@ class Atividade(db.Model):
     ativo = Column(Boolean, nullable=False, default=True)
     data_hora = Column(DateTime, nullable=True)
     local = Column(String(64), nullable=True)
-    titulo = Column(String(64), nullable=True)
+    titulo = Column(String(256), nullable=True)
     descricao = Column(String(1024), nullable=True)
     observacoes = Column(String(512))
     tipo = db.relationship('TipoAtividade', backref='atividades', lazy=True, uselist=False)
