@@ -8,7 +8,7 @@ opcoes_restricao = [
 
 def get_opcoes_cidades():
     try:
-        cidades = db.session.query(Cidade).all()
+        cidades = db.session.query(Cidade).order_by("nome").all()
         info_cidades = []
         for cidade in cidades:
             info = (cidade.id, cidade.nome)
@@ -21,7 +21,7 @@ def get_opcoes_cidades():
 
 def get_opcoes_instituicoes():
     try:
-        instituicoes = db.session.query(Instituicao).all()
+        instituicoes = db.session.query(Instituicao).order_by("nome").all()
         info_instituicoes = []
         for instituicao in instituicoes:
             info = (instituicao.id, instituicao.nome)
@@ -34,7 +34,7 @@ def get_opcoes_instituicoes():
 
 def get_opcoes_cursos():
     try:
-        cursos = db.session.query(Curso).all()
+        cursos = db.session.query(Curso).order_by("nome").all()
         info_cursos = []
         for curso in cursos:
             info = (curso.id, curso.nome)
@@ -106,7 +106,7 @@ def get_opcoes_area_atividade():
 
 def get_opcoes_tipo_atividade():
     try:
-        tipos = db.session.query(TipoAtividade).all()
+        tipos = db.session.query(TipoAtividade).order_by("nome").all()
         tipos_atividade = []
         for tipo in tipos:
             info_tipo = (tipo.id, tipo.nome)

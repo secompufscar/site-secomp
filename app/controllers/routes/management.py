@@ -176,7 +176,7 @@ def listas():
 @login_required
 def gerar_url_conteudo():
     permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or current_user.is_admin()):
+    if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = GerarUrlConteudoForm(request.form)
         emails = request.form.getlist('emails[]')
@@ -189,6 +189,7 @@ def gerar_url_conteudo():
                         if ministrante.usuario.senha is None:
                             db.session.delete(ministrante.usuario)
                             db.session.delete(ministrante)
+                        atividade_removida.ministrantes.clear()
                         db.session.delete(atividade_removida)
                         db.session.commit()
             if verifica_lista_emails(emails):
@@ -211,6 +212,6 @@ def gerar_url_conteudo():
                         atividade.ministrantes.append(ministrante)
                     db.session.add(atividade)
                     db.session.commit()
-        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(), form_login=form_login)
+        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(request.url_root), form_login=form_login)
     else:
         abort(403)
