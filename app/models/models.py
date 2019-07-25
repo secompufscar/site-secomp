@@ -66,6 +66,7 @@ class Usuario(db.Model):
     def get_id(self):
         return self.id
 
+    @property
     def is_authenticated(self):
         return self.autenticado
 
@@ -73,6 +74,7 @@ class Usuario(db.Model):
     def is_anonymous(cls):
         return False
 
+    @property
     def is_admin(self):
         return self.admin
 
