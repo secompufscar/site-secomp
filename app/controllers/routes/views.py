@@ -1,7 +1,7 @@
-from flask import render_template, request, Blueprint, url_for, redirect, current_app
+from flask import render_template, request, Blueprint, url_for, redirect, current_app, send_from_directory, abort
 from flask_login import login_required, login_user, logout_user, current_user
 from passlib.hash import pbkdf2_sha256
-
+import os
 from app.controllers.forms.forms import *
 from app.controllers.functions.email import enviar_email_dm
 from app.controllers.functions.helpers import *
@@ -133,3 +133,13 @@ def senhas():
 def patrocinadores():
     patrocinadores = db.session.query(Patrocinador)
     return render_template('views/patrocinadores.html', patrocinadores=patrocinadores)
+
+@views.route("/protected/<path:filename>", methods=["GET"])
+@login_required
+def protected(filename):
+    if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "MINISTRANTE" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes():
+        return send_from_directory(
+            os.path.join(current_app.root_path, 'protected'),
+            filename
+        )
+    abort(404)
