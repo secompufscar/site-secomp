@@ -11,10 +11,10 @@ from app.models.models import *
 class AppIndexView(AdminIndexView):
     @expose('/')
     def index(self):
-        if current_user.autenticado and current_user.admin:
+        if current_user.is_authenticated and current_user.is_admin:
             self._template_args['usuario'] = current_user
             return super(AppIndexView, self).index()
-        return redirect(url_for('views.index'))
+        return redirect(url_for('views.login'))
 
 
 class AppModelView(ModelView):
@@ -24,11 +24,11 @@ class AppModelView(ModelView):
 
     @classmethod
     def is_accessible(cls):
-        return current_user.autenticado and current_user.admin
+        return current_user.is_authenticated and current_user.is_admin
 
     @classmethod
     def inaccessible_callback(cls, name, **kwargs):
-        return redirect(url_for('views.index'))
+        return redirect(url_for('views.login'))
 
 
 def init_app(service, path):
