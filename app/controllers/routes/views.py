@@ -7,9 +7,9 @@ from app.controllers.functions.email import enviar_email_dm
 from app.controllers.functions.helpers import *
 from app.controllers.constants import *
 from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from flask_limiter.util import get_ipaddr
 
-limiter = Limiter(current_app, key_func=get_remote_address)
+limiter = Limiter(current_app, key_func=get_ipaddr)
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
 
 
