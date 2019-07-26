@@ -27,10 +27,10 @@ def cadastro():
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     form_login = LoginForm(request.form)
     form = CadastroForm(request.form)
-    email = form.email.data
-    salt = gensalt().decode('utf-8')
-    token = serializer.dumps(email, salt=salt)
     if form.validate_on_submit():
+        email = form.email.data
+        salt = gensalt().decode('utf-8')
+        token = serializer.dumps(email, salt=salt)
         agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
         usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
@@ -40,14 +40,16 @@ def cadastro():
                                                                   Instituicao(nome=form.outra_instituicao.data)),
                           id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
                           data_nascimento=form.data_nasc.data, token_email=token, autenticado=True, salt=salt)
+        como_conheceu = ComoConheceu(id_usuario=usuario.id, opcao=form.como_conheceu.data, outro=form.outro_como_conheceu.data) 
         db.session.add(usuario)
+        db.session.add(como_conheceu)
         db.session.flush()
         db.session.commit()
         enviar_email_confirmacao(usuario, token)
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
-
     return render_template('users/cadastro.html', form=form, form_login=form_login)
+
 
 
 @users.route('/verificar-email')

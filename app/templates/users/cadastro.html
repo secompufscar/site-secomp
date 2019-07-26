@@ -98,6 +98,32 @@
             </div>
           </div>
 
+
+    <div class="col-md-8">
+      <form method="POST" action="{{url_for('users.cadastro')}}">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.primeiro_nome) }}
+        {{ wtf.form_field(form.sobrenome) }}
+        {{ wtf.form_field(form.email) }}
+        {{ wtf.form_field(form.senha) }}
+        {{ wtf.form_field(form.confirmacao) }}
+        {{ wtf.form_field(form.curso) }}
+        {{ wtf.form_field(form.outro_curso) }}
+        {{ wtf.form_field(form.instituicao) }}
+        {{ wtf.form_field(form.outra_instituicao) }}
+        {{ wtf.form_field(form.cidade) }}
+        {{ wtf.form_field(form.outra_cidade) }}
+        {{ wtf.form_field(form.data_nasc) }}
+        {{ wtf.form_field(form.como_conheceu) }}
+        {{ wtf.form_field(form.outro_como_conheceu) }}
+        {{ wtf.form_field(form.recaptcha) }}
+
+        {% for error in form.recaptcha.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Cadastrar</button>
         </div>
       </div>
     </div>
@@ -167,6 +193,10 @@
       $('label[for="outra_cidade"]').hide();
       $("#outra_cidade").hide();
     }
+    if ($("#como_conheceu option:selected").val() !== '4') {
+      $('label[for="outro_como_conheceu"]').hide();
+      $("#outro_como_conheceu").hide();
+    }
     $('#data_nasc').mask('00/00/0000');
     $("#curso").change(function () {
       if ($("#curso option:selected").val() === '0') {
@@ -194,6 +224,15 @@
         $('label[for="outra_cidade"]').hide();
         $("#outra_cidade").hide();
       }
+    });
+    $("#como_conheceu").change(function () {
+        if ($("#como_conheceu option:selected").val() ==='5') {
+            $('label[for="outro_como_conheceu"]').show();
+            $("#outro_como_conheceu").show();
+        } else {
+            $('label[for="outro_como_conheceu"]').hide();
+            $("#outro_como_conheceu").hide();
+        }
     });
   });
 
