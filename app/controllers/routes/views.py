@@ -13,7 +13,7 @@ limiter = Limiter(current_app, key_func=get_ipaddr)
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
 
 
-#@views.route('/', methods=["GET", "POST"])
+@views.route('/', methods=["GET", "POST"])
 def index():
     """
     Renderiza a página inicial do projeto
@@ -90,7 +90,6 @@ def teste():
     return render_template('teste.html', title='Teste', form_login=form_login)
 
 @limiter.limit("50/day")
-@views.route('/', methods=["GET", "POST"])
 @views.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm(request.form)
