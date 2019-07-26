@@ -1,15 +1,15 @@
-{% extends "base.html" %}
+{% extends "users/sidebar.html" %}
 {% import "wtf.html" as wtf %}
 
 
-{% block content %}
-<div class=" container">
+{% block sidebar_content %}
+<div class="container">
 
-    <div class="row">
-		<div class="col-sm-3">
+    <div class="row pt-1">
+		<div class="col-md-3">
 			<h2>Camisetas</h2>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-md-6">
 
 			<div class="input-group ">
 				<input name="filtro" class="form-control" id="filtro" type="text" placeholder="Pesquisar modelo">
@@ -26,7 +26,6 @@
 		</div>
 	</div>
 
-    <hr/>
     <div id="list" class="row">
 
 		<div class="table-responsive col-lg-12">

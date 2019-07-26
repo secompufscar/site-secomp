@@ -3,78 +3,82 @@
 
 {% block content %}
 <script>
-  function continuar2(){
-    $(location).attr('href','/participante/dashboard');
+  function continuar2() {
+    $(location).attr('href', '/participante/dashboard');
   }
 </script>
-<style>
-  #pergunta{
-    margin-top:15px;
-  }
-</style>
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h2 id="pergunta" class="text-center">Deseja comprar o kit da SECOMP UFSCar?</h2>
-            <form method="POST" action="{{url_for('users.comprar_kit')}}">
-            {{ form.hidden_tag() }}
-            {{ wtf.form_field(form.comprar) }}
-            <div id='info_kit'>
-              {{ wtf.form_field(form.camiseta) }}
-              {{ wtf.form_field(form.restricao_coffee) }}
-              <div style="margin-bottom:8px;">Escolha a forma de pagamento</div>
-              {{ wtf.form_field(form.forma_pagamento) }}
-              <div id="info_conta" style='margin-bottom: 10px'>
-                <div>Conta: 1189071-1</div>
-                <div>Agência: 4779</div>
-                <div>Banco: Banco do Brasil</div>
-                <div>Cidade: São Carlos</div>
-                <div>Estado: SP</div>
-              </div>
-              <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
-            </div>
-            <button type='button' id='continuar' class="btn btn-primary" onclick='continuar2()'>Continuar</button>
-            </form>
-        </div>
+  <div class="row justify-content-center pt-1">
+    <div class="col-md-8">
+      <h2 class="text-center">Deseja comprar o kit da SECOMP UFSCar?</h2>
     </div>
+    <div class="col-md-8">
+      <form method="POST" action="{{ url_for('users.comprar_kit') }}">
+
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.comprar) }}
+
+        <div id="info_kit">
+
+          {{ wtf.form_field(form.camiseta) }}
+          {{ wtf.form_field(form.restricao_coffee) }}
+
+          <h4>Escolha a forma de pagamento</h4>
+
+          {{ wtf.form_field(form.forma_pagamento) }}
+
+          <div id="info_conta p-3">
+            <h5>Conta: 1189071-1</h5>
+            <h5>Agência: 4779</h5>
+            <h5>Banco: Banco do Brasil</h5>
+            <h5>Cidade: São Carlos-SP</h5>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
+          
+        </div>
+        <button type="button" id="continuar" class="btn btn-primary" onclick="continuar2()">Continuar</button>
+      </form>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
 
 {% block scripts %}
 <script>
-    $('#info_kit').hide();
-    $('#info_conta').hide();
-    $('#comprar-0').change(function() {
-        if ($('#comprar-0').is(':checked')){
-            $('#info_kit').show();
-            $('#continuar').hide();
-        }
-    });
+  $('#info_kit').hide();
+  $('#info_conta').hide();
+  $('#comprar-0').change(function () {
+    if ($('#comprar-0').is(':checked')) {
+      $('#info_kit').show();
+      $('#continuar').hide();
+    }
+  });
 
-    $('#comprar-1').change(function() {
-        if ($('#comprar-1').is(':checked')){
-            $('#info_kit').hide();
-            $('#continuar').show();
-        }
-    });
+  $('#comprar-1').change(function () {
+    if ($('#comprar-1').is(':checked')) {
+      $('#info_kit').hide();
+      $('#continuar').show();
+    }
+  });
 
-    $('#forma_pagamento-0').change(function() {
-        if ($('#forma_pagamento-0').is(':checked')){
-            $('#info_conta').show();
-        }
-    });
-    $('#forma_pagamento-1').change(function() {
-        if ($('#forma_pagamento-1').is(':checked')){
-            $('#info_conta').hide();
-        }
-    });
+  $('#forma_pagamento-0').change(function () {
+    if ($('#forma_pagamento-0').is(':checked')) {
+      $('#info_conta').show();
+    }
+  });
+  $('#forma_pagamento-1').change(function () {
+    if ($('#forma_pagamento-1').is(':checked')) {
+      $('#info_conta').hide();
+    }
+  });
 
 </script>
 
 <script>
-	$(document).ready(function(){
-    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
+  $(document).ready(function () {
+    $('#content').css("padding-top", $('#navTop').height() * 1.2);
   });
 </script>
 {% endblock %}
