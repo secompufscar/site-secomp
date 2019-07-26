@@ -58,7 +58,7 @@ def enviar_email_confirmacao(usuario, token):
             "email": usuario.email,
             "template": 'email/confirmacao_de_email.html',
             "link": str(link),
-            "footer": 'TI X SECCOMP UFSCar'
+            "footer": 'TI X SECOMP UFSCar'
             }
     enviar_email_generico(info)
 
