@@ -11,9 +11,9 @@ from app.controllers.functions.helpers import *
 from app.models.models import *
 from flask_wtf import FlaskForm
 from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from flask_limiter.util import get_ipaddr
 from werkzeug import secure_filename
-limiter = Limiter(current_app, key_func=get_remote_address)
+limiter = Limiter(current_app, key_func=get_ipaddr)
 
 
 conteudo = Blueprint('conteudo', __name__, static_folder='static',
