@@ -36,6 +36,7 @@ def create_app(config=None):
     Migrate(app, db)
 
     from app.controllers.forms.forms import LoginForm
+
     @app.errorhandler(400)
     def bad_request(error):
         form_login = LoginForm(request.form)
