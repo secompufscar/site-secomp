@@ -131,3 +131,7 @@ def get_tipos_atividade():
 def kit_pago(participante):
     pagamento = db.session.query(Pagamento).filter_by(efetuado=True, participante=participante, descricao='Kit').first()
     return pagamento is not None
+
+def get_ranking_pontuacao():
+    participantes = db.session.query(Participante).filter_by(id_evento=get_id_evento_atual()).order_by(Participante.pontuacao.desc()).limit(10).all()
+    return participantes
