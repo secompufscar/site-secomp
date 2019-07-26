@@ -22,7 +22,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="{{url_for('static', filename='js/select2.js')}}"></script>
 <script src="{{url_for('static', filename='js/pt-BR.js')}}" type="typescript"></script>
-<script src="{{url_for('static', filename='js/flipclock.js')}}"></script>
 {% endblock %}
 
 <title>{% block title %}SECOMP UFSCar{% endblock %}</title>
@@ -34,7 +33,6 @@
 <link href="{{ url_for('static', filename='fa/css/all.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ url_for('static', filename='css/select2.css')}}" rel="stylesheet" />
-<link href="{{ url_for('static', filename='css/flipclock.css')}}" rel="stylesheet" />
 {% endblock %}
 
 {% block favicon %}
@@ -147,14 +145,14 @@
 </div>
 
 <main>
-  <div id="content">
+  <div id="content" style="padding-top: 53px;">
     {% block content %}{% endblock %}
   </div>
 </main>
 
 {# Rascunho de rodapé #}
 {% block footer %}
-<footer class="navbar small pt-4 text-white">
+<footer class="navbar bg-dark small pt-4 text-white">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-sm-8 text-center">
@@ -200,9 +198,9 @@
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
 
 <script>
-	$(document).ready(function(){
-    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
-  });
+	/*$(document).ready(function(){
+    	$('#content').css("padding-top", $('#navTop').outerHeight() * 1.2);
+  });*/
 </script>
 
 {% endblock %}
