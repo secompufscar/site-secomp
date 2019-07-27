@@ -31,6 +31,16 @@ class AppModelView(ModelView):
         return redirect(url_for('views.login'))
 
 
+class FileAdmin2(FileAdmin):
+    @classmethod
+    def is_accessible(cls):
+        return current_user.is_authenticated and current_user.is_admin
+
+    @classmethod
+    def inaccessible_callback(cls, name, **kwargs):
+        return redirect(url_for('views.login'))
+
+
 def init_app(service, path):
     admin = Admin(service, index_view=AppIndexView(), template_mode='bootstrap3')
     admin.add_view(AppModelView(Usuario, db.session))
@@ -42,5 +52,5 @@ def init_app(service, path):
     admin.add_view(AppModelView(MembroDeEquipe, db.session))
     admin.add_view(AppModelView(AreaAtividade, db.session))
     admin.add_view(AppModelView(TipoAtividade, db.session))
-    #admin.add_view(FileAdmin(path, '/static/', name='Arquivos Estáticos'))
+    admin.add_view(FileAdmin2(path, '/static/', name='Arquivos Estáticos'))
     return admin
