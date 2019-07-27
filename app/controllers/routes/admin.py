@@ -31,6 +31,18 @@ class AppModelView(ModelView):
         return redirect(url_for('views.login'))
 
 
+class FileAdmin(FileAdmin):
+    @classmethod
+    def is_accessible_path(self, path):
+        return current_user.is_authenticated and current_user.is_admin
+
+    @expose('/')
+    def index(self):
+        if current_user.is_authenticated and current_user.is_admin:
+            self._template_args['usuario'] = current_user
+            return super(FileAdmin, self).index()
+        return redirect(url_for('views.login'))
+
 def init_app(service, path):
     admin = Admin(service, index_view=AppIndexView(), template_mode='bootstrap3')
     admin.add_view(AppModelView(Usuario, db.session))
