@@ -475,7 +475,6 @@ def submeter_flag():
         usuario=current_user).first()
     if form.validate_on_submit():
         flag = db.session.query(Flag).filter_by(codigo=form.flag.data).first()
-        print(participante.flags_encontradas)
         if(flag != None and flag not in participante.flags_encontradas and flag.ativa):
             flag.quantidade_utilizada += 1
             participante.pontuacao += flag.pontos
