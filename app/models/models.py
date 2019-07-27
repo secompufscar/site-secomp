@@ -32,6 +32,10 @@ relacao_atividade_patrocinador = db.Table('relacao_atividade_patrocinador',
                                        Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
                                        Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')))
 
+relacao_participante_flags = db.Table('relacao_participante_flags',
+                                    Column('id', Integer, primary_key=True),
+                                    Column('id_flag', Integer, db.ForeignKey('flag.id')),
+                                    Column('id_participante', Integer, db.ForeignKey('participante.id')))
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
@@ -102,7 +106,8 @@ class Participante(db.Model):
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
-
+    flags_encontradas = db.relationship('Flag',
+                                        secondary=relacao_participante_flags, backref="flag")
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
 
@@ -405,3 +410,10 @@ class Pagamento(db.Model):
     valor = Column(Float(precision=2), nullable=False)
     efetuado = Column(Boolean, nullable=False)
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
+
+class Flag(db.Model):
+    __tablename__ = 'flag'
+    id = Column(Integer, primary_key=True)
+    codigo = Column(String(200), nullable=False)
+    pontos = Column(Integer, nullable=False)
+
