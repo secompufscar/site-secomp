@@ -3,6 +3,7 @@ from os import path, makedirs
 from bcrypt import gensalt
 from flask import request, redirect, flash, Blueprint, current_app
 from flask_login import login_required, login_user
+
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
@@ -462,3 +463,28 @@ def executar_pagamento_kit():
             return "O Pagamento já foi efetuado"
     else:
         return "Erro"
+
+@users.route('/submeter-flag', methods=["GET", "POST"])
+@login_required
+def submeter_flag():
+    form_login = LoginForm(request.form)
+    form = SubmeterFlagForm(request.form)
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    if form.validate_on_submit():
+        flag = db.session.query(Flag).filter_by(codigo=form.flag.data).first()
+        print(participante.flags_encontradas)
+        if(flag != None and flag not in participante.flags_encontradas):
+            flag.quantidade_utilizada += 1
+            participante.pontuacao += flag.pontos
+            participante.flags_encontradas.append(flag)
+            db.session.flush()
+            db.session.commit()
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="aceita")
+        elif flag in participante.flags_encontradas:
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="já utilizada, safadinho")
+        else:
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="inválida")
+
+    else:
+        return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status=None)
