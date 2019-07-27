@@ -1,0 +1,57 @@
+{% extends "users/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+
+{% block sidebar_content %}
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6" style="width: 50%;margin-left : 25%">
+            <h3 class="text-center" style="padding-top: 50px">Cadastro de novas flags</h3>
+            {% if cadastrado %}
+                <center><h5>A Flag foi cadastrada com sucesso</h5></center>
+            {% endif %}
+            {% if desativada %}
+                <center><h5>A Flag foi desativada com sucesso</h5></center>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('management.cadastro_flags') }}">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.flag) }}
+                {{ wtf.form_field(form.pontos) }}
+                <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+             </form>
+            <br>
+        </div>
+	</div>
+
+    <div id="list" class="row" style="padding-top: 25px;">
+		<div class="table-responsive col-lg-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+                        <th>Flag</th>
+                        <th>Pontos</th>
+                        <th>Ativa</th>
+                        <th>Quantidade de utilizações</th>
+                        <th>Ação</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for flag in flags %}
+					<tr>
+                        <td>{{flag.codigo}}</td>
+                        <td>{{flag.pontos}}</td>
+                        <td>{{flag.ativa}}</td>
+                        <td>{{flag.quantidade_utilizada}}</td>
+                        <td><a href="{{ url_for('management.cadastro_flags') }}/desativar/{{ flag.id }}">Desativar</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+    </div>
+</div>
+
+{% endblock %}

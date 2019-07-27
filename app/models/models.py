@@ -106,8 +106,7 @@ class Participante(db.Model):
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
-    flags_encontradas = db.relationship('Flag',
-                                        secondary=relacao_participante_flags, backref="flag")
+    flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
 
@@ -260,7 +259,7 @@ class Evento(db.Model):
     patrocinadores = db.relationship('Patrocinador', secondary=relacao_patrocinador_evento, lazy=True,
                                      back_populates='eventos')
     camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
-    flags = db.relationship("Flag", backref="evento")
+    flags = db.relationship('Flag', backref="evento", lazy=True)
     def __repr__(self):
         return str(self.edicao) + "ª Edição"
 
@@ -414,6 +413,8 @@ class Pagamento(db.Model):
 class Flag(db.Model):
     __tablename__ = 'flag'
     id = Column(Integer, primary_key=True)
-    codigo = Column(String(200), nullable=False)
+    codigo = Column(String(45), nullable=False)
     pontos = Column(Integer, nullable=False)
-
+    ativa = Column(Boolean, default=True)
+    quantidade_utilizada = Column(Integer, default=0)
+    evento_id = Column(Integer, db.ForeignKey('evento.id'))
