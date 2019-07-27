@@ -26,7 +26,7 @@ def index():
                            secompEdition=secomp_edition,
                            form_login=form_login)
     '''
-    return redirect(url_for('login'))
+    return redirect(url_for('views.login'))
 #@views.route('/contato', methods=['POST', 'GET'])
 def contato_dm():
     """
