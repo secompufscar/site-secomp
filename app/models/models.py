@@ -260,7 +260,7 @@ class Evento(db.Model):
     patrocinadores = db.relationship('Patrocinador', secondary=relacao_patrocinador_evento, lazy=True,
                                      back_populates='eventos')
     camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
-
+    flags = db.relationship("Flag", backref="evento")
     def __repr__(self):
         return str(self.edicao) + "ª Edição"
 
