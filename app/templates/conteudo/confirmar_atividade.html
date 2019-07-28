@@ -10,7 +10,7 @@
       <h3 class="text-center">{{ titulo_atividade }}</h3>
 
       <form method="POST" action="{{url_for('conteudo.confirmar_atividade', codigo=codigo)}}">
-        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
         <button type="submit" name="confirmar" value='1' class="btn btn-primary btn-block">Confirmar</button>
         <button type="submit" name="confirmar" value='0' class="btn btn-secondary btn-block">Não</button>
       </form>

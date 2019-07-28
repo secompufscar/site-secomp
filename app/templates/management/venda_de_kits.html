@@ -11,7 +11,7 @@
                     <div class="alert alert-info" role="alert">
                         {{ alerta }}
                     </div>
-                    {{ form.hidden_tag() }}
+                    {{ form.csrf_token() }}
                     {{ wtf.form_field(form.participante) }}
                     {{ wtf.form_field(form.camiseta) }}
                     <div class="text-center">

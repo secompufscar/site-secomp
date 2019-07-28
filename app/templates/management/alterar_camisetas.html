@@ -17,7 +17,7 @@
                     Erro! Sem unidades de {{camiseta.tamanho}} disponíveis.
                 </div>
                 {% endif %}
-                {{ form.hidden_tag() }}
+                {{ form.csrf_token() }}
                 {{ wtf.form_field(form.participante) }}
                 {{ wtf.form_field(form.camiseta) }}
                 <div class="text-center">

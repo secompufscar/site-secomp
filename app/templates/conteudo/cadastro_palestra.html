@@ -52,7 +52,7 @@
       {% endif %}
       <form method="POST" action="{{url_for('conteudo.cadastro_palestra', codigo=codigo)}}"
         enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.descricao) }}
         {{ wtf.form_field(form.requisitos_tecnicos) }}

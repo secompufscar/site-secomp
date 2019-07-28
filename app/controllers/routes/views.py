@@ -34,7 +34,7 @@ def contato_dm():
     """
     form = ContatoForm(request.form)
     form_login = LoginForm(request.form)
-    if form.validate_on_submit():
+    if request.method == 'POST' and form.validate():
         nome = form.nome_completo.data
         email = form.email.data
         mensagem = form.mensagem.data
@@ -93,8 +93,8 @@ def teste():
 @views.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm(request.form)
-
-    if form.validate_on_submit():
+    print(form.errors)
+    if request.method == 'POST' and form.validate():
         user = db.session.query(Usuario).filter_by(
             email=form.email.data).first()
         if user:

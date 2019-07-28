@@ -26,9 +26,9 @@ def cadastro_ministrante(codigo):
     r = valida_url_codigo(None, codigo)
     permitido, emails = r[0], r[2]
     if(permitido == True):
-        form = CadastroMinistranteForm()
+        form = CadastroMinistranteForm(request.form)
         form.codigo_url = codigo
-        if form.validate_on_submit() and form.email.data in emails:
+        if request.method == 'POST' and form.validate() and form.email.data in emails:
             serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
             email = form.email.data
             salt = gensalt().decode('utf-8')
@@ -101,7 +101,7 @@ def dados_hospedagem_transporte():
         if dados_hospedagem_transporte is not None and atividade_confirmada == False:
             return redirect(url_for('conteudo.' + view_atividade, codigo=atividade.url_codigo))
         form = CadastroInformacoesLocomocaoEstadia(request.form)
-        if form.validate_on_submit():
+        if request.method == 'POST' and form.validate():
             dados_hospedagem_transporte = DadosHospedagemTransporte(id_evento=get_id_evento_atual(), cidade_origem=form.cidade_origem.data,
             data_chegada_origem=form.data_chegada_sanca.data, data_chegada_partida=form.data_partida_sanca.data,
             transporte_ida_volta=form.transporte_ida_volta.data, opcoes_transporte_ida_volta=str(form.opcoes_transporte_ida_volta.data),
@@ -123,7 +123,7 @@ def dados_hospedagem_transporte():
 def cadastro_minicurso(codigo):
     permissoes = current_user.getPermissoes()
     if("MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin()):
-        form_login = LoginForm()
+        form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante
         if permitido == True:
@@ -132,8 +132,8 @@ def cadastro_minicurso(codigo):
             else:
                 r_atividade_ministrante = None
             if "CONTEUDO" in permissoes or r_atividade_ministrante.admin_atividade is not False:
-                form = CadastroInformacoesMinicurso()
-                if form.validate_on_submit():
+                form = CadastroInformacoesMinicurso(request.form)
+                if request.method == 'POST' and form.validate():
 
                     ae_filename = None
                     m_filename = None
@@ -202,8 +202,8 @@ def cadastro_palestra(codigo):
             else:
                 r_atividade_ministrante = None
             if "CONTEUDO" in permissoes or r_atividade_ministrante.admin_atividade is not False:
-                form = CadastroInformacoesPalestra()
-                if form.validate_on_submit():
+                form = CadastroInformacoesPalestra(request.form)
+                if request.method == 'POST' and form.validate():
 
                     m_filename = None
 
@@ -251,7 +251,7 @@ def cadastro_mesa_redonda(codigo):
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         form = CadastroAtividadeGenerica(request.form)
         if permitido == True:
-            if form.validate_on_submit():
+            if request.method == 'POST' and form.validate():
                 for ministrante in atividade.ministrantes:
                     r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
                     r.admin_atividade = False
@@ -283,7 +283,7 @@ def cadastro_feira_projetos(codigo):
                 r_atividade_ministrante = None
             if "CONTEUDO" in permissoes or r_atividade_ministrante.admin_atividade is not False:
                 form = CadastroFeiraDeProjetos(request.form)
-                if form.validate_on_submit():
+                if request.method == 'POST' and form.validate():
                     info_feira_de_projetos = InfoFeiraDeProjetos(necessidades=form.necessidades.data, planejamento=form.planejamento.data)
                     for ministrante in atividade.ministrantes:
                         r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
@@ -319,7 +319,7 @@ def confirmar_atividade(codigo):
         r_atividade_ministrante = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
         if permitido == True and r_atividade_ministrante.confirmado is not False:
             form = FlaskForm(request.form)
-            if form.validate_on_submit():
+            if request.method == 'POST' and form.validate():
                 confirmar = request.form.getlist('confirmar')[0]
                 r_atividade_ministrante.confirmado = bool(confirmar == '1')
                 db.session.add(r_atividade_ministrante)
@@ -337,7 +337,7 @@ def cadastro_roda_conversa(codigo):
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         form = CadastroAtividadeGenerica(request.form)
         if permitido == True:
-            if form.validate_on_submit():
+            if request.method == 'POST' and form.validate():
                 for ministrante in atividade.ministrantes:
                     r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
                     r.admin_atividade = False
@@ -363,7 +363,7 @@ def cadastro_workshop(codigo):
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         form = CadastroAtividadeGenerica(request.form)
         if permitido == True:
-            if form.validate_on_submit():
+            if request.method == 'POST' and form.validate():
                 for ministrante in atividade.ministrantes:
                     r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
                     r.admin_atividade = False
@@ -389,7 +389,7 @@ def cadastro_palestra_empreesarial(codigo):
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         form = CadastroAtividadeGenerica(request.form)
         if permitido == True:
-            if form.validate_on_submit():
+            if request.method == 'POST' and form.validate():
                 for ministrante in atividade.ministrantes:
                     r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
                     r.admin_atividade = False
