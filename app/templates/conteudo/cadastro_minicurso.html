@@ -53,7 +53,7 @@
 
       <form method="POST" action="{{url_for('conteudo.cadastro_minicurso', codigo=codigo)}}"
             enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.descricao) }}
         {{ wtf.form_field(form.pre_requisitos) }}
