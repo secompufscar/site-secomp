@@ -52,7 +52,7 @@
       {% endif %}
 
       <form method="POST" action="{{url_for('conteudo.cadastro_feira_projetos', codigo=codigo)}}">
-        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.descricao) }}
         {{ wtf.form_field(form.necessidades) }}

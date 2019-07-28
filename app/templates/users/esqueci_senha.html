@@ -14,7 +14,7 @@
 
             {% if status_envio_email == False: %}
             <form action="{{url_for('users.esqueci_senha')}}" method="POST">
-                {{ form.hidden_tag() }}
+                {{ form.csrf_token() }}
                 {{ wtf.form_field(form.email) }}
                 {{ form.recaptcha }}
                 {% for error in form.recaptcha.errors %}

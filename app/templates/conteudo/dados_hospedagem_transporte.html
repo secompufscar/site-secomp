@@ -9,7 +9,7 @@
       <h2 class="text-center">Dados de Hospedagem e Transporte</h2>
 
       <form method="POST" action="{{url_for('conteudo.dados_hospedagem_transporte')}}">
-        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
         {{ wtf.form_field(form.cidade_origem) }}
         {{ wtf.form_field(form.data_chegada_sanca) }}
         {{ wtf.form_field(form.data_partida_sanca) }}

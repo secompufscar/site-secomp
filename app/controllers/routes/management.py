@@ -58,7 +58,7 @@ def cadastro_patrocinador():
     if("CADASTRAR_PATROCINADOR" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = PatrocinadorForm(request.form)
-        if form.validate_on_submit():
+        if request.method == 'POST' and form.validate():
             patrocinador = Patrocinador(nome_empresa=form.nome_empresa.data, logo=form.logo.data,
                                         ativo_site=form.ativo_site.data, id_cota=form.id_cota.data,
                                         link_website=form.link_website.data, form_login=form_login)
@@ -79,7 +79,7 @@ def vender_kits():
     if("VENDA_PRESENCIAL" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = VendaKitForm(request.form)
-        if form.validate_on_submit() and form.participante.data is not None:
+        if request.method == 'POST' and form.validate() and form.participante.data is not None:
             camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
             participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
             if participante.pagamento:
@@ -130,7 +130,7 @@ def alterar_camiseta():
     if("ALTERAR_CAMISETAS" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = AlteraCamisetaForm(request.form)
-        if form.validate_on_submit() and form.participante.data is not None:
+        if request.method == 'POST' and form.validate() and form.participante.data is not None:
             participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
             camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
             if camiseta.quantidade_restante > 0:
@@ -158,7 +158,7 @@ def listas():
     if("GERAR_LISTAS" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = ListasParticipantes(request.form)
-        if(form.validate_on_submit()):
+        if(request.method == 'POST' and form.validate()):
             if(form.tipo.data == 0):
                 lista = db.session.query(Atividade).filter_by(titulo=form.atividades.data).first().participantes
                 return render_template('management/listas_participante.html', atividade=form.atividades.data,
@@ -180,7 +180,7 @@ def gerar_url_conteudo():
         form_login = LoginForm(request.form)
         form = GerarUrlConteudoForm(request.form)
         emails = request.form.getlist('emails[]')
-        if form.validate_on_submit():
+        if request.method == 'POST' and form.validate():
             atividade_removida = request.form.getlist('removido')
             if len(atividade_removida) > 0:
                 atividade_removida = db.session.query(Atividade).get(atividade_removida[0])
