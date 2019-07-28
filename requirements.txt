@@ -22,3 +22,4 @@ gunicorn>=19.9.0
 paypalrestsdk>=1.13.1
 flask-limiter>=1.0.1
 requests>=2.22.0
+gevent>=1.4.0

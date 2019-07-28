@@ -34,15 +34,7 @@ def create_app(config=None):
     app.app_context().push()
     db.init_app(app)
     Migrate(app, db)
-
-    from sqlalchemy.orm import scoped_session, sessionmaker
-    db.session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=db.engine))
-    @app.teardown_appcontext
-    def shutdown_session(exception=None):
-        db.session.remove()
-
+    
     from app.controllers.forms.forms import LoginForm
 
     @app.errorhandler(400)
