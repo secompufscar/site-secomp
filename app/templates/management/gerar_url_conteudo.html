@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 
+{% block metas %}
+
+{{ super() }}
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+{% endblock %}
+
 {% block content %}
 <style>
   .clipboard {
@@ -126,6 +135,10 @@
   </form>
 </div>
 <script>
+  if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+  }
+
   email_count = 0;
   function validateEmail($email) {
     var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
