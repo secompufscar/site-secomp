@@ -34,7 +34,7 @@ def create_app(config=None):
     app.app_context().push()
     db.init_app(app)
     Migrate(app, db)
-
+    
     from app.controllers.forms.forms import LoginForm
 
     @app.errorhandler(400)

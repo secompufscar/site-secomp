@@ -9,7 +9,7 @@
 </style>
 <div class="container">
   <form method="POST" action="admin/permissoes">
-    {{ form.csrf_token() }}
+    {{ form.hidden_tag() }}
     {{ wtf.form_field(form.usuario) }}
     {{ wtf.form_field(form.permissoes) }}
 

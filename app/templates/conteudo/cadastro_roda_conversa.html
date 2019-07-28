@@ -51,7 +51,7 @@
       {% endif %}
 
       <form method="POST" action="{{url_for('conteudo.cadastro_roda_conversa', codigo=codigo)}}">
-        {{ form.csrf_token() }}
+        {{ form.hidden_tag() }}
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.descricao) }}
         {{ wtf.form_field(form.observacoes) }}
