@@ -140,7 +140,7 @@
             Erro ao fazer login!
           </div>
           {% endif %}
-          {{ form_login.csrf_token() }}
+          {{ form_login.hidden_tag() }}
           {{ wtf.form_field(form_login.email) }}
           {{ wtf.form_field(form_login.senha) }}
         </div>

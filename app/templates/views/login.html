@@ -25,7 +25,7 @@
                 </div>
 			{% endif %}
 			<form action="/login" method="POST">
-				{{ form.csrf_token() }}
+				{{ form.hidden_tag() }}
 				{{ wtf.form_field(form.email) }}
 				{{ wtf.form_field(form.senha) }}
 

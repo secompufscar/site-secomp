@@ -7,7 +7,7 @@
         <div class="col-md-6">
             <h3 class="text-center">Cadastro de patrocinadores</h3>
             <form method="POST" action="/cadastro-participante">
-                {{ form.csrf_token() }}
+                {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.nome_empresa) }}
                 {{ wtf.form_field(form.logo) }}
                 {{ wtf.form_field(form.id_cota) }}

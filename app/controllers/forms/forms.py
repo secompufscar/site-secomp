@@ -1,36 +1,21 @@
-from flask_wtf import RecaptchaField
+from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField, RadioField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
-from wtforms import Form
-from wtforms.csrf.session import SessionCSRF
+
 from app.controllers.forms.options import *
 from app.controllers.forms.validators import *
 from app.controllers.functions.helpers import get_participantes, get_atividades
-from flask import current_app
-from datetime import timedelta
-from flask import session
 
-class BaseForm(Form):
-    class Meta:
-        csrf = True
-        csrf_class = SessionCSRF
-        csrf_secret = current_app.config["WTF_CSRF_SECRET_KEY"]
-        csrf_time_limit = timedelta(minutes=20)
 
-        @property
-        def csrf_context(self):
-            return session
-#csrf = CSRFProtect()
-
-class LoginForm(BaseForm):
+class LoginForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
     senha = PasswordField('Senha', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
 
 
-class CadastroForm(BaseForm):
+class CadastroForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
@@ -56,11 +41,11 @@ class CadastroForm(BaseForm):
     recaptcha = RecaptchaField()
 
 
-class ParticipanteForm(BaseForm):
+class ParticipanteForm(FlaskForm):
     leu_termos = BooleanField('Li e concordo com os termos de uso', id="li_termos")
 
 
-class ComprarKitForm(BaseForm):
+class ComprarKitForm(FlaskForm):
     comprar = RadioField('Deseja comprar o kit da SECOMP UFSCar?', id='comprar', choices=[(1,'Sim'),(2,'Não')], coerce=int, default=2)
     camiseta = SelectField('Camiseta', choices=get_opcoes_camisetas(
     ), id="camiseta", default="P Feminino", coerce=int)
@@ -68,7 +53,7 @@ class ComprarKitForm(BaseForm):
         'Restrição para o Coffee-Break', choices=opcoes_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
     forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Enviar Comprovante'),(2,'Paypal')], coerce=int, default=2)
 
-class EditarUsuarioForm(BaseForm):
+class EditarUsuarioForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
@@ -87,20 +72,20 @@ class EditarUsuarioForm(BaseForm):
         message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
 
 
-class AlterarSenhaForm(BaseForm):
+class AlterarSenhaForm(FlaskForm):
     nova_senha = PasswordField('Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(
         min=8, max=20, message=ERRO_TAMANHO_SENHA), EqualTo('confirmacao', message=ERRO_COMPARA_SENHAS)])
     confirmacao = PasswordField('Confirmação de Senha', validators=[
                                 InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
 
 
-class AlterarSenhaPorEmailForm(BaseForm):
+class AlterarSenhaPorEmailForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
     recaptcha = RecaptchaField()
 
 
-class ContatoForm(BaseForm):
+class ContatoForm(FlaskForm):
     nome_completo = StringField('Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
     email = StringField('Email', validators=[InputRequired(
@@ -109,7 +94,7 @@ class ContatoForm(BaseForm):
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=500)])
 
 
-class PatrocinadorForm(BaseForm):
+class PatrocinadorForm(FlaskForm):
     nome_empresa = StringField('Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
     logo = StringField('Logo', validators=[InputRequired(
@@ -121,28 +106,28 @@ class PatrocinadorForm(BaseForm):
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=200)])
 
 
-class ComprovanteForm(BaseForm):
+class ComprovanteForm(FlaskForm):
     comprovante = FileField('Comprovante de Pagamento', validators=[
             FileRequired(message=ERRO_INPUT_REQUIRED),
             FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
         ])
 
 
-class AlteraCamisetaForm(BaseForm):
+class AlteraCamisetaForm(FlaskForm):
     participante = SelectField("Selecione o usuário", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
 
 
-class VendaKitForm(BaseForm):
+class VendaKitForm(FlaskForm):
     participante = SelectField("Inscrições na SECOMP 2019", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
 
-class ListasParticipantes(BaseForm):
+class ListasParticipantes(FlaskForm):
     atividades = SelectField("Atividades", choices=get_atividades(), id="atividade", coerce=int)
     tipo = SelectField("Modelos", choices=[(0, 'Inscritos'), (1, 'Presentes')], id="tipo", coerce=int)
 
 
-class CadastroMinistranteForm(BaseForm):
+class CadastroMinistranteForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
@@ -174,7 +159,7 @@ class CadastroMinistranteForm(BaseForm):
     recaptcha = RecaptchaField()
     codigo_url = ''
 
-class CadastroInformacoesMinicurso(BaseForm):
+class CadastroInformacoesMinicurso(FlaskForm):
     titulo = StringField('Título do Minicurso', validators=[InputRequired(), Length(min=1,max=256)], id='titulo')
     descricao = TextAreaField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)], id='descricao')
@@ -207,7 +192,7 @@ class CadastroInformacoesMinicurso(BaseForm):
     observacoes = TextAreaField('Observações em geral', id='observacoes', validators=[Length(max=600)])
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
-class CadastroInformacoesPalestra(BaseForm):
+class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=256)], id='titulo')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)], id='descricao')
     requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software', id='requisitos_tecnicos')
@@ -221,7 +206,7 @@ class CadastroInformacoesPalestra(BaseForm):
     observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=600)])
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()], id='confirmacao')
 
-class CadastroFeiraDeProjetos(BaseForm):
+class CadastroFeiraDeProjetos(FlaskForm):
     titulo = StringField('Título do Projeto', validators=[InputRequired(), Length(min=1,max=256)], id='titulo')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)], id='descricao')
     necessidades = TextAreaField('Necessidades', validators=[InputRequired()], id='necessidades')
@@ -229,13 +214,13 @@ class CadastroFeiraDeProjetos(BaseForm):
     observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=600)])
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
-class CadastroAtividadeGenerica(BaseForm):
+class CadastroAtividadeGenerica(FlaskForm):
     titulo = StringField('Título da Atividade', validators=[InputRequired(), Length(min=1,max=256)], id='titulo')
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)], id='descricao')
     observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=600)])
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
-class CadastroInformacoesLocomocaoEstadia(BaseForm):
+class CadastroInformacoesLocomocaoEstadia(FlaskForm):
     cidade_origem = StringField('Cidade de origem', validators=[InputRequired(), Length(min=1,max=64)])
     data_chegada_sanca = DateField('Data de chegada em São Carlos', format='%d/%m/%Y', id='data_chegada_sanca',
         validators=[InputRequired()])
@@ -256,5 +241,5 @@ class CadastroInformacoesLocomocaoEstadia(BaseForm):
     observacoes = TextAreaField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)])
 
-class GerarUrlConteudoForm(BaseForm):
+class GerarUrlConteudoForm(FlaskForm):
     tipo_atividade = SelectField("Tipo da Atividade", choices=get_opcoes_tipo_atividade(), id="tipo_atividade", coerce=int, validators=[InputRequired()])
