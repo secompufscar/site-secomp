@@ -8,7 +8,7 @@
         <div class="col-md-8">
             <h3 class="text-center">Gerar listas de participantes</h3>
             <form method="POST" action="{{ form.action }}">
-                {{ form.hidden_tag() }}
+                {{ form.csrf_token() }}
                 {{ wtf.form_field(form.atividades) }}
                 {{ wtf.form_field(form.tipo) }}
                 <div class="text-center">

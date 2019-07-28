@@ -199,7 +199,7 @@ used to be able to set values outside of it #}
 		  {%- if novalidate %} novalidate{% endif -%}
 		  {%- if render_kw %} {{render_kw|xmlattr}}{% endif -%}
 		  >
-		  {{ form.hidden_tag() }}
+		  {{ form.csrf_token() }}
 		  {{ form_errors(form, hiddens='only') }}
 
 		  {%- for field in form %}
