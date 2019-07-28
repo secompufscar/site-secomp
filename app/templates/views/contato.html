@@ -22,7 +22,7 @@
       </div>
       <div class="col-md-5">
         <form method="POST" action="/contato">
-          {{ form.csrf_token() }}
+          {{ form.hidden_tag() }}
           {{ wtf.form_field(form.nome_completo) }}
           {{ wtf.form_field(form.email) }}
           {{ wtf.form_field(form.mensagem) }}

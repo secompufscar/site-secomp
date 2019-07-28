@@ -30,7 +30,7 @@ def cadastro():
     email = form.email.data
     salt = gensalt().decode('utf-8')
     token = serializer.dumps(email, salt=salt)
-    if request.method == 'POST' and form.validate():
+    if form.validate_on_submit():
         agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
         usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
@@ -81,7 +81,7 @@ def cadastro_participante():
             form = ParticipanteForm(request.form)
             participante = db.session.query(Participante).filter_by(
                 id_usuario=current_user.id, id_evento=id_evento).first()
-            if request.method == 'POST' and form.validate() and participante is None:
+            if form.validate_on_submit() and participante is None:
                 agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 usuario = current_user
                 participante = Participante(id_usuario=usuario.id, id_evento=id_evento, data_inscricao=agora, credenciado=False,
@@ -159,7 +159,7 @@ def envio_comprovante():
     """
     form_login = LoginForm(request.form)
     form = ComprovanteForm()
-    if request.method == 'POST' and form.validate():
+    if form.validate_on_submit():
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
         filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
@@ -297,7 +297,7 @@ def alterar_senha():
     form_login = LoginForm(request.form)
     form = AlterarSenhaForm(request.form)
     if email_confirmado():
-        if request.method == 'POST' and form.validate():
+        if form.validate_on_submit():
             usuario = db.session.query(Usuario).filter_by(
                 email=current_user.email).first()
             enc = pbkdf2_sha256.encrypt(
@@ -317,7 +317,7 @@ def alterar_senha():
 def esqueci_senha():
     form = AlterarSenhaPorEmailForm(request.form)
     form_login = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
+    if form.validate_on_submit():
         usuario = db.session.query(Usuario).filter_by(
             email=form.email.data).first()
         if usuario is not None:
@@ -337,7 +337,7 @@ def esqueci_senha():
 def confirmar_alteracao_senha(token):
     form = AlterarSenhaForm(request.form)
     form_login = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
+    if form.validate_on_submit():
         try:
             # Acha o usuário que possui o token
             usuario = db.session.query(Usuario).filter_by(
@@ -367,7 +367,7 @@ def comprar_kit():
             id_usuario=current_user.id, id_evento=id_evento).first()
         if participante is not None and kit_pago(participante) == False:
             form = ComprarKitForm(request.form)
-            if request.method == 'POST' and form.validate():
+            if form.validate_on_submit():
                 if form.comprar.data == 1:
                     usuario = current_user
                     participante.id_camiseta = form.camiseta.data

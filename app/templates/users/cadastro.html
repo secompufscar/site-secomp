@@ -60,7 +60,7 @@
     <div id="secao1">
       <div class="row justify-content-center">
         <div class="col-md-8">
-          {{ form.csrf_token() }}
+          {{ form.hidden_tag() }}
           {{ wtf.form_field(form.primeiro_nome) }}
           {{ wtf.form_field(form.sobrenome) }}
           {{ wtf.form_field(form.email) }}
