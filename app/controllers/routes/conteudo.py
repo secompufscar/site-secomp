@@ -382,7 +382,7 @@ def cadastro_workshop(codigo):
 
 @conteudo.route('/cadastro-atividade/palestra-empresarial/<codigo>', methods=['POST', 'GET'])
 @login_required
-def cadastro_palestra_empreesarial(codigo):
+def cadastro_palestra_empresarial(codigo):
     permissoes = current_user.getPermissoes()
     if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
