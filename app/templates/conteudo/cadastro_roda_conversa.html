@@ -55,8 +55,10 @@
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.descricao) }}
         {{ wtf.form_field(form.observacoes) }}
-        <a href="{{ url_for('views.protected', filename='juridic/termo_condicoes_inscricao.pdf') }}" target="_blank">
-          Termo e Condições de Inscrição</a>
+        <div className="d-none d-lg-block">
+            <p>Termo e Condições de Inscrição</p>
+            <embed src="{{ url_for('views.protected', filename='juridic/termo_condicoes_inscricao.pdf') }}" type="application/pdf" width="100%" height="600px"></embed>
+        </div>
         {{ wtf.form_field(form.confirmacao) }}
         <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
       </form>
