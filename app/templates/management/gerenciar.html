@@ -100,6 +100,17 @@
         </div>
         {% endif %}
 
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CONTEUDO'].usuarios %}
+        <div class="col-md-6 p-3">
+            <div>
+                <h4>Flags</h4>
+                <a href="{{ url_for('management.cadastro_flags') }}">
+                    <button type="button" class="btn btn-primary">Gerenciar Flags</button>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 </div>
 {% endblock %}

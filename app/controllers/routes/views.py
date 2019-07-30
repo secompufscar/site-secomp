@@ -129,5 +129,24 @@ def senhas():
 
 @views.route("/patrocinadores", methods=["GET"])
 def patrocinadores():
-    patrocinadores = db.session.query(Patrocinador)
-    return render_template('views/patrocinadores.html', patrocinadores=patrocinadores)
+    '''
+    Renderiza página referente aos patrocinadores da edição atual
+    '''
+    form = LoginForm(request.form)
+    patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True)
+    return render_template('views/patrocinadores.html', patrocinadores=patrocinadores, form_login=form, edicao=EDICAO_ATUAL)
+
+@views.route("/pontuacao", methods=["GET"])
+def pontuacao_compcases():
+    '''
+    Renderiza página referente a pontuação geral do COMPCases
+    '''
+    form = LoginForm(request.form)
+    participantes = get_ranking_pontuacao()
+    participante_logado = None
+    try:
+        participante_logado = participante = db.session.query(Participante).filter_by(
+            usuario=current_user).first()
+    except:
+        pass
+    return render_template('views/pontuacao_compcases.html', participantes=participantes, participante_logado=participante_logado, form_login=form)
