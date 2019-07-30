@@ -68,7 +68,7 @@ class Usuario(db.Model):
 
     @property
     def is_authenticated(self):
-        return self.autenticado
+        return self.autenticado == True
 
     @classmethod
     def is_anonymous(cls):
@@ -76,10 +76,7 @@ class Usuario(db.Model):
 
     @property
     def is_admin(self):
-        return self.admin
-
-    def is_admin(self):
-        return self.admin
+        return self.admin == True
 
     def getPermissoes(self):
         permissoes = []
