@@ -79,7 +79,7 @@ def valida_email_ministrante():
             raise ValidationError("Entre com um email válido")
         else:
             if usuario.primeiro_nome is not None:
-                raise ValidationError("Este usuário já está cadastrado!")
+                raise ValidationError("Este email já está cadastrado!")
     return _valida_email_ministrante
 
 def is_valid_email(email):
