@@ -80,7 +80,7 @@
         {{ wtf.form_field(form.requisitos_hardware) }}
         {{ wtf.form_field(form.dicas_instalacao) }}
         {{ wtf.form_field(form.observacoes) }}
-        <div className="d-none d-lg-block">
+        <div>
             <p>Termo e Condições de Inscrição</p>
             <embed src="{{ url_for('views.protected', filename='juridic/termo_condicoes_inscricao.pdf') }}" type="application/pdf" width="100%" height="600px"></embed>
         </div>
