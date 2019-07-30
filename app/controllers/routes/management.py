@@ -201,7 +201,7 @@ def gerar_url_conteudo():
                     for email in emails:
                         usuario = db.session.query(Usuario).filter_by(email=email).first()
                         if usuario is None:
-                            usuario = Usuario(email=email, primeiro_nome='', sobrenome='')
+                            usuario = Usuario(email=email)
                             ministrante = Ministrante(usuario=usuario)
                             usuario.ministrante = ministrante
                             db.session.add(usuario)
