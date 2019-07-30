@@ -73,6 +73,14 @@
 
                         {% endif %}
                     </tr>
+                    <tr>
+                        <th scope="row">Pontuação COMPCases</th>
+                        {% if (participante != None) %}
+                        <td>{{ participante.pontuacao }}</td>
+                        {% else: %}
+                        <td><a href="{{url_for('.cadastro_participante')}}">Inscreva-se para iniciar a contagem da pontuação</a></td>
+                        {% endif %}
+                    </tr>
 
                 </tbody>
             </table>

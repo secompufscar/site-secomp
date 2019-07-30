@@ -3,6 +3,7 @@ from os import path, makedirs
 from bcrypt import gensalt
 from flask import request, redirect, flash, Blueprint, current_app
 from flask_login import login_required, login_user
+
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
@@ -27,10 +28,10 @@ def cadastro():
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     form_login = LoginForm(request.form)
     form = CadastroForm(request.form)
-    email = form.email.data
-    salt = gensalt().decode('utf-8')
-    token = serializer.dumps(email, salt=salt)
     if form.validate_on_submit():
+        email = form.email.data
+        salt = gensalt().decode('utf-8')
+        token = serializer.dumps(email, salt=salt)
         agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
         usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
@@ -40,14 +41,16 @@ def cadastro():
                                                                   Instituicao(nome=form.outra_instituicao.data)),
                           id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
                           data_nascimento=form.data_nasc.data, token_email=token, autenticado=True, salt=salt)
+        como_conheceu = ComoConheceu(id_usuario=usuario.id, opcao=form.como_conheceu.data, outro=form.outro_como_conheceu.data) 
         db.session.add(usuario)
+        db.session.add(como_conheceu)
         db.session.flush()
         db.session.commit()
         enviar_email_confirmacao(usuario, token)
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
-
     return render_template('users/cadastro.html', form=form, form_login=form_login)
+
 
 
 @users.route('/verificar-email')
@@ -467,3 +470,27 @@ def executar_pagamento_kit():
             return "O Pagamento já foi efetuado"
     else:
         return "Erro"
+
+@users.route('/submeter-flag', methods=["GET", "POST"])
+@login_required
+def submeter_flag():
+    form_login = LoginForm(request.form)
+    form = SubmeterFlagForm(request.form)
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    if form.validate_on_submit():
+        flag = db.session.query(Flag).filter_by(codigo=form.flag.data).first()
+        if(flag != None and flag not in participante.flags_encontradas and flag.ativa):
+            flag.quantidade_utilizada += 1
+            participante.pontuacao += flag.pontos
+            participante.flags_encontradas.append(flag)
+            db.session.flush()
+            db.session.commit()
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="aceita")
+        elif flag in participante.flags_encontradas:
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="já utilizada, safadinho")
+        else:
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="inválida")
+
+    else:
+        return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status=None)

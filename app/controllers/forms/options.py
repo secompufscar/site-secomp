@@ -6,6 +6,26 @@ opcoes_restricao = [
     (3, "Vegano")
 ]
 
+opcoes_transporte_ida_volta = [
+    (1, 'Carro próprio (combustível + pedágios, calculados pelo Jurídico Financeiro)'),
+    (2, 'Passagem de Ônibus (compra a ser realizada pelo Jurídico Financeiro)'),
+    (3, 'Carro alugado (apenas o valor do aluguel do carro)')
+]
+
+opcoes_transporte_sanca = [
+    (1, 'Carro próprio (combustível calculado pelo JF)'),
+    (2, 'Uber/99 (valor gasto na viagem “local de partida → UFSCar”)'),
+    (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')
+]
+
+opcoes_como_conheceu = [
+        (0, "Pelo Departamento de Computação da UFSCar"),
+        (1, "Através de amigos"),
+        (2, "Pela nossa página do facebook"),
+        (3, "Por cartazes espalhados em São Carlos"),
+        (4, "Outro")
+]
+
 def get_opcoes_cidades():
     try:
         cidades = db.session.query(Cidade).all()
@@ -93,6 +113,7 @@ def get_opcoes_cotas_patrocinadores():
     except Exception as e:
         return None
 
+
 def get_opcoes_area_atividade():
     try:
         areas_data = db.session.query(AreaAtividade).all()
@@ -103,6 +124,7 @@ def get_opcoes_area_atividade():
         return areas
     except Exception as e:
         return None
+
 
 def get_opcoes_tipo_atividade():
     try:
@@ -126,3 +148,4 @@ def get_opcoes_transporte_sanca():
             (1, 'Carro próprio (combustível calculado pelo JF)'),
             (2, 'Uber/99 (valor gasto na viagem “local de partida → UFSCar”)'),
             (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')]
+
