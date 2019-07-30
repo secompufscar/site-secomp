@@ -186,6 +186,10 @@ def envio_comprovante():
     """
     form_login = LoginForm(request.form)
     form = ComprovanteForm()
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
+    participante = db.session.query(Participante).filter_by(
+    usuario=current_user).first()
     if form.validate_on_submit():
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
@@ -196,7 +200,8 @@ def envio_comprovante():
         comprovante.save(path.join(upload_path, filename))
         flash('Comprovante enviado com sucesso!')
         return redirect(url_for('.dashboard'))
-    return render_template('users/enviar_comprovante.html', form=form, form_login=form_login)
+    return render_template('users/enviar_comprovante.html', usuario=usuario, form=form,
+                        participante=participante, form_login=form_login)
 
 
 @users.route('/verificacao/<token>')
