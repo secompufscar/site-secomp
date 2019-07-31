@@ -1,0 +1,31 @@
+{% extends "email/base.html" %}
+{% block titulo %}
+  {{ info.titulo }}
+{% endblock %}
+
+{% block saudacao %}
+Um novo bug report foi enviado por "{{ info.nome }}", acusando a falha <b>"{{ info.falha }}"</b>!
+{% endblock%}
+
+{% block conteudo %}
+<b>Resumo:</b>
+  "{{ info.resumo }}"
+
+<b>Descrição:</b>
+  "{{ info.descricao }}"
+
+<b>Impacto:</b>
+  {% if info.impacto %}
+  "{{ info.impacto }}"
+  {% else %}
+  Não foram reportadas consequências para esta falha.
+  {% endif %}
+
+{% if 'contato' in info %}
+<b>E-mail para contato:</b> "{{ info.email }}"
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+  {{ info.footer }}
+{% endblock %}

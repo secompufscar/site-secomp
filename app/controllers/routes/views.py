@@ -27,6 +27,7 @@ def index():
                            form_login=form_login)
     '''
     return redirect(url_for('views.login'))
+
 #@views.route('/contato', methods=['POST', 'GET'])
 def contato_dm():
     """
@@ -41,6 +42,35 @@ def contato_dm():
         enviar_email_dm(nome, email, mensagem)
         return render_template('views/contato.html', form=form, enviado=True, form_login=form_login)
     return render_template('views/contato.html', form=form, form_login=form_login)
+
+
+@views.route('/bug-report', methods=['POST', 'GET'])
+def bug_report():
+    """
+    Página de envio do bug report
+    """
+
+    form = BugReportForm(request.form)
+    form_login = LoginForm(request.form)
+    
+    if form.validade_on_submit():
+        content = {
+            "assunto": 'SECOMP - Bug Report',  # assunto do email
+            "email": 'ti@secompufscar.com.br',  # email destino
+            "nome": form.autor.data,  # nome do autor
+            "titulo": form.titulo.data,
+            "falha": form.falha.data,
+            "resumo": form.resumo.data,
+            "descricao": form.descricao.data,
+            "impacto": form.impacto.data,
+            "template": 'email/report.html',  # path do template (raiz dentro do diretório 'templates')
+            "footer": 'TI X SECOMP UFSCar'
+        }
+        if form.contato.data:
+            content['contato'] = form.contato.data
+        enviar_email_generico(info=content)
+        return render_template('views/bug-report.html', form=form, form_login=form_login, enviado=True)
+    return render_template('views/bug-report.html', form=form, form_login=form_login)
 
 
 @views.route('/constr', methods=["GET", "POST"])
