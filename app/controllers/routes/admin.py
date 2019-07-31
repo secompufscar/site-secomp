@@ -11,7 +11,7 @@ from app.models.models import *
 class AppIndexView(AdminIndexView):
     @expose('/')
     def index(self):
-        if current_user.is_authenticated and current_user.is_admin:
+        if current_user.is_authenticated and current_user.is_admin():
             self._template_args['usuario'] = current_user
             return super(AppIndexView, self).index()
         return redirect(url_for('views.login'))
@@ -24,7 +24,7 @@ class AppModelView(ModelView):
 
     @classmethod
     def is_accessible(cls):
-        return current_user.is_authenticated and current_user.is_admin
+        return current_user.is_authenticated and current_user.is_admin()
 
     @classmethod
     def inaccessible_callback(cls, name, **kwargs):
@@ -34,7 +34,7 @@ class AppModelView(ModelView):
 class FileAdmin2(FileAdmin):
     @classmethod
     def is_accessible(cls):
-        return current_user.is_authenticated and current_user.is_admin
+        return current_user.is_authenticated and current_user.is_admin()
 
     @classmethod
     def inaccessible_callback(cls, name, **kwargs):
