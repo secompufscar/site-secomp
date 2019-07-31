@@ -100,14 +100,37 @@
               <td scope="col">{{ url.tipo }}</td>
               <td scope="col">{{ url.titulo_atividade }}</td>
               <td scope="col">
-                <div class="input-group">
-                  <input id='url{{url.id}}' type="text" readonly="readonly" class="w-75" value="{{ url.codigo_url }}" />
-                  <span class='input-group-btn'>
-                    <button type='button' class="btn clipboard" data-clipboard-target="#url{{url.id}}" aria-hidden=true>
-                      <img src="{{url_for('static', filename='images/clippy.svg')}}" width=16>
-                    </button>
-                  </span>
+
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-link" aria-hidden="true"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-item">
+                      <button type="button" class="btn"
+                        data-clipboard-text="{{ url_root }}area-conteudo/cadastro-ministrante/{{url.codigo_url}}">
+                        <i class="fa fa-clipboard mr-3" aria-hidden="true"></i>
+                        Ministrante
+                      </button>
+                    </div>
+                    <div class="dropdown-item">
+                      <button type="button" class="btn"
+                        data-clipboard-text="{{url.url}}"
+                        aria-hidden=true>
+                        <i class="fa fa-clipboard mr-3" aria-hidden="true"></i>
+                        Atividade
+                      </button>
+                    </div>
+                    <div class="dropdown-item">
+                      <button type="button" class="btn"
+                        data-clipboard-text="{{url.codigo_url}}">
+                        <i class="fa fa-clipboard mr-3" aria-hidden="true"></i>
+                        Código
+                      </button>
+                    </div>
+                  </div>
                 </div>
+
               </td>
               <td scope="col">
                 {% for email in url.emails %}

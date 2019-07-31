@@ -74,7 +74,6 @@ class Usuario(db.Model):
     def is_anonymous(cls):
         return False
 
-    @property
     def is_admin(self):
         return self.admin == True
 
