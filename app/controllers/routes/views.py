@@ -52,8 +52,7 @@ def bug_report():
 
     form = BugReportForm(request.form)
     form_login = LoginForm(request.form)
-    
-    if form.validade_on_submit():
+    if form.validate_on_submit():
         content = {
             "assunto": 'SECOMP - Bug Report',  # assunto do email
             "email": 'ti@secompufscar.com.br',  # email destino
