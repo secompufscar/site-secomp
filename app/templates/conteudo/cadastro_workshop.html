@@ -59,8 +59,11 @@
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.descricao) }}
         {{ wtf.form_field(form.observacoes) }}
-        <a href="{{ url_for('views.protected', filename='juridic/termo_condicoes_inscricao.pdf') }}" target="_blank">
-          Termo e Condições de Inscrição</a>
+        <div>
+            <p>Termo e Condições de Inscrição</p>
+            <p>ATENÇÃO! Este termo refere-se aos direitos e deveres tanto do contato convidado, quanto por parte da SECOMP UFSCar; tornando a leitura deste fundamental! Quaisquer dúvidas devem ser questionadas ao membro que lhe forneceu acesso a este formulário.</p>
+            <embed src="{{ url_for('views.protected', filename='juridic/termo_condicoes_inscricao.pdf') }}" type="application/pdf" width="100%" height="600px"></embed>
+        </div>
         {{ wtf.form_field(form.confirmacao) }}
         <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
       </form>
