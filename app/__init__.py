@@ -26,6 +26,14 @@ def create_app(config=None):
     app = Flask(__name__)
     app.config.from_object(config)
 
+    import sentry_sdk
+    from sentry_sdk.integrations.flask import FlaskIntegration
+
+    sentry_sdk.init(
+        dsn=app.config['SENTRY_DSN'],
+        integrations=[FlaskIntegration()]
+    )
+    
     Bootstrap(app)
 
     from app.models.models import db, Usuario
@@ -34,7 +42,7 @@ def create_app(config=None):
     app.app_context().push()
     db.init_app(app)
     Migrate(app, db)
-    
+
     from app.controllers.forms.forms import LoginForm
 
     @app.errorhandler(400)
