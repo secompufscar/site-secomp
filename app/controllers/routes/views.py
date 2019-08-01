@@ -50,8 +50,11 @@ def bug_report():
     Página de envio do bug report
     """
 
-    form = BugReportForm(request.form)
     form_login = LoginForm(request.form)
+    form = BugReportForm(request.form, escopo='ex: secompufscar.com.br',
+                         falha='ex: Cross-site Scripting (XSS)', 
+                         autor='Como você quer ser identificado?')
+
     if form.validate_on_submit():
         content = {
             "assunto": 'SECOMP - Bug Report',  # assunto do email
