@@ -61,7 +61,6 @@
         {{ wtf.form_field(form.descricao) }}
         {{ wtf.form_field(form.requisitos_tecnicos) }}
         {{ wtf.form_field(form.planejamento) }}
-        {{ wtf.form_field(form.apresentacao_extra) }}
         {{ wtf.form_field(form.material) }}
         {{ wtf.form_field(form.perguntas) }}
         {{ wtf.form_field(form.observacoes) }}
@@ -97,9 +96,6 @@
   {% endif %}
   {% if atividade.info_palestra.planejamento is not none %}
   $('#planejamento').val('{{atividade.info_palestra.planejamento}}');
-  {% endif %}
-  {% if atividade.info_palestra.apresentacao_extra is not none %}
-  $('#apresentacao_extra').val('{{atividade.info_palestra.apresentacao_extra}}');
   {% endif %}
   {% if atividade.info_palestra.perguntas is not none %}
   $('#perguntas').val('{{atividade.info_palestra.perguntas}}');
