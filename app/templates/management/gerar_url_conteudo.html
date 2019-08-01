@@ -1,13 +1,44 @@
 {% extends "users/sidebar.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block sidebar_content %}
+{% block metas %}
+
+{{ super() }}
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+{% endblock %}
+
+{% block content %}
 <style>
   .clipboard {
     background-color: #cccccc;
   }
+
+  .email-confirmado {
+    display: inline;
+    color: #006400;
+  }
+
+  .email-nao-confirmado {
+    display: inline;
+    color: #8B0000;
+  }
+
+  .select2-selection__rendered {
+    line-height: 31px !important;
+  }
+
+  .select2-container .select2-selection--single {
+    height: 35px !important;
+  }
+
+  .select2-selection__arrow {
+    height: 34px !important;
+  }
 </style>
-<div class="container pt-4">
+<div class="container pt-1">
   <h2 class="text-center pb-2">URL para formulários do Conteúdo</h2>
 
   <form method="POST" id="form" action="{{url_for('management.gerar_url_conteudo')}}">
@@ -42,12 +73,13 @@
     </div>
 
 
-    <div class="row justify-content-center pt-4">
+    <div class="row justify-content-center pt-4" style="overflow-x: scroll; width:100%;">
       <div class="col-md-12">
         <table class="table text-center">
           <thead>
             <tr>
               <th scope="col">Remover</th>
+              <th scope="col">Editar</th>
               <th scope="col">Atividade</th>
               <th scope="col">Título</th>
               <th scope="col">Código da URL</th>
@@ -59,25 +91,62 @@
             <tr>
               <td scope="col"><button type='submit' class="btn btn-default" name='removido' value='{{ url.id }}'><i
                     class="fa fa-times"></i></button></td>
+              <td scope="col">
+                {% if url.titulo_atividade != '-' %}
+                <button type='button' class="btn btn-default" onclick="editar('{{ url.url }}')">
+                  <i class="fa fa-pencil-alt"></i>
+                </button>
+                {% endif %}</td>
               <td scope="col">{{ url.tipo }}</td>
               <td scope="col">{{ url.titulo_atividade }}</td>
               <td scope="col">
-                <div class="input-group">
-                  <input id='url{{url.id}}' type="text" readonly="readonly" class="w-75" value="{{ url.codigo_url }}" />
-                  <span class='input-group-btn'>
-                    <button type='button' class="btn clipboard" data-clipboard-target="#url{{url.id}}" aria-hidden=true>
-                      <img src="{{url_for('static', filename='images/clippy.svg')}}" width=16>
-                    </button>
-                  </span>
+
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-link" aria-hidden="true"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-item">
+                      <button type="button" class="btn"
+                        data-clipboard-text="{{ url_root }}area-conteudo/cadastro-ministrante/{{url.codigo_url}}">
+                        <i class="fa fa-clipboard mr-3" aria-hidden="true"></i>
+                        Ministrante
+                      </button>
+                    </div>
+                    <div class="dropdown-item">
+                      <button type="button" class="btn"
+                        data-clipboard-text="{{url.url}}"
+                        aria-hidden=true>
+                        <i class="fa fa-clipboard mr-3" aria-hidden="true"></i>
+                        Atividade
+                      </button>
+                    </div>
+                    <div class="dropdown-item">
+                      <button type="button" class="btn"
+                        data-clipboard-text="{{url.codigo_url}}">
+                        <i class="fa fa-clipboard mr-3" aria-hidden="true"></i>
+                        Código
+                      </button>
+                    </div>
+                  </div>
                 </div>
+
               </td>
               <td scope="col">
                 {% for email in url.emails %}
-                  {% if not loop.last: %}
-                    {{ email }}<br>
-                  {% else: %}
-                    {{ email }}
-                  {% endif %}
+                {% if not loop.last: %}
+                {% if email.confirmado == True %}
+                <div class='email-confirmado'>{{ email.email }}</div><br>
+                {% else %}
+                <div class='email-nao-confirmado'>{{ email.email }}</div><br>
+                {% endif %}
+                {% else: %}
+                {% if email.confirmado == True %}
+                <div class='email-confirmado'>{{ email.email }}</div>
+                {% else %}
+                <div class='email-nao-confirmado'>{{ email.email }}</div>
+                {% endif %}
+                {% endif %}
                 {% endfor %}
               </td>
               {% endfor %}
@@ -89,6 +158,10 @@
   </form>
 </div>
 <script>
+  if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+  }
+
   email_count = 0;
   function validateEmail($email) {
     var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -98,6 +171,9 @@
   function remover(num) {
     $('#email2' + parseInt(num)).remove();
     email_count = email_count - 1;
+  }
+  function editar(codigo) {
+    window.open(codigo, '_blank');
   }
 
   $('#email_adder').click(function () {
@@ -122,6 +198,10 @@
       alert('Entre com um email válido')
     }
   })
+
+  $("#tipo_atividade").select2({
+    language: "pt-BR"
+  });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
 <script>
