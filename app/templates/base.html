@@ -58,37 +58,37 @@
         <ul class="ml-3 navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.index') }}">
-              <i class="mr-1 fas fa-home"></i> HOME</a>
+              <i class="mr-2 fas fa-home"></i>HOME</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
-              <i class="mr-1 fas fa-heart"></i> SECOMP</a>
+              <i class="mr-2 fas fa-heart"></i>SECOMP</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{{ url_for('views.sobre') }}">
-                <i class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
+                <i class="mr-2 fas fa-book"></i>SOBRE O EVENTO</a>
               <a class="dropdown-item" href="{{ url_for('views.equipe') }}">
-                <i class="mr-1 fas fa-users"></i> EQUIPE</a>
+                <i class="mr-2 fas fa-users"></i>EQUIPE</a>
               <a class="dropdown-item" href="{{ url_for('views.contato_dm') }}">
-                <i class="mr-1 fas fa-comments"></i> CONTATO</a>
+                <i class="mr-2 fas fa-comments"></i>CONTATO</a>
               <a class="dropdown-item" href="{{ url_for('views.constr') }}">
-                <i class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
+                <i class="mr-2 fas fa-gamepad"></i>GAMEFICAÇÃO</a>
             </div>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
-              <i class="mr-1 fas fa-calendar-alt"></i> EVENTOS</a>
+              <i class="mr-2 fas fa-calendar-alt"></i>EVENTOS</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{{ url_for('views.cronograma') }}">
-                <i class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
+                <i class="mr-2 fas fa-calendar-check"></i>CRONOGRAMA</a>
               <a class="dropdown-item" href="{{ url_for('views.ctf') }}">
-                <i class="mr-1 fas fa-flag"></i> CTF</a>
+                <i class="mr-2 fas fa-flag"></i>CTF</a>
               <a class="dropdown-item" href="{{ url_for('views.constr') }}">
-                <i class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
+                <i class="mr-2 fas fa-utensils"></i>CHURRASCO</a>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.faq') }}">
-              <i class="mr-1 fas fa-question-circle"></i> FAQ</a>
+              <i class="mr-2 fas fa-question-circle"></i>FAQ</a>
           </li>
         </ul>
 
@@ -97,20 +97,18 @@
           {% if current_user.is_authenticated %}
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="config">
-            <i class="mr-1 fas fa-cog"></i></a>
+            <i class="mr-2 fas fa-cog"></i></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="{{ url_for('users.dashboard') }}">
-                  <i class="mr-1 fas fa-user"></i> PARTICIPANTE</a>
+                  <i class="mr-2 fas fa-user"></i>PARTICIPANTE</a>
                 <a class="dropdown-item" href="{{ url_for('views.logout') }}">SAIR</a>
             </div>
           </div>
           {% else %}
-          <!-- <a class="nav-item nav-link" href="{{ url_for('views.login') }}"><i class="mr-1 fas fa-user"></i>
-            ENTRAR</a> -->
-          <a class="nav-item nav-link" href=" " data-toggle="modal" data-target="#modal-login"><i class="mr-1 fas fa-user"></i>
-            ENTRAR</a>
-          <a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}"><i
-                                       class="mr-1 fas fa-address-card"></i> INSCREVER</a>
+          <a class="nav-item nav-link" href=" " data-toggle="modal" data-target="#modal-login">
+            <i class="mr-2 fas fa-user"></i>ENTRAR</a>
+          <a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}">
+            <i class="mr-2 fas fa-address-card"></i>INSCREVER</a>
           {% endif %}
         </div>
       </div>
@@ -150,7 +148,7 @@
 </div>
 
 <main>
-  <div id="content" style="padding-top: 53px;">
+  <div id="content">
     {% block content %}{% endblock %}
   </div>
 </main>
