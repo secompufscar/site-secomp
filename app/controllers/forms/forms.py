@@ -242,3 +242,8 @@ class CadastrarFlagForm(FlaskForm):
 class SubmeterFlagForm(FlaskForm):
     flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
 
+class TimeDesafioForm(FlaskForm):
+    nome_time = StringField('Líder do time', validators=[InputRequired(), Length(min=1,max=64)])
+    participante_lider = StringField('Líder do time', validators=[InputRequired(), Length(min=1,max=64)])
+    participante_2 = StringField('Participante 2 (opcional)', validators=[Length(min=0,max=64)])
+    participante_3 = StringField('Participante 3 (opcional)', validators=[Length(min=0,max=64)])

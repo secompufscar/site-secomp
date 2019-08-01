@@ -494,3 +494,68 @@ def submeter_flag():
 
     else:
         return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status=None)
+
+@users.route('/cadastro-desafio', methods=["GET", "POST"])
+@login_required
+def cadastrar_time_desafio():
+    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    if participante.time_desafio == None:
+        return redirect(url_for('.visualizar_time_desafio'))
+    form_login = LoginForm(request.form)
+    form = TimeDesafioForm(request.form)
+    if form.validate_on_submit():
+        nome_time = form.nome_time.data
+        lider = db.session.query(Participante).filter_by(usuario=db.session.query(Usuario).filter_by(email=form.participante_lider.data).first()).first()
+        part_2 = None
+        part_3 = None
+        try:
+            part_2 = db.session.query(Participante).filter_by(usuario=db.session.query(Usuario).filter_by(email=form.participante_2.data).first()).first()
+            part_3 = db.session.query(Participante).filter_by(usuario=db.session.query(Usuario).filter_by(email=form.participante_3.data).first()).first()
+        except:
+            pass
+        if db.session.query(TimeDesafio).filter_by(nome_time=nome_time).first() != None:
+            return render_template("users/cadastro_time_desafio.html", usuario=current_user, form=form,
+                                   form_login=form_login, participante=participante,
+                                   erro="O nome do time já está sendo utilizado")
+        if lider.time_desafio != None:
+            return render_template("users/cadastro_time_desafio.html", usuario=current_user, form=form,
+                                   form_login=form_login, participante=participante,
+                                   erro="Participante líder já se encontra em um time")
+        if len(form.participante_2.data) > 0 and part_2 == None:
+            return render_template("users/cadastro_time_desafio.html", usuario=current_user, form=form,
+                                   form_login=form_login, participante=participante,
+                                   erro="Dados do participante 2 preenchidos incorretamente")
+        elif part_2 != None and part_2.time_desafio != None:
+            return render_template("users/cadastro_time_desafio.html", usuario=current_user, form=form,
+                                   form_login=form_login, participante=participante,
+                                   erro="Participante 2 já se encontra em um time")
+        if len(form.participante_3.data) > 0 and part_3 == None:
+            return render_template("users/cadastro_time_desafio.html", usuario=current_user, form=form,
+                                   form_login=form_login, participante=participante,
+                                   erro="Dados do participante 3 preenchidos incorretamente")
+        elif part_3 != None and part_3.time_desafio != None:
+            return render_template("users/cadastro_time_desafio.html", usuario=current_user, form=form,
+                                   form_login=form_login, participante=participante,
+                                   erro="Participante 3 já se encontra em um time")
+        time_desafio = TimeDesafio(nome_time=nome_time, evento_id=get_id_evento_atual())
+        time_desafio.participantes.append(lider)
+        if part_2 != None:
+            time_desafio.participantes.append(part_2)
+        if part_3 != None:
+            time_desafio.participantes.append(part_3)
+        db.session.add(time_desafio)
+        db.session.flush()
+        db.session.commit()
+        return redirect(url_for('.visualizar_time_desafio'))
+    else:
+        return render_template("users/cadastro_time_desafio.html", usuario=current_user, form=form, form_login=form_login, participante=participante, erro=None)
+
+@users.route('/visualizar-time-desafio', methods=["GET", "POST"])
+@login_required
+def visualizar_time_desafio():
+    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    form_login = LoginForm(request.form)
+    if participante.time_desafio == None:
+        return render_template("users/visualizar_time_desafio.html", usuario=current_user, form_login=form_login, participante=participante, time=False)
+    else:
+        return render_template("users/visualizar_time_desafio.html", usuario=current_user, form_login=form_login, participante=participante, time=True, dados=participante.time_desafio)

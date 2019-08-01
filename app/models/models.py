@@ -109,6 +109,8 @@ class Participante(db.Model):
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
     flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
+    id_time_desafio = Column(Integer, db.ForeignKey('time_desafio.id'), nullable=True)
+
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
 
@@ -262,6 +264,8 @@ class Evento(db.Model):
                                      back_populates='eventos')
     camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
     flags = db.relationship('Flag', backref="evento", lazy=True)
+    times_desafio = db.relationship('TimeDesafio', backref="evento", lazy=True)
+
     def __repr__(self):
         return str(self.edicao) + "ª Edição"
 
@@ -436,4 +440,11 @@ class Flag(db.Model):
     pontos = Column(Integer, nullable=False)
     ativa = Column(Boolean, default=True)
     quantidade_utilizada = Column(Integer, default=0)
+    evento_id = Column(Integer, db.ForeignKey('evento.id'))
+
+class TimeDesafio(db.Model):
+    _tablename__ = 'time_desafio'
+    id = Column(Integer, primary_key=True)
+    nome_time = Column(String(45), nullable=False)
+    participantes = db.relationship("Participante", backref="time_desafio")
     evento_id = Column(Integer, db.ForeignKey('evento.id'))
