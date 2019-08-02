@@ -2,16 +2,17 @@
 {% import "wtf.html" as wtf %}
 
 {% block content %}
+<style> .help-block { color: red; } </style>
+
 <div class="container">
   <div class="row justify-content-center">
 
     <div class="col-md-12 text-center">
       <h2>Reporte uma Falha!</h2>
       {% if enviado %}
-      <h4>Seu report foi enviado!</h4>
+      <h5>Seu report foi enviado!</h5>
       {% endif %}
     </div>
-
     <div class="row justify-content-around">
       <div class="col-md-5 text-center">
         <h1 class="display-4"><i class="fas fa-comments"></i></h1>

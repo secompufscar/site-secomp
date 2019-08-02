@@ -84,8 +84,10 @@ class Usuario(db.Model):
         return permissoes
 
     def __repr__(self):
-        return self.primeiro_nome + " " + self.sobrenome + " <" + self.email + ">"
-
+       if self is not None and self.primeiro_nome is not None and self.sobrenome is not None and self.email is not None: 
+           return self.primeiro_nome + " " + self.sobrenome + " <" + self.email + ">"
+       else:
+           return ""
 
 class Participante(db.Model):
     __tablename__ = 'participante'
@@ -127,7 +129,9 @@ class Ministrante(db.Model):
     usuario = db.relationship('Usuario', back_populates='ministrante', lazy=True)
 
     def __repr__(self):
-        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
+        if self is not None and self.usuario is not None and self.usuario.primeiro_nome is not None and self.usuario.sobrenome is not None and self.usuario.email is not None:
+            return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
+        return ""
 
 class DadosHospedagemTransporte(db.Model):
     __tablename__ = 'dados_hospedagem_transporte'
