@@ -3,7 +3,7 @@ from flask_login import login_required, login_user, logout_user, current_user
 from passlib.hash import pbkdf2_sha256
 import os
 from app.controllers.forms.forms import *
-from app.controllers.functions.email import enviar_email_dm
+from app.controllers.functions.email import enviar_email_dm, enviar_email_generico
 from app.controllers.functions.helpers import *
 from app.controllers.constants import *
 from flask_limiter import Limiter
@@ -51,9 +51,7 @@ def bug_report():
     """
 
     form_login = LoginForm(request.form)
-    form = BugReportForm(request.form, escopo='ex: secompufscar.com.br',
-                         falha='ex: Cross-site Scripting (XSS)', 
-                         autor='Como você quer ser identificado?')
+    form = BugReportForm(request.form)
 
     if form.validate_on_submit():
         content = {
