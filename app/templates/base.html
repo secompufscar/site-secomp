@@ -95,14 +95,15 @@
         <!-- Lado direito da Navbar -->
         <div class="navbar-nav ml-3">
           {% if current_user.is_authenticated %}
-          <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="config">
-            <i class="mr-2 fas fa-cog"></i></a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{{ url_for('users.dashboard') }}">
-                  <i class="mr-2 fas fa-user"></i>PARTICIPANTE</a>
-                <a class="dropdown-item" href="{{ url_for('views.logout') }}">SAIR</a>
-            </div>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
+              <a class="dropdown-item" href="{{ url_for('management.gerenciar') }}">
+                  <i class="mr-2 fas fa-user-secret"></i> GERENCIAR</a>
+              {% endif %}
+              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+                  <i class="mr-2 fas fa-user"></i> PARTICIPANTE</a>
+              <a class="dropdown-item" href="{{ url_for('views.logout') }}">
+                  <i class="mr-2 fas fa-sign-out-alt"></i>SAIR</a>
           </div>
           {% else %}
           <a class="nav-item nav-link" href=" " data-toggle="modal" data-target="#modal-login">
@@ -155,7 +156,7 @@
 
 {# Rascunho de rodapé #}
 {% block footer %}
-<footer class="navbar bg-dark small pt-4 text-white">
+<footer class="navbar bg-dark pt-4 text-white">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-sm-8 text-center">
@@ -199,12 +200,6 @@
 <script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
-
-<script>
-	/*$(document).ready(function(){
-    	$('#content').css("padding-top", $('#navTop').outerHeight() * 1.2);
-  });*/
-</script>
 
 {% endblock %}
 {% endblock %}

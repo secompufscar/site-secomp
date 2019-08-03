@@ -1,13 +1,21 @@
 .card img {
     border-radius: 50%;
 }
+
 .day {
     height: 0.3rem;
     margin: 0 -7% -7% -7%;
     border-radius: 10%;
 }
+
 .nav-crono a {
     cursor: default;
+}
+
+.setaDireita {
+    text-align: right !important;
+    width: auto;
+    margin-left: auto;
 }
 
 @media (max-width: 991px) {
