@@ -1,16 +1,23 @@
 {% extends "base.html" %}
 
+{% block styles %}
+
+{{ super() }}
+<link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" type="text/css" />
+
+{% endblock %}
+
+
 {% block content %}
-<div class="overlay">
-	<img class="opac img-responsive" src="{{url_for('static', filename='images/fundoctf.gif')}}">
-	<div class="text-center overlay-text">
-		<img style="width: 25vw;" class="pb-4" src="{{url_for('static', filename='images/logo-colorida.png')}}">
-		<h1>Bem vindo a X SECOMP!</h1>
-		<h2>Semana da Computação da UFSCar</h2>
-	</div>
+
+<img class="background" src="{{ url_for('static', filename='images/car1.jpg') }}">
+
+<div class="col-md-12 text-center">
+	<img class="logoL" src="{{ url_for('static', filename='images/logo-secomp.png') }}">
+	<img class="logoP" src="{{ url_for('static', filename='images/logo-colorida.png') }}">
 </div>
 
-<div class="col-md-12 text-center pt-3 pb-3">
+<div class="col-md-12 text-center text-white pt-3">
 	<div class="row counter">
 		<div class="col">
 			<h1 id="contador-dias">00</h1>
@@ -31,309 +38,42 @@
 	</div>
 </div>
 
-<div class="col-md-12 bg-dark text-white pt-3 pb-3">
+<div class="col-md-12 bg-dark text-white pt-3">
 	<div class="row justify-content-center text-center">
-		<h1 style="font-weight: 600;">O QUE ROLA NA SECOMP?</h1>
+		<h2 style="font-weight: 600;">O QUE ROLA NA SECOMP?</h2>
 	</div>
-	<div class="row justify-content-center align-items-center text-center">
-		<div class="col-md-4">
-			<i class="fas fa-microphone fa-4x pt-2"></i>
+	<div class="row justify-content-center align-items-center text-center icons">
+		<div class="col">
+			<i class="fas fa-microphone fa-4x pb-2"></i>
 			<h4>Palestras</h4>
-			<i class="fas fa-laptop-code fa-4x pt-2"></i>
+		</div>
+		<div class="col">
+			<i class="fas fa-laptop-code fa-4x pb-2"></i>
 			<h4>Minicursos</h4>
 		</div>
-		<div class="col-md-4">
-			<i class="fas fa-code-branch fa-4x pt-2"></i>
+		<div class="col">
+			<i class="fas fa-code-branch fa-4x pb-2"></i>
 			<h4>Workshops</h4>
-			<i class="fas fa-comments fa-4x pt-2"></i>
+		</div>
+		<div class="col">
+			<i class="fas fa-comments fa-4x pb-2"></i>
 			<h4>Mesas-redondas</h4>
 		</div>
-		<div class="col-md-4">
-			<i class="fab fa-font-awesome-flag fa-4x pt-2"></i>
+		<div class="col">
+			<i class="fab fa-font-awesome-flag fa-4x pb-2"></i>
 			<h4>CTF</h4>
-			<i class="fas fa-terminal fa-4x pt-2"></i>
+		</div>
+		<div class="col">
+			<i class="fas fa-terminal fa-4x pb-2"></i>
 			<h4>Desafio</h4>
 		</div>
-	</div>
-	<div class="row justify-content-center align-items-center text-center">
-		<div class="col-md-12">
-			<i class="fas fa-ellipsis-h fa-4x pt-2"></i>
-		</div>
-		<h4>E muito mais</h4>
-	</div>
-</div>
-
-<div class="container pt-4">
-	<div class="row">
-		<div class="col-md-7">
-			<div id="video" class="embed-responsive embed-responsive-21by9 ">
-				<video width="100%" height="100%" controls>
-					<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}"
-						type="video/mp4" />
-				</video>
-			</div>
-			<h6 style="margin-top: 15px;"> Teaser - IX SECOMP</h6>
-		</div>
-
-		<div class="col-md-5 align-self-center">
-			{# Texto adicional para testar espaçamento #}
-
-			<h2 class="text-center pb-3"> Um pouco sobre a SECOMP</h2>
-			<p class="text-justify">
-				A Semana Acadêmica da Computação da Universidade Federal de São Carlos surgiu da necessidade de se
-				trazer
-				assuntos que fossem de interesse tanto da comunidade acadêmica quanto de entusiastas.
-
-				Desde a sua primeira edição, a SECOMP trabalha para que os assuntos sejam os mais atuais possíveis e que
-				sejam
-				transmitidos da maneira mais dinâmica tentando aproximar o participante de áreas que vão da academia até
-				o
-				mercado de trabalho através de minicursos, workshops, palestras técnicas, empresariais, mesas redondas,
-				feira de
-				recrutamento e muitos outros conteúdos que foram pensados ao longo do tempo em busca de um evento cada
-				vez
-				melhor.
-
-				Em prol disso, os estudos são constantes para que o modelo de evento sempre melhore e se torne
-				referência,
-				trazendo cada vez mais experiências únicas a quem nos acompanha e encurtando as relações para que todos
-				os
-				segmentos de público sejam beneficiados.
-			</p>
+		<div class="col">
+			<i class="fas fa-ellipsis-h fa-4x pb-2"></i>
+			<h4>E muito mais</h4>
 		</div>
 	</div>
 </div>
 
-
-<!-- Portfolio Section -->
-<section id="portfolio">
-	<div class="container-fluid p-0">
-		<div class="row no-gutters">
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-ministrantes">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-
-						<h3 style="font-weight: 600;"> Ministrantes </h3>
-
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-palestras">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-						<h3 style="font-weight: 600;"> Palestras </h3>
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-minicursos">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-						<h3 style="font-weight: 600;"> Minicursos </h3>
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-workshops">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-						<h3 style="font-weight: 600;"> Workshops </h3>
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-capture">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-						<h3 style="font-weight: 600;"> Capture The Flag </h3>
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-mesa">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption p-3">
-						<h3 style="font-weight: 600;"> Mesas Redondas </h3>
-					</div>
-				</a>
-			</div>
-		</div>
-	</div>
-</section>
-
-<!-- MODAL DO MINISTRANTES-->
-<div class="modal fade" id="modal-ministrantes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Ministrantes</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO PALESTRAS-->
-<div class="modal fade" id="modal-palestras" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Palestras</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO MINICURSOS-->
-<div class="modal fade" id="modal-minicursos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Minicursos</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO WORKSHOPS-->
-<div class="modal fade" id="modal-workshops" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Workshops</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO CAPTURE THE FLAG-->
-<div class="modal fade" id="modal-capture" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Capture The Flag</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO MESA REDONDA-->
-<div class="modal fade" id="modal-mesa" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Mesa Redonda</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="navbar bg-dark small pt-5 text-white">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4">
-				<ul class="list-unstyled list-inline social text-center">
-					<i class="fas fa-4x fa-calendar-alt"></i>
-					<h5 class="pt-4"><strong>QUANDO?</strong></h5>
-					<p><b>09 a 13 de Setembro</b></p>
-				</ul>
-			</div>
-
-			<div class="col-md-4">
-				<ul class="list-unstyled list-inline social text-center">
-					<i class="fas fa-4x fa-map-marker-alt"></i>
-					<h5 class="pt-4"><strong>ONDE?</strong></h5>
-					<p><b>Anfiteatro Bento Prado Jr. e Departamento de Computação, na Universidade Federal de São
-							Carlos</b></p>
-				</ul>
-			</div>
-			<div class="col-md-4">
-				<ul class="list-unstyled list-inline social text-center">
-					<i class="fas fa-4x fa-question-circle"></i>
-					<h5 class="pt-4"><strong>DÚVIDAS?</strong></h5>
-					<p><b>Consulte mais informações no <a href="/2018/faq">FAQ</a> e, se necessário, entre em
-							contato
-							com a organização</b></p>
-				</ul>
-			</div>
-		</div>
-	</div>
-
-</div>
 <div class="container text-center mt-4 mb-4">
 	<div class="row justify-content-center">
 		<div class="col-md-12 text-center">
@@ -384,8 +124,5 @@
 			document.getElementById("contador").innerHTML = "Evento já realizado :P";
 		}
 	}, 1000);
-	$(document).ready(function () {
-		$('#content').css("padding-top", $('#navTop').height() * 1.2);
-	});
 </script>
 {% endblock %}

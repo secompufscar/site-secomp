@@ -1,0 +1,47 @@
+.col {
+    padding: 2% 0 2% 0;
+}
+
+@media (orientation: portrait) {
+    .background {
+        position: absolute;
+        height: 80vh;
+        max-width: 100%;
+    }
+    .logoP {
+        display: relative;
+        width: 90vw;
+    }
+    .logoL {
+        display: none;
+    }
+}
+
+@media (orientation: landscape) {
+    .background {
+        position: absolute;
+        width: 100%;
+    }
+    .logoL {
+        display: relative;
+        width: 80vw;
+        margin: 3%;
+    }
+    .logoP {
+        display: none;
+    }
+}
+
+@media (max-width: 699px) {
+    .icons .col {
+        flex: 0 0 50%;
+        padding: 4% 0 4% 0;
+    }
+}
+
+@media (min-width: 700px) {
+    .icons .col {
+        flex: 0 0 25%;
+        padding: 2% 0 2% 0;
+    }
+}
