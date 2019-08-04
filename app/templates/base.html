@@ -22,7 +22,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
 <script src="{{url_for('static', filename='js/select2.js')}}"></script>
 <script src="{{url_for('static', filename='js/pt-BR.js')}}" type="typescript"></script>
-<script src="{{url_for('static', filename='js/flipclock.js')}}"></script>
 {% endblock %}
 
 <title>{% block title %}SECOMP UFSCar{% endblock %}</title>
@@ -34,11 +33,11 @@
 <link href="{{ url_for('static', filename='fa/css/all.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ url_for('static', filename='css/select2.css')}}" rel="stylesheet" />
-<link href="{{ url_for('static', filename='css/flipclock.css')}}" rel="stylesheet" />
 {% endblock %}
 
 {% block favicon %}
-<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo-colorida.png') }}" />
+{# <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo-colorida.png') }}" /> #}
+<link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
 {% endblock %}
 {% endblock %}
 
@@ -48,58 +47,63 @@
   <nav class="nav-responsiva navbar fixed-top navbar-expand-lg bg-gradient-secomp">
     <div id="navTop" class="container-fluid">
       {# Marca d'água para a home #}
-      <a class="navbar-brand mr-auto" href="{{ url_for('views.index') }}"><img id="nav-logo"
-                                                                               src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30"
-                                                                                                                                                        alt="Logo atual da SECOMP" /></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens"
-                                                                          aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand mr-auto" href="{{ url_for('views.index') }}">
+        <img id="nav-logo" src="{{ url_for('static', filename='images/logoTest.png') }}"
+        width="30" height="30" alt="Logo atual da SECOMP" /></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" 
+      aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars text-white"></i>
       </button>
       <div class="collapse mr-auto navbar-collapse" id="navbarItens">
         <ul class="ml-3 navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.index') }}"><i class="mr-1 fas fa-home"></i>
-              HOME</a>
+            <a class="nav-link" href="{{ url_for('views.index') }}">
+              <i class="mr-1 fas fa-home"></i> HOME</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp"><i
-                                                                                class="mr-1 fas fa-heart"></i> SECOMP
-            </a>
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
+              <i class="mr-1 fas fa-heart"></i> SECOMP</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ url_for('views.sobre') }}"><i
-                                       class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
-              <a class="dropdown-item" href="{{ url_for('views.equipe') }}"><i
-                                       class="mr-1 fas fa-users"></i> EQUIPE</a>
-              <a class="dropdown-item" href="{{ url_for('views.contato_dm') }}"><i
-                                       class="mr-1 fas fa-comments"></i> CONTATO</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
-                                       class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
+              <a class="dropdown-item" href="{{ url_for('views.sobre') }}">
+                <i class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
+              <a class="dropdown-item" href="{{ url_for('views.equipe') }}">
+                <i class="mr-1 fas fa-users"></i> EQUIPE</a>
+              <a class="dropdown-item" href="{{ url_for('views.contato_dm') }}">
+                <i class="mr-1 fas fa-comments"></i> CONTATO</a>
+              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+                <i class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
             </div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos"><i
-                                                                                class="mr-1 fas fa-calendar-alt"></i> EVENTOS
-            </a>
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
+              <i class="mr-1 fas fa-calendar-alt"></i> EVENTOS</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ url_for('views.cronograma') }}"><i
-                                       class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
-              <a class="dropdown-item" href="{{ url_for('views.ctf') }}"><i
-                                       class="mr-1 fas fa-flag"></i> CTF</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}"><i
-                                       class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
+              <a class="dropdown-item" href="{{ url_for('views.cronograma') }}">
+                <i class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
+              <a class="dropdown-item" href="{{ url_for('views.ctf') }}">
+                <i class="mr-1 fas fa-flag"></i> CTF</a>
+              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+                <i class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.faq') }}"><i
-                                class="mr-1 fas fa-question-circle"></i> FAQ</a>
+            <a class="nav-link" href="{{ url_for('views.faq') }}">
+              <i class="mr-1 fas fa-question-circle"></i> FAQ</a>
           </li>
         </ul>
 
         <!-- Lado direito da Navbar -->
-        <div class="navbar-nav">
+        <div class="navbar-nav ml-3">
           {% if current_user.is_authenticated %}
-          <a class="nav-item nav-link" href="{{ url_for('users.dashboard') }}">Participante</a>
-          <a class="nav-item nav-link" href="{{ url_for('views.logout') }}">SAIR</a>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="config">
+            <i class="mr-1 fas fa-cog"></i></a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{{ url_for('users.dashboard') }}">
+                  <i class="mr-1 fas fa-user"></i> PARTICIPANTE</a>
+                <a class="dropdown-item" href="{{ url_for('views.logout') }}">SAIR</a>
+            </div>
+          </div>
           {% else %}
           <!-- <a class="nav-item nav-link" href="{{ url_for('views.login') }}"><i class="mr-1 fas fa-user"></i>
             ENTRAR</a> -->
@@ -146,14 +150,14 @@
 </div>
 
 <main>
-  <div id="content">
+  <div id="content" style="padding-top: 53px;">
     {% block content %}{% endblock %}
   </div>
 </main>
 
 {# Rascunho de rodapé #}
 {% block footer %}
-<footer class="navbar small pt-4 text-white">
+<footer class="navbar bg-dark small pt-4 text-white">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-sm-8 text-center">
@@ -165,16 +169,16 @@
       </div>
       <div class="col-sm-12">
         <ul class="list-unstyled list-inline social text-center">
-          <li class="list-inline-item"><a href="https://facebook.com/secompufscar" target="blank"><i
-                                                                                   class="fab fa-2x fa-facebook-f"></i></a></li>
-          <li class="list-inline-item"><a href="https://twitter.com/secompufscar" target="blank"><i
-                                                                                  class="fab fa-2x fa-twitter"></i></a></li>
-          <li class="list-inline-item"><a href="https://www.youtube.com/channel/UChj1pycWmHOJDeJkDf6RraA"
-                                          target="blank"><i class="fab fa-2x fa-youtube"></i></a></li>
-          <li class="list-inline-item"><a href="https://instagram.com/secompufscar" target="blank"><i
-                                                                                    class="fab fa-2x fa-instagram"></i></a></li>
-          <li class="list-inline-item"><a href="mailto:{{ secomp_email }}"><i
-                                          class="fa fa-2x fa-envelope"></i></a></li>
+          <li class="list-inline-item"><a href="https://facebook.com/secompufscar" target="blank">
+            <i class="fab fa-2x fa-facebook-f"></i></a></li>
+          <li class="list-inline-item"><a href="https://twitter.com/secompufscar" target="blank">
+            <i class="fab fa-2x fa-twitter"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.youtube.com/channel/UChj1pycWmHOJDeJkDf6RraA" target="blank">
+            <i class="fab fa-2x fa-youtube"></i></a></li>
+          <li class="list-inline-item"><a href="https://instagram.com/secompufscar" target="blank">
+            <i class="fab fa-2x fa-instagram"></i></a></li>
+          <li class="list-inline-item"><a href="mailto:{{ secomp_email }}">
+            <i class="fa fa-2x fa-envelope"></i></a></li>
         </ul>
       </div>
       <div class="col-sm-12 text-center">
@@ -199,9 +203,9 @@
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
 
 <script>
-	$(document).ready(function(){
-    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
-  });
+	/*$(document).ready(function(){
+    	$('#content').css("padding-top", $('#navTop').outerHeight() * 1.2);
+  });*/
 </script>
 
 {% endblock %}

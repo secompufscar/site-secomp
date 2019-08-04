@@ -30,11 +30,10 @@
 
     .dropdown-container {
         display: none;
-        padding-left: 10%;
     }
 
-    .dropdown-btn-active {
-        background-color: red;
+    .dropdown-container a {
+        padding-left: 12%;
     }
 
     @media (min-width: 768px) {
@@ -61,34 +60,40 @@
                 class="list-group-item list-group-item-action bg-light">Dashboard</a>
 
             <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action bg-light">Dados</a>
+            <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action bg-light">Editar dados</a>
 
-            {% if participante != None: %}
+            {% if participante: %}
 
             <a href="{{ url_for('users.kit') }}" class="list-group-item list-group-item-action bg-light">Kit</a>
 
-            <button class="list-group-item list-group-item-action dropdown-btn bg-light">Inscrições
+            <button style="outline: none;"
+                class="list-group-item list-group-item-action dropdown-btn bg-light">Inscrições
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-                <a href="{{ url_for('.inscricao_atividades') }}"
+                <a href="{{ url_for('users.inscricao_atividades') }}"
                     class="list-group-item list-group-item-action bg-light">Atividades</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Desafio de Programadores</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Hackaton</a>
             </div>
 
+            {% else: %}
+            <a href="{{ url_for('users.cadastro_participante') }}" class="list-group-item list-group-item-action bg-light">Inscrever-se</a>
+
             {% endif %}
 
-            <button class="list-group-item list-group-item-action dropdown-btn bg-light">Gerenciamento
+            <button style="outline: none;"
+                class="list-group-item list-group-item-action dropdown-btn bg-light">Gerenciamento
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
                 <a href="{{ url_for('management.gerenciar') }}"
                     class="list-group-item list-group-item-action bg-light">Homepage</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Camisetas</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Venda de kits</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Listagem de participantes</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Sorteio de usuário</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">URL ministrante</a>
+                <a href="{{ url_for('management.vender_kits') }}" class="list-group-item list-group-item-action bg-light">Venda de kits</a>
+                <a href="{{ url_for('management.listas') }}" class="list-group-item list-group-item-action bg-light">Listagem de participantes</a>
+                <a href="{{ url_for('management.sortear') }}" class="list-group-item list-group-item-action bg-light">Sorteio de usuário</a>
+                <a href="{{ url_for('management.gerar_url_conteudo') }}" class="list-group-item list-group-item-action bg-light">URL ministrante</a>
+                <a href="{{ url_for('management.cadastro_flags') }}" class="list-group-item list-group-item-action bg-light"> Gerenciar Flags </a>
             </div>
 
             <a href="/admin" class="list-group-item list-group-item-action bg-light">Administração</a>
