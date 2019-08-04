@@ -3,6 +3,74 @@
 @import "variables";
 @import "mixins";
 
+#content {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+}
+
+// Style switch
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+}
+.theme-switch {
+  display: inline-block;
+  height: 30px;
+  position: relative;
+  width: 15px;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  content: "";
+  height: 15px;
+  position: absolute;
+  transition: 0.4s;
+  width: 15px;
+}
+
+input:checked + .slider {
+  background-color: $dark-gray;
+}
+
+input:checked + .slider:before {
+  transform: translateY(15px);
+}
+
+.slider.round {
+  border-radius: 15px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+@media (orientation: portrait) {
+  .theme-switch {
+    height: 15px;
+    width: 30px;
+  }
+  input:checked + .slider:before {
+    transform: translateX(15px);
+  }
+}
+// end
+
 // Rules
 header {
   @include main-gradient;
@@ -16,6 +84,11 @@ header {
       color: $white70;
     }
   }
+}
+
+#content {
+  min-height: 75vh;
+  padding-top: 53px;
 }
 
 .bg-gradient-secomp {
@@ -54,7 +127,7 @@ header {
   &-menu a {
     font-size: 12px;
   }
-  > &-toggle:active {
+  &-toggle:active {
     /*Without this, clicking will make it sticky*/
     pointer-events: visible;
   }
