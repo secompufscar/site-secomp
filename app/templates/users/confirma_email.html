@@ -4,10 +4,10 @@
 <div class="container pt-4 pb-4">
 	<div class="row justify-content-center" style="min-height: 70vh;">
 		<div class="col-md-8 text-center align-self-center">
-			{% if status == True: %}
+			{% if status %}
 				<i class="fa fa-4x fa-check"></i>
 				<h4>{{ resultado }}</h4>
-				{% if ministrante == True: %}
+				{% if ministrante %}
 					<button onclick="location.href='{{url_for('conteudo.dados_hospedagem_transporte')}}'">Continuar</button>
 				{% else: %}
 					<button onclick="location.href='dashboard'">Continuar</button>
