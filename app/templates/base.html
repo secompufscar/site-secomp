@@ -94,35 +94,41 @@
 
         <!-- Lado direito da Navbar -->
         <div class="navbar-nav ml-3">
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-            {% if current_user.is_authenticated %}
-            {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
-            <a class="dropdown-item theme-switch-wrapper">
-              <label class="theme-switch" for="checkbox">
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="config">
+              <i class="mr-2 fas fa-cog"></i></a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              {% if current_user.is_authenticated %}
+              {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
+              <div class="dropdown-item theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                  <input type="checkbox" id="checkbox" />
+                  <div class="slider round"></div>
+                </label>
+                DARK
+              </div>
+              <a class="dropdown-item" href="{{ url_for('management.gerenciar') }}">
+                <i class="mr-2 fas fa-user-secret"></i>GERENCIAR</a>
+              {% endif %}
+              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+                <i class="mr-2 fas fa-user"></i>PARTICIPANTE</a>
+              <a class="dropdown-item" href="{{ url_for('views.logout') }}">
+                <i class="mr-2 fas fa-sign-out-alt"></i>SAIR</a>
+            </div>
+            {% else %}
+            <div class="dropdown-item theme-switch-wrapper">
+              <label class="mr-2 theme-switch" for="checkbox">
                 <input type="checkbox" id="checkbox" />
                 <div class="slider round"></div>
               </label>
-            </a>
-            <a class="dropdown-item" href="{{ url_for('management.gerenciar') }}">
-              <i class="mr-2 fas fa-user-secret"></i>GERENCIAR</a>
+              DARK
+            </div>
+            <a class="dropdown-item" href=" " data-toggle="modal" data-target="#modal-login">
+              <i class="mr-2 fas fa-user"></i>ENTRAR</a>
+            <a class="dropdown-item" href="{{ url_for('users.cadastro') }}">
+              <i class="mr-2 fas fa-address-card"></i>INSCREVER</a>
             {% endif %}
-            <a class="dropdown-item" href="{{ url_for('views.constr') }}">
-              <i class="mr-2 fas fa-user"></i>PARTICIPANTE</a>
-            <a class="dropdown-item" href="{{ url_for('views.logout') }}">
-              <i class="mr-2 fas fa-sign-out-alt"></i>SAIR</a>
           </div>
-          {% else %}
-          <a class="dropdown-item theme-switch-wrapper">
-            <label class="theme-switch" for="checkbox">
-              <input type="checkbox" id="checkbox" />
-              <div class="slider round"></div>
-            </label>
-          </a>
-          <a class="dropdown-item" href=" " data-toggle="modal" data-target="#modal-login">
-            <i class="mr-2 fas fa-user"></i>ENTRAR</a>
-          <a class="dropdown-item" href="{{ url_for('users.cadastro') }}">
-            <i class="mr-2 fas fa-address-card"></i>INSCREVER</a>
-          {% endif %}
         </div>
       </div>
     </div>

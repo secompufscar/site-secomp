@@ -24,9 +24,10 @@
 
 .theme-switch {
   display: inline-block;
-  height: 30px;
   position: relative;
-  width: 15px;
+  margin: auto 0 auto 0;
+  height: 15px;
+  width: 30px;
 }
 
 .theme-switch input {
@@ -35,12 +36,12 @@
 
 .slider {
   background-color: #ccc;
-  bottom: 0;
   cursor: pointer;
-  left: 0;
   position: absolute;
-  right: 0;
   top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   transition: 0.4s;
 }
 
@@ -48,9 +49,9 @@
   background-color: #fff;
   content: "";
   height: 15px;
+  width: 15px;
   position: absolute;
   transition: 0.4s;
-  width: 15px;
 }
 
 input:checked + .slider {
@@ -58,7 +59,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateY(15px);
+  transform: translateX(15px);
 }
 
 .slider.round {
@@ -69,16 +70,6 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-@media (orientation: portrait) {
-  .theme-switch {
-    height: 15px;
-    width: 30px;
-  }
-
-  input:checked + .slider:before {
-    transform: translateX(15px);
-  }
-}
 header {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
 }
