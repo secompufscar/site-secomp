@@ -4,67 +4,109 @@
 @import "mixins";
 
 // Rules
-header{
-    @include main-gradient;
-    a{
-	font: {
-	    weight: 600;
-	}
-	color: $white;
-	@include main-font;
-	&:hover {
-	    color: $white70;
-	}
+header {
+  @include main-gradient;
+  a {
+    font: {
+      weight: 600;
     }
+    color: $white;
+    @include main-font;
+    &:hover {
+      color: $white70;
+    }
+  }
 }
 
-.bg-gradient-secomp{
-    @include main-gradient;
+.bg-gradient-secomp {
+  @include main-gradient;
+}
+.btn {
+  border: #00000000;
 }
 
-.carousel{ 
-    &-item {
-	height: 100vh;
-	width:  100vw;
-	object-fit: fill;
-	text-shadow: 1px 1px 5px black;
-    }
+.btn-primary {
+  background-color: $secomp1;
 }
-.dropdown{
-    &-menu a {
-	font-size: 12px;
-    }
-    > &-toggle:active {
-	/*Without this, clicking will make it sticky*/
-	pointer-events: visible;
-    }
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+  background-color: $secomp2 !important;
+}
+
+.btn-link:hover,
+.btn-link:focus {
+  text-decoration: none;
+}
+
+.carousel {
+  &-item {
+    height: 100vh;
+    width: 100vw;
+    object-fit: fill;
+    text-shadow: 1px 1px 5px black;
+  }
+}
+
+.dropdown {
+  &-menu a {
+    font-size: 12px;
+  }
+  > &-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: visible;
+  }
 }
 
 footer {
-    background-color: $dark-gray;
-    ul li{
-	padding: 1%;	
-	a{
-	    color: $white;
-	    &:hover{
-		color: $secomp2;
-	    }
-	}
+  background-color: $dark-gray;
+  ul li {
+    padding: 1%;
+    a {
+      color: $white;
+      &:hover {
+        color: $secomp2;
+      }
     }
-}
-
-#barrinha {
-    @include main-gradient;
-    padding: 0.5%;
-}
-
-#nav-logo {
-    object-fit: contain;
-    // padding: 1px;
+  }
 }
 
 .sobre-img {
-    object-fit: cover;
-    max-height: 70vh;
-    width: 100vh;
+  object-fit: cover;
+  max-height: 70vh;
+  width: 100vh;
+}
+
+/* Imagens com texto em cima */
+.overlay {
+  background-color: #000000;
+  position: relative;
+}
+
+.opac {
+  filter: opacity(0.4);
+}
+
+.overlay-text {
+  position: absolute;
+  color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+/* fim-imagens */
+
+#barrinha {
+  @include main-gradient;
+  padding: 0.5%;
+}
+
+#nav-logo {
+  object-fit: contain;
+}
+
+#video {
+  height: 80vh;
 }
