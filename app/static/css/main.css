@@ -1,72 +1,81 @@
 @charset "UTF-8";
 header {
-  background-image: linear-gradient(to right, #008cb5, #00cfa1); }
-  header a {
-    font-weight: 600;
-    color: #fff;
-    font-size: 14.5px;
-    font-family: 'Clear Sans','Helvetica Neue',Arial,Helvetica,sans-serif; }
-    header a:hover {
-      color: rgba(255, 255, 255, 0.7); }
+  background-image: linear-gradient(to right, #008cb5, #00cfa1);
+}
+
+header a {
+  font-weight: 600;
+  color: #fff;
+  font-size: 14.5px;
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+header a:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
 
 #content {
   min-height: 75vh;
-  padding-top: 53px; }
+  padding-top: 53px;
+}
 
 .btn {
-  border: #00000000; }
+  border: #00000000;
+}
 
 .btn-primary {
-  background-color: #008cb5; }
+  background-color: #008cb5;
+}
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
-  background-color: #00cfa1 !important; }
+  background-color: #00cfa1 !important;
+}
+
+.btn-link:hover, .btn-link:focus {
+  text-decoration: none;
+}
 
 .bg-gradient-secomp {
-  background-image: linear-gradient(to right, #008cb5, #00cfa1); }
-  
-  /* Imagens com texto em cima */
+  background-image: linear-gradient(to right, #008cb5, #00cfa1);
+}
+
+.dropdown-menu a {
+  font-size: 12px;
+}
+
+.dropdown-toggle:active {
+  /*Without this, clicking will make it sticky*/
+  pointer-events: visible;
+}
+
+footer ul li {
+  padding: 1%;
+}
+
+footer ul li a {
+  color: #fff;
+}
+
+footer ul li a:hover {
+  color: #00cfa1;
+}
+
+/* Imagens com texto em cima */
 .overlay {
   background-color: #000000;
-  position: relative; }
+  position: relative;
+}
 
 .opac {
-  filter: opacity(0.4); }
+  filter: opacity(0.4);
+}
 
 .overlay-text {
   position: absolute;
   color: #fff;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); }
-
-@media (orientation: landscape) {
-  .img-responsive {
-    width: 100%;
-    height: 100vh;
-  }
-  .overlay-text h1 {
-    font-weight: 600;
-    font-size: 8vh;
-  }
-  .overlay-text h2 {
-    font-weight: 500;
-    font-size: 4.5vh;
-  }
-}
-
-@media (orientation: portrait) {
-  .img-responsive {
-    width: 100vw;
-  }
-  .overlay-text h1 {
-    font-weight: 600;
-    font-size: 3.5vh;
-  }
-  .overlay-text h2 {
-    font-weight: 500;
-    font-size: 2.5vh;
-  }
+  transform: translate(-50%, -50%);
 }
 /* fim-imagens */
 
@@ -74,37 +83,24 @@ header {
   height: 100vh;
   width: 100vw;
   object-fit: fill;
-  text-shadow: 1px 1px 5px black; }
-
-.dropdown-menu a {
-  font-size: 12px; }
-
-.dropdown-toggle:active {
-  /*Without this, clicking will make it sticky*/
-  pointer-events: visible; }
-
-footer ul li {
-  padding: 1%; }
-  footer ul li a {
-    color: #fff; }
-    footer ul li a:hover {
-      color: #00cfa1; }
+  text-shadow: 1px 1px 5px black;
+}
 
 #barrinha {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
-  padding: 0.5%; }
+  padding: 0.5%;
+}
 
 #nav-logo {
-  object-fit: contain; }
+  object-fit: contain;
+}
 
 #video {
-  height: 80vh; }
+  height: 80vh;
+}
 
 .sobre-img {
   object-fit: cover;
   max-height: 70vh;
-  width: 100vh; }
-
-.btn-link:hover, .btn-link:focus{
-  text-decoration: none;
+  width: 100vh;
 }
