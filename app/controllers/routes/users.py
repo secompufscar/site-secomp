@@ -187,7 +187,7 @@ def verificacao(token):
         user = db.session.query(Usuario).filter_by(token_email=token).first()
         salt = user.salt
         # Gera um email a partir do token do link e do salt do db
-        email = serializer.loads(token, salt=salt, max_age=3600)
+        email = serializer.loads(token, salt=salt, max_age=43200)
         user.email = email
         # Valida o email
         user.email_verificado = True
@@ -195,12 +195,30 @@ def verificacao(token):
         db.session.commit()
     # Tempo definido no max_age
     except SignatureExpired:
-        return render_template('users/cadastro.html', resultado='O link de ativação expirou.', form_login=form_login)
+        user = db.session.query(Usuario).filter_by(token_email=token).first()
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        salt = gensalt().decode('utf-8')
+        user.salt = salt
+        token = serializer.dumps(user.email, salt=salt)
+        user.token_email = token
+        db.session.add(user)
+        db.session.commit()
+        enviar_email_confirmacao(user, token)
+        return redirect(url_for('.reenvio_confirmacao_email'))
     except Exception as e:
         print(e)
-        return render_template('users/cadastro.html', resultado='Falha na ativação.', form_login=form_login)
+        return redirect(url_for('.erro_confirmacao_email'))
     return redirect(url_for('.verificar_email'))
 
+@users.route('/reenvio-confirmacao-email')
+def reenvio_confirmacao_email():
+    form_login = LoginForm(request.form)
+    return render_template('users/reenvio_confirmacao_email.html', form_login=form_login)
+
+@users.route('/erro-confirmacao-email')
+def erro_confirmacao_email():
+    form_login = LoginForm(request.form)
+    return render_template('users/erro_confirmacao_email.html', form_login=form_login)
 
 @users.route('/inscricao-minicursos')
 @login_required
