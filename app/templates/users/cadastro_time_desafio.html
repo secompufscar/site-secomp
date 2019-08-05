@@ -10,9 +10,9 @@
     </div>
     <div class="col-md-8">
       <form method="POST" action="{{ url_for('users.cadastrar_time_desafio') }}">
-          {%  if erros != None %}
+          {%  if erro != None %}
           <div class="alert alert-danger" role="alert">
-                {{ erros }}
+                {{ erro }}
           </div>
           {%  endif %}
           {{ form.hidden_tag() }}
