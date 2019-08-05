@@ -164,7 +164,7 @@ class CadastroInformacoesMinicurso(FlaskForm):
     descricao = TextAreaField('Descrição', validators=[InputRequired(),
         Length(min=1,max=1024)], id='descricao')
     pre_requisitos = TextAreaField('Pré-requisitos recomendados aos participantes', validators=[InputRequired(),
-        Length(max=300)], id='pre_requisitos')
+        Length(max=512)], id='pre_requisitos')
     planejamento = TextAreaField('Descrição da estrutura do minicurso', validators=[InputRequired(), Length(max=2056)], id='planejamento')
     apresentacao_extra = FileField('Apresentação extra', validators=[
         FileAllowed(['pdf', 'doc', 'docx', 'ppt', 'pptx','rar', 'zip', 'tar', 'z', 'gz', 'taz', 'tgz'],
@@ -247,9 +247,8 @@ class BugReportForm(FlaskForm):
     titulo = StringField('Título', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)])
     escopo = StringField('Escopo', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], default='ex: secompufscar.com.br')
     falha = StringField('Tipo de Falha Encontrada', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], id='falha', default='ex: Cross-site Scripting (XSS)')
-    autor = StringField('Autor', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], default='ex: Como você quer ser identificado?') 
+    autor = StringField('Autor', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], default='ex: Como você quer ser identificado?')
     contato = StringField('Caso queira ser contatado por nós, deixe aqui seu e-mail', validators=[Optional(), Email(message=ERRO_EMAIL)], id='contato')
     resumo = TextAreaField('Escreva aqui de forma sucinta a falha que você encontrou', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=200)], id='resumo')
     descricao = TextAreaField('Escreva aqui, de forma mais extensa, a falha encontrada, com os passos necessários para reproduzi-la', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(max=1200)], id='descricao')
     impacto = TextAreaField('Escreva aqui o impacto causado pela falha encontrada, caso seja explorada', validators=[Length(max=300)], id='impacto')
-
