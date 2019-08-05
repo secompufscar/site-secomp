@@ -176,21 +176,21 @@ class CadastroInformacoesMinicurso(FlaskForm):
                     message=ERRO_EXTENSAO_INVALIDA)
         ], id='material')
     requisitos_ide = TextAreaField('Existe alguma preferência de IDE (Ambiente Integral de Desenvolvimento) ou editor de texto para o minicurso?',
-                                    validators=[InputRequired(), Length(max=500)], id='requisitos_ide', render_kw={'maxlength': 500})
+                                    validators=[InputRequired(), Length(max=1024)], id='requisitos_ide', render_kw={'maxlength': 1024})
     requisitos_bibliotecas_pacotes = TextAreaField('Caso existam, especifique todos os pacotes e/ou bibliotecas adicionais que serão utilizados no decorrer do minicurso',
-                                                   validators=[InputRequired(), Length(max=500)], id='requisitos_bibliotecas_pacotes', render_kw={'maxlength': 500})
+                                                   validators=[InputRequired(), Length(max=1024)], id='requisitos_bibliotecas_pacotes', render_kw={'maxlength': 1024})
     requisitos_dependencias = TextAreaField('Especifique todos os programas e dependências que serão necessários no decorrer do minicurso',
-                                                   validators=[InputRequired(), Length(max=500)], id='requisitos_dependencias', render_kw={'maxlength': 500})
+                                                   validators=[InputRequired(), Length(max=1024)], id='requisitos_dependencias', render_kw={'maxlength': 1024})
     requisitos_sistema = TextAreaField('Caso exista, especifique alguma limitação no uso de algum sistema operacional para o minicurso',
-                                                   validators=[Length(max=500)], id='requisitos_sistema', render_kw={'maxlength': 500})
+                                                   validators=[Length(max=1024)], id='requisitos_sistema', render_kw={'maxlength': 1024})
     requisitos_observacoes = TextAreaField('Existe alguma observação em relação aos requisitos do minicurso?',
-                                                   validators=[Length(max=500)], id='requisitos_observacoes', render_kw={'maxlength': 500})
+                                                   validators=[Length(max=1024)], id='requisitos_observacoes', render_kw={'maxlength': 1024})
     requisitos_github = StringField('No caso da existência de código disponível no GitHub ou em outros repositórios, forneça o link para este repositório ',
-                                                   validators=[Length(max=500)], id='requisitos_github', render_kw={'maxlength': 500})
+                                                   validators=[Length(max=1024)], id='requisitos_github', render_kw={'maxlength': 1024})
     requisitos_hardware = TextAreaField('Caso o minicurso envolva hardware, forneça os requisitos de hardware',
-                                        validators=[Length(max=500)], id='requisitos_hardware', render_kw={'maxlength': 500})
-    dicas_instalacao = TextAreaField('Dicas para instalação dos softwares necessários', id='dicas_instalacao', validators=[Length(max=500)], render_kw={'maxlength': 500})
-    observacoes = TextAreaField('Observações em geral', id='observacoes', validators=[Length(max=600)], render_kw={'maxlength': 600})
+                                        validators=[Length(max=1024)], id='requisitos_hardware', render_kw={'maxlength': 1024})
+    dicas_instalacao = TextAreaField('Dicas para instalação dos softwares necessários', id='dicas_instalacao', validators=[Length(max=1024)], render_kw={'maxlength': 1024})
+    observacoes = TextAreaField('Observações em geral', id='observacoes', validators=[Length(max=512)], render_kw={'maxlength': 512})
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
 class CadastroInformacoesPalestra(FlaskForm):
@@ -203,7 +203,7 @@ class CadastroInformacoesPalestra(FlaskForm):
                     message=ERRO_EXTENSAO_INVALIDA)
         ], id='material')
     perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired(), Length(max=1024)], id='perguntas', render_kw={'maxlength': 1024})
-    observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=600)], render_kw={'maxlength': 600})
+    observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=512)], render_kw={'maxlength': 512})
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()], id='confirmacao')
 
 class CadastroFeiraDeProjetos(FlaskForm):
@@ -211,13 +211,13 @@ class CadastroFeiraDeProjetos(FlaskForm):
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)], id='descricao', render_kw={'maxlength': 1024})
     necessidades = TextAreaField('Necessidades', validators=[InputRequired(), Length(max=1024)], id='necessidades', render_kw={'maxlength': 1024})
     planejamento = TextAreaField('Planejamento', validators=[InputRequired(), Length(max=2056)], id='planejamento', render_kw={'maxlength': 2056})
-    observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=600)], render_kw={'maxlength': 600})
+    observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=512)], render_kw={'maxlength': 512})
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
 class CadastroAtividadeGenerica(FlaskForm):
     titulo = StringField('Título da Atividade', validators=[InputRequired(), Length(min=1,max=256)], id='titulo', render_kw={'maxlength': 256})
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)], id='descricao', render_kw={'maxlength': 1024})
-    observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=600)], render_kw={'maxlength': 600})
+    observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=512)], render_kw={'maxlength': 512})
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
 class CadastroInformacoesLocomocaoEstadia(FlaskForm):
