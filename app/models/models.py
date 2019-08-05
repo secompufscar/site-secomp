@@ -84,7 +84,7 @@ class Usuario(db.Model):
         return permissoes
 
     def __repr__(self):
-       if self is not None and self.primeiro_nome is not None and self.sobrenome is not None and self.email is not None: 
+       if self is not None and self.primeiro_nome is not None and self.sobrenome is not None and self.email is not None:
            return self.primeiro_nome + " " + self.sobrenome + " <" + self.email + ">"
        else:
            return ""
@@ -210,7 +210,7 @@ class InfoMinicurso(db.Model):
     __tablename__ = 'info_minicurso'
     id = Column(Integer, primary_key=True)
     id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
-    pre_requisitos = Column(String(128))
+    pre_requisitos = Column(String(512))
     planejamento = Column(String(2056))
     apresentacao_extra = Column(String(128))
     material = Column(String(128))
