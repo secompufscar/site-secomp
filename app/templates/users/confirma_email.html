@@ -10,7 +10,7 @@
 				{% if ministrante == True: %}
 					<button onclick="location.href='{{url_for('conteudo.dados_hospedagem_transporte')}}'">Continuar</button>
 				{% else: %}
-					<button onclick="location.href='views.constr'">Continuar</button>
+					<button onclick="location.href='{{url_for('views.constr')}}'">Continuar</button>
 				{% endif %}
 			{% else: %}
 				<i class="fa fa-4x fa-envelope"></i>
