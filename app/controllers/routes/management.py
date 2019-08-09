@@ -176,7 +176,7 @@ def listas():
 @login_required
 def gerar_url_conteudo():
     permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin):
+    if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = GerarUrlConteudoForm(request.form)
         emails = request.form.getlist('emails[]')
