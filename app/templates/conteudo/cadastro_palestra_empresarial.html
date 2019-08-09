@@ -44,33 +44,27 @@
   .help-block {
     color: red;
   }
-
 </style>
-
 <div class="container pt-4 pb-4">
   <div class="row justify-content-center">
     <div class="col-md-8">
       {% if atividade.titulo is none: %}
-        <h2 class="text-center">Cadastro de Feira de Projetos</h2>
+        <h2 class="text-center">Cadastro de Palestra Empresarial</h2>
       {% else %}
-        <h2 class="text-center">Editar Feira de Projetos: {{ atividade.titulo }}</h2>
+        <h2 class="text-center">Editar Palestra Empresarial: {{ atividade.titulo }}</h2>
       {% endif %}
 
-      <form method="POST" action="{{url_for('conteudo.cadastro_feira_projetos', codigo=codigo)}}">
+      <form method="POST" action="{{url_for('conteudo.cadastro_palestra_empresarial', codigo=codigo)}}">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.descricao) }}
-        {{ wtf.form_field(form.necessidades) }}
-        {{ wtf.form_field(form.planejamento) }}
         {{ wtf.form_field(form.observacoes) }}
-
         <div>
             <p>Termo e Condições de Inscrição</p>
             <p>ATENÇÃO! Este termo refere-se aos direitos e deveres tanto do contato convidado, quanto por parte da SECOMP UFSCar; tornando a leitura deste fundamental! Quaisquer dúvidas devem ser questionadas ao membro que lhe forneceu acesso a este formulário.</p>
             <embed src="{{ url_for('views.protected', filename='juridic/termo_condicoes_inscricao.pdf') }}" type="application/pdf" width="100%" height="600px"></embed>
         </div>
         {{ wtf.form_field(form.confirmacao) }}
-
         <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
       </form>
     </div>
@@ -79,25 +73,15 @@
 
 <script>
 
-  $("label[for='descricao']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Breve descrição do projeto, a ser utilizada na divulgação.</span></div>');
-  $("label[for='necessidades']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Durante a feira, disponibilizamos uma mesa e duas cadeiras para cada projeto. Caso necessite de algum recurso e/ou equipamento específico (como tomada, suporte para fixar cartazes, tripé para banner, etc) liste-os aqui.</span></div>');
-  $("label[for='planejamento']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Descrição (o mais detalhada possível) da estrutura de apresentação do projeto, ou seja, a distribuição em que os conteúdos serão expostos, bem como o tempo reservado para cada um destes. Vale destacar a recomendação para que realize uma explicação teórica e, em seguida, uma demonstração prática. Informação apenas para organização interna, a qual não será utilizada para divulgação.</span></div>');
-  $("label[for='observacoes']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Deixe aqui alguma observação ou informação que julgar necessária.</span></div>');
-
   {% if atividade.titulo is not none %}
   $('#titulo').val('{{atividade.titulo}}');
   {% endif %}
   {% if atividade.descricao is not none %}
   $('#descricao').val('{{atividade.descricao}}');
   {% endif %}
-  {% if atividade.info_feira_de_projetos.necessidades is not none %}
-  $('#necessidades').val('{{atividade.info_feira_de_projetos.necessidades}}');
-  {% endif %}
-  {% if atividade.info_feira_de_projetos.planejamento is not none %}
-  $('#planejamento').val('{{atividade.info_feira_de_projetos.planejamento}}');
-  {% endif %}
   {% if atividade.observacoes is not none %}
   $('#observacoes').val('{{atividade.observacoes}}');
   {% endif %}
 </script>
+
 {% endblock %}

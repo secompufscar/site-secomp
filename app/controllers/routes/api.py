@@ -12,11 +12,11 @@ from app.models.models import *
 api = Blueprint('api', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/api')
 
-@api.route('/')
+#@api.route('/')
 def index():
     return "Welcome to SECOMP: API"
 
-@api.route('/equipe')
+#@api.route('/equipe')
 def equipe():
     return "Esperando JSON da Equipe"
 #    with open('./app/config/membros_org.json', 'r') as out:
@@ -26,13 +26,21 @@ def equipe():
 def patrocinadores(edicao):
     return jsonify(get_patrocinadores(edicao))
 
+
 @api.route('/atividades/<edicao>')
 def atividades(edicao):
     return jsonify(get_atividades(edicao))
 
-@api.route('/img/<url>')
+
+#@api.route('/patrocinadores')
+def patrocinadores():
+    return  jsonify(get_patrocinadores())
+
+
+#@api.route('/img/<url>')
 def retornaImg(url):
     return url #TODO (quando estiver no servidor) hospedagem de imagens
+
 
 @api.route('/executa-email-custon', methods=['POST'])
 def executa_email_custon():

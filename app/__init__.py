@@ -28,6 +28,14 @@ def create_app(config=None):
 
     QRCode(app)
 
+    import sentry_sdk
+    from sentry_sdk.integrations.flask import FlaskIntegration
+
+    sentry_sdk.init(
+        dsn=app.config['SENTRY_DSN'],
+        integrations=[FlaskIntegration()]
+    )
+    
     Bootstrap(app)
 
     from app.models.models import db, Usuario
@@ -38,6 +46,7 @@ def create_app(config=None):
     Migrate(app, db)
 
     from app.controllers.forms.forms import LoginForm
+
     @app.errorhandler(400)
     def bad_request(error):
         form_login = LoginForm(request.form)
@@ -82,8 +91,6 @@ def create_app(config=None):
     app.register_blueprint(users.users)
     app.register_blueprint(views.views)
     app.register_blueprint(api.api)
-
-
 
     upload_path = path.join(path.dirname(__file__), 'static')
     adm = admin.init_app(app, upload_path)
