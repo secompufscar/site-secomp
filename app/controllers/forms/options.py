@@ -125,6 +125,22 @@ def get_opcoes_area_atividade():
     except Exception as e:
         return None
 
+# Opções de complemento do envio customizado de emails
+def get_opcoes_ecustom_complemento():
+    return [(0, 'Mesmo arquivo para todos'), (1, 'Nome do usuário, CamelCase'), (2, 'ID do usuário')]
+
+# Opções de extensão do envio customizado de emails
+def get_opcoes_ecustom_extensao():
+    return [(0, 'Sem extensão'), (1, '.pdf')]
+
+def get_opcoes_ecustom_atividade():
+    # Cria uma lista de atividades para ser usado na página
+    query = db.session.query(Atividade)
+
+    atividades = [(a.id, a.titulo) for a in query]
+    atividades.append((-1, 'Todas'))
+
+    return atividades
 
 def get_opcoes_tipo_atividade():
     try:

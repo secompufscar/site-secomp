@@ -1,9 +1,23 @@
 from app.models.models import *
+
+from os import path
 from app.controllers.constants import EDICAO_ATUAL
 
 
 def get_score_evento(edicao):
     return 10000
+
+
+def get_usuarios_query():
+    '''
+    Retorna o objeto da query de usuários para ser usado em outra função
+    '''
+    try:
+        query = db.session.query(Usuario)
+        return query
+    except Exception as e:
+        print(e)
+        return None
 
 
 def get_participantes():
@@ -30,6 +44,26 @@ def get_atividades():
     except Exception as e:
         print(e)
         return None
+
+
+def get_participantes_da_atividade_json(id=0):
+    '''
+    Retorna uma lista de dicionários de usuários para ser usado na página de email cusmotizado
+    '''
+    query = None
+
+    if (id == -1):
+        query = db.session.query(Atividade)
+    else:
+        query = db.session.query(Atividade).filter_by(id=id)
+
+    query = query.first()
+    ativParticipantes = query.participantes
+
+    participantes = [{'id': p.usuario.id, 'nome': f'{p.usuario.primeiro_nome} {p.usuario.sobrenome}', 'email': p.usuario.email} for p in ativParticipantes]
+
+    return participantes
+
 
 
 def get_participantes_sem_kit():
@@ -63,6 +97,21 @@ def verifica_outro_escolhido(campo, objeto):
     else:
         return campo.data
 
+
+def get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao):
+    '''
+    Retorna uma lista dos arquivos que serão anexados.
+    '''
+
+    # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aqui
+    if complemento == 0: # Mesmo arquivo para todos
+        return path.join(anexoPasta, (anexoBase + extencao))
+    elif complemento == 1: # Nome CamelCase
+        return path.join(anexoPasta, (anexoBase + usuario.primeiro_nome + usuario.sobrenome.replace(" ", "") + extencao))
+    elif complemento == 2: # ID
+        return path.join(anexoPasta, (anexoBase + usuario.id + extencao))
+    else:
+        return None
 
 def valida_url_codigo(usuario, codigo):
     atividade = db.session.query(Atividade).filter_by(url_codigo=codigo).first()

@@ -11,6 +11,8 @@ from app.controllers.forms.validators import *
 
 from secrets import token_urlsafe
 
+from app.controllers.forms.options import get_opcoes_ecustom_atividade, get_opcoes_ecustom_extencao, get_opcoes_ecustom_complemento
+
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
 
@@ -169,6 +171,21 @@ def listas():
                                         tipo='presentes', lista=lista, form=form, form_login=form_login)
         else:
             return render_template('management/listas_participante.html', form=form, form_login=form_login)
+    else:
+        abort(403)
+
+@management.route("/email-custom", methods=["GET"])
+@login_required
+def email_custom():
+    '''
+    Página para envio de email
+    '''
+    permissoes = current_user.getPermissoes()
+    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        form = EmailCuston(request.form)
+
+        return render_template('management/email_custom.html', form=form, form_login=form_login)
     else:
         abort(403)
 
