@@ -216,7 +216,7 @@ def cadastro_palestra(codigo):
                             makedirs(m_path)
 
                     info_palestra = InfoPalestra(requisitos_tecnicos=form.requisitos_tecnicos.data, planejamento=form.planejamento.data,
-                                                apresentacao_extra=form.apresentacao_extra.data, material=m_filename,
+                                                apresentacao_extra='', material=m_filename,
                                                 perguntas=form.perguntas.data)
                     for ministrante in atividade.ministrantes:
                         r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()

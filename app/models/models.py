@@ -408,3 +408,12 @@ class Pagamento(db.Model):
     valor = Column(Float(precision=2), nullable=False)
     efetuado = Column(Boolean, nullable=False)
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
+
+class AdminModelHistory(db.Model):
+    id = Column('id', Integer, primary_key=True)
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=False)
+    acao = Column(String(200), nullable=False)
+    nome_modelo = Column(String(200), nullable=True)
+    id_modelo = Column(Integer)
+    data_hora_acao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    usuario = db.relationship('Usuario', backref='historico_admin', lazy=True)
