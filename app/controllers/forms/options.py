@@ -129,9 +129,9 @@ def get_opcoes_area_atividade():
 def get_opcoes_ecustom_complemento():
     return [(0, 'Mesmo arquivo para todos'), (1, 'Nome do usuário, CamelCase'), (2, 'ID do usuário')]
 
-# Opções de extenção do envio customizado de emails
-def get_opcoes_ecustom_extencao():
-    return [(0, 'Sem extenção'), (1, '.pdf')]
+# Opções de extensão do envio customizado de emails
+def get_opcoes_ecustom_extensao():
+    return [(0, 'Sem extensão'), (1, '.pdf')]
 
 def get_opcoes_ecustom_atividade():
     # Cria uma lista de atividades para ser usado na página
