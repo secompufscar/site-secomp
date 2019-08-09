@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "users/sidebar.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block content %}
+{% block sidebar_content %}
 <div class="container">
     <div class="row justify-content-center pt-1">
         <div class="col-md-12 text-center">
@@ -99,7 +99,17 @@
             </form>
         </div>
         {% endif %}
-
+      
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CONTEUDO'].usuarios %}
+        <div class="col-md-6 p-3">
+            <div>
+                <h4>Flags</h4>
+                <a href="{{ url_for('management.cadastro_flags') }}">
+                    <button type="button" class="btn btn-primary">Gerenciar Flags</button>
+                </a>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
