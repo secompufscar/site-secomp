@@ -48,13 +48,13 @@
 <div class="container pt-4 pb-4">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      {% if atividade.titulo is none: %}
-        <h2 class="text-center">Cadastro de Mesa Redonda</h2>
+      {% if atividade.titulo is none %}
+        <h2 class="text-center">Cadastro de Career Talks</h2>
       {% else %}
-        <h2 class="text-center">Editar Mesa Redonda: {{ atividade.titulo }}</h2>
+        <h2 class="text-center">Editar Career Talks: {{ atividade.titulo }}</h2>
       {% endif %}
 
-      <form method="POST" action="{{url_for('conteudo.cadastro_mesa_redonda', codigo=codigo)}}">
+      <form method="POST" action="{{url_for('conteudo.cadastro_roda_conversa', codigo=codigo)}}">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.titulo) }}
         {{ wtf.form_field(form.descricao) }}

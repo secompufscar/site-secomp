@@ -14,7 +14,7 @@ mail = Mail()
 _teste = {
     "assunto": 'Teste',  # assunto do email
     "nome": 'Pessoa',  # nome do destinatário
-        "titulo": "EMAIL TESTE",
+    "titulo": "EMAIL TESTE",
     "email": 'ti@secompufscar.com.br',  # email destino
     "template": 'email/teste.html',  # path do template (raiz dentro do diretório 'templates')
     "footer": 'TI X SECOMP UFSCar'
@@ -82,7 +82,7 @@ def enviar_email_confirmacao(usuario, token):
             "email": usuario.email,
             "template": 'email/confirmacao_de_email.html',
             "link": str(link),
-            "footer": 'TI X SECCOMP UFSCar'
+            "footer": 'TI X SECOMP UFSCar'
             }
     enviar_email_generico(info)
 

@@ -3,6 +3,50 @@
 
 {% block content %}
 
+<style>
+  .tooltip1 {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tooltip1 .tooltiptext1 {
+    visibility: hidden;
+    width:500px;
+    background-color: black;
+    color: #fff;
+    text-align: justify;
+    border-radius: 6px;
+    padding: 5px 9px 5px 9px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  @media (max-width:550px){
+    .tooltip1 .tooltiptext1 {
+      visibility: hidden;
+      width:250px;
+      background-color: black;
+      color: #fff;
+      text-align: justify;
+      border-radius: 6px;
+      padding: 5px 9px 5px 9px;
+
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+  }
+
+  .tooltip1:hover .tooltiptext1 {
+    visibility: visible;
+  }
+
+  .help-block {
+    color: red;
+  }
+</style>
+
 <div class="container pt-4 pb-4">
   <div class="row justify-content-center">
     <div class="col-md-7">
@@ -78,6 +122,9 @@
       }
     });
   });
+
+  $("label[for='data_chegada_sanca']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Formato dd/mm/aaaa.</span></div>');
+  $("label[for='data_partida_sanca']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Formato dd/mm/aaaa.</span></div>');
 </script>
 
 {% endblock %}

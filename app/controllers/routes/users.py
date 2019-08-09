@@ -20,7 +20,7 @@ users = Blueprint('users', __name__, static_folder='static',
                   template_folder='templates', url_prefix='/participante')
 
 
-@users.route('/cadastro', methods=['POST', 'GET'])
+#@users.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
     """
     Renderiza a página de cadastro do projeto
@@ -71,7 +71,7 @@ def verificar_email():
     return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante, form_login=form_login)
 
 
-@users.route('/cadastro-participante', methods=['POST', 'GET'])
+#@users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
     form_login = LoginForm(request.form)
@@ -125,7 +125,7 @@ def alterar_usuario():
         form.data_nasc.data = usuario.data_nascimento
         return render_template('users/alterar_usuario.html', form=form, form_login=form_login)
 
-@users.route('/dashboard', methods=['POST', 'GET'])
+#@users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
     usuario = db.session.query(Usuario).filter_by(
@@ -150,7 +150,7 @@ def dashboard():
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
 
-@users.route('/dados', methods=['POST', 'GET'])
+#@users.route('/dados', methods=['POST', 'GET'])
 @login_required
 def dados():
     usuario = db.session.query(Usuario).filter_by(
@@ -163,7 +163,7 @@ def dados():
     return render_template('users/dados.html', title='Dados', usuario=usuario,
                             participante=participante, ministrante=ministrante, form_login=form_login)
 
-@users.route('/kit', methods=['POST', 'GET'])
+#@users.route('/kit', methods=['POST', 'GET'])
 @login_required
 def kit():
     usuario = db.session.query(Usuario).filter_by(
@@ -178,7 +178,7 @@ def kit():
         return redirect(url_for('.cadastro_participante'))
 
 
-@users.route('/enviar-comprovante', methods=['POST', 'GET'])
+#@users.route('/enviar-comprovante', methods=['POST', 'GET'])
 @login_required
 def envio_comprovante():
     """
@@ -216,7 +216,7 @@ def verificacao(token):
         user = db.session.query(Usuario).filter_by(token_email=token).first()
         salt = user.salt
         # Gera um email a partir do token do link e do salt do db
-        email = serializer.loads(token, salt=salt, max_age=3600)
+        email = serializer.loads(token, salt=salt, max_age=43200)
         user.email = email
         # Valida o email
         user.email_verificado = True
@@ -224,14 +224,32 @@ def verificacao(token):
         db.session.commit()
     # Tempo definido no max_age
     except SignatureExpired:
-        return render_template('users/cadastro.html', resultado='O link de ativação expirou.', form_login=form_login)
+        user = db.session.query(Usuario).filter_by(token_email=token).first()
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        salt = gensalt().decode('utf-8')
+        user.salt = salt
+        token = serializer.dumps(user.email, salt=salt)
+        user.token_email = token
+        db.session.add(user)
+        db.session.commit()
+        enviar_email_confirmacao(user, token)
+        return redirect(url_for('.reenvio_confirmacao_email'))
     except Exception as e:
         print(e)
-        return render_template('users/cadastro.html', resultado='Falha na ativação.', form_login=form_login)
+        return redirect(url_for('.erro_confirmacao_email'))
     return redirect(url_for('.verificar_email'))
 
+@users.route('/reenvio-confirmacao-email')
+def reenvio_confirmacao_email():
+    form_login = LoginForm(request.form)
+    return render_template('users/reenvio_confirmacao_email.html', form_login=form_login)
 
-@users.route('/inscricao-atividades')
+@users.route('/erro-confirmacao-email')
+def erro_confirmacao_email():
+    form_login = LoginForm(request.form)
+    return render_template('users/erro_confirmacao_email.html', form_login=form_login)
+
+#@users.route('/inscricao-atividades')
 @login_required
 def inscricao_atividades():
     form_login = LoginForm(request.form)
@@ -247,7 +265,7 @@ def inscricao_atividades():
                                usuario=current_user).first(), usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
 
 
-@users.route('/inscricao-atividades/<filtro>')
+#@users.route('/inscricao-atividades/<filtro>')
 @login_required
 def inscricao_atividades_com_filtro(filtro):
     form_login = LoginForm(request.form)
@@ -268,7 +286,7 @@ def inscricao_atividades_com_filtro(filtro):
                            usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
 
 
-@users.route('/inscrever-atividade/<id>')
+#@users.route('/inscrever-atividade/<id>')
 @login_required
 def inscrever(id):
     form_login = LoginForm(request.form)
@@ -296,7 +314,7 @@ def inscrever(id):
         return "Não há vagas disponíveis!"
 
 
-@users.route('/desinscrever-atividade/<id>')
+#@users.route('/desinscrever-atividade/<id>')
 @login_required
 def desinscrever(id):
     form_login = LoginForm(request.form)
@@ -388,7 +406,7 @@ def confirmar_alteracao_senha(token):
         return redirect(url_for('views.login'))
     return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login)
 
-@users.route('/comprar-kit', methods=["POST", "GET"])
+#@users.route('/comprar-kit', methods=["POST", "GET"])
 @login_required
 def comprar_kit():
     form_login = LoginForm(request.form)
@@ -419,7 +437,7 @@ def comprar_kit():
     else:
         return redirect(url_for('.verificar_email'))
 
-@users.route('/confirmar-pagamento-kit', methods=["POST", "GET"])
+#@users.route('/confirmar-pagamento-kit', methods=["POST", "GET"])
 @login_required
 def confirmar_pagamento_kit():
     pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
@@ -446,7 +464,7 @@ def confirmar_pagamento_kit():
     return "O Pagamento já foi efetuado"
 
 
-@users.route('/executar-pagamento-kit', methods=["POST", "GET"])
+#@users.route('/executar-pagamento-kit', methods=["POST", "GET"])
 @login_required
 def executar_pagamento_kit():
     pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
