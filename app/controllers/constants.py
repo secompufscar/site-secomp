@@ -38,3 +38,4 @@ secomp_email = "ti@secompufscar.com.br"
 # Edição atual da secomp
 secomp_edition = "X"
 EDICAO_ATUAL = 10
+

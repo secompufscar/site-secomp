@@ -6,6 +6,26 @@ opcoes_restricao = [
     (3, "Vegano")
 ]
 
+opcoes_transporte_ida_volta = [
+    (1, 'Carro próprio (combustível + pedágios, calculados pelo Jurídico Financeiro)'),
+    (2, 'Passagem de Ônibus (compra a ser realizada pelo Jurídico Financeiro)'),
+    (3, 'Carro alugado (apenas o valor do aluguel do carro)')
+]
+
+opcoes_transporte_sanca = [
+    (1, 'Carro próprio (combustível calculado pelo JF)'),
+    (2, 'Uber/99 (valor gasto na viagem "local de partida → UFSCar")'),
+    (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')
+]
+
+opcoes_como_conheceu = [
+        (0, "Pelo Departamento de Computação da UFSCar"),
+        (1, "Através de amigos"),
+        (2, "Pela nossa página do facebook"),
+        (3, "Por cartazes espalhados em São Carlos"),
+        (4, "Outro")
+]
+
 def get_opcoes_cidades():
     try:
         cidades = db.session.query(Cidade).order_by("nome").all()
@@ -93,6 +113,7 @@ def get_opcoes_cotas_patrocinadores():
     except Exception as e:
         return None
 
+
 def get_opcoes_area_atividade():
     try:
         areas_data = db.session.query(AreaAtividade).all()
@@ -104,6 +125,23 @@ def get_opcoes_area_atividade():
     except Exception as e:
         return None
 
+# Opções de complemento do envio customizado de emails
+def get_opcoes_ecustom_complemento():
+    return [(0, 'Mesmo arquivo para todos'), (1, 'Nome do usuário, CamelCase'), (2, 'ID do usuário')]
+
+# Opções de extensão do envio customizado de emails
+def get_opcoes_ecustom_extensao():
+    return [(0, 'Sem extensão'), (1, '.pdf')]
+
+def get_opcoes_ecustom_atividade():
+    # Cria uma lista de atividades para ser usado na página
+    query = db.session.query(Atividade)
+
+    atividades = [(a.id, a.titulo) for a in query]
+    atividades.append((-1, 'Todas'))
+
+    return atividades
+
 def get_opcoes_tipo_atividade():
     try:
         tipos = db.session.query(TipoAtividade).order_by("nome").all()
@@ -114,15 +152,3 @@ def get_opcoes_tipo_atividade():
         return tipos_atividade
     except Exception as e:
         return None
-
-def get_opcoes_transporte_ida_volta():
-    return [(0, 'Selecione uma opção'),
-            (1, 'Carro próprio (combustível + pedágios, calculados pelo Jurídico Financeiro)'),
-            (2, 'Passagem de Ônibus (compra a ser realizada pelo Jurídico Financeiro)'),
-            (3, 'Carro alugado (apenas o valor do aluguel do carro)')]
-
-def get_opcoes_transporte_sanca():
-    return [(0, 'Selecione uma opção'),
-            (1, 'Carro próprio (combustível calculado pelo JF)'),
-            (2, 'Uber/99 (valor gasto na viagem “local de partida → UFSCar”)'),
-            (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')]

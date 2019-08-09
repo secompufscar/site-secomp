@@ -38,8 +38,26 @@ class CadastroForm(FlaskForm):
     outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe(), so_letras()])
     data_nasc = DateField("Data de Nascimento",
                           format="%d/%m/%Y", id="data_nasc")
+    como_conheceu = SelectField('Como você conheceu a SECOMP?', choices=opcoes_como_conheceu, coerce=int)
+    outro_como_conheceu = StringField("Outro", id="outro_como_conheceu", validators=[Length(max=200)])
     recaptcha = RecaptchaField()
 
+class EdicaoUsuarioForm(FlaskForm):
+    primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
+    sobrenome = StringField('Sobrenome', validators=[InputRequired(
+        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100), so_letras()], id="sobrenome")
+    curso = SelectField('Curso', choices=get_opcoes_cursos(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], id="curso", coerce=int)
+    outro_curso = StringField("Outro curso", id="outro_curso", validators=[erro_curso_existe(), so_letras()])
+    instituicao = SelectField('Instituição', choices=get_opcoes_instituicoes(
+    ), id="instituicao", default="UFSCar", coerce=int)
+    outra_instituicao = StringField("Outra instituição", id="outra_instituicao", validators=[erro_instituicao_existe(), so_letras()])
+    cidade = SelectField('Cidade', choices=get_opcoes_cidades(
+    ), id="cidade", default="São Carlos", coerce=int)
+    outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe(), so_letras()])
+    data_nasc = DateField("Data de Nascimento",
+                          format="%d/%m/%Y", id="data_nasc")
+    recaptcha = RecaptchaField()
 
 class ParticipanteForm(FlaskForm):
     leu_termos = BooleanField('Li e concordo com os termos de uso', id="li_termos")
@@ -52,24 +70,6 @@ class ComprarKitForm(FlaskForm):
     restricao_coffee = SelectField(
         'Restrição para o Coffee-Break', choices=opcoes_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
     forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Enviar Comprovante'),(2,'Paypal')], coerce=int, default=2)
-
-class EditarUsuarioForm(FlaskForm):
-    primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
-    sobrenome = StringField('Sobrenome', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=1, max=100)])
-    email = StringField('Email', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
-    curso = SelectField('Curso', choices=get_opcoes_cursos(),
-                        id='curso', coerce=int)
-    instituicao = SelectField(
-        'Instituição', choices=get_opcoes_instituicoes(), id='instituicao', coerce=int)
-    cidade = SelectField(
-        'Cidade', choices=get_opcoes_cidades(), id='cidade', coerce=int)
-    data_nasc = DateField("Data de Nascimento",
-                          format="%d/%m/%Y", id='data-nasc')
-    senha = PasswordField('Senha', validators=[InputRequired(
-        message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
 
 
 class AlterarSenhaForm(FlaskForm):
@@ -125,7 +125,6 @@ class VendaKitForm(FlaskForm):
 class ListasParticipantes(FlaskForm):
     atividades = SelectField("Atividades", choices=get_atividades(), id="atividade", coerce=int)
     tipo = SelectField("Modelos", choices=[(0, 'Inscritos'), (1, 'Presentes')], id="tipo", coerce=int)
-
 
 class CadastroMinistranteForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
@@ -241,8 +240,37 @@ class CadastroInformacoesLocomocaoEstadia(FlaskForm):
     observacoes = TextAreaField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)], render_kw={'maxlength': 256})
 
+class EmailCuston(FlaskForm):
+    listComplemento = get_opcoes_ecustom_complemento()
+    listExtencao = get_opcoes_ecustom_extencao()
+    listAtividade = get_opcoes_ecustom_atividade()
+
+    dictComplemento = {key : value for (value, key) in listComplemento}
+    dictExtencao = {key : value for (value, key) in listExtencao}
+    dictAtividades = {key : value for (value, key) in listAtividade}
+
+    assunto = StringField('Assunto', id='text_assunto');
+    titulo = StringField('Título', id='text_titulo');
+    template = StringField('Template do Email', id='text_template_email');
+    anexo = BooleanField('Anexo', id='cbox_tem_anexo');
+    pastaAnexo = StringField('Nome da pasta', id='text_path_anexo');
+    baseAnexo = StringField('Base do nome do anexo', id='text_base_anexo');
+    complemento = SelectField('Complemento', id='list_complemento_anexo', choices=listComplemento);
+    extencao = SelectField('Extenção', id='list_extencao_anexo', choices=listExtencao);
+    atividades = SelectField('Atividades', id='list_atividades', choices=listAtividade);
+    pesquisaResultado = StringField('Nome: ', id='text_pesquisa_em_resultado');
+    todosresultado = BooleanField('Todos', id='cbox_todos_os_usuarios');
+    pesquisaSelecionados = StringField('Nome: ', id='text_pesquisa_em_selecionados');
+
 class GerarUrlConteudoForm(FlaskForm):
     tipo_atividade = SelectField("Tipo da Atividade", choices=get_opcoes_tipo_atividade(), id="tipo_atividade", coerce=int, validators=[InputRequired()])
+
+class CadastrarFlagForm(FlaskForm):
+    flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
+    pontos = IntegerField('Pontos', validators=[InputRequired()])
+
+class SubmeterFlagForm(FlaskForm):
+    flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
 
 class BugReportForm(FlaskForm):
     titulo = StringField('Título', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)])
