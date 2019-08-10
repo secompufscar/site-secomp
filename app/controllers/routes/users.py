@@ -123,7 +123,9 @@ def alterar_usuario():
         form.instituicao.data = usuario.id_instituicao
         form.cidade.data = usuario.id_cidade
         form.data_nasc.data = usuario.data_nascimento
-        return render_template('users/alterar_usuario.html', usuario=current_user, form=form, form_login=form_login)
+        return render_template('users/alterar_usuario.html', usuario=current_user,
+                                participante = db.session.query(Participante).filter_by(
+                                usuario=current_user).first(), form=form, form_login=form_login)
 
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
@@ -332,7 +334,9 @@ def alterar_senha():
             return redirect(url_for('views.login'))
         else:
             return render_template('users/alterar_senha.html', form=form, action=request.base_url,
-                                    usuario=current_user, form_login=form_login)
+                                    usuario=current_user, form_login=form_login,
+                                    participante = db.session.query(Participante).filter_by(
+                                        usuario=current_user).first())
     else:
         flash('Confirme seu e-mail para alterar a senha!')
         return redirect(url_for('.dashboard'))
@@ -405,7 +409,8 @@ def comprar_kit():
                     elif form.forma_pagamento.data == 1:
                         return redirect(url_for('.envio_comprovante'))
             else:
-                return render_template('users/comprar_kit.html', usuario=current_user, form=form, form_login=form_login)
+                return render_template('users/comprar_kit.html', participante=participante, usuario=current_user,
+                                        form=form, form_login=form_login)
         else:
             return redirect(url_for('.dashboard'))
     else:
