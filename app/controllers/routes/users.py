@@ -94,7 +94,7 @@ def cadastro_participante():
                 db.session.commit()
                 return redirect(url_for('.comprar_kit'))
             else:
-                return render_template('users/cadastro_participante.html', form=form, form_login=form_login)
+                return render_template('users/cadastro_participante.html', usuario=current_user, form=form, form_login=form_login)
         else:
             return redirect(url_for('.dashboard'))
     else:
@@ -123,18 +123,16 @@ def alterar_usuario():
         form.instituicao.data = usuario.id_instituicao
         form.cidade.data = usuario.id_cidade
         form.data_nasc.data = usuario.data_nascimento
-        return render_template('users/alterar_usuario.html', form=form, form_login=form_login)
+        return render_template('users/alterar_usuario.html', usuario=current_user, form=form, form_login=form_login)
 
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
     form_login = LoginForm(request.form)
     if email_confirmado():
         participante = db.session.query(Participante).filter_by(
             usuario=current_user).first()
-        return render_template('users/dashboard_usuario.html', title='Dashboard', usuario=usuario,
+        return render_template('users/dashboard_usuario.html', title='Dashboard', usuario=current_user,
                                participante=participante, form_login=form_login)
     else:
         serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
@@ -153,26 +151,22 @@ def dashboard():
 @users.route('/dados', methods=['POST', 'GET'])
 @login_required
 def dados():
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
     form_login = LoginForm(request.form)
     participante = db.session.query(Participante).filter_by(
         usuario=current_user).first()
     ministrante = db.session.query(Ministrante).filter_by(
         usuario=current_user).first()
-    return render_template('users/dados.html', title='Dados', usuario=usuario,
+    return render_template('users/dados.html', title='Dados', usuario=current_user,
                             participante=participante, ministrante=ministrante, form_login=form_login)
 
 @users.route('/kit', methods=['POST', 'GET'])
 @login_required
 def kit():
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
     form_login = LoginForm(request.form)
     participante = db.session.query(Participante).filter_by(
         usuario=current_user).first()
     if participante != None:
-        return render_template('users/kit.html', title='Kit', usuario=usuario,
+        return render_template('users/kit.html', title='Kit', usuario=current_user,
                             participante=participante, form_login=form_login)
     else:
         return redirect(url_for('.cadastro_participante'))
@@ -186,8 +180,6 @@ def envio_comprovante():
     """
     form_login = LoginForm(request.form)
     form = ComprovanteForm()
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
     participante = db.session.query(Participante).filter_by(
     usuario=current_user).first()
     if form.validate_on_submit():
@@ -200,7 +192,7 @@ def envio_comprovante():
         comprovante.save(path.join(upload_path, filename))
         flash('Comprovante enviado com sucesso!')
         return redirect(url_for('.dashboard'))
-    return render_template('users/enviar_comprovante.html', usuario=usuario, form=form,
+    return render_template('users/enviar_comprovante.html', usuario=current_user, form=form,
                         participante=participante, form_login=form_login)
 
 
@@ -339,7 +331,8 @@ def alterar_senha():
             db.session.commit()
             return redirect(url_for('views.login'))
         else:
-            return render_template('users/alterar_senha.html', form=form, action=request.base_url, form_login=form_login)
+            return render_template('users/alterar_senha.html', form=form, action=request.base_url,
+                                    usuario=current_user, form_login=form_login)
     else:
         flash('Confirme seu e-mail para alterar a senha!')
         return redirect(url_for('.dashboard'))
@@ -401,7 +394,6 @@ def comprar_kit():
             form = ComprarKitForm(request.form)
             if form.validate_on_submit():
                 if form.comprar.data == 1:
-                    usuario = current_user
                     participante.id_camiseta = form.camiseta.data
                     participante.opcao_coffee = form.restricao_coffee.data
                     participante.pacote = form.comprar.data == 1
@@ -413,7 +405,7 @@ def comprar_kit():
                     elif form.forma_pagamento.data == 1:
                         return redirect(url_for('.envio_comprovante'))
             else:
-                return render_template('users/comprar_kit.html', form=form, form_login=form_login)
+                return render_template('users/comprar_kit.html', usuario=current_user, form=form, form_login=form_login)
         else:
             return redirect(url_for('.dashboard'))
     else:
