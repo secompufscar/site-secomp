@@ -1,13 +1,18 @@
+import os
+
+from passlib.hash import pbkdf2_sha256
+from werkzeug import secure_filename
+
 from flask import render_template, request, Blueprint, url_for, redirect, current_app, send_from_directory, abort
 from flask_login import login_required, login_user, logout_user, current_user
-from passlib.hash import pbkdf2_sha256
-import os
+from flask_limiter import Limiter
+from flask_limiter.util import get_ipaddr
+
 from app.controllers.forms.forms import *
+from app.controllers.forms.options import opcoes_falha
 from app.controllers.functions.email import enviar_email_dm, enviar_email_generico
 from app.controllers.functions.helpers import *
 from app.controllers.constants import *
-from flask_limiter import Limiter
-from flask_limiter.util import get_ipaddr
 
 limiter = Limiter(current_app, key_func=get_ipaddr)
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
@@ -51,26 +56,44 @@ def bug_report():
     """
 
     form_login = LoginForm(request.form)
-    form = BugReportForm(request.form)
+    form = BugReportForm()
 
     if form.validate_on_submit():
-        content = {
+        info = {
             "assunto": 'SECOMP - Bug Report',  # assunto do email
             "email": 'ti@secompufscar.com.br',  # email destino
             "nome": form.autor.data,  # nome do autor
             "titulo": form.titulo.data,
-            "falha": form.falha.data,
-            "resumo": form.resumo.data,
             "descricao": form.descricao.data,
             "impacto": form.impacto.data,
             "template": 'email/report.html',  # path do template (raiz dentro do diretório 'templates')
             "footer": 'TI X SECOMP UFSCar'
         }
+        
+        if form.falha.data == 8:
+            info['falha'] = form.outra_falha.data
+        else:
+            info['falha'] = opcoes_falha[form.falha.data]
+
         if form.contato.data:
-            content['contato'] = form.contato.data
-        enviar_email_generico(info=content)
-        return render_template('views/bug-report.html', form=form, form_login=form_login, enviado=True)
-    return render_template('views/bug-report.html', form=form, form_login=form_login)
+            info['contato'] = form.contato.data
+
+        anexos = []
+        if form.anexo.data:
+            blobs = request.files.getlist('anexo')
+            for blob in blobs:
+                filename = secure_filename(blob.filename)
+                filename = f'{titulo}_{filename}'
+                upload_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'reports')
+                if not os.path.exists(upload_path):
+                    os.makedirs(upload_path)
+                abs_path = os.path.join(upload_path, filename)
+                anexos.append(abs_path)
+                blob.save(abs_path)
+
+        enviar_email_generico(info=content) #, anexo=anexos)
+        return render_template('views/bug_report.html', form=form, form_login=form_login, enviado=True)
+    return render_template('views/bug_report.html', form=form, form_login=form_login)
 
 
 @views.route('/constr', methods=["GET", "POST"])

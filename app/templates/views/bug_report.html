@@ -21,16 +21,19 @@
         </p>
       </div>
       <div class="col-md-5">
-        <form method="POST" action="/bug-report">
+        <form method="POST" action="/bug-report", enctype="multipart/form-data">
           {{ form.hidden_tag() }}
-          {{ wtf.form_field(form.titulo) }}
-          {{ wtf.form_field(form.escopo) }}
-          {{ wtf.form_field(form.falha) }}
           {{ wtf.form_field(form.autor) }}
           {{ wtf.form_field(form.contato) }}
-          {{ wtf.form_field(form.resumo) }}
+          {{ wtf.form_field(form.falha) }}
+          {{ wtf.form_field(form.outra_falha) }}
+          {{ wtf.form_field(form.titulo) }}
           {{ wtf.form_field(form.descricao) }}
           {{ wtf.form_field(form.impacto) }}
+          {{ wtf.form_field(form.anexo) }}
+          <div class="recaptcha-responsive">
+            {{ wtf.form_field(form.recaptcha) }}
+          </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary btn-block mt-5">Enviar</button>
           </div>
@@ -51,4 +54,25 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
+<script>
+  $(document).ready(function ($) {
+    if ($("#falha option:selected").val() !== '8') {
+      $('label[for="outra_falha"]').hide();
+      $("#outra_falha").hide();
+    }
+    $("#curso").change(function () {
+      if ($("#falha option:selected").val() === '8') {
+        $('label[for="outra_falha"]').show();
+        $("#outra_falha").show();
+      } else {
+        $('label[for="outra_falha"]').hide();
+        $("#outra_falha").hide();
+      }
+    });
+  });
+</script>
 {% endblock %}
