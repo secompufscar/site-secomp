@@ -53,19 +53,18 @@
     <div class="tabmenu" id="secondtab"></div>
   </div>
   <div class="col-lg-12 text-center p-2">
-    <h2>Cadastro de Usuário</h2>
+    <h2>Edição de dados - Usuário</h2>
   </div>
 
-  <form method="POST" action="{{url_for('users.cadastro')}}" novalidate>
+  <form method="POST" action="{{url_for('users.alterar_usuario')}}" novalidate>
     <div id="secao1">
       <div class="row justify-content-center">
         <div class="col-md-8">
           {{ form.hidden_tag() }}
           {{ wtf.form_field(form.primeiro_nome) }}
           {{ wtf.form_field(form.sobrenome) }}
-          {{ wtf.form_field(form.email) }}
-          {{ wtf.form_field(form.senha) }}
-          {{ wtf.form_field(form.confirmacao) }}
+          {{ wtf.form_field(form.curso) }}
+          {{ wtf.form_field(form.outro_curso) }}
           <button id="continuar" class="btn btn-primary btn-block mt-3 mb-3"
             type="button">Continuar</button>
         </div>
@@ -74,8 +73,6 @@
     <div id="secao2">
       <div class="row justify-content-center">
         <div class="col-md-8">
-          {{ wtf.form_field(form.curso) }}
-          {{ wtf.form_field(form.outro_curso) }}
           {{ wtf.form_field(form.instituicao) }}
           {{ wtf.form_field(form.outra_instituicao) }}
           {{ wtf.form_field(form.cidade) }}
@@ -94,36 +91,10 @@
               <button type="button" id="voltar" class="btn text-white btn-secondary pb-1">Voltar</button>
             </div>
             <div class="col-md-6">
-              <button type="submit" class="btn btn-primary text-white pb-1">Cadastrar</button>
+              <button type="submit" class="btn btn-primary text-white pb-1">Confirmar</button>
             </div>
           </div>
 
-
-    <div class="col-md-8">
-      <form method="POST" action="{{url_for('users.cadastro')}}">
-        {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.primeiro_nome) }}
-        {{ wtf.form_field(form.sobrenome) }}
-        {{ wtf.form_field(form.email) }}
-        {{ wtf.form_field(form.senha) }}
-        {{ wtf.form_field(form.confirmacao) }}
-        {{ wtf.form_field(form.curso) }}
-        {{ wtf.form_field(form.outro_curso) }}
-        {{ wtf.form_field(form.instituicao) }}
-        {{ wtf.form_field(form.outra_instituicao) }}
-        {{ wtf.form_field(form.cidade) }}
-        {{ wtf.form_field(form.outra_cidade) }}
-        {{ wtf.form_field(form.data_nasc) }}
-        {{ wtf.form_field(form.como_conheceu) }}
-        {{ wtf.form_field(form.outro_como_conheceu) }}
-        {{ wtf.form_field(form.recaptcha) }}
-
-        {% for error in form.recaptcha.errors %}
-        <span class="help-block">{{ error }}</span>
-        {% endfor %}
-
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary btn-block bg-gradient-secomp mt-3 mb-3">Cadastrar</button>
         </div>
       </div>
     </div>
@@ -180,6 +151,7 @@
 <script>
   $(document).ready(function ($) {
     $('#data_nasc').mask('00/00/0000');
+    $('#data_nasc').mask('00/00/0000');
     if ($("#curso option:selected").val() !== '0') {
       $('label[for="outro_curso"]').hide();
       $("#outro_curso").hide();
@@ -191,10 +163,6 @@
     if ($("#cidade option:selected").val() !== '0') {
       $('label[for="outra_cidade"]').hide();
       $("#outra_cidade").hide();
-    }
-    if ($("#como_conheceu option:selected").val() !== '4') {
-      $('label[for="outro_como_conheceu"]').hide();
-      $("#outro_como_conheceu").hide();
     }
     $('#data_nasc').mask('00/00/0000');
     $("#curso").change(function () {
@@ -224,15 +192,6 @@
         $("#outra_cidade").hide();
       }
     });
-    $("#como_conheceu").change(function () {
-        if ($("#como_conheceu option:selected").val() ==='5') {
-            $('label[for="outro_como_conheceu"]').show();
-            $("#outro_como_conheceu").show();
-        } else {
-            $('label[for="outro_como_conheceu"]').hide();
-            $("#outro_como_conheceu").hide();
-        }
-    });
   });
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -260,3 +219,4 @@
 
 {% block footer %}
 {% endblock %}
+
