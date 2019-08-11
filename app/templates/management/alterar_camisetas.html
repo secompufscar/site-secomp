@@ -1,13 +1,14 @@
-{% extends "base.html" %}
+{% extends "users/sidebar.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block content %}
+{% block sidebar_content %}
 
 <div class="container">
     <div class="row justify-content-center pt-1">
         <div class="col-md-8">
             <h3 class="text-center">Alterar camisetas de usuários</h3>
-            <form method="POST" action="/alterar-camiseta">
+            <hr>
+            <form method="POST" action="{{url_for('management.alterar_camiseta')}}">
                 {% if sucesso == 's': %}
                 <div class="alert alert-success" role="alert">
                     Alteração efetuada com sucesso.

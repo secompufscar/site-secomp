@@ -4,6 +4,9 @@ from flask_admin.contrib.fileadmin import FileAdmin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
 from flask_login import current_user
+import locale
+from datetime import datetime
+locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
 from app.models.models import *
 
@@ -22,6 +25,22 @@ class AppModelView(ModelView):
     can_view_details = True
     column_exclude_list = ['senha', 'token_email', 'token_alteracao_senha', 'salt_alteracao_senha', 'salt']
 
+    def after_model_change(self, form, model, is_created):
+        if is_created is not True:
+            acao = 'modificado'
+        else:
+            acao = 'criado'
+        hist = AdminModelHistory(id_usuario=current_user.id, acao=acao, nome_modelo=model.__class__.__name__, id_modelo=model.id,
+                          data_hora_acao=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        db.session.add(hist)
+        db.session.commit()
+
+    def after_model_delete(self, model):
+        hist = AdminModelHistory(id_usuario=current_user.id, acao='deletado', nome_modelo=model.__class__.__name__, id_modelo=model.id,
+                          data_hora_acao=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        db.session.add(hist)
+        db.session.commit()
+
     @classmethod
     def is_accessible(cls):
         return current_user.is_authenticated and current_user.is_admin()
@@ -30,6 +49,10 @@ class AppModelView(ModelView):
     def inaccessible_callback(cls, name, **kwargs):
         return redirect(url_for('views.login'))
 
+class HistoryModelView(ModelView):
+    can_edit = False
+    can_create = False
+    can_delete = False
 
 class AppFileAdmin(FileAdmin):
     @classmethod
@@ -67,5 +90,6 @@ def init_app(service, path):
     admin.add_view(AppModelView(Cidade, db.session))
     admin.add_view(AppModelView(Instituicao, db.session))
     admin.add_view(AppModelView(Pagamento, db.session))
+    admin.add_view(HistoryModelView(AdminModelHistory, db.session))
     admin.add_view(AppFileAdmin(path, '/static/', name='Arquivos Estáticos'))
     return admin

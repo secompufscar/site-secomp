@@ -11,6 +11,8 @@ from app.controllers.forms.validators import *
 
 from secrets import token_urlsafe
 
+from app.controllers.forms.options import get_opcoes_ecustom_atividade, get_opcoes_ecustom_extencao, get_opcoes_ecustom_complemento
+
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
 
@@ -172,11 +174,26 @@ def listas():
     else:
         abort(403)
 
+@management.route("/email-custom", methods=["GET"])
+@login_required
+def email_custom():
+    '''
+    Página para envio de email
+    '''
+    permissoes = current_user.getPermissoes()
+    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        form = EmailCuston(request.form)
+
+        return render_template('management/email_custom.html', form=form, form_login=form_login)
+    else:
+        abort(403)
+
 @management.route('/gerar-url-conteudo', methods=['POST', 'GET'])
 @login_required
 def gerar_url_conteudo():
     permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin):
+    if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = GerarUrlConteudoForm(request.form)
         emails = request.form.getlist('emails[]')
@@ -213,5 +230,42 @@ def gerar_url_conteudo():
                     db.session.add(atividade)
                     db.session.commit()
         return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(request.url_root), form_login=form_login, url_root=request.url_root)
+    else:
+        abort(403)
+
+@management.route('/crd-flag', methods=["GET", "POST"])
+@login_required
+def cadastro_flags():
+    permissoes = current_user.getPermissoes()
+    if("CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        form = CadastrarFlagForm(request.form)
+        if form.validate_on_submit():
+            flag = Flag(codigo=form.flag.data, pontos=form.pontos.data)
+            db.session.add(flag)
+            db.session.flush()
+            db.session.commit()
+            flags = db.session.query(Flag).filter_by(ativa=True).all()
+            return render_template("management/crd_flags.html", form_login=form_login, form=form, cadastrado=True, desativada=False, flags=flags, usuario=current_user)
+        else:
+            flags = db.session.query(Flag).filter_by(ativa=True).all()
+            return render_template("management/crd_flags.html", form_login=form_login, form=form, cadastrado=False, desativada=False, flags=flags, usuario=current_user)
+    else:
+        abort(403)
+
+@management.route('/crd-flag/desativar/<id>', methods=["GET", "POST"])
+@login_required
+def desativar_flag(id):
+    permissoes = current_user.getPermissoes()
+    if("CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        form = CadastrarFlagForm(request.form)
+        flag = db.session.query(Flag).filter_by(id=id).first()
+        flag.ativa = False
+        db.session.flush()
+        db.session.commit()
+        flags = db.session.query(Flag).filter_by(ativa=True).all()
+        return render_template("management/crd_flags.html", form_login=form_login, form=form, cadastrado=False,
+                        desativada=True, flags=flags, usuario=current_user)
     else:
         abort(403)

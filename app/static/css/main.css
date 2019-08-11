@@ -83,6 +83,61 @@ header {
   }
 }
 
+/* Imagens com texto em cima */
+.overlay {
+  background-color: #000000;
+  position: relative; }
+
+.opac {
+  filter: opacity(0.4); }
+
+.overlay-text {
+  position: absolute;
+  color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+
+@media (orientation: landscape) {
+  .img-responsive {
+    width: 100%;
+    height: 100vh;
+  }
+  .overlay-text h1 {
+    font-weight: 600;
+    font-size: 8vh;
+  }
+  .overlay-text h2 {
+    font-weight: 500;
+    font-size: 4.5vh;
+  }
+}
+
+@media (orientation: portrait) {
+  .img-responsive {
+    width: 100vw;
+  }
+  .overlay-text h1 {
+    font-weight: 600;
+    font-size: 3.5vh;
+  }
+  .overlay-text h2 {
+    font-weight: 500;
+    font-size: 2.5vh;
+  }
+}
+
+@media (orientation: portrait) {
+  div.embed-responsive.embed-responsive-21by9 video {
+    width: 100%;
+    height: 40%;
+  }
+  #video {
+    margin-bottom: -90%;
+  }
+}
+/* fim-imagens */
+
 .carousel-item {
   height: 100vh;
   width: 100vw;
@@ -92,21 +147,19 @@ header {
 .dropdown-menu a {
   font-size: 12px; }
 
-> .dropdown-toggle:active {
+.dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: visible; }
 
 .desc {
   padding-bottom: 10%; }
 
-footer {
-  background-color: #212121; }
-  footer ul li {
-    padding: 1%; }
-    footer ul li a {
-      color: #fff; }
-      footer ul li a:hover {
-        color: #00cfa1; }
+footer ul li {
+  padding: 1%; }
+  footer ul li a {
+    color: #fff; }
+    footer ul li a:hover {
+      color: #00cfa1; }
 
 #barrinha {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
@@ -287,3 +340,4 @@ a.portfolio-box:hover {
   text-align: right !important;
   width: auto;
   margin-left: auto;
+}

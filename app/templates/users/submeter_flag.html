@@ -10,23 +10,19 @@
 
         <div class="col-md-8">
 
-                <h3 class="text-center">Recuperação de senha</h3>
-
-            {% if status_envio_email == False: %}
-            <form action="{{url_for('users.esqueci_senha')}}" method="POST">
+            <h3 class="text-center">Submissão de flags</h3>
+            {% if status != None %}
+            <p> Flag {{ status }}!</p>
+            {% endif %}
+            <p>Sua pontuação: {{ participante.pontuacao }}</p>
+            <form action="{{url_for('users.submeter_flag')}}" method="POST">
                 {{ form.hidden_tag() }}
-                {{ wtf.form_field(form.email) }}
-                {{ form.recaptcha }}
-                {% for error in form.recaptcha.errors %}
-                <span class="help-block">{{ error }}</span>
-                {% endfor %}
+                {{ wtf.form_field(form.flag) }}
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-block mt-4">Enviar</button>
                 </div>
             </form>
-            {% else: %}
-            <h2 class="text-center">Um email de confirmação foi enviado.</h2>
-            {% endif %}
+
 
         </div>
     </div>

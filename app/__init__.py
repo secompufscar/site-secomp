@@ -5,7 +5,7 @@ from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_migrate import Migrate
-
+from flask_qrcode import QRcode as QRCode
 
 def create_app(config=None):
     """
@@ -25,6 +25,8 @@ def create_app(config=None):
 
     app = Flask(__name__)
     app.config.from_object(config)
+
+    QRCode(app)
 
     import sentry_sdk
     from sentry_sdk.integrations.flask import FlaskIntegration

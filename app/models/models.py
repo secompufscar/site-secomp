@@ -32,6 +32,10 @@ relacao_atividade_patrocinador = db.Table('relacao_atividade_patrocinador',
                                        Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
                                        Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')))
 
+relacao_participante_flags = db.Table('relacao_participante_flags',
+                                    Column('id', Integer, primary_key=True),
+                                    Column('id_flag', Integer, db.ForeignKey('flag.id')),
+                                    Column('id_participante', Integer, db.ForeignKey('participante.id')))
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
@@ -57,7 +61,9 @@ class Usuario(db.Model):
     permissoes_usuario = db.relationship('Permissao', secondary=relacao_permissao_usuario, lazy=True,
                                          back_populates='usuarios')
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
+    como_conheceu = db.relationship('ComoConheceu', lazy=True, back_populates='usuario')
     ministrante = db.relationship('Ministrante', back_populates='usuario', lazy=True, uselist=False)
+
 
     @classmethod
     def is_active(cls):
@@ -100,11 +106,12 @@ class Participante(db.Model):
     data_inscricao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
+    pontuacao = Column(Integer, nullable=True, default=0)
     usuario = db.relationship('Usuario', back_populates='participantes_associados', lazy=True)
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
-
+    flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
 
@@ -259,7 +266,7 @@ class Evento(db.Model):
     patrocinadores = db.relationship('Patrocinador', secondary=relacao_patrocinador_evento, lazy=True,
                                      back_populates='eventos')
     camisetas = db.relationship('Camiseta', backref='evento', lazy=True)
-
+    flags = db.relationship('Flag', backref="evento", lazy=True)
     def __repr__(self):
         return str(self.edicao) + "ª Edição"
 
@@ -398,6 +405,7 @@ class RelacaoAtividadeMinistrante(db.Model):
     confirmado = Column('confirmado', Boolean, nullable=True)
     admin_atividade = Column('admin_atividade', Boolean, nullable=True)
 
+
 class Pagamento(db.Model):
     __tablename__ = 'pagamento'
     id = Column(Integer, primary_key=True)
@@ -408,3 +416,37 @@ class Pagamento(db.Model):
     valor = Column(Float(precision=2), nullable=False)
     efetuado = Column(Boolean, nullable=False)
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
+
+class URLConteudo(db.Model):
+    __tablename__ = 'urlconteudo'
+    id = Column(Integer, primary_key=True)
+    descricao = Column(String(100), nullable=False)
+    codigo = Column(String(200), nullable=False)
+    ultimo_gerado = Column(Boolean, default=False, nullable=False)
+    valido = Column(Boolean, default=True, nullable=False)
+    numero_cadastros = Column(Integer, default=1)
+
+class ComoConheceu(db.Model):
+    __tablename__ = 'como_conheceu'
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=True)
+    opcao = Column(Integer, nullable=False)
+    outro = Column(String(200))
+    usuario = db.relationship('Usuario', lazy=True, back_populates='como_conheceu')
+
+class Flag(db.Model):
+    __tablename__ = 'flag'
+    id = Column(Integer, primary_key=True)
+    codigo = Column(String(45), nullable=False)
+    pontos = Column(Integer, nullable=False)
+    ativa = Column(Boolean, default=True)
+    quantidade_utilizada = Column(Integer, default=0)
+    evento_id = Column(Integer, db.ForeignKey('evento.id'))
+
+class AdminModelHistory(db.Model):
+    id = Column('id', Integer, primary_key=True)
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=False)
+    acao = Column(String(200), nullable=False)
+    nome_modelo = Column(String(200), nullable=True)
+    id_modelo = Column(Integer)
+    data_hora_acao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    usuario = db.relationship('Usuario', backref='historico_admin', lazy=True)
