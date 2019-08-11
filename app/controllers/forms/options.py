@@ -6,6 +6,18 @@ opcoes_restricao = [
     (3, "Vegano")
 ]
 
+opcoes_falha = [
+    (0, "Injeção"),
+    (1, "Quebra de Autenticação"),
+    (2, "Exposição de Dados Sensíveis"),
+    (3, "Quebra de Controle de Acesso"),
+    (4, "Configurações de Segurança Incorretas"),
+    (5, "Cross-Site Scripting (XSS)"),
+    (6, "Desserialização Insegura"),
+    (7, "Utilização de Componentes Vulneráveis"),
+    (8, "Outros")
+]
+
 def get_opcoes_cidades():
     try:
         cidades = db.session.query(Cidade).order_by("nome").all()

@@ -7,6 +7,8 @@ from app.controllers.forms.options import *
 from app.controllers.forms.validators import *
 from app.controllers.functions.helpers import get_participantes, get_atividades
 
+class BaseRecaptchaForm(FlaskForm):
+    recaptcha = RecaptchaField()
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(
@@ -199,7 +201,7 @@ class CadastroInformacoesPalestra(FlaskForm):
     requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software', id='requisitos_tecnicos', validators=[Length(max=1024)], render_kw={'maxlength': 1024})
     planejamento = TextAreaField('Planejamento', validators=[InputRequired(), Length(max=2056)], id='planejamento', render_kw={'maxlength': 2056})
     material = FileField('Material', validators=[
-        FileAllowed(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'rar', 'zip', 'tar', 'z', 'gz', 'taz', 'tgz'],
+        FileAllowed(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'rar', 'zip', 'tar', '7z', 'gz', 'taz', 'tgz'],
                     message=ERRO_EXTENSAO_INVALIDA)
         ], id='material')
     perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired(), Length(max=1024)], id='perguntas', render_kw={'maxlength': 1024})
@@ -241,15 +243,20 @@ class CadastroInformacoesLocomocaoEstadia(FlaskForm):
     observacoes = TextAreaField('Deixe aqui alguma observação ou informação que julgar necessária', id='hospedagem',
         validators=[Length(max=256)], render_kw={'maxlength': 256})
 
-class GerarUrlConteudoForm(FlaskForm):
-    tipo_atividade = SelectField("Tipo da Atividade", choices=get_opcoes_tipo_atividade(), id="tipo_atividade", coerce=int, validators=[InputRequired()])
+class GerarUrlConteudoForm(FlaskForm()):
+    tipo_atividade = SelectField("Tipo da Atividade:", choices=get_opcoes_tipo_atividade(), id="tipo_atividade", coerce=int, validators=[InputRequired()])
 
-class BugReportForm(FlaskForm):
-    titulo = StringField('Título', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)])
-    escopo = StringField('Escopo', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], default='ex: secompufscar.com.br')
-    falha = StringField('Tipo de Falha Encontrada', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], id='falha', default='ex: Cross-site Scripting (XSS)')
-    autor = StringField('Autor', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], default='ex: Como você quer ser identificado?')
-    contato = StringField('Caso queira ser contatado por nós, deixe aqui seu e-mail', validators=[Optional(), Email(message=ERRO_EMAIL)], id='contato')
-    resumo = TextAreaField('Escreva aqui de forma sucinta a falha que você encontrou', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=200)], id='resumo')
-    descricao = TextAreaField('Escreva aqui, de forma mais extensa, a falha encontrada, com os passos necessários para reproduzi-la', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(max=1200)], id='descricao')
-    impacto = TextAreaField('Escreva aqui o impacto causado pela falha encontrada, caso seja explorada', validators=[Length(max=300)], id='impacto')
+class BugReportForm(BaseRecaptchaForm):
+    falha = SelectField('Tipo de Falha Encontrada:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], id='falha', 
+            choices=opcoes_falha, coerce=int)
+    outra_falha = StringField("Outra Falha:", validators=[Length(max=64)], id="outra_falha", render_kw{'maxlength': 64})
+    autor = StringField('Autor:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], 
+            default='ex: Como você quer ser identificado?', render_kw={'maxlength': 64})
+    contato = StringField('Caso queira ser contatado por nós, deixe aqui seu e-mail:', validators=[Optional(), Email(message=ERRO_EMAIL)], id='contato')
+    titulo = StringField('Título:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], render_kw={'maxlength': 64})
+    descricao = TextAreaField('Escreva aqui, de forma clara e precisa, a falha encontrada, com os passos necessários para reproduzi-la:', 
+            validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(max=1200)], id='descricao', render_kw={'maxlength': 1200})
+    impacto = TextAreaField('Escreva aqui o impacto causado pela falha encontrada, caso seja explorada:', validators=[Length(max=300)], id='impacto', 
+            render_kw={'maxlength': 300})
+    anexo = FileField('Caso você tenha um vídeo ou print que ajude a ilustrar seu report, envie aqui:', validators=[Optional(), 
+        FileAllowed(['webm', 'mkv', 'gif', 'mp4', 'png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)], id='anexo')

@@ -4,27 +4,24 @@
 {% endblock %}
 
 {% block saudacao %}
-Um novo bug report foi enviado por {{ info.nome }}, acusando a falha <b>{{ info.falha }}</b>!
+  Um novo bug report foi enviado por {{ info.nome }}, acusando a falha <b>{{ info.falha }}</b>!
 {% endblock%}
 
 {% block conteudo %}
-<b>Resumo:</b>
-  <p>{{ info.resumo }}</p>
-  <br>
 <b>Descrição:</b>
   <p>{{ info.descricao }}</p>
   <br>
 <b>Impacto:</b>
   <p>
     {% if info.impacto %}
-    {{ info.impacto }}
+      {{ info.impacto }}
     {% else %}
-    Não foram reportadas consequências para esta falha.
+      Não foram reportadas consequências para esta falha.
     {% endif %}
   </p>
   <br>
 {% if 'contato' in info %}
-<b>E-mail para contato:</b> {{ info.email }}
+  <b>E-mail para contato:</b> {{ info.email }}
 {% endif %}
 {% endblock %}
 
