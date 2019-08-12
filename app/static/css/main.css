@@ -122,6 +122,17 @@ header a:hover {
 .dropdown-menu a {
   font-size: 12px;
 }
+
+.dropdown-menu a:active {
+  font-size: 12px;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background: #00cfa1 linear-gradient(to right, #00b59d, #00cfa1);
+}
+
 .dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: visible;
@@ -135,9 +146,11 @@ footer ul li {
 }
 footer ul li a {
   color: #fff;
+  transition: 0.2;
 }
 footer ul li a:hover {
   color: #00cfa1;
+  transition: 0.2s;
 }
 
 .sobre-img {
@@ -172,7 +185,14 @@ footer ul li a:hover {
 
 #nav-logo {
   object-fit: contain;
+  transition: 0.2s;
 }
+
+#nav-logo:hover {
+  animation: spin 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 #video {
   height: 80vh;
