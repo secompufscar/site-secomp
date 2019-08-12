@@ -41,7 +41,7 @@ def cadastro():
                                                                   Instituicao(nome=form.outra_instituicao.data)),
                           id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
                           data_nascimento=form.data_nasc.data, token_email=token, autenticado=True, salt=salt)
-        como_conheceu = ComoConheceu(id_usuario=usuario.id, opcao=form.como_conheceu.data, outro=form.outro_como_conheceu.data) 
+        como_conheceu = ComoConheceu(id_usuario=usuario.id, opcao=form.como_conheceu.data, outro=form.outro_como_conheceu.data)
         db.session.add(usuario)
         db.session.add(como_conheceu)
         db.session.flush()
@@ -100,7 +100,7 @@ def cadastro_participante():
     else:
         return redirect(url_for('.verificar_email'))
 
-@users.route('/alterar-dados-usuario', methods=['POST', 'GET'])
+#@users.route('/alterar-dados-usuario', methods=['POST', 'GET'])
 @login_required
 def alterar_usuario():
     form_login = LoginForm(request.form)
@@ -489,7 +489,7 @@ def executar_pagamento_kit():
     else:
         return "Erro"
 
-@users.route('/submeter-flag', methods=["GET", "POST"])
+#@users.route('/submeter-flag', methods=["GET", "POST"])
 @login_required
 def submeter_flag():
     form_login = LoginForm(request.form)

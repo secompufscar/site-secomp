@@ -244,39 +244,31 @@ class CadastroInformacoesLocomocaoEstadia(FlaskForm):
 
 
 class BugReportForm(BaseRecaptchaForm):
-    falha = SelectField('Tipo de Falha Encontrada:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], id='falha', 
+    falha = SelectField('Tipo de Falha Encontrada:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], id='falha',
             choices=opcoes_falha, coerce=int)
-    outra_falha = StringField("Outra Falha:", validators=[Length(max=64)], id="outra_falha", render_kw{'maxlength': 64})
-    autor = StringField('Autor:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], 
+    outra_falha = StringField("Outra Falha:", validators=[Length(max=64)], id="outra_falha", render_kw={'maxlength': 64})
+    autor = StringField('Autor:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)],
             default='ex: Como você quer ser identificado?', render_kw={'maxlength': 64})
     contato = StringField('Caso queira ser contatado por nós, deixe aqui seu e-mail:', validators=[Optional(), Email(message=ERRO_EMAIL)], id='contato')
     titulo = StringField('Título:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)], render_kw={'maxlength': 64})
-    descricao = TextAreaField('Escreva aqui, de forma clara e precisa, a falha encontrada, com os passos necessários para reproduzi-la:', 
+    descricao = TextAreaField('Escreva aqui, de forma clara e precisa, a falha encontrada, com os passos necessários para reproduzi-la:',
             validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(max=1200)], id='descricao', render_kw={'maxlength': 1200})
-    impacto = TextAreaField('Escreva aqui o impacto causado pela falha encontrada, caso seja explorada:', validators=[Length(max=300)], id='impacto', 
+    impacto = TextAreaField('Escreva aqui o impacto causado pela falha encontrada, caso seja explorada:', validators=[Length(max=300)], id='impacto',
             render_kw={'maxlength': 300})
-    anexo = FileField('Caso você tenha um vídeo ou print que ajude a ilustrar seu report, envie aqui:', validators=[Optional(), 
+    anexo = FileField('Caso você tenha um vídeo ou print que ajude a ilustrar seu report, envie aqui:', validators=[Optional(),
         FileAllowed(['webm', 'mkv', 'gif', 'mp4', 'png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)], id='anexo')
 
 
 class EmailCuston(FlaskForm):
-    listComplemento = get_opcoes_ecustom_complemento()
-    listExtencao = get_opcoes_ecustom_extencao()
-    listAtividade = get_opcoes_ecustom_atividade()
-
-    dictComplemento = {key : value for (value, key) in listComplemento}
-    dictExtencao = {key : value for (value, key) in listExtencao}
-    dictAtividades = {key : value for (value, key) in listAtividade}
-
     assunto = StringField('Assunto', id='text_assunto');
     titulo = StringField('Título', id='text_titulo');
     template = StringField('Template do Email', id='text_template_email');
     anexo = BooleanField('Anexo', id='cbox_tem_anexo');
     pastaAnexo = StringField('Nome da pasta', id='text_path_anexo');
     baseAnexo = StringField('Base do nome do anexo', id='text_base_anexo');
-    complemento = SelectField('Complemento', id='list_complemento_anexo', choices=listComplemento);
-    extencao = SelectField('Extenção', id='list_extencao_anexo', choices=listExtencao);
-    atividades = SelectField('Atividades', id='list_atividades', choices=listAtividade);
+    complemento = SelectField('Complemento', id='list_complemento_anexo', choices=get_opcoes_ecustom_complemento());
+    extencao = SelectField('Extenção', id='list_extencao_anexo', choices=get_opcoes_ecustom_extensao());
+    atividades = SelectField('Atividades', id='list_atividades', choices= get_opcoes_ecustom_atividade());
     pesquisaResultado = StringField('Nome: ', id='text_pesquisa_em_resultado');
     todosresultado = BooleanField('Todos', id='cbox_todos_os_usuarios');
     pesquisaSelecionados = StringField('Nome: ', id='text_pesquisa_em_selecionados');
@@ -293,4 +285,3 @@ class CadastrarFlagForm(FlaskForm):
 
 class SubmeterFlagForm(FlaskForm):
     flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
-

@@ -11,7 +11,7 @@ from app.controllers.forms.validators import *
 
 from secrets import token_urlsafe
 
-from app.controllers.forms.options import get_opcoes_ecustom_atividade, get_opcoes_ecustom_extencao, get_opcoes_ecustom_complemento
+from app.controllers.forms.options import get_opcoes_ecustom_atividade, get_opcoes_ecustom_extensao, get_opcoes_ecustom_complemento
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')

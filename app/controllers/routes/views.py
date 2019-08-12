@@ -69,7 +69,7 @@ def bug_report():
             "template": 'email/report.html',  # path do template (raiz dentro do diretório 'templates')
             "footer": 'TI X SECOMP UFSCar'
         }
-        
+
         if form.falha.data == 8:
             info['falha'] = form.outra_falha.data
         else:
