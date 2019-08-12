@@ -1,3 +1,13 @@
+:root {
+    --bg-color: #fff;
+    --border-color: #00000020;
+}
+
+[data-theme=dark] {
+    --bg-color: #00141a;
+    --border-color: #ffffff70;
+}
+
 .frontside {
     position: relative;
     margin-bottom: 30px;
@@ -8,7 +18,7 @@
     opacity: 0;
     top: 0;
     left: 0;
-    background: white;
+    /* background: white; */
 }   
 
 .img-equipe {
@@ -18,7 +28,9 @@
 }
 
 .card {
-    transition: 0.7s
+    transition: 0.7s;
+    background-color: var(--bg-color);
+    border: solid 1px var(--border-color);
 }
 
 .card:hover .img-equipe {
