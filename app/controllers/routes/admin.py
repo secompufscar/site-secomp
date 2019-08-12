@@ -45,5 +45,6 @@ def init_app(service, path):
     admin.add_view(AppModelView(TipoAtividade, db.session))
     admin.add_view(AppModelView(Pagamento, db.session))
     admin.add_view(AppModelView(Evento, db.session))
+    admin.add_view(AppModelView(CupomDesconto, db.session))
     admin.add_view(FileAdmin(path, '/static/', name='Arquivos Estáticos'))
     return admin

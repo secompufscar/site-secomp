@@ -11,11 +11,15 @@
   #pergunta{
     margin-top:15px;
   }
+  .help-block{
+    color: red;
+  }
 </style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h2 id="pergunta" class="text-center">Deseja comprar o kit da SECOMP UFSCar?</h2>
+
+            <h2 id="pergunta" class="text-center" style='margin-bottom:30px'><i class="fa fa-lg fa-cart-plus"></i> Deseja comprar o kit da SECOMP UFSCar?</h2>
             <form method="POST" action="{{url_for('users.comprar_kit')}}">
             {{ form.hidden_tag() }}
             {{ wtf.form_field(form.comprar) }}
@@ -31,6 +35,11 @@
                 <div>Cidade: São Carlos</div>
                 <div>Estado: SP</div>
               </div>
+              {{ wtf.form_field(form.uso_cupom_desconto) }}
+              <div id="desconto">
+              {{ wtf.form_field(form.cupom_desconto) }}
+              </div>
+              {{ wtf.form_field(form.recaptcha) }}
               <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
             </div>
             <button type='button' id='continuar' class="btn btn-primary" onclick='continuar2()'>Continuar</button>
@@ -45,6 +54,7 @@
 <script>
     $('#info_kit').hide();
     $('#info_conta').hide();
+    $('#desconto').hide();
     $('#comprar-0').change(function() {
         if ($('#comprar-0').is(':checked')){
             $('#info_kit').show();
@@ -67,6 +77,15 @@
     $('#forma_pagamento-1').change(function() {
         if ($('#forma_pagamento-1').is(':checked')){
             $('#info_conta').hide();
+        }
+    });
+
+    $('#uso_cupom_desconto').change(function() {
+        if ($('#uso_cupom_desconto').is(':checked')){
+            $('#desconto').show();
+        }
+        else{
+            $('#desconto').hide();
         }
     });
 

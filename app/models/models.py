@@ -98,9 +98,10 @@ class Participante(db.Model):
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
+    cupom_desconto = db.relationship('CupomDesconto', back_populates='participante', lazy=True, uselist=False)
 
     def __repr__(self):
-        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + "><" + str(self.evento.edicao) + "ª edição>" 
+        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + "><" + str(self.evento.edicao) + "ª edição>"
 
 
 class Ministrante(db.Model):
@@ -400,5 +401,14 @@ class Pagamento(db.Model):
     descricao = Column(String(200), nullable=False)
     valor = Column(Float(precision=2), nullable=False)
     efetuado = Column(Boolean, nullable=False)
+    comprovante_enviado = Column(Boolean, nullable=False, default=False)
     arquivo_comprovante = Column(String(100), nullable=True)
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
+
+class CupomDesconto(db.Model):
+    id = Column(Integer, primary_key=True)
+    id_participante = Column(Integer, db.ForeignKey('participante.id'), primary_key=False)
+    nome = Column(String(200), nullable=False)
+    valor = Column(Float(precision=2), nullable=False)
+    usado = Column(Boolean, default=False)
+    participante = db.relationship('Participante', back_populates='cupom_desconto', lazy=True, uselist=False)
