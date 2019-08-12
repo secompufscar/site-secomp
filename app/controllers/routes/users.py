@@ -499,7 +499,7 @@ def submeter_flag():
 @login_required
 def cadastrar_time_desafio():
     participante = db.session.query(Participante).filter_by(usuario=current_user).first()
-    if participante.time_desafio == None:
+    if participante.time_desafio != None:
         return redirect(url_for('.visualizar_time_desafio'))
     form_login = LoginForm(request.form)
     form = TimeDesafioForm(request.form)
@@ -559,3 +559,11 @@ def visualizar_time_desafio():
         return render_template("users/visualizar_time_desafio.html", usuario=current_user, form_login=form_login, participante=participante, time=False)
     else:
         return render_template("users/visualizar_time_desafio.html", usuario=current_user, form_login=form_login, participante=participante, time=True, dados=participante.time_desafio)
+
+@users.route('/desinscrever-time-desafio')
+def desinscrever_time_desafio():
+    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    participante.time_desafio.participantes.remove(participante)
+    db.session.flush()
+    db.session.commit()
+    return redirect(url_for('.visualizar_time_desafio'))

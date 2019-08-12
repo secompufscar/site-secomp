@@ -12,9 +12,12 @@
         {% if time %}
             <h2>Seu time: {{ dados.nome_time }}</h2>
             <h2>Participantes: </h2>
-            {% for i in time.participantes %}
-                <p> - {{ i }}</p>
+            {% for i in dados.participantes %}
+                <p> - {{ i.usuario.primeiro_nome }} {{ i.usuario.sobrenome }}</p>
             {% endfor %}
+            <a href={{ url_for('users.desinscrever_time_desafio') }}>
+                Desinscrever-se do time
+            </a>
         {% else %}
             <h2>Você ainda não está inscrito em nenhum time. <a href="{{ url_for('users.cadastrar_time_desafio') }}">Clique aqui para se inscrever!</a></h2>
         {% endif %}
