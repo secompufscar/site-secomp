@@ -150,3 +150,9 @@ def pontuacao_compcases():
     except:
         pass
     return render_template('views/pontuacao_compcases.html', participantes=participantes, participante_logado=participante_logado, form_login=form)
+
+@views.route('/listar-times-desafio')
+def desinscrever_time_desafio():
+    times = db.session.query(TimeDesafio).all()
+    form = LoginForm(request.form)
+    return render_template('views/times_desafio.html', form_login=form, times=times)

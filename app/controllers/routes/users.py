@@ -561,9 +561,11 @@ def visualizar_time_desafio():
         return render_template("users/visualizar_time_desafio.html", usuario=current_user, form_login=form_login, participante=participante, time=True, dados=participante.time_desafio)
 
 @users.route('/desinscrever-time-desafio')
+@login_required
 def desinscrever_time_desafio():
     participante = db.session.query(Participante).filter_by(usuario=current_user).first()
     participante.time_desafio.participantes.remove(participante)
     db.session.flush()
     db.session.commit()
     return redirect(url_for('.visualizar_time_desafio'))
+

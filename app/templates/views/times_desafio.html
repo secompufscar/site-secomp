@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container" style="padding-top:50px">
+	<h1 class="text-center" style="padding:50px">Desafio de Programadores - X SECOMP</h1>
+
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Time</th>
+                <th>Participantes</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for time in times %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ time.nome_time}}</td>
+                <td>
+                    {% for u in time.participantes %}
+                        <p>{{ u.primeiro_nome }}</p>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
+
