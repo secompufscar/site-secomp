@@ -5,7 +5,7 @@ from app.controllers.functions.dictionaries import *
 from app.controllers.functions.helpers import get_participantes_da_atividade_json
 from app.controllers.functions.email import enviar_email_custon
 
-from app.controllers.forms.options import get_opcoes_ecustom_extencao
+from app.controllers.forms.options import get_opcoes_ecustom_extensao
 
 from app.models.models import *
 
@@ -101,7 +101,7 @@ def executa_email_custon():
                 return jsonify('Falha. Nínguem foi selecionado!')
 
             # Verificação da extenção, novas extenções adicionadas no dictExtencao devem ser suportadas aqui
-            extencaoDict = {key : value for (key, value) in get_opcoes_ecustom_extencao()}
+            extencaoDict = {key : value for (key, value) in get_opcoes_ecustom_extensao()}
 
             if extencao == 0:
                 extencao = ""
