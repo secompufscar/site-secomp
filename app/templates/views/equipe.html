@@ -15,7 +15,11 @@
         <div class="row justify-content-center pb-3">
             {% for membro in data[diretoria] %}
                     <div class="pb-3 pl-2 pr-2">
+                        {% if diretoria == 'Coordenação Geral' or loop.index == 1 %}
+                        <div onmouseover="showBackside(id)" onmouseout="showFrontside(id)" class="card diretor text-center" style="width: 18rem; height: 17rem;">
+                        {% else %}
                         <div onmouseover="showBackside(id)" onmouseout="showFrontside(id)" class="card text-center" style="width: 18rem; height: 17rem;">
+                        {% endif %}
                             <div class="card-body">
                                 <img class="rounded-circle img-equipe mb-3" src="{{ url_for('static', filename='images/equipe/%s' % data[diretoria][membro]['img']) }}" alt="Foto do participante">
 
