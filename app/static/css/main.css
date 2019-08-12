@@ -128,9 +128,9 @@ header a:hover {
 }
 
 .dropdown-item.active, .dropdown-item:active {
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
-  background: #00cfa1 linear-gradient(to right, #00b59d, #00cfa1);
+  background: linear-gradient(to right, #00b59daa, #00cfa1aa);
 }
 
 .dropdown-toggle:active {
