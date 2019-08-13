@@ -1,16 +1,73 @@
+#content {
+    padding-top: 0;
+}
+
 .col {
     padding: 2% 0 2% 0;
 }
 
+.counter {
+    text-shadow: -1px 0 #424242, 0 1px #424242, 1px 0 #424242, 0 -1px #424242;
+}
+
+.top-left {
+    position: absolute;
+    left: 0%;
+    top: 25%;
+    max-width: 90%;
+    transform: translate(0, -20%);
+}
+
+.bottom-right {
+    position: absolute;
+    right: 0%;
+    top: 75%;
+    max-width: 90%;
+    transform: translate(0, -50%);
+}
+
+.bg-fade {
+    background-color: #000000aa;
+    position: relative;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: white;
+}
+
+.swiper-container {
+    width: 100%;
+    height: 100vh;
+}
+
+.swiper-slide {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
 @media (orientation: portrait) {
     .background {
+        height: 100vh;
+        width: 100%;
+        margin: 0;
         position: absolute;
-        height: 80vh;
-        max-width: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
     }
     .logoP {
-        display: relative;
-        width: 90vw;
+        margin-top: 60px;
+        display: inline-block;
+        width: 70vw;
     }
     .logoL {
         display: none;
@@ -19,12 +76,15 @@
 
 @media (orientation: landscape) {
     .background {
-        position: absolute;
+        height: 100vh;
         width: 100%;
+        position: absolute;
+        background-size: cover;
     }
     .logoL {
-        display: relative;
-        width: 80vw;
+        margin-top: 60px;
+        display: inline-block;
+        width: 70vw;
         margin: 3%;
     }
     .logoP {
