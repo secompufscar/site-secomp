@@ -135,11 +135,14 @@ def get_opcoes_ecustom_extensao():
 
 def get_opcoes_ecustom_atividade():
     # Cria uma lista de atividades para ser usado na página
-    query = db.session.query(Atividade)
+    atividades = None
+    try:
+        query = db.session.query(Atividade)
 
-    atividades = [(a.id, a.titulo) for a in query]
-    atividades.append((-1, 'Todas'))
-
+        atividades = [(a.id, a.titulo) for a in query]
+        atividades.append((-1, 'Todas'))
+    except:
+        pass
     return atividades
 
 def get_opcoes_tipo_atividade():
