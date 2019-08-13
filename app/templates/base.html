@@ -99,9 +99,14 @@
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="config">
             <i class="mr-1 fas fa-cog"></i></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
+                <a class="dropdown-item" href="{{ url_for('management.gerenciar') }}">
+                    <i class="mr-1 fas fa-user-secret"></i> GERENCIAR</a>
+                {% endif %}
                 <a class="dropdown-item" href="{{ url_for('users.dashboard') }}">
                   <i class="mr-1 fas fa-user"></i> PARTICIPANTE</a>
-                <a class="dropdown-item" href="{{ url_for('views.logout') }}">SAIR</a>
+                <a class="dropdown-item" href="{{ url_for('views.logout') }}">
+                  <i class="mr-1 fas fa-sign-out-alt"></i>SAIR</a>
             </div>
           </div>
           {% else %}
@@ -109,8 +114,8 @@
             ENTRAR</a> -->
           <a class="nav-item nav-link" href=" " data-toggle="modal" data-target="#modal-login"><i class="mr-1 fas fa-user"></i>
             ENTRAR</a>
-          <a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}"><i
-                                       class="mr-1 fas fa-address-card"></i> INSCREVER</a>
+          <a class="nav-item nav-link" href="{{ url_for('views.constr') }}"><i
+                                        class="mr-1 fas fa-address-card"></i> INSCREVER</a>
           {% endif %}
         </div>
       </div>
@@ -201,12 +206,9 @@
 <script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
-
 <script>
 	/*$(document).ready(function(){
     	$('#content').css("padding-top", $('#navTop').outerHeight() * 1.2);
   });*/
 </script>
-
-{% endblock %}
 {% endblock %}

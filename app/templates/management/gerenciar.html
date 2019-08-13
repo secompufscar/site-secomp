@@ -99,7 +99,7 @@
             </form>
         </div>
         {% endif %}
-
+      
         {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CONTEUDO'].usuarios %}
         <div class="col-md-6 p-3">
             <div>
@@ -110,7 +110,6 @@
             </div>
         </div>
         {% endif %}
-
     </div>
 </div>
 {% endblock %}
