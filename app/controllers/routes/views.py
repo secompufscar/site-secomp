@@ -28,7 +28,7 @@ def index():
     '''
     return redirect(url_for('views.login'))
 
-#@views.route('/contato', methods=['POST', 'GET'])
+@views.route('/contato', methods=['POST', 'GET'])
 def contato_dm():
     """
     Página de contato
@@ -79,19 +79,19 @@ def constr():
     return render_template('views/em_constr.html', title='Página em construção', form_login=form_login)
 
 
-#@views.route('/sobre', methods=["GET", "POST"])
+@views.route('/sobre', methods=["GET", "POST"])
 def sobre():
     form_login = LoginForm(request.form)
     return render_template('views/sobre.html', title='Sobre a Secomp', form_login=form_login)
 
 
-#@views.route('/cronograma', methods=["GET", "POST"])
+@views.route('/cronograma', methods=["GET", "POST"])
 def cronograma():
     form_login = LoginForm(request.form)
     return render_template('views/cronograma.html', title='Cronograma', form_login=form_login)
 
 
-#@views.route('/equipe', methods=["GET", "POST"])
+@views.route('/equipe', methods=["GET", "POST"])
 def equipe():
     import json
     import os.path as op
@@ -103,18 +103,18 @@ def equipe():
     return render_template('views/equipe.html', title='Equipe', data=data, form_login=form_login)
 
 
-#@views.route('/faq', methods=["GET", "POST"])
+@views.route('/faq', methods=["GET", "POST"])
 def faq():
     form_login = LoginForm(request.form)
     return render_template('views/faq.html', title='FAQ', form_login=form_login)
 
 
-#@views.route('/ctf', methods=["GET", "POST"])
+@views.route('/ctf', methods=["GET", "POST"])
 def ctf():
     form_login = LoginForm(request.form)
     return render_template('views/ctf.html', title='CTF', form_login=form_login)
 
-#@views.route('/teste', methods=["GET","POST"])
+@views.route('/teste', methods=["GET","POST"])
 def teste():
     form_login = LoginForm(request.form)
     return render_template('teste.html', title='Teste', form_login=form_login)
@@ -154,18 +154,18 @@ def logout():
     logout_user()
     return redirect(url_for('views.login'))
 
-#@views.route("/senhas", methods=["GET"])
+@views.route("/senhas", methods=["GET"])
 def senhas():
     return render_template('views/requisito_50.html')
 
-#@views.route("/patrocinadores", methods=["GET"])
+@views.route("/patrocinadores", methods=["GET"])
 def patrocinadores():
     '''
     Renderiza página referente aos patrocinadores da edição atual
     '''
     form = LoginForm(request.form)
     patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True)
-    return render_template('views/patrocinadores.html', patrocinadores=patrocinadores, form_login=form, edicao=EDICAO_ATUAL)
+    return render_template('views/patrocinadores.html', patrocinadores=patrocinadores, form_login=form, edicao=EDICAO_ATUAL, upload_path=current_app.config['UPLOAD_PATH'])
 
 @views.route("/pontuacao", methods=["GET"])
 def pontuacao_compcases():

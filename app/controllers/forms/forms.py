@@ -242,7 +242,7 @@ class CadastroInformacoesLocomocaoEstadia(FlaskForm):
 
 class EmailCuston(FlaskForm):
     listComplemento = get_opcoes_ecustom_complemento()
-    listExtencao = get_opcoes_ecustom_extencao()
+    listExtencao = get_opcoes_ecustom_extensao()
     listAtividade = get_opcoes_ecustom_atividade()
 
     dictComplemento = {key : value for (value, key) in listComplemento}

@@ -5,7 +5,7 @@ from app.controllers.functions.dictionaries import *
 from app.controllers.functions.helpers import get_participantes_da_atividade_json
 from app.controllers.functions.email import enviar_email_custon
 
-from app.controllers.forms.options import get_opcoes_ecustom_extencao
+from app.controllers.forms.options import get_opcoes_ecustom_extensao
 
 from app.models.models import *
 
