@@ -1,13 +1,15 @@
 from random import SystemRandom
 
-from flask import render_template, request, redirect, abort, url_for, Blueprint
+from flask import render_template, request, redirect, abort, url_for, Blueprint, current_app
 from flask_login import login_required, current_user
+from os import makedirs
 
 from app.controllers.forms.forms import *
 from app.models.models import *
 from app.controllers.functions.dictionaries import *
 from app.controllers.functions.helpers import *
 from app.controllers.forms.validators import *
+from werkzeug import secure_filename
 
 from secrets import token_urlsafe
 
@@ -61,12 +63,24 @@ def cadastro_patrocinador():
         form_login = LoginForm(request.form)
         form = PatrocinadorForm(request.form)
         if form.validate_on_submit():
-            patrocinador = Patrocinador(nome_empresa=form.nome_empresa.data, logo=form.logo.data,
-                                        ativo_site=form.ativo_site.data, id_cota=form.id_cota.data,
-                                        link_website=form.link_website.data, form_login=form_login)
+            filename = None
+            logo = None
+            upload_path = None
+            if form.logo.data:
+                logo = form.logo.data
+                filename = secure_filename(logo.filename)
+                filename = f'{form.nome_empresa.data}_{filename}'
+                upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'logos_patrocinadores')
+                if not path.exists(upload_path):
+                    makedirs(upload_path)
+            patrocinador = Patrocinador(nome_empresa=form.nome_empresa.data, logo=filename,
+                                        ativo_site=form.ativo_site.data, id_cota=int(form.id_cota.data),
+                                        link_website=form.link_website.data)
             db.session.add(patrocinador)
             db.session.flush()
             db.session.commit()
+            if form.logo.data:
+                logo.save(path.join(upload_path, filename))
             return redirect(url_for('.cadastro-patrocinador'))
         else:
             return render_template('management/cadastro_patrocinador.html', form=form, form_login=form_login)
