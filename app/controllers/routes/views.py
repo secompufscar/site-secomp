@@ -13,6 +13,7 @@ from app.controllers.forms.options import opcoes_falha
 from app.controllers.functions.email import enviar_email_dm, enviar_email_generico
 from app.controllers.functions.helpers import *
 from app.controllers.constants import *
+from app.controllers.functions.dictionaries import *
 
 limiter = Limiter(current_app, key_func=get_ipaddr)
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
@@ -111,7 +112,7 @@ def sobre():
 #@views.route('/cronograma', methods=["GET", "POST"])
 def cronograma():
     form_login = LoginForm(request.form)
-    return render_template('views/cronograma.html', title='Cronograma', form_login=form_login)
+    return render_template('views/cronograma.html', title='Cronograma', form_login=form_login, info_cronograma=get_cronograma())
 
 
 #@views.route('/equipe', methods=["GET", "POST"])
@@ -190,7 +191,7 @@ def patrocinadores():
     patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True)
     return render_template('views/patrocinadores.html', patrocinadores=patrocinadores, form_login=form, edicao=EDICAO_ATUAL)
 
-@views.route("/pontuacao", methods=["GET"])
+#@views.route("/pontuacao", methods=["GET"])
 def pontuacao_compcases():
     '''
     Renderiza página referente a pontuação geral do COMPCases

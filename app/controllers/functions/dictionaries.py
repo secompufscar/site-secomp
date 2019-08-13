@@ -186,4 +186,24 @@ def get_urls_conteudo(url_root):
         }
         info_urls.append(info)
     return info_urls
-  
+
+def get_cronograma():
+    SEGUNDA = datetime(year=2019, month=9, day=9).strftime("%Y-%m-%d")
+    TERCA = datetime(year=2019, month=9, day=10).strftime("%Y-%m-%d")
+    QUARTA = datetime(year=2019, month=9, day=11).strftime("%Y-%m-%d")
+    QUINTA = datetime(year=2019, month=9, day=12).strftime("%Y-%m-%d")
+    SEXTA = datetime(year=2019, month=9, day=13).strftime("%Y-%m-%d")
+
+    segunda = db.session.query(Atividade).filter(Atividade.data_hora_inicio.contains(SEGUNDA), Atividade.id_evento==get_id_evento_atual()).order_by(Atividade.data_hora_inicio).all()
+    terca = db.session.query(Atividade).filter(Atividade.data_hora_inicio.contains(TERCA), Atividade.id_evento==get_id_evento_atual()).order_by(Atividade.data_hora_inicio).all()
+    quarta = db.session.query(Atividade).filter(Atividade.data_hora_inicio.contains(QUARTA), Atividade.id_evento==get_id_evento_atual()).order_by(Atividade.data_hora_inicio).all()
+    quinta = db.session.query(Atividade).filter(Atividade.data_hora_inicio.contains(QUINTA), Atividade.id_evento==get_id_evento_atual()).order_by(Atividade.data_hora_inicio).all()
+    sexta = db.session.query(Atividade).filter(Atividade.data_hora_inicio.contains(SEXTA), Atividade.id_evento==get_id_evento_atual()).order_by(Atividade.data_hora_inicio).all()
+
+    return {
+        "SEG" : segunda,
+        "TER": terca,
+        "QUA": quarta,
+        "QUI": quinta,
+        "SEX": sexta
+    }
