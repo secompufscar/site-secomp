@@ -101,8 +101,7 @@ def get_opcoes_permissoes():
 
 def get_opcoes_cotas_patrocinadores():
     try:
-        cotas_data = db.session.query(CotaPatrocinio).filter_by().order_by(
-            CotaPatrocinio.nome).all()
+        cotas_data = db.session.query(CotaPatrocinio).all()
         cotas = []
 
         for cota in cotas_data:
@@ -152,3 +151,4 @@ def get_opcoes_tipo_atividade():
         return tipos_atividade
     except Exception as e:
         return None
+
