@@ -89,6 +89,7 @@
 
     <div id="seg" style="display: block;">
         <div class="col-md-12">
+            {% for atividade in info_cronograma.SEG%}
             <div class="card">
 
                 <div class="row no-gutters align-items-center">
@@ -100,9 +101,7 @@
 
                     <div class="col-md-4">
                         <div class="card-body">
-                            <h4 class="card-title">Titulo da palestra que a gente sabe que pode ser muito longo de
-                                acordo
-                                com as edições anteriores</h4>
+                            <h4 class="card-title">{{ atividade.titulo }}</h4>
                             <p class="card-subtitle text-muted">
                                 Ministrante Fulano de Tal
                                 <br>Cargo na Instituição
@@ -152,6 +151,7 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
 
 

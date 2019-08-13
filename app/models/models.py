@@ -429,7 +429,8 @@ class URLConteudo(db.Model):
 
 class ComoConheceu(db.Model):
     __tablename__ = 'como_conheceu'
-    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=True)
+    id = Column(Integer, primary_key=True) 
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'))
     opcao = Column(Integer, nullable=False)
     outro = Column(String(200))
     usuario = db.relationship('Usuario', lazy=True, back_populates='como_conheceu')
