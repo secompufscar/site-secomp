@@ -6,7 +6,10 @@
     <div class="row justify-content-center pt-1">
         <div class="col-md-6">
             <h3 class="text-center">Cadastro de patrocinadores</h3>
-            <form method="POST" action="{{ url_for('management.cadastro_patrocinador') }}">
+            <form method="POST" action="{{ url_for('management.cadastro_patrocinador') }}"  enctype="multipart/form-data">
+                {% if cadastrado %}
+                <h3>Cadastrado!</h3>
+                {% endif %}
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.nome_empresa) }}
                 {{ wtf.form_field(form.id_cota) }}

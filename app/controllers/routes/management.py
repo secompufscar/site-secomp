@@ -2,7 +2,7 @@ from random import SystemRandom
 
 from flask import render_template, request, redirect, abort, url_for, Blueprint, current_app
 from flask_login import login_required, current_user
-from os import makedirs
+from os import path, makedirs
 
 from app.controllers.forms.forms import *
 from app.models.models import *
@@ -13,7 +13,7 @@ from werkzeug import secure_filename
 
 from secrets import token_urlsafe
 
-from app.controllers.forms.options import get_opcoes_ecustom_atividade, get_opcoes_ecustom_extencao, get_opcoes_ecustom_complemento
+from app.controllers.forms.options import get_opcoes_ecustom_atividade, get_opcoes_ecustom_extensao, get_opcoes_ecustom_complemento
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
@@ -59,31 +59,34 @@ def estoque_camisetas_por_tamanho(tamanho):
 @login_required
 def cadastro_patrocinador():
     permissoes = current_user.getPermissoes()
-    if("CADASTRAR_PATROCINADOR" in permissoes or current_user.is_admin()):
+    if("CADASTRAR_PATROCINADOR" in permissoes
+            or "PATROCINIO" in permissoes
+            or "DM" in permissoes
+            or current_user.is_admin()):
         form_login = LoginForm(request.form)
-        form = PatrocinadorForm(request.form)
+        form = PatrocinadorForm()
         if form.validate_on_submit():
-            filename = None
-            logo = None
-            upload_path = None
-            if form.logo.data:
+            logo = filename = None
+            if form.logo.data != None:
+                id_atual = db.session.query(Patrocinador).count()
                 logo = form.logo.data
                 filename = secure_filename(logo.filename)
-                filename = f'{form.nome_empresa.data}_{filename}'
+                filename = f'{id_atual}_{filename}'
                 upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'logos_patrocinadores')
                 if not path.exists(upload_path):
                     makedirs(upload_path)
-            patrocinador = Patrocinador(nome_empresa=form.nome_empresa.data, logo=filename,
+            patrocinador = Patrocinador(id=id_atual, nome_empresa=form.nome_empresa.data, logo=filename,
                                         ativo_site=form.ativo_site.data, id_cota=int(form.id_cota.data),
-                                        link_website=form.link_website.data)
+                                        link_website=form.link_website.data, ordem_site=id_atual)
             db.session.add(patrocinador)
             db.session.flush()
             db.session.commit()
-            if form.logo.data:
+            if form.logo.data != None:
                 logo.save(path.join(upload_path, filename))
-            return redirect(url_for('.cadastro-patrocinador'))
+                print("Upload path " + upload_path + " filename " + filename)
+            return render_template('management/cadastro_patrocinador.html', form=form, form_login=form_login, usuario=current_user, cadastrado=True)
         else:
-            return render_template('management/cadastro_patrocinador.html', form=form, form_login=form_login)
+            return render_template('management/cadastro_patrocinador.html', form=form, form_login=form_login, usuario=current_user)
     else:
         abort(403)
 
