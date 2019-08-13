@@ -4,101 +4,109 @@
 
 {{ super() }}
 <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='swiper/swiper.min.css') }}" rel="stylesheet" type="text/css" />
 
+<style>
+	#car1 {
+		background-image: url("{{ url_for('static', filename='images/car1.jpg') }}");
+	}
+
+	#car2 {
+		background-image: url("{{ url_for('static', filename='images/car2.jpg') }}");
+
+	}
+
+	#car3 {
+		background-image: url("{{ url_for('static', filename='images/car3.jpg') }}");
+	}
+</style>
 {% endblock %}
 
 
 {% block content %}
 
-<img class="background" src="{{ url_for('static', filename='images/car1.jpg') }}">
+<div class="swiper-container">
+	<div class="swiper-wrapper">
+		<div class="swiper-slide">
+			<img id="car1" class="background">
 
-<div class="col-md-12 text-center">
-	<img class="logoL" src="{{ url_for('static', filename='images/logo-secomp.png') }}">
-	<img class="logoP" src="{{ url_for('static', filename='images/logo-colorida.png') }}">
-</div>
+			<div id="bg1" class="col-md-12 text-center">
+				<div class="row align-items-center justify-content-center text-center bg-fade">
+					<div class="col-md-12">
+						<img class="logoL" src="{{ url_for('static', filename='images/logo-branca.png') }}">
+						<img class="logoP" src="{{ url_for('static', filename='images/logo-colorida.png') }}">
+					</div>
+					<div class="col">
+						<h1 id="contador-dias">00</h1>
+						<h4>dias</h4>
+					</div>
+					<div class="col">
+						<h1 id="contador-horas">00</h1>
+						<h4>horas</h4>
+					</div>
+					<div class="col">
+						<h1 id="contador-min">00</h1>
+						<h4>min</h4>
+					</div>
+					<div class="col">
+						<h1 id="contador-seg">00</h1>
+						<h4>seg</h4>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<div class="col-md-12 text-center text-white pt-3">
-	<div class="row counter">
-		<div class="col">
-			<h1 id="contador-dias">00</h1>
-			<h4>dias</h4>
+		<div class="swiper-slide">
+			<img id="car2" class="background">
+
+			<div id="bg2" class="container-fluid text-center">
+				<div class="top-left">
+					<div class="col-md-12 pl-5 pr-5 pt-2 pb-2 bg-fade">
+						<h1>Palestras</h1>
+						<h4>Um textinho falando qualquer coisa de palestra</h4>
+					</div>
+				</div>
+				<div class="bottom-right">
+					<div class="col-md-12 pl-5 pr-5 pt-2 pb-2 bg-fade">
+						<h1>Minicursos</h1>
+						<h4>Um textinho falando qualquer coisa de minicurso</h4>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="col">
-			<h1 id="contador-horas">00</h1>
-			<h4>horas</h4>
-		</div>
-		<div class="col">
-			<h1 id="contador-min">00</h1>
-			<h4>min</h4>
-		</div>
-		<div class="col">
-			<h1 id="contador-seg">00</h1>
-			<h4>seg</h4>
+
+		<div class="swiper-slide">
+			<img id="car3" class="background">
+
+			<div id="bg2" class="container-fluid text-center">
+				<div class="top-left">
+					<div class="col-md-12 pl-5 pr-5 pt-2 pb-2 bg-fade">
+						<h1>Workshops</h1>
+						<h4>Um textinho falando sobre os workchopp</h4>
+					</div>
+				</div>
+				<div class="bottom-right">
+					<div class="col-md-12 pl-5 pr-5 pt-2 pb-2 bg-fade">
+						<h1>Palestras empresariais</h1>
+						<h4>Um textinho falando como empresa é super legal</h4>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
-
-<div class="col-md-12 bg-dark text-white pt-3">
-	<div class="row justify-content-center text-center">
-		<h2 style="font-weight: 600;">O QUE ROLA NA SECOMP?</h2>
-	</div>
-	<div class="row justify-content-center align-items-center text-center icons">
-		<div class="col">
-			<i class="fas fa-microphone fa-4x pb-2"></i>
-			<h4>Palestras</h4>
-		</div>
-		<div class="col">
-			<i class="fas fa-laptop-code fa-4x pb-2"></i>
-			<h4>Minicursos</h4>
-		</div>
-		<div class="col">
-			<i class="fas fa-code-branch fa-4x pb-2"></i>
-			<h4>Workshops</h4>
-		</div>
-		<div class="col">
-			<i class="fas fa-comments fa-4x pb-2"></i>
-			<h4>Mesas-redondas</h4>
-		</div>
-		<div class="col">
-			<i class="fab fa-font-awesome-flag fa-4x pb-2"></i>
-			<h4>CTF</h4>
-		</div>
-		<div class="col">
-			<i class="fas fa-terminal fa-4x pb-2"></i>
-			<h4>Desafio</h4>
-		</div>
-		<div class="col">
-			<i class="fas fa-ellipsis-h fa-4x pb-2"></i>
-			<h4>E muito mais</h4>
-		</div>
-	</div>
-</div>
-
-<div class="container text-center mt-4 mb-4">
-	<div class="row justify-content-center">
-		<div class="col-md-12 text-center">
-			<h3>Realização</h3>
-		</div>
-		<div class="col-sm-3 align-self-center">
-			<img class="img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">
-		</div>
-		<div class="col-sm-3 align-self-center">
-			<img class="img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">
-		</div>
-		<div class="col-sm-3 align-self-center">
-			<img class="img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">
-		</div>
-	</div>
+	<div class="swiper-pagination"></div>
 </div>
 
 {% endblock %}
 
+{% block footer %}{% endblock %}
 
 {% block scripts %}
 
 <script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='swiper/swiper.min.js') }}"></script>
 
 <script>
 	var countDownDate = new Date("Sep 09, 2019 08:00:00").getTime();
@@ -124,5 +132,21 @@
 			document.getElementById("contador").innerHTML = "Evento já realizado :P";
 		}
 	}, 1000);
+</script>
+
+<script>
+
+	var body = document.body;
+	var slider = new Swiper('.swiper-container', {
+		pagination: '.swiper-pagination',
+		direction: 'vertical',
+		slidesPerView: 1,
+		paginationClickable: true,
+		mousewheelControl: true,
+		onSlideChangeStart: function (swiper) {
+			var currentSlide = swiper.slides[swiper.activeIndex];
+		},
+	});
+
 </script>
 {% endblock %}

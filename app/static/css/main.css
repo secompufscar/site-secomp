@@ -15,6 +15,8 @@
 #content {
   background-color: var(--bg-color);
   color: var(--font-color);
+  min-height: 75vh;
+  padding-top: 53px;
 }
 
 .theme-switch-wrapper {
@@ -81,11 +83,6 @@ header a {
 }
 header a:hover {
   color: rgba(255, 255, 255, 0.7);
-}
-
-#content {
-  min-height: 75vh;
-  padding-top: 53px;
 }
 
 .bg-gradient-secomp {
