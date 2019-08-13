@@ -3,6 +3,7 @@
   --secondary-color: $secomp2;
   --font-color: #424242;
   --bg-color: #fff;
+  --hover-color: #ddd;
 }
 
 [data-theme=dark] {
@@ -10,6 +11,7 @@
   --secondary-color: $secomp4;
   --font-color: #e1e1ff;
   --bg-color: #00141a;
+  --hover-color: #333;
 }
 
 #content {
@@ -20,6 +22,7 @@
 .theme-switch-wrapper {
   display: flex;
   align-items: center;
+  color: var(--font-color);
 }
 
 .theme-switch {
@@ -119,8 +122,18 @@ header a:hover {
   text-shadow: 1px 1px 5px black;
 }
 
+.dropdown-menu {
+  background-color: var(--bg-color);
+}
+
 .dropdown-menu a {
   font-size: 12px;
+  color: var(--font-color);
+}
+
+.dropdown-item:hover {
+  color: var(--font-color);
+  background: var(--hover-color);
 }
 
 .dropdown-menu a:active {
