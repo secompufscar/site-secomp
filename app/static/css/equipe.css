@@ -1,3 +1,13 @@
+:root {
+    --bg-color: #fff;
+    --border-color: #00000020;
+}
+
+[data-theme=dark] {
+    --bg-color: #00141a;
+    --border-color: #ffffff70;
+}
+
 .frontside {
     position: relative;
     margin-bottom: 30px;
@@ -8,7 +18,7 @@
     opacity: 0;
     top: 0;
     left: 0;
-    background: white;
+    /* background: white; */
 }   
 
 .img-equipe {
@@ -17,8 +27,15 @@
     object-fit: cover; 
 }
 
+.card {
+    transition: 0.7s;
+    background-color: var(--bg-color);
+    border: solid 1px var(--border-color);
+}
+
 .card:hover .img-equipe {
     display: none;
+    transition: 0.7s;
 }
 
 .card:hover .desc-membro {
@@ -27,6 +44,10 @@
     -o-animation: fadeIn 0.7s;
     animation: fadeIn 0.7s;
     display: block;
+}
+
+.diretor {
+    border: solid 1px rgba(0, 196, 163, 0.424);
 }
 
 @-webkit-keyframes fadeIn {
