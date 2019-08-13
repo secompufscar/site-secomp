@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block styles %}
+{{ super() }}
+
+<link href="{{ url_for('static', filename='css/faq.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
