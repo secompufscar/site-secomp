@@ -320,11 +320,11 @@ class Patrocinador(db.Model):
     __tablename__ = 'patrocinador'
     id = Column(Integer, primary_key=True)
     nome_empresa = Column(String(100), nullable=False)
-    logo = Column(String(100), nullable=False)
+    logo = Column(String(100), nullable=True)
     ativo_site = Column(Boolean, nullable=False)
     id_cota = Column(Integer, db.ForeignKey('cota_patrocinio.id'), nullable=False)
     cota = db.relationship('CotaPatrocinio', backref='cota_patrocinio', lazy=True)
-    ordem_site = Column(Integer, primary_key=True)
+    ordem_site = Column(Integer, nullable=True)
     link_website = Column(String(200), nullable=True)
     ultima_atualizacao_em = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
