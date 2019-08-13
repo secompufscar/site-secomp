@@ -49,16 +49,21 @@ def ler_presenca():
     key = data['key']
     if(key == current_app.config['KEY_API_PRESENCA']):
         try:
-            inscrito = db.session.query(Participante).filter_by(id=id_participante).first() in db.session.query(Atividade).filter_by(id=id_atividade).participantes
-            presenca = Presenca(data_hora_registro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                id_atividade=id_atividade,
-                                id_participante=id_participante,
-                                id_evento=get_id_evento_atual(),
-                                inscrito=inscrito)
-            db.session.add(presenca)
-            db.session.flush()
-            db.session.commit()
-            return jsonify("SUCCESS")
+            if (db.session.query(Presenca).filter_by(id_atividade=id_atividade,
+                                                         id_participante=id_participante).first() != None):
+                inscrito = db.session.query(Participante).filter_by(id=id_participante).first() in db.session.query(Atividade).filter_by(id=id_atividade).participantes
+                presenca = Presenca(data_hora_registro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                    id_atividade=id_atividade,
+                                    id_participante=id_participante,
+                                    id_evento=get_id_evento_atual(),
+                                    inscrito=inscrito)
+
+                db.session.add(presenca)
+                db.session.flush()
+                db.session.commit()
+                return jsonify("SUCCESS")
+            else:
+                return jsonify("JA_LIDO")
         except:
             return jsonify("ERROR")
     else:
