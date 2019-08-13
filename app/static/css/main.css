@@ -3,6 +3,7 @@
   --secondary-color: $secomp2;
   --font-color: #424242;
   --bg-color: #fff;
+  --hover-color: #ddd;
 }
 
 [data-theme=dark] {
@@ -10,6 +11,7 @@
   --secondary-color: $secomp4;
   --font-color: #e1e1ff;
   --bg-color: #00141a;
+  --hover-color: #333;
 }
 
 #content {
@@ -22,6 +24,7 @@
 .theme-switch-wrapper {
   display: flex;
   align-items: center;
+  color: var(--font-color);
 }
 
 .theme-switch {
@@ -116,9 +119,30 @@ header a:hover {
   text-shadow: 1px 1px 5px black;
 }
 
+.dropdown-menu {
+  background-color: var(--bg-color);
+}
+
 .dropdown-menu a {
   font-size: 12px;
+  color: var(--font-color);
 }
+
+.dropdown-item:hover {
+  color: var(--font-color);
+  background: var(--hover-color);
+}
+
+.dropdown-menu a:active {
+  font-size: 12px;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  color: #ffffff;
+  text-decoration: none;
+  background: linear-gradient(to right, #00b59daa, #00cfa1aa);
+}
+
 .dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: visible;
@@ -132,9 +156,11 @@ footer ul li {
 }
 footer ul li a {
   color: #fff;
+  transition: 0.2;
 }
 footer ul li a:hover {
   color: #00cfa1;
+  transition: 0.2s;
 }
 
 .sobre-img {
@@ -169,7 +195,14 @@ footer ul li a:hover {
 
 #nav-logo {
   object-fit: contain;
+  transition: 0.2s;
 }
+
+#nav-logo:hover {
+  animation: spin 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 #video {
   height: 80vh;

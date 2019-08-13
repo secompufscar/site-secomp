@@ -10,7 +10,7 @@
 
 <div class="container">
 
-    <div class="row justify-content-center pt-1">
+    <div class="row justify-content-center pt-3">
         <div class="col-md-12 text-center">
             <h2>Cronograma</h2>
         </div>
@@ -30,7 +30,7 @@
                                         <th scope="col-md-2" id="th_seg" class="nav_on">
                                             <a onclick="toggle_visibility('seg');">
 
-                                                <h5>09.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">09/09</h5>
                                                 <h4><span id="nav-seg">Seg</span></h4>
                                                 <div id="div_seg" class="day selected"></div>
 
@@ -39,7 +39,7 @@
                                         <th scope="col-md-2" id="th_ter" class="nav_off">
                                             <a onclick="toggle_visibility('ter');">
 
-                                                <h5>10.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">10/09</h5>
                                                 <h4><span id="nav-ter">Ter</span></h4>
                                                 <div id="div_ter" class="day"></div>
 
@@ -48,7 +48,7 @@
                                         <th scope="col-md-2" id="th_qua" class="nav_off">
                                             <a onclick="toggle_visibility('qua');">
 
-                                                <h5>11.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">11/09</h5>
                                                 <h4><span id="nav-qua">Qua</span></h4>
                                                 <div id="div_qua" class="day"></div>
 
@@ -57,7 +57,7 @@
                                         <th scope="col-md-2" id="th_qui" class="nav_off">
                                             <a onclick="toggle_visibility('qui');">
 
-                                                <h5>12.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">12/09</h5>
                                                 <h4><span id="nav-qui">Qui</span></h4>
                                                 <div id="div_qui" class="day"></div>
 
@@ -66,7 +66,7 @@
                                         <th scope="col-md-2" id="th_sex" class="nav_off">
                                             <a onclick="toggle_visibility('sex');">
 
-                                                <h5>13.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">13/09</h5>
                                                 <h4><span id="nav-sex">Sex</span></h4>
                                                 <div id="div_sex" class="day"></div>
 
@@ -87,12 +87,12 @@
 
 
     <div id="seg" style="display: block;">
-        <div class="col-md-12">
+        <div class="col-md-12 pb-4">
             <div class="card">
 
                 <div class="row no-gutters align-items-center">
 
-                    <div class="col-md-2">
+                    <div class="col-md-2 p-4">
                         <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid"
                             alt="">
                     </div>
