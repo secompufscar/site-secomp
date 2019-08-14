@@ -70,21 +70,15 @@
                 <i class="mr-2 fas fa-users"></i>EQUIPE</a>
               <a class="dropdown-item" href="{{ url_for('views.contato_dm') }}">
                 <i class="mr-2 fas fa-comments"></i>CONTATO</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
-                <i class="mr-2 fas fa-gamepad"></i>GAMEFICAÇÃO</a>
             </div>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
-              <i class="mr-2 fas fa-calendar-alt"></i>EVENTOS</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ url_for('views.cronograma') }}">
-                <i class="mr-2 fas fa-calendar-check"></i>CRONOGRAMA</a>
-              <a class="dropdown-item" href="{{ url_for('views.ctf') }}">
-                <i class="mr-2 fas fa-flag"></i>CTF</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
-                <i class="mr-2 fas fa-utensils"></i>CHURRASCO</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('views.cronograma') }}">
+              <i class="mr-2 fas fa-calendar-alt  "></i>CRONOGRAMA</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('views.ctf') }}">
+              <i class="mr-2 fas fa-flag"></i>CTF</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.faq') }}">
@@ -93,7 +87,7 @@
         </ul>
 
         <!-- Lado direito da Navbar -->
-        <div class="navbar-nav ml-3">
+        <div class="navbar-nav">
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="config">
               <i class="mr-2 fas fa-cog"></i></a>
@@ -136,6 +130,7 @@
 </header>
 {% endblock %}
 
+{% block modal_login %}
 <!-- MODAL DO LOGIN -->
 <div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
   aria-hidden="true">
@@ -167,6 +162,7 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
 <main>
   <div id="content">
