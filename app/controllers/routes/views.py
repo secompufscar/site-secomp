@@ -62,14 +62,8 @@ def cronograma():
 
 @views.route('/equipe', methods=["GET", "POST"])
 def equipe():
-    import json
-    import os.path as op
-    import app.config as conf
     form_login = LoginForm(request.form)
-    filename = op.join(op.dirname(conf.__file__), 'membros_org.json')
-    with open(filename, 'r') as read_file:
-        data = json.load(read_file)
-    return render_template('views/equipe.html', title='Equipe', data=data, form_login=form_login)
+    return render_template('views/equipe.html', title='Equipe', data=get_equipe(), form_login=form_login)
 
 
 @views.route('/faq', methods=["GET", "POST"])

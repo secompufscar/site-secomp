@@ -135,3 +135,26 @@ def kit_pago(participante):
 def get_ranking_pontuacao():
     participantes = db.session.query(Participante).filter_by(id_evento=get_id_evento_atual()).order_by(Participante.pontuacao.desc()).limit(10).all()
     return participantes
+
+
+def get_equipe():
+    todos = db.session.query(MembroDeEquipe, Usuario, Diretoria, Cargo).join(Diretoria).join(Usuario).join(Cargo)
+
+    coordenacao_geral = todos.filter(Diretoria.nome == 'Coordenação Geral').all()
+
+    ti = todos.filter(Diretoria.nome == 'Tecnologia da Informação (TI)').all()
+    dm = todos.filter(Diretoria.nome == 'Design & Marketing (DM)').all()
+    conteudo = todos.filter(Diretoria.nome == 'Conteúdo').all()
+    jf = todos.filter(Diretoria.nome == 'Jurídico-Financeiro (JF)').all()
+    patrocinio = todos.filter(Diretoria.nome == 'Patrocínio').all()
+    socio = todos.filter(Diretoria.nome == 'Sócio-Cultural').all()
+
+    data = [('Coordenação Geral', coordenacao_geral),
+            ('Tecnologia da Informação (TI)', ti),
+            ('Design & Marketing (DM)', dm),
+            ('Conteúdo', conteudo),
+            ('Jurídico-Financeiro (JF)', jf),
+            ('Patrocínio', patrocinio),
+            ('Sócio-Cultural', socio)]
+
+    return data
