@@ -6,9 +6,29 @@ opcoes_restricao = [
     (3, "Vegano")
 ]
 
+opcoes_falha = [
+    (0, "Injeção"),
+    (1, "Quebra de Autenticação"),
+    (2, "Exposição de Dados Sensíveis"),
+    (3, "Quebra de Controle de Acesso"),
+    (4, "Configurações de Segurança Incorretas"),
+    (5, "Cross-Site Scripting (XSS)"),
+    (6, "Desserialização Insegura"),
+    (7, "Utilização de Componentes Vulneráveis"),
+    (8, "Outros")
+]
+
+opcoes_como_conheceu = [
+        (0, "Pelo Departamento de Computação da UFSCar"),
+        (1, "Através de amigos"),
+        (2, "Pela nossa página do facebook"),
+        (3, "Por cartazes espalhados em São Carlos"),
+        (4, "Outro")
+]
+
 def get_opcoes_cidades():
     try:
-        cidades = db.session.query(Cidade).all()
+        cidades = db.session.query(Cidade).order_by("nome").all()
         info_cidades = []
         for cidade in cidades:
             info = (cidade.id, cidade.nome)
@@ -21,7 +41,7 @@ def get_opcoes_cidades():
 
 def get_opcoes_instituicoes():
     try:
-        instituicoes = db.session.query(Instituicao).all()
+        instituicoes = db.session.query(Instituicao).order_by("nome").all()
         info_instituicoes = []
         for instituicao in instituicoes:
             info = (instituicao.id, instituicao.nome)
@@ -34,7 +54,7 @@ def get_opcoes_instituicoes():
 
 def get_opcoes_cursos():
     try:
-        cursos = db.session.query(Curso).all()
+        cursos = db.session.query(Curso).order_by("nome").all()
         info_cursos = []
         for curso in cursos:
             info = (curso.id, curso.nome)
@@ -93,6 +113,7 @@ def get_opcoes_cotas_patrocinadores():
     except Exception as e:
         return None
 
+
 def get_opcoes_area_atividade():
     try:
         areas_data = db.session.query(AreaAtividade).all()
@@ -104,9 +125,29 @@ def get_opcoes_area_atividade():
     except Exception as e:
         return None
 
+# Opções de complemento do envio customizado de emails
+def get_opcoes_ecustom_complemento():
+    return [(0, 'Mesmo arquivo para todos'), (1, 'Nome do usuário, CamelCase'), (2, 'ID do usuário')]
+
+# Opções de extensão do envio customizado de emails
+def get_opcoes_ecustom_extensao():
+    return [(0, 'Sem extensão'), (1, '.pdf')]
+
+def get_opcoes_ecustom_atividade():
+    # Cria uma lista de atividades para ser usado na página
+    atividades = None
+    try:
+        query = db.session.query(Atividade)
+
+        atividades = [(a.id, a.titulo) for a in query]
+        atividades.append((-1, 'Todas'))
+    except:
+        pass
+    return atividades
+
 def get_opcoes_tipo_atividade():
     try:
-        tipos = db.session.query(TipoAtividade).all()
+        tipos = db.session.query(TipoAtividade).order_by("nome").all()
         tipos_atividade = []
         for tipo in tipos:
             info_tipo = (tipo.id, tipo.nome)

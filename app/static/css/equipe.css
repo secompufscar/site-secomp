@@ -12,21 +12,21 @@
 }   
 
 .img-equipe {
-    width: 1rem;
-    height: 1rem;
+    width: 10rem;
+    height: 10rem;
     object-fit: cover; 
 }
 
-.backside:hover, .backside.hover {
-    -webkit-animation: fadeIn 0.4s;
-    -moz-animation: fadeIn 0.4s;
-    -o-animation: fadeIn 0.4s;
-    animation: fadeIn 0.4s;
-    opacity: 1;
+.card:hover .img-equipe {
+    display: none;
 }
 
-.frontside:hover, .frontside.hover {
-    opacity: 0;
+.card:hover .desc-membro {
+    -webkit-animation: fadeIn 0.7s;
+    -moz-animation: fadeIn 0.7s;
+    -o-animation: fadeIn 0.7s;
+    animation: fadeIn 0.7s;
+    display: block;
 }
 
 @-webkit-keyframes fadeIn {
@@ -63,6 +63,10 @@
     100% {
         opacity: 1;
     }
+}
+
+.titulo-backside, .desc-membro {
+    display: none;
 }
 
 .backside .card p {

@@ -2,24 +2,25 @@
 
 {% block content %}
 
-
-<div class="container" style="padding:100px">
-	<h1 class="text-center">Patrocinadores - 2019</h1>
+<div class="container">
+	<div class="row justify-content-center pt-1">
+		<div class="col-md-12">
+			<h1 class="text-center">Patrocinadores - 2019</h1>
+		</div>
+	</div>
 	{% for p in patrocinadores %}
 	{% if p.ativo_site %}
-	<br/>
-	<div class="card" style="width: 18rem;">
-	  	<div class="card-body">
-			<h5 class="card-title">{{p.nome_empresa}}</h5>
-			<h6 class="card-subtitle mb-2 text-muted">{{p.cota.nome}}</h6>
-			<p class="card-text">Descrição</p>
-			<a href="{{p.link_website}}" class="card-link">Site</a>
-	  	</div>
+	<div class="row justify-content-center pt-1">
+		<div class="card" style="width: 18rem;">
+			<div class="card-body">
+				<h5 class="card-title">{{p.nome_empresa}}</h5>
+				<h6 class="card-subtitle mb-2 text-muted">{{p.cota.nome}}</h6>
+				<p class="card-text">Descrição</p>
+				<a href="{{p.link_website}}" class="card-link">Site</a>
+			</div>
+		</div>
 	</div>
 	{% endif %}
 	{% endfor %}
-
 </div>
-
-
 {% endblock %}

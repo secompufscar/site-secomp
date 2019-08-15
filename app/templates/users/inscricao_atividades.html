@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "users/sidebar.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block content %}
+{% block sidebar_content %}
 {% if acao == "+" %}
 <div class="alert alert-success">
 	<strong>Inscrito!</strong> Sua inscrição foi confirmada com sucesso.
@@ -15,7 +15,7 @@
 
 <div class="container">
 
-	<div class="row justify-content-center">
+	<div class="row justify-content-center pt-1">
 		<div class="col-md-12 text-center">
 			<h2>Atividades</h2>
 		</div>
@@ -32,7 +32,6 @@
 		</div>
 	</div>
 
-	<hr />
 	<div id="list" class="row justify-content-center">
 
 		<div class="table-responsive col-md-12">

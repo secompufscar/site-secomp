@@ -107,6 +107,9 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# VS Code settings
+.vscode/
+
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -114,6 +117,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# VS Code settings
+.vscode/
 
 # PyCharm project settings
 .idea/
@@ -123,5 +129,6 @@ migrations/
 app.db
 
 app/config/development.py
+app/config/production.py
 uploads/
 

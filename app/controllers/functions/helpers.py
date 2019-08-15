@@ -1,6 +1,16 @@
 from app.models.models import *
 from app.controllers.constants import EDICAO_ATUAL
 
+def get_usuarios_query():
+    '''
+    Retorna o objeto da query de usuários para ser usado em outra função
+    '''
+    try:
+        query = db.session.query(Usuario)
+        return query
+    except Exception as e:
+        print(e)
+        return None
 
 def get_score_evento(edicao):
     return 10000
@@ -63,6 +73,21 @@ def verifica_outro_escolhido(campo, objeto):
         return cadastra_objeto_generico(objeto).id
     else:
         return campo.data
+
+def get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao):
+    '''
+    Retorna uma lista dos arquivos que serão anexados.
+    '''
+
+    # Tipo de modificação aplicada nos nomes dos anexos, novas motificações poder ser adicionadas aqui
+    if complemento == 0: # Mesmo arquivo para todos
+        return path.join(anexoPasta, (anexoBase + extencao))
+    elif complemento == 1: # Nome CamelCase
+        return path.join(anexoPasta, (anexoBase + usuario.primeiro_nome + usuario.sobrenome.replace(" ", "") + extencao))
+    elif complemento == 2: # ID
+        return path.join(anexoPasta, (anexoBase + usuario.id + extencao))
+    else:
+        return None
 
 
 def valida_url_codigo(usuario, codigo):
