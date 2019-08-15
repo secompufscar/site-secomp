@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+
+<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css" />
+
+<div class="container">
+    <div class="row justify-content-center pt-1 pb-3">
+
+        <div class="col-md-8">
+
+            <h3 class="text-center">Submissão de flags</h3>
+            {% if status != None %}
+            <p> Flag {{ status }}!</p>
+            {% endif %}
+            <p>Sua pontuação: {{ participante.pontuacao }}</p>
+            <form action="{{url_for('users.submeter_flag')}}" method="POST">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.flag) }}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Enviar</button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}{% endblock %}

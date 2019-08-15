@@ -96,13 +96,11 @@ def get_dicionario_info_evento(edicao):
         return None
 
 
-def get_patrocinadores():
+def get_patrocinadores(edicao):
     try:
-        patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True)
+        patrocinadores = db.session.query(Evento).filter_by(edicao=edicao).patrocinadores
         pat_json = []
-        anoAtual = 2019
         for p in patrocinadores:
-            #TODO: Verificar o ano do patrocinador
             info = {
                 "nome": p.nome_empresa,
                 "logo": "/img/"+p.logo,
@@ -115,7 +113,54 @@ def get_patrocinadores():
     except Exception as e:
         return "Erro"
 
-def get_urls_conteudo():
+
+def get_atividades(edicao):
+    try:
+        atividades = db.session.query(Evento).filter_by(edicao=edicao).atividades
+        ativ_json = []
+        for a in atividades:
+            ministrantes = []
+            for m in a.ministrantes:
+                ministrantes.append(m.ministrante.nome)
+                ministrantes = []
+                for m in a.ministrantes:
+                    ministrantes.append(m.ministrante.nome)
+            info = {
+                "tipo": a.tipo.nome,
+                "vagas_totais": a.vagas_totais,
+                "vagas_disponiveis": a.vagas_disponiveis,
+                "data_hora": a.data_hora,
+                "local": a.local,
+                "titulo": a.titulo,
+                "descricao": a.descricao,
+                "area": a.areas.nome,
+                "observacoes": a.observacoes,
+                "ministrantes": ministrantes
+            }
+            ativ_json.append(info)
+        return ativ_json
+    except Exception as e:
+        return "Erro"
+
+
+def get_url_tipo(tipo):
+    if tipo == "Palestra":
+        return "palestra"
+    elif tipo == "Minicurso":
+        return "minicurso"
+    elif tipo == "Mesa Redonda":
+        return "mesa-redonda"
+    elif tipo == "Feira de Projetos":
+        return "feira-projetos"
+    elif tipo == "Roda de Conversa":
+        return "roda-conversa"
+    elif tipo == "Workshop":
+        return "workshop"
+    elif tipo == "Palestra Empresarial":
+        return "palestra-empresarial"
+
+
+def get_urls_conteudo(url_root):
     atividades = db.session.query(Atividade).filter_by(id_evento=get_id_evento_atual()).all()
     info_urls = []
     for atividade in atividades:
@@ -125,13 +170,34 @@ def get_urls_conteudo():
             titulo = "-"
         emails = []
         for ministrante in atividade.ministrantes:
-            emails.append(ministrante.usuario.email)
+            relacao = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+            if relacao.confirmado == True:
+                confirmado = True
+            else:
+                confirmado = False
+            emails.append({"email": ministrante.usuario.email, "confirmado": confirmado })
         info = {
                 "id" : atividade.id,
                 "tipo" : atividade.tipo.nome,
                 "titulo_atividade": titulo,
                 "codigo_url" : atividade.url_codigo,
+                "url": url_root + 'area-conteudo/cadastro-atividade/' + get_url_tipo(atividade.tipo.nome) + '/' + atividade.url_codigo,
                 "emails": emails
         }
         info_urls.append(info)
     return info_urls
+
+def get_cronograma():
+    segunda = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-09 00:00:00', Atividade.data_hora_fim < '2019-09-09 23:59:00' , Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
+    terca = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-10 00:00:00', Atividade.data_hora_fim < '2019-09-10 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
+    quarta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-11 00:00:00', Atividade.data_hora_fim < '2019-09-11 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
+    quinta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-12 00:00:00', Atividade.data_hora_fim < '2019-09-12 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
+    sexta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-13 00:00:00', Atividade.data_hora_fim < '2019-09-13 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
+
+    return {
+        "SEG" : segunda,
+        "TER": terca,
+        "QUA": quarta,
+        "QUI": quinta,
+        "SEX": sexta
+    }

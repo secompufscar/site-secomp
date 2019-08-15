@@ -4,8 +4,8 @@
 
 <div class="container">
 
-    <div class="row justify-content-center">
-        <div class="col-md-12 text-center p-2">
+    <div class="row justify-content-center pt-1">
+        <div class="col-md-12 text-center">
             <h2>Dados</h2>
         </div>
     </div>
@@ -13,7 +13,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <table class="table">
-                <thead class="thead bg-diretor text-white">
+                <thead class="thead bg-dark text-white">
                     <tr>
                         <th scope="col">Usuário</th>
                         <th scope="col"></th>
@@ -29,9 +29,9 @@
                         <td>{{ usuario.email }}</td>
                     </tr>
                     <tr>
-                            <th scope="row">Senha</th>
-                            <td><a href="{{url_for('.alterar_senha')}}">Alterar senha</a></td>
-                        </tr>
+                        <th scope="row">Senha</th>
+                        <td><a href="{{url_for('.alterar_senha')}}">Alterar senha</a></td>
+                    </tr>
                     <tr>
                         <th scope="row">Data de nascimento</th>
                         <td>{{ usuario.data_nascimento.strftime('%d/%m/%Y') }}</td>
@@ -40,21 +40,20 @@
                         <th scope="row">Cidade</th>
                         <td>{{ usuario.cidade }}</td>
                     </tr>
-                    
                     <tr>
                         <th scope="row">Curso</th>
                         <td>{{ usuario.curso.nome}}</td>
                     </tr>
                     <tr>
-                            <th scope="row">Instituição</th>
-                            <td>{{ usuario.instituicao.nome }}</td>
-                        </tr>
+                        <th scope="row">Instituição</th>
+                        <td>{{ usuario.instituicao.nome }}</td>
+                    </tr>
                     <tr>
                         <th scope="row">Último acesso</th>
                         <td>{{ usuario.ultimo_login.strftime('%d/%m/%Y às %H:%M:%S') }}</td>
                     </tr>
                 </tbody>
-                <thead class="thead bg-diretor text-white">
+                <thead class="thead bg-dark text-white">
                     <tr>
                         <th scope="col">Evento</th>
                         <th scope="col"></th>
@@ -62,7 +61,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        {% if (participante != None): %}
+                        {% if (participante != None) %}
 
                         <th scope="row">Data de inscrição</th>
                         <td>{{ participante.data_inscricao.strftime('%d/%m/%Y às %H:%M:%S') }}</td>
@@ -72,6 +71,14 @@
                         <th scope="row">Inscrição</th>
                         <td><a href="{{url_for('.cadastro_participante')}}">Inscrever-se na SECOMP 2019</a></td>
 
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th scope="row">Pontuação COMPCases</th>
+                        {% if (participante != None) %}
+                        <td>{{ participante.pontuacao }}</td>
+                        {% else: %}
+                        <td><a href="{{url_for('.cadastro_participante')}}">Inscreva-se para iniciar a contagem da pontuação</a></td>
                         {% endif %}
                     </tr>
 

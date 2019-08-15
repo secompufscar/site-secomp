@@ -1,4 +1,5 @@
 import re
+from flask_login import current_user
 
 from wtforms.validators import ValidationError, DataRequired, Optional
 
@@ -70,11 +71,15 @@ def tem_valor():
 def valida_email_ministrante():
     def _valida_email_ministrante(form, field):
         atividade = db.session.query(Atividade).filter_by(url_codigo=form.codigo_url).first()
+        usuario = db.session.query(Usuario).filter_by(email=field.data).first()
         emails = []
         for m in atividade.ministrantes:
             emails.append(m.usuario.email)
         if field.data not in emails:
             raise ValidationError("Entre com um email válido")
+        else:
+            if usuario.primeiro_nome is not None:
+                raise ValidationError("Este email já está cadastrado!")
     return _valida_email_ministrante
 
 def is_valid_email(email):
