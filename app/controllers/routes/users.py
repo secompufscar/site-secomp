@@ -40,7 +40,9 @@ def cadastro():
                                                                   Instituicao(nome=form.outra_instituicao.data)),
                           id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
                           data_nascimento=form.data_nasc.data, token_email=token, autenticado=True, salt=salt)
+        como_conheceu = ComoConheceu(usuario=usuario, opcao=form.como_conheceu.data, outro=form.outro_como_conheceu.data)
         db.session.add(usuario)
+        db.session.add(como_conheceu)
         db.session.flush()
         db.session.commit()
         enviar_email_confirmacao(usuario, token)
