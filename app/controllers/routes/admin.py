@@ -63,6 +63,17 @@ class AppFileAdmin(FileAdmin):
     def inaccessible_callback(cls, name, **kwargs):
         return redirect(url_for('views.login'))
 
+class UploadsFileAdmin(FileAdmin):
+    can_download = True
+    @classmethod
+    def is_accessible(cls):
+        if "CONTEUDO" in current_user.getPermissoes():
+            cls.can_delete = False
+        return current_user.is_authenticated and current_user.is_admin()
+
+    @classmethod
+    def inaccessible_callback(cls, name, **kwargs):
+        return redirect(url_for('views.login'))
 
 def init_app(service, path):
     admin = Admin(service, index_view=AppIndexView(), template_mode='bootstrap3')
@@ -92,4 +103,5 @@ def init_app(service, path):
     admin.add_view(AppModelView(Pagamento, db.session))
     admin.add_view(HistoryModelView(AdminModelHistory, db.session))
     admin.add_view(AppFileAdmin(path, '/static/', name='Arquivos Estáticos'))
+    admin.add_view(UploadsFileAdmin(base_path='/uploads', name='Arquivos de Upload'))
     return admin
