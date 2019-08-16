@@ -61,6 +61,7 @@ class EdicaoUsuarioForm(FlaskForm):
                           format="%d/%m/%Y", id="data_nasc")
     recaptcha = RecaptchaField()
 
+
 class ParticipanteForm(FlaskForm):
     leu_termos = BooleanField('Li e concordo com os termos de uso', id="li_termos")
 
@@ -81,13 +82,12 @@ class AlterarSenhaForm(FlaskForm):
                                 InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
 
 
-class AlterarSenhaPorEmailForm(FlaskForm):
+class AlterarSenhaPorEmailForm(BaseRecaptchaForm):
     email = StringField('Email', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
-    recaptcha = RecaptchaField()
 
 
-class ContatoForm(FlaskForm):
+class ContatoForm(BaseRecaptchaForm):
     nome_completo = StringField('Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30)])
     email = StringField('Email', validators=[InputRequired(
@@ -108,7 +108,7 @@ class PatrocinadorForm(FlaskForm):
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=200)])
 
 
-class ComprovanteForm(FlaskForm):
+class ComprovanteForm(BaseRecaptchaForm):
     comprovante = FileField('Comprovante de Pagamento', validators=[
             FileRequired(message=ERRO_INPUT_REQUIRED),
             FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
@@ -124,9 +124,11 @@ class VendaKitForm(FlaskForm):
     participante = SelectField("Inscrições na SECOMP 2019", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
 
+
 class ListasParticipantes(FlaskForm):
     atividades = SelectField("Atividades", choices=get_atividades(), id="atividade", coerce=int)
     tipo = SelectField("Modelos", choices=[(0, 'Inscritos'), (1, 'Presentes')], id="tipo", coerce=int)
+
 
 class CadastroMinistranteForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
@@ -194,6 +196,7 @@ class CadastroInformacoesMinicurso(FlaskForm):
     observacoes = TextAreaField('Observações em geral', id='observacoes', validators=[Length(max=512)], render_kw={'maxlength': 512})
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
+
 class CadastroInformacoesPalestra(FlaskForm):
     titulo = StringField('Título da Palestra', validators=[InputRequired(), Length(min=1,max=256)], id='titulo', render_kw={'maxlength': 256})
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1,max=1024)], id='descricao', render_kw={'maxlength': 1024})
@@ -207,6 +210,7 @@ class CadastroInformacoesPalestra(FlaskForm):
     observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=512)], render_kw={'maxlength': 512})
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()], id='confirmacao')
 
+
 class CadastroFeiraDeProjetos(FlaskForm):
     titulo = StringField('Título do Projeto', validators=[InputRequired(), Length(min=1,max=256)], id='titulo', render_kw={'maxlength': 256})
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)], id='descricao', render_kw={'maxlength': 1024})
@@ -215,11 +219,13 @@ class CadastroFeiraDeProjetos(FlaskForm):
     observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=512)], render_kw={'maxlength': 512})
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
 
+
 class CadastroAtividadeGenerica(FlaskForm):
     titulo = StringField('Título da Atividade', validators=[InputRequired(), Length(min=1,max=256)], id='titulo', render_kw={'maxlength': 256})
     descricao = TextAreaField('Descrição', validators=[InputRequired(), Length(min=1, max=1024)], id='descricao', render_kw={'maxlength': 1024})
     observacoes = TextAreaField('Observações', id='observacoes', validators=[Length(max=512)], render_kw={'maxlength': 512})
     confirmacao = BooleanField('Li e concordo com Termo e Condições de Inscrição', validators=[InputRequired()])
+
 
 class CadastroInformacoesLocomocaoEstadia(FlaskForm):
     cidade_origem = StringField('Cidade de origem', validators=[InputRequired(), Length(min=1,max=64)], render_kw={'maxlength': 64})
@@ -259,7 +265,7 @@ class BugReportForm(BaseRecaptchaForm):
         FileAllowed(['webm', 'mkv', 'gif', 'mp4', 'png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)], id='anexo')
 
 
-class EmailCuston(FlaskForm):
+class EmailCuston(BaseRecaptchaForm):
     assunto = StringField('Assunto', id='text_assunto');
     titulo = StringField('Título', id='text_titulo');
     template = StringField('Template do Email', id='text_template_email');
