@@ -1,6 +1,6 @@
 from os import path, getenv
 
-from flask import Flask, redirect, request, render_template, session
+from flask import Flask, redirect, request, render_template, session, flash
 from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -25,9 +25,7 @@ def create_app(config=None):
 
     app = Flask(__name__)
     app.config.from_object(config)
-
-    QRCode(app)
-
+ 
     import sentry_sdk
     from sentry_sdk.integrations.flask import FlaskIntegration
 
@@ -37,6 +35,7 @@ def create_app(config=None):
     )
     
     Bootstrap(app)
+    QRCode(app)
 
     from app.models.models import db, Usuario
     from app.models.commands import populate
@@ -69,7 +68,7 @@ def create_app(config=None):
         """
         db.create_all()
         populate()
-        db.commit()
+        db.session.commit()
 
     @app.cli.command()
     def drop():
@@ -80,7 +79,7 @@ def create_app(config=None):
         if prompt == 'y':
             db.session.close_all()
             db.drop_all()
-            db.commit()
+            db.session.commit()
 
     from app.controllers.functions.email import mail
 
@@ -106,6 +105,11 @@ def create_app(config=None):
 
     @login_manager.unauthorized_handler
     def unauthorized_callback():
+        return redirect('/login')
+
+    @login_manager.needs_refresh_handler
+    def refresh_callback():
+        flash(u'Para proteção da sua conta, faça login novamente para poder acessar esta página.')
         return redirect('/login')
 
     babel = Babel(app)
