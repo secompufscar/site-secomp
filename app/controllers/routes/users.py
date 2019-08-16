@@ -173,14 +173,14 @@ def envio_comprovante():
         pagamento = db.session.query(Pagamento).filter_by(id_participante=participante.id, descricao='Kit').first()
         if pagamento is None:
             pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=get_preco_kit(),
-                              efetuado=False, arquivo_comprovante=filename, comprovante_enviado=True)
+                              efetuado=False, arquivo_comprovante=filename, comprovante_enviado=True, metodo_pagamento='Comprovante')
         elif pagamento.payment_id is None:
             pagamento.arquivo_comprovante = filename
         db.session.add(pagamento)
         db.session.commit()
         flash('Comprovante enviado com sucesso!')
         return redirect(url_for('.dashboard'))
-    return render_template('users/enviar_comprovante.html', form=form, form_login=form_login)
+    return render_template('users/enviar_comprovante.html', form=form, form_login=form_login, usuario=current_user)
 
 
 @users.route('/verificacao/<token>')
@@ -418,7 +418,7 @@ def confirmar_pagamento_kit():
             valor_pagamento = max(0.00, valor_pagamento - participante.cupom_desconto.valor)
         payment = criar_pagamento("Kit", "Este pagamento é um teste", str(valor_pagamento), request.url_root)
         pagamento = Pagamento(id_participante = participante.id, payment_id=str(payment.id),\
-        descricao="Kit", valor=valor_pagamento, efetuado=False)
+        descricao="Kit", valor=valor_pagamento, efetuado=False, metodo_pagamento='PayPal')
         db.session.add(pagamento)
         db.session.commit()
         print(payment.id)
