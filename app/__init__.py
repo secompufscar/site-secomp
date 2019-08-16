@@ -42,7 +42,6 @@ def create_app(config=None):
 
     app.app_context().push()
     db.init_app(app)
-    Migrate(app, db)
 
     from app.controllers.forms.forms import LoginForm
 
@@ -60,6 +59,8 @@ def create_app(config=None):
     def internal_server_error(error):
         form_login = LoginForm(request.form)
         return render_template('500.html', form_login=form_login), 500
+
+    migrate = Migrate(app, db)
 
     @app.cli.command()
     def create():
@@ -85,13 +86,12 @@ def create_app(config=None):
 
     mail.init_app(app)
 
-    from app.controllers.routes import admin, management, users, views, conteudo, api
+    from app.controllers.routes import admin, management, users, views, conteudo
 
     app.register_blueprint(management.management)
-    app.register_blueprint(conteudo.conteudo)
     app.register_blueprint(users.users)
     app.register_blueprint(views.views)
-    app.register_blueprint(api.api)
+    app.register_blueprint(conteudo.conteudo)
 
     upload_path = path.join(path.dirname(__file__), 'static')
     adm = admin.init_app(app, upload_path)
@@ -118,6 +118,6 @@ def create_app(config=None):
     def get_locale():
         if request.args.get('lang'):
             session['lang'] = request.args.get('lang')
-        return "pt_BR"
+        return "pt"
 
     return app

@@ -1,12 +1,5 @@
 from app.models.models import *
-
-from os import path
 from app.controllers.constants import EDICAO_ATUAL
-
-
-def get_score_evento(edicao):
-    return 10000
-
 
 def get_usuarios_query():
     '''
@@ -18,6 +11,9 @@ def get_usuarios_query():
     except Exception as e:
         print(e)
         return None
+
+def get_score_evento(edicao):
+    return 10000
 
 
 def get_participantes():
@@ -33,6 +29,7 @@ def get_participantes():
         return None
 
 
+
 def get_atividades():
     try:
         query = db.session.query(Atividade)
@@ -44,26 +41,6 @@ def get_atividades():
     except Exception as e:
         print(e)
         return None
-
-
-def get_participantes_da_atividade_json(id=0):
-    '''
-    Retorna uma lista de dicionários de usuários para ser usado na página de email cusmotizado
-    '''
-    query = None
-
-    if (id == -1):
-        query = db.session.query(Atividade)
-    else:
-        query = db.session.query(Atividade).filter_by(id=id)
-
-    query = query.first()
-    ativParticipantes = query.participantes
-
-    participantes = [{'id': p.usuario.id, 'nome': f'{p.usuario.primeiro_nome} {p.usuario.sobrenome}', 'email': p.usuario.email} for p in ativParticipantes]
-
-    return participantes
-
 
 
 def get_participantes_sem_kit():
@@ -97,7 +74,6 @@ def verifica_outro_escolhido(campo, objeto):
     else:
         return campo.data
 
-
 def get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao):
     '''
     Retorna uma lista dos arquivos que serão anexados.
@@ -113,6 +89,7 @@ def get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao):
     else:
         return None
 
+
 def valida_url_codigo(usuario, codigo):
     atividade = db.session.query(Atividade).filter_by(url_codigo=codigo).first()
     ministrante = db.session.query(Ministrante).filter_by(usuario=usuario).first()
@@ -124,14 +101,13 @@ def valida_url_codigo(usuario, codigo):
     if(usuario is None):
         if (atividade is not None):
             return True, atividade, emails
-    else:
-        if(ministrante is not None):
-            if(atividade is not None and ministrante.usuario.email in emails):
-                return True, atividade, emails
         else:
-            if(atividade is not None and "CONTEUDO" in usuario.getPermissoes()):
-                return True, atividade, emails
-    return False, atividade, emails
+            return False, atividade, emails
+    else:
+        if(atividade is not None and ministrante.usuario.email in emails):
+            return True, atividade, emails
+        else:
+            return False, atividade, emails
 
 
 def get_id_evento_atual():
@@ -142,12 +118,9 @@ def confirmacao_atividade_ministrante(usuario):
     atividade = None
     if usuario.ministrante is not None:
         r = db.session.query(RelacaoAtividadeMinistrante).filter(RelacaoAtividadeMinistrante.id_ministrante == usuario.ministrante.id,
-                                                                                                RelacaoAtividadeMinistrante.confirmado == None).all()
-        for relacao in r:
-            a = db.session.query(Atividade).get(relacao.id_atividade)
-            if a is not None:
-                atividade = a
-
+                                                                                                RelacaoAtividadeMinistrante.confirmado == None).first()
+        if r is not None:
+            atividade = db.session.query(Atividade).get(r.id_atividade)
     if atividade is not None:
         if atividade.tipo.nome == "Palestra":
             view = 'cadastro_palestra'
@@ -159,10 +132,6 @@ def confirmacao_atividade_ministrante(usuario):
             view = 'cadastro_mesa_redonda'
         elif atividade.tipo.nome == "Feira de Projetos":
             view = 'cadastro_feira_projetos'
-        elif atividade.tipo.nome == "Roda de Conversa":
-            view = 'cadastro_feira_projetos'
-        elif atividade.tipo.nome == "Workshop":
-            view = 'cadastro_workshop'
         return False, atividade, view
     else:
         return True, None, None
@@ -172,18 +141,16 @@ def get_tipos_atividade():
     palestra = db.session.query(TipoAtividade).filter_by(nome='Palestra').first()
     mesa_redonda = db.session.query(TipoAtividade).filter_by(nome='Mesa Redonda').first()
     palestra_empresarial = db.session.query(TipoAtividade).filter_by(nome='Palestra Empresarial').first()
-    feira_projetos = db.session.query(TipoAtividade).filter_by(nome='Feira de Projetos').first()
+    feira_projetos = db.session.query(TipoAtividade).filter_by(nome='Feira Projetos').first()
     workshop = db.session.query(TipoAtividade).filter_by(nome='Workshop').first()
-    roda_conversa = db.session.query(TipoAtividade).filter_by(nome='Roda de Conversa').first()
 
     tipo_atividade = {
         'minicurso': minicurso,
-        'palestra': palestra,
+        'palestra' : palestra,
         'mesa_redonda': mesa_redonda,
         'palestra_empresarial': palestra_empresarial,
         'feira_projetos': feira_projetos,
-        'workshop': workshop,
-        'roda_conversa': roda_conversa
+        'workshop': workshop
     }
     return tipo_atividade
 
@@ -191,6 +158,5 @@ def kit_pago(participante):
     pagamento = db.session.query(Pagamento).filter_by(efetuado=True, participante=participante, descricao='Kit').first()
     return pagamento is not None
 
-def get_ranking_pontuacao():
-    participantes = db.session.query(Participante).filter_by(id_evento=get_id_evento_atual()).order_by(Participante.pontuacao.desc()).limit(10).all()
-    return participantes
+def get_preco_kit():
+    return db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().preco_kit

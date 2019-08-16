@@ -3,7 +3,6 @@ from os import path, makedirs
 from bcrypt import gensalt
 from flask import request, redirect, flash, Blueprint, current_app
 from flask_login import login_required, login_user
-
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
@@ -20,7 +19,7 @@ users = Blueprint('users', __name__, static_folder='static',
                   template_folder='templates', url_prefix='/participante')
 
 
-#@users.route('/cadastro', methods=['POST', 'GET'])
+@users.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
     """
     Renderiza a página de cadastro do projeto
@@ -28,10 +27,10 @@ def cadastro():
     serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     form_login = LoginForm(request.form)
     form = CadastroForm(request.form)
+    email = form.email.data
+    salt = gensalt().decode('utf-8')
+    token = serializer.dumps(email, salt=salt)
     if form.validate_on_submit():
-        email = form.email.data
-        salt = gensalt().decode('utf-8')
-        token = serializer.dumps(email, salt=salt)
         agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
         usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
@@ -49,8 +48,8 @@ def cadastro():
         enviar_email_confirmacao(usuario, token)
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
-    return render_template('users/cadastro.html', form=form, form_login=form_login)
 
+    return render_template('users/cadastro.html', form=form, form_login=form_login)
 
 
 @users.route('/verificar-email')
@@ -71,7 +70,7 @@ def verificar_email():
     return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante, form_login=form_login)
 
 
-#@users.route('/cadastro-participante', methods=['POST', 'GET'])
+@users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
     form_login = LoginForm(request.form)
@@ -100,32 +99,8 @@ def cadastro_participante():
     else:
         return redirect(url_for('.verificar_email'))
 
-#@users.route('/alterar-dados-usuario', methods=['POST', 'GET'])
-@login_required
-def alterar_usuario():
-    form_login = LoginForm(request.form)
-    usuario = db.session.query(Usuario).filter_by(id=current_user.id).first()
-    form = EdicaoUsuarioForm(request.form)
-    if form.validate_on_submit and request.method == 'POST':
-        usuario.primeiro_nome = form.primeiro_nome.data
-        usuario.sobrenome = form.sobrenome.data
-        usuario.id_curso = verifica_outro_escolhido(form.curso, Curso(nome=str(form.outro_curso.data).strip()))
-        usuario.id_instituicao = verifica_outro_escolhido(form.instituicao, Instituicao(nome=form.outra_instituicao.data))
-        usuario.id_cidade = verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data))
-        usuario.data_nascimento = form.data_nasc.data
-        db.session.flush()
-        db.session.commit()
-        return redirect(url_for('.dashboard'))
-    else:
-        form.primeiro_nome.data = usuario.primeiro_nome
-        form.sobrenome.data = usuario.sobrenome
-        form.curso.data = usuario.id_curso
-        form.instituicao.data = usuario.id_instituicao
-        form.cidade.data = usuario.id_cidade
-        form.data_nasc.data = usuario.data_nascimento
-        return render_template('users/alterar_usuario.html', form=form, form_login=form_login)
 
-#@users.route('/dashboard', methods=['POST', 'GET'])
+@users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
     usuario = db.session.query(Usuario).filter_by(
@@ -150,7 +125,7 @@ def dashboard():
         login_user(usuario, remember=True)
         return redirect(url_for('.verificar_email'))
 
-#@users.route('/dados', methods=['POST', 'GET'])
+@users.route('/dados', methods=['POST', 'GET'])
 @login_required
 def dados():
     usuario = db.session.query(Usuario).filter_by(
@@ -163,7 +138,7 @@ def dados():
     return render_template('users/dados.html', title='Dados', usuario=usuario,
                             participante=participante, ministrante=ministrante, form_login=form_login)
 
-#@users.route('/kit', methods=['POST', 'GET'])
+@users.route('/kit', methods=['POST', 'GET'])
 @login_required
 def kit():
     usuario = db.session.query(Usuario).filter_by(
@@ -178,7 +153,7 @@ def kit():
         return redirect(url_for('.cadastro_participante'))
 
 
-#@users.route('/enviar-comprovante', methods=['POST', 'GET'])
+@users.route('/enviar-comprovante', methods=['POST', 'GET'])
 @login_required
 def envio_comprovante():
     """
@@ -186,11 +161,8 @@ def envio_comprovante():
     """
     form_login = LoginForm(request.form)
     form = ComprovanteForm()
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
-    participante = db.session.query(Participante).filter_by(
-    usuario=current_user).first()
     if form.validate_on_submit():
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         comprovante = form.comprovante.data
         filename = secure_filename(comprovante.filename)
         filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{filename}'
@@ -198,10 +170,17 @@ def envio_comprovante():
         if not path.exists(upload_path):
             makedirs(upload_path)
         comprovante.save(path.join(upload_path, filename))
+        pagamento = db.session.query(Pagamento).filter_by(id_participante=participante.id, descricao='Kit').first()
+        if pagamento is None:
+            pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=get_preco_kit(),
+                              efetuado=False, arquivo_comprovante=filename, comprovante_enviado=True, metodo_pagamento='Comprovante')
+        elif pagamento.payment_id is None:
+            pagamento.arquivo_comprovante = filename
+        db.session.add(pagamento)
+        db.session.commit()
         flash('Comprovante enviado com sucesso!')
         return redirect(url_for('.dashboard'))
-    return render_template('users/enviar_comprovante.html', usuario=usuario, form=form,
-                        participante=participante, form_login=form_login)
+    return render_template('users/enviar_comprovante.html', form=form, form_login=form_login, usuario=current_user)
 
 
 @users.route('/verificacao/<token>')
@@ -216,7 +195,7 @@ def verificacao(token):
         user = db.session.query(Usuario).filter_by(token_email=token).first()
         salt = user.salt
         # Gera um email a partir do token do link e do salt do db
-        email = serializer.loads(token, salt=salt, max_age=43200)
+        email = serializer.loads(token, salt=salt, max_age=3600)
         user.email = email
         # Valida o email
         user.email_verificado = True
@@ -224,32 +203,14 @@ def verificacao(token):
         db.session.commit()
     # Tempo definido no max_age
     except SignatureExpired:
-        user = db.session.query(Usuario).filter_by(token_email=token).first()
-        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-        salt = gensalt().decode('utf-8')
-        user.salt = salt
-        token = serializer.dumps(user.email, salt=salt)
-        user.token_email = token
-        db.session.add(user)
-        db.session.commit()
-        enviar_email_confirmacao(user, token)
-        return redirect(url_for('.reenvio_confirmacao_email'))
+        return render_template('users/cadastro.html', resultado='O link de ativação expirou.', form_login=form_login)
     except Exception as e:
         print(e)
-        return redirect(url_for('.erro_confirmacao_email'))
+        return render_template('users/cadastro.html', resultado='Falha na ativação.', form_login=form_login)
     return redirect(url_for('.verificar_email'))
 
-@users.route('/reenvio-confirmacao-email')
-def reenvio_confirmacao_email():
-    form_login = LoginForm(request.form)
-    return render_template('users/reenvio_confirmacao_email.html', form_login=form_login)
 
-@users.route('/erro-confirmacao-email')
-def erro_confirmacao_email():
-    form_login = LoginForm(request.form)
-    return render_template('users/erro_confirmacao_email.html', form_login=form_login)
-
-#@users.route('/inscricao-atividades')
+@users.route('/inscricao-atividades')
 @login_required
 def inscricao_atividades():
     form_login = LoginForm(request.form)
@@ -265,7 +226,7 @@ def inscricao_atividades():
                                usuario=current_user).first(), usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
 
 
-#@users.route('/inscricao-atividades/<filtro>')
+@users.route('/inscricao-atividades/<filtro>')
 @login_required
 def inscricao_atividades_com_filtro(filtro):
     form_login = LoginForm(request.form)
@@ -286,7 +247,7 @@ def inscricao_atividades_com_filtro(filtro):
                            usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
 
 
-#@users.route('/inscrever-atividade/<id>')
+@users.route('/inscrever-atividade/<id>')
 @login_required
 def inscrever(id):
     form_login = LoginForm(request.form)
@@ -314,7 +275,7 @@ def inscrever(id):
         return "Não há vagas disponíveis!"
 
 
-#@users.route('/desinscrever-atividade/<id>')
+@users.route('/desinscrever-atividade/<id>')
 @login_required
 def desinscrever(id):
     form_login = LoginForm(request.form)
@@ -406,7 +367,7 @@ def confirmar_alteracao_senha(token):
         return redirect(url_for('views.login'))
     return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login)
 
-#@users.route('/comprar-kit', methods=["POST", "GET"])
+@users.route('/comprar-kit', methods=["POST", "GET"])
 @login_required
 def comprar_kit():
     form_login = LoginForm(request.form)
@@ -419,7 +380,10 @@ def comprar_kit():
             form = ComprarKitForm(request.form)
             if form.validate_on_submit():
                 if form.comprar.data == 1:
-                    usuario = current_user
+                    if form.uso_cupom_desconto.data is True:
+                        cupom_desconto = db.session.query(CupomDesconto).filter_by(nome=form.cupom_desconto.data, usado=False).first()
+                        if cupom_desconto is not None and cupom_desconto.usado is False:
+                            participante.cupom_desconto = cupom_desconto
                     participante.id_camiseta = form.camiseta.data
                     participante.opcao_coffee = form.restricao_coffee.data
                     participante.pacote = form.comprar.data == 1
@@ -437,9 +401,10 @@ def comprar_kit():
     else:
         return redirect(url_for('.verificar_email'))
 
-#@users.route('/confirmar-pagamento-kit', methods=["POST", "GET"])
+@users.route('/confirmar-pagamento-kit', methods=["POST", "GET"])
 @login_required
 def confirmar_pagamento_kit():
+    form_login = LoginForm(request.form)
     pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
     Participante.usuario).join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email,\
     Pagamento.descricao == "Kit").first()
@@ -448,9 +413,12 @@ def confirmar_pagamento_kit():
     #join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email).first()
     participante = db.session.query(Participante).filter_by(usuario=current_user).first()
     if pagamento is None:
-        payment = criar_pagamento("Kit", "Este pagamento é um teste", "1.00", request.url_root)
+        valor_pagamento = get_preco_kit()
+        if participante.cupom_desconto is not None and participante.cupom_desconto.usado is False:
+            valor_pagamento = max(0.00, valor_pagamento - participante.cupom_desconto.valor)
+        payment = criar_pagamento("Kit", "Este pagamento é um teste", str(valor_pagamento), request.url_root)
         pagamento = Pagamento(id_participante = participante.id, payment_id=str(payment.id),\
-        descricao="Kit", valor=1.00, efetuado=False)
+        descricao="Kit", valor=valor_pagamento, efetuado=False, metodo_pagamento='PayPal')
         db.session.add(pagamento)
         db.session.commit()
         print(payment.id)
@@ -461,12 +429,13 @@ def confirmar_pagamento_kit():
             if link.rel == "approval_url":
                 approval_url = str(link.href)
                 return redirect(approval_url)
-    return "O Pagamento já foi efetuado"
+    return render_template('users/pagamento_kit_efetuado.html', form_login=form_login)
 
 
-#@users.route('/executar-pagamento-kit', methods=["POST", "GET"])
+@users.route('/executar-pagamento-kit', methods=["POST", "GET"])
 @login_required
 def executar_pagamento_kit():
+    form_login = LoginForm(request.form)
     pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
     Participante.usuario).join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email,\
     Pagamento.descricao == "Kit").first()
@@ -476,39 +445,17 @@ def executar_pagamento_kit():
             if payer_id is not None:
                 payment = encontrar_pagamento(pagamento.payment_id)
                 if payment.execute({"payer_id": payer_id}):
-                    print("Payment execute successfully")
                     pagamento.payer_id, pagamento.efetuado = payer_id, True
+                    participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
+                    participante.cupom_desconto.usado = True
+                    db.session.add(current_user)
                     db.session.add(pagamento)
                     db.session.commit()
-                    return "Sucesso"
+                    return render_template('users/sucesso_pagamento_kit.html', form_login=form_login)
                 else:
-                    return "Erro"
+                    return render_template('users/erro_pagamento_kit.html', form_login=form_login)
                     print(payment.error)
         else:
-            return "O Pagamento já foi efetuado"
+            return render_template('users/pagamento_kit_efetuado.html', form_login=form_login)
     else:
-        return "Erro"
-
-#@users.route('/submeter-flag', methods=["GET", "POST"])
-@login_required
-def submeter_flag():
-    form_login = LoginForm(request.form)
-    form = SubmeterFlagForm(request.form)
-    participante = db.session.query(Participante).filter_by(
-        usuario=current_user).first()
-    if form.validate_on_submit():
-        flag = db.session.query(Flag).filter_by(codigo=form.flag.data).first()
-        if(flag != None and flag not in participante.flags_encontradas and flag.ativa):
-            flag.quantidade_utilizada += 1
-            participante.pontuacao += flag.pontos
-            participante.flags_encontradas.append(flag)
-            db.session.flush()
-            db.session.commit()
-            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="aceita")
-        elif flag in participante.flags_encontradas:
-            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="já utilizada, safadinho")
-        else:
-            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="inválida")
-
-    else:
-        return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status=None)
+        return redirect(url_for('.dashboard'))
