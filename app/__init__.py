@@ -70,6 +70,7 @@ def create_app(config=None):
         """
         db.create_all()
         populate()
+        db.commit()
 
     @app.cli.command()
     def drop():
@@ -80,6 +81,7 @@ def create_app(config=None):
         if prompt == 'y':
             db.session.close_all()
             db.drop_all()
+            db.commit()
 
     from app.controllers.functions.email import mail
 
