@@ -6,12 +6,15 @@
 #content {
   background-color: var(--bg-color);
   color: var(--font-color);
+  min-height: 75vh;
+  padding-top: 53px;
 }
 
 // Style switch
 .theme-switch-wrapper {
   display: flex;
   align-items: center;
+  color: var(--font-color);
 }
 
 .theme-switch {
@@ -24,6 +27,10 @@
 
 .theme-switch input {
   display: none;
+}
+
+.bg-dark {
+  background-color: var(--bg-dark) !important;
 }
 
 .slider {
@@ -78,16 +85,11 @@ header {
   }
 }
 
-#content {
-  min-height: 75vh;
-  padding-top: 53px;
-}
-
 .bg-gradient-secomp {
   @include main-gradient;
 }
 .btn {
-  border: #00000000;
+  border: none;
 }
 
 .btn-primary {
@@ -116,8 +118,16 @@ header {
 }
 
 .dropdown {
+  &-menu {
+    background-color: var(--bg-color);
+  }
   &-menu a {
     font-size: 12px;
+    color: var(--font-color);
+  }
+  &-item:hover {
+    color: var(--font-color);
+    background: var(--hover-color);
   }
   &-toggle:active {
     /*Without this, clicking will make it sticky*/
@@ -126,13 +136,15 @@ header {
 }
 
 footer {
-  background-color: $dark-gray;
+  background-color: var(--footer-color);
   ul li {
     padding: 1%;
     a {
       color: $white;
+      transition: 0.2s;
       &:hover {
         color: $secomp2;
+        transition: 0.2s;
       }
     }
   }
@@ -170,6 +182,18 @@ footer {
 
 #nav-logo {
   object-fit: contain;
+  transition: 0.2s;
+}
+
+#nav-logo:hover {
+  animation: spin 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 #video {
