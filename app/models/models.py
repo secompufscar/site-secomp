@@ -417,6 +417,7 @@ class Pagamento(db.Model):
     efetuado = Column(Boolean, nullable=False)
     comprovante_enviado = Column(Boolean, nullable=False, default=False)
     arquivo_comprovante = Column(String(100), nullable=True)
+    metodo_pagamento = Column(String(100), nullable=False)
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
 
 class URLConteudo(db.Model):
