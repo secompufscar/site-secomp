@@ -1,15 +1,13 @@
 :root {
-    --font-color: #424242;
-    --bg-color: #fff;
     --card-color1: #fff;
-    --card-color2: #f7f7f7;
 }
 
 [data-theme=dark] {
-    --font-color: #e1e1ff;
-    --bg-color: #00141a;
-    --card-color1: #343A40;
-    --card-color2: #32383E;
+    --card-color1: #001014;
+}
+
+h5 {
+    color:#008cb5;
 }
 
 .card {
@@ -18,8 +16,4 @@
 
 .card-body {
     background-color: var(--card-color1);
-}
-
-.card-footer {
-    background-color: var(--card-color2);
 }
