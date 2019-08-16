@@ -3,20 +3,14 @@ body {
 }
 
 .container {
-  background-color: #fff;
+  background-color: var(--bg-color);
   width: 50%;
 }
 
 @media(max-width: 990px) {
   .container {
-    background-color: #fff;
+    background-color: var(--bg-color);
     width: 80%;
-  }
-}
-
-@media(max-width: 990px) and (orientation: landscape) {
-  .container {
-    padding-top: 15vh;
   }
 }
 
