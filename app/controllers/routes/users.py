@@ -74,7 +74,6 @@ def verificar_email():
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
-    form_login = LoginForm(request.form)
     id_evento = db.session.query(Evento).filter_by(
         edicao=EDICAO_ATUAL).first().id
     if current_user.email_verificado:
@@ -94,7 +93,7 @@ def cadastro_participante():
                 db.session.commit()
                 return redirect(url_for('.comprar_kit'))
             else:
-                return render_template('users/cadastro_participante.html', usuario=current_user, form=form, form_login=form_login)
+                return render_template('users/cadastro_participante.html', usuario=current_user, form=form)
         else:
             return redirect(url_for('.dashboard'))
     else:
@@ -103,7 +102,6 @@ def cadastro_participante():
 @users.route('/alterar-dados-usuario', methods=['POST', 'GET'])
 @login_required
 def alterar_usuario():
-    form_login = LoginForm(request.form)
     usuario = db.session.query(Usuario).filter_by(id=current_user.id).first()
     form = EdicaoUsuarioForm(request.form)
     if form.validate_on_submit and request.method == 'POST':
@@ -125,7 +123,7 @@ def alterar_usuario():
         form.data_nasc.data = usuario.data_nascimento
         return render_template('users/alterar_usuario.html', usuario=current_user,
                                 participante = db.session.query(Participante).filter_by(
-                                usuario=current_user).first(), form=form, form_login=form_login)
+                                usuario=current_user).first(), form=form)
 
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
@@ -135,7 +133,7 @@ def dashboard():
         participante = db.session.query(Participante).filter_by(
             usuario=current_user).first()
         return render_template('users/dashboard_usuario.html', title='Dashboard', usuario=current_user,
-                               participante=participante, form_login=form_login)
+                               participante=participante)
     else:
         serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         salt = gensalt().decode('utf-8')
@@ -153,23 +151,21 @@ def dashboard():
 @users.route('/dados', methods=['POST', 'GET'])
 @login_required
 def dados():
-    form_login = LoginForm(request.form)
     participante = db.session.query(Participante).filter_by(
         usuario=current_user).first()
     ministrante = db.session.query(Ministrante).filter_by(
         usuario=current_user).first()
     return render_template('users/dados.html', title='Dados', usuario=current_user,
-                            participante=participante, ministrante=ministrante, form_login=form_login)
+                            participante=participante, ministrante=ministrante)
 
 @users.route('/kit', methods=['POST', 'GET'])
 @login_required
 def kit():
-    form_login = LoginForm(request.form)
     participante = db.session.query(Participante).filter_by(
         usuario=current_user).first()
     if participante != None:
         return render_template('users/kit.html', title='Kit', usuario=current_user,
-                            participante=participante, form_login=form_login)
+                            participante=participante)
     else:
         return redirect(url_for('.cadastro_participante'))
 
@@ -180,7 +176,6 @@ def envio_comprovante():
     """
     Página de envio de comprovantes de pagamento
     """
-    form_login = LoginForm(request.form)
     form = ComprovanteForm()
     participante = db.session.query(Participante).filter_by(
     usuario=current_user).first()
@@ -195,7 +190,7 @@ def envio_comprovante():
         flash('Comprovante enviado com sucesso!')
         return redirect(url_for('.dashboard'))
     return render_template('users/enviar_comprovante.html', usuario=current_user, form=form,
-                        participante=participante, form_login=form_login)
+                        participante=participante)
 
 
 @users.route('/verificacao/<token>')
@@ -228,7 +223,6 @@ def verificacao(token):
 @users.route('/inscricao-atividades')
 @login_required
 def inscricao_atividades():
-    form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
     minicursos = db.session.query(Atividade).filter_by(
         tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
@@ -238,13 +232,12 @@ def inscricao_atividades():
         tipo=tipo_atividade['palestra'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
     return render_template('users/inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
-                               usuario=current_user).first(), usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
+                               usuario=current_user).first(), usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
 @users.route('/inscricao-atividades/<filtro>')
 @login_required
 def inscricao_atividades_com_filtro(filtro):
-    form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
     minicursos = db.session.query(Atividade).filter(
         Atividade.tipo == tipo_atividade['minicurso'], Atividade.titulo.like("%" + filtro + "%"),
@@ -259,13 +252,12 @@ def inscricao_atividades_com_filtro(filtro):
     return render_template('users/inscricao_atividades.html',
                            participante=db.session.query(Participante).filter_by(
                                usuario=current_user).first(),
-                           usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras, form_login=form_login)
+                           usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras)
 
 
 @users.route('/inscrever-atividade/<id>')
 @login_required
 def inscrever(id):
-    form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if atv.vagas_disponiveis > 0:
@@ -285,7 +277,7 @@ def inscrever(id):
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),
                                usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras,
-                               acao="+", form_login=form_login)
+                               acao="+")
     else:
         return "Não há vagas disponíveis!"
 
@@ -293,7 +285,6 @@ def inscrever(id):
 @users.route('/desinscrever-atividade/<id>')
 @login_required
 def desinscrever(id):
-    form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
@@ -312,7 +303,7 @@ def desinscrever(id):
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),
                                usuario=current_user, minicursos=minicursos, workshops=workshops, palestras=palestras,
-                               acao="-", form_login=form_login)
+                               acao="-")
     else:
         return "Não está inscrito nessa atividade!"
 
@@ -320,7 +311,6 @@ def desinscrever(id):
 @users.route('/alterar-senha', methods=["POST", "GET"])
 @login_required
 def alterar_senha():
-    form_login = LoginForm(request.form)
     form = AlterarSenhaForm(request.form)
     if email_confirmado():
         if form.validate_on_submit():
@@ -334,7 +324,7 @@ def alterar_senha():
             return redirect(url_for('views.login'))
         else:
             return render_template('users/alterar_senha.html', form=form, action=request.base_url,
-                                    usuario=current_user, form_login=form_login,
+                                    usuario=current_user,
                                     participante = db.session.query(Participante).filter_by(
                                         usuario=current_user).first())
     else:
@@ -388,7 +378,6 @@ def confirmar_alteracao_senha(token):
 @users.route('/comprar-kit', methods=["POST", "GET"])
 @login_required
 def comprar_kit():
-    form_login = LoginForm(request.form)
     id_evento = db.session.query(Evento).filter_by(
         edicao=EDICAO_ATUAL).first().id
     if current_user.email_verificado is True:
@@ -410,7 +399,7 @@ def comprar_kit():
                         return redirect(url_for('.envio_comprovante'))
             else:
                 return render_template('users/comprar_kit.html', participante=participante, usuario=current_user,
-                                        form=form, form_login=form_login)
+                                        form=form)
         else:
             return redirect(url_for('.dashboard'))
     else:
@@ -471,7 +460,6 @@ def executar_pagamento_kit():
 @users.route('/submeter-flag', methods=["GET", "POST"])
 @login_required
 def submeter_flag():
-    form_login = LoginForm(request.form)
     form = SubmeterFlagForm(request.form)
     participante = db.session.query(Participante).filter_by(
         usuario=current_user).first()
@@ -483,11 +471,11 @@ def submeter_flag():
             participante.flags_encontradas.append(flag)
             db.session.flush()
             db.session.commit()
-            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="aceita")
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, participante=participante, status="aceita")
         elif flag in participante.flags_encontradas:
-            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="já utilizada, safadinho")
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, participante=participante, status="já utilizada, safadinho")
         else:
-            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="inválida")
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, participante=participante, status="inválida")
 
     else:
-        return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status=None)
+        return render_template("users/submeter_flag.html", usuario=current_user, form=form, participante=participante, status=None)
