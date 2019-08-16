@@ -101,7 +101,11 @@ def init_app(service, path):
     admin.add_view(AppModelView(Cidade, db.session))
     admin.add_view(AppModelView(Instituicao, db.session))
     admin.add_view(AppModelView(Pagamento, db.session))
+    admin.add_view(AppModelView(CupomDesconto, db.session))
     admin.add_view(HistoryModelView(AdminModelHistory, db.session))
     admin.add_view(AppFileAdmin(path, '/static/', name='Arquivos Estáticos'))
-    admin.add_view(UploadsFileAdmin(base_path='/uploads', name='Arquivos de Upload'))
+    try:
+        admin.add_view(UploadsFileAdmin(base_path='/uploads', name='Arquivos de Upload'))
+    except:
+        pass
     return admin

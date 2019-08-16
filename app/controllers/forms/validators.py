@@ -114,3 +114,10 @@ class RequiredIf(DataRequired):
             if other_field.data == data and not field.data:
                 DataRequired.__call__(self, form, field)
             Optional()(form, field)
+
+def valida_cupom_desconto():
+    def _valida_cupom_desconto(form, field):
+        cupom_desconto = db.session.query(CupomDesconto).filter_by(nome=form.cupom_desconto.data, usado=False).first()
+        if not(cupom_desconto is not None and cupom_desconto.usado is False):
+            raise ValidationError("Este cupom não é valido")
+    return _valida_cupom_desconto

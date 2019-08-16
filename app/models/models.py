@@ -63,6 +63,7 @@ class Usuario(db.Model):
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
     como_conheceu = db.relationship('ComoConheceu', lazy=True, back_populates='usuario')
     ministrante = db.relationship('Ministrante', back_populates='usuario', lazy=True, uselist=False)
+    is_anonymous = False
 
 
     @classmethod
@@ -75,10 +76,6 @@ class Usuario(db.Model):
     @property
     def is_authenticated(self):
         return self.autenticado == True
-
-    @classmethod
-    def is_anonymous(cls):
-        return False
 
     def is_admin(self):
         return self.admin == True
@@ -111,9 +108,10 @@ class Participante(db.Model):
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
+    cupom_desconto = db.relationship('CupomDesconto', back_populates='participante', lazy=True, uselist=False)
     flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
     def __repr__(self):
-        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
+        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + "><" + str(self.evento.edicao) + "ª edição>"
 
 
 class Ministrante(db.Model):
@@ -260,6 +258,7 @@ class Evento(db.Model):
     inicio_inscricoes_evento = Column(DateTime, nullable=False)
     fim_inscricoes_evento = Column(DateTime, nullable=False)
     ano = Column(Integer, default=datetime.now().year)
+    preco_kit = Column(Float(precision=2), nullable=True)
     participantes = db.relationship('Participante', backref='evento', lazy=True)
     presencas = db.relationship('Presenca', backref='evento', lazy=True)
     atividades = db.relationship('Atividade', backref='evento', lazy=True)
@@ -416,6 +415,9 @@ class Pagamento(db.Model):
     descricao = Column(String(200), nullable=False)
     valor = Column(Float(precision=2), nullable=False)
     efetuado = Column(Boolean, nullable=False)
+    comprovante_enviado = Column(Boolean, nullable=False, default=False)
+    arquivo_comprovante = Column(String(100), nullable=True)
+    metodo_pagamento = Column(String(100), nullable=False)
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
 
 class URLConteudo(db.Model):
@@ -429,7 +431,7 @@ class URLConteudo(db.Model):
 
 class ComoConheceu(db.Model):
     __tablename__ = 'como_conheceu'
-    id = Column(Integer, primary_key=True) 
+    id = Column(Integer, primary_key=True)
     id_usuario = Column(Integer, db.ForeignKey('usuario.id'))
     opcao = Column(Integer, nullable=False)
     outro = Column(String(200))
@@ -452,3 +454,11 @@ class AdminModelHistory(db.Model):
     id_modelo = Column(Integer)
     data_hora_acao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     usuario = db.relationship('Usuario', backref='historico_admin', lazy=True)
+
+class CupomDesconto(db.Model):
+    id = Column(Integer, primary_key=True)
+    id_participante = Column(Integer, db.ForeignKey('participante.id'), primary_key=False)
+    nome = Column(String(200), nullable=False)
+    valor = Column(Float(precision=2), nullable=False)
+    usado = Column(Boolean, default=False)
+    participante = db.relationship('Participante', back_populates='cupom_desconto', lazy=True, uselist=False)
