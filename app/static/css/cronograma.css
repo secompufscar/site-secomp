@@ -1,31 +1,37 @@
 :root {
-    --font-color: #424242;
     --font-gray: #666666;
-    --bg-color: #fff;
-    --card-color1: #fff;
-    --card-color2: #f7f7f7;
+    --card-color: #fff;
+    --nav-color: #fff;
     --selected-color: #00cfa1;
+    --border-color: #ced2d6;
 }
 
 [data-theme=dark] {
-    --font-color: #ececff;
-    --font-gray: #a0a0a0;
-    --bg-color: #00141a;
-    --card-color1: #343A40;
-    --card-color2: #32383E;
-    --selected-color: #00cfa1;
+    --font-gray: #aaaaaa;
+    --card-color: #343A40;
+    --nav-color: #ffffff11;
+    --selected-color: #ff205b;
+    --border-color: #646A70;
 }
 
 .card {
-    background-color: var(--card-color1);
+    background-color: var(--card-color);
 }
 
 .card-body {
-    background-color: var(--card-color1);
+    background-color: var(--card-color);
 }
 
-.card-footer {
-    background-color: var(--card-color2);
+.modal-content {
+    background-color: var(--card-color);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color) !important;
 }
 
 .card img {
@@ -37,13 +43,14 @@
 }
 
 .day {
-    height: 0.3rem;
-    margin: 0 -7% -7% -7%;
-    border-radius: 10%;
+    height: 0.2rem;
+    margin: 0 -5% -7% -5%;
 }
 
 th {
     color: var(--font-color);
+    background-color: var(--nav-color);
+    border: 1px solid var(--border-color) !important;
 }
 
 .nav-crono a {

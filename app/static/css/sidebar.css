@@ -1,0 +1,100 @@
+:root {
+    --sidebar-color: #ffffff;
+    --border-color: #00000020;
+}
+
+[data-theme=dark] {
+    --sidebar-color: #003342;
+    --border-color: #88888870;
+    --hover-color: #ff205bcc;
+    --hover-font-color: #ffffff;
+}
+
+h1, h2, h3, h4, h5, h6, span, tr, i, .btn {
+    color: var(--font-color);
+}
+
+#sidebar-wrapper, .list-group-item {
+    background-color: var(--sidebar-color);
+}
+
+.list-group-item-action {
+    color: var(--font-color);
+}
+
+.list-group-item-action:hover, .list-group-item-action:focus {
+    color: var(--hover-font-color);
+    background-color: var(--hover-color);
+}
+
+.border-right {
+    border-right: 1px solid var(--border-color) !important;
+}
+
+.form-control {
+    border: 1px solid #ced4da88;
+    color: var(--font-color);
+    background-color: var(--sidebar-color);
+}
+
+.form-control:disabled, .form-control[readonly] {
+    color: #777777;
+    background-color: var(--bg-color);
+}
+
+.select2-selection,
+.select2-container,
+.select2-results__option,
+#select2-tipo_atividade-container {
+    color: var(--font-color) !important;
+    background-color: var(--bg-color) !important;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -15rem;
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    width: 15rem;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+.dropdown-container {
+    display: none;
+}
+
+.dropdown-container a {
+    padding-left: 12%;
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}
