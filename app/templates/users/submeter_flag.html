@@ -10,16 +10,20 @@
 
         <div class="col-md-8">
 
-            <h3 class="text-center">Submissão de flags</h3>
+            <h2 class="text-center" style="margin-top:20%;font-family: Hacker;">  <img style="height: 70px; width:70px;" src="{{url_for('static', filename='images/flag.png')}}"> Submissão de flags</h2>
+           
+
             {% if status != None %}
-            <p> Flag {{ status }}!</p>
+            <h5 style="font-family: Hacker;">Flag {{ status }}! </h5>
             {% endif %}
-            <p>Sua pontuação: {{ participante.pontuacao }}</p>
+            
             <form action="{{url_for('users.submeter_flag')}}" method="POST">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.flag) }}
+                <h5 style="font-family: Hacker;">Sua pontuação: {{ participante.pontuacao }}</h5>
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-block mt-4">Enviar</button>
+                    
                 </div>
             </form>
 
