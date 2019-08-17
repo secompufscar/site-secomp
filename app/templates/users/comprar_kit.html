@@ -52,6 +52,37 @@
 
 {% block scripts %}
 <script>
+
+    $(document).ready(function(){
+          if ($('#comprar-0').is(':checked')){
+              $('#info_kit').show();
+              $('#continuar').hide();
+          }
+
+
+          if ($('#comprar-1').is(':checked')){
+              $('#info_kit').hide();
+              $('#continuar').show();
+          }
+
+
+
+          if ($('#forma_pagamento-0').is(':checked')){
+              $('#info_conta').show();
+          }
+
+          if ($('#forma_pagamento-1').is(':checked')){
+              $('#info_conta').hide();
+          }
+    
+          if ($('#uso_cupom_desconto').is(':checked')){
+              $('#desconto').show();
+          }
+          else{
+              $('#desconto').hide();
+          }
+
+    });
     $('#info_kit').hide();
     $('#info_conta').hide();
     $('#desconto').hide();
