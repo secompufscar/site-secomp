@@ -460,6 +460,7 @@ def executar_pagamento_kit():
 @users.route('/submeter-flag', methods=["GET", "POST"])
 @login_required
 def submeter_flag():
+    form_login = LoginForm(request.form)
     form = SubmeterFlagForm(request.form)
     participante = db.session.query(Participante).filter_by(
         usuario=current_user).first()
@@ -471,11 +472,11 @@ def submeter_flag():
             participante.flags_encontradas.append(flag)
             db.session.flush()
             db.session.commit()
-            return render_template("users/submeter_flag.html", usuario=current_user, form=form, participante=participante, status="aceita")
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="aceita")
         elif flag in participante.flags_encontradas:
-            return render_template("users/submeter_flag.html", usuario=current_user, form=form, participante=participante, status="já utilizada, safadinho")
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="já utilizada, safadinho")
         else:
-            return render_template("users/submeter_flag.html", usuario=current_user, form=form, participante=participante, status="inválida")
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="inválida")
 
     else:
         return render_template("users/submeter_flag.html", usuario=current_user, form=form, participante=participante, status=None)
