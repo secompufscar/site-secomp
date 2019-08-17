@@ -59,7 +59,7 @@
             <a href="{{ url_for('views.constr') }}"
                 class="list-group-item list-group-item-action bg-light">Dashboard</a>
 
-            <a href="{{ url_for('views.constr') }}" class="list-group-item list-group-item-action bg-light">Dados</a>
+            <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action bg-light">Dados</a>
             <a href="{{ url_for('views.constr') }}" class="list-group-item list-group-item-action bg-light">Editar dados</a>
 
             {% if participante: %}
@@ -71,14 +71,16 @@
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-                <a href="{{ url_for('views.constr') }}"
-                    class="list-group-item list-group-item-action bg-light">Atividades</a>
+                 <a href="{{ url_for('users.inscricao_minicursos') }}"
+                    class="list-group-item list-group-item-action bg-light">Minicursos</a>
+                 <a href="{{ url_for('users.inscricao_workshops') }}"
+                    class="list-group-item list-group-item-action bg-light">Workshops</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Desafio de Programadores</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Hackaton</a>
             </div>
 
             {% else: %}
-            <a href="{{ url_for('views.constr') }}" class="list-group-item list-group-item-action bg-light">Inscrever-se</a>
+            <a href="{{ url_for('users.cadastro_participante') }}" class="list-group-item list-group-item-action bg-light">Inscrever-se</a>
 
             {% endif %}
 
