@@ -1,0 +1,116 @@
+{% extends "users/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block sidebar_content %}
+{% if acao == "+" %}
+<div class="alert alert-success">
+	<strong>Inscrito!</strong> Sua inscrição foi confirmada com sucesso.
+</div>
+{% endif %}
+{% if acao == "-" %}
+<div class="alert alert-success">
+	<strong>Desinscrito!</strong> A sua inscrição foi removida com sucesso.
+</div>
+{% endif %}
+
+<div class="container">
+
+	<div class="row justify-content-center pt-1">
+		<div class="col-md-12 text-center">
+			<h2>Inscrição em Minicursos</h2>
+		</div>
+
+		<div class="col-md-6">
+			<div class="input-group mb-3">
+				<input name="filtro" class="form-control" id="filtro" type="text" placeholder="Pesquisar por título">
+				<div class="input-group-append">
+					<button id="buscar" class="btn btn-default" type="button">
+						<span class="fas fa-search"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="list" class="row justify-content-center">
+
+		<div class="table-responsive col-md-12">
+			<table class="table table-striped" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th>Título</th>
+						<th>Ministrante</th>
+						<th>Vagas disponíveis</th>
+						<th>Opções</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for atividade in minicursos %}
+					{% if atividade.ativo %}
+					<tr>
+						<td>{{atividade.titulo}}</td>
+						<td>{{atividade.ministrantes.nome}}</td>
+						<td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
+						<td>
+							{% if participante in atividade.participantes %}
+							<a href="{{ url_for('.desinscrever_minicurso', id=atividade.id) }}">
+								<button type="button" class="btn btn-danger">Desinscrever-se</button>
+							</a>
+							{% else %}
+							<a href="{{ url_for('.inscrever_minicurso', id=atividade.id)}}">
+								{% if atividade.vagas_disponiveis > 0 %}
+								<button type="button" class="btn btn-primary">
+									{% else %}
+									<button type="button" class="btn btn-secondary" disabled>
+										{% endif %}
+										Inscrever-se
+									</button>
+							</a>
+							{% endif %}
+							<!-- Trigger the modal with a button -->
+							<button type="button" class="btn btn-success" data-toggle="modal"
+								data-target="#{{atividade.id}}">
+								Visualizar
+							</button>
+
+							<div id="{{ atividade.id }}" class="modal fade" role="dialog">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title">{{atividade.titulo}}</h4>
+										</div>
+										<div class="modal-body">
+											<p>{{atividade.descricao}}</p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Fechar
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</td>
+
+					</tr>
+					{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	$("#buscar").click(function () {
+		var titulo = $("#filtro").val();
+		if(titulo ) {
+			$(location).attr('href', '/participante/inscricao-minicursos/' + titulo);
+		} else {
+			$(location).attr('href', '/participante/inscricao-minicursos');
+		}
+	});
+
+</script>
+{% endblock %}
