@@ -479,4 +479,4 @@ def submeter_flag():
             return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="inválida")
 
     else:
-        return render_template("users/submeter_flag.html", usuario=current_user, form=form, participante=participante, status=None)
+        return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status=None)
