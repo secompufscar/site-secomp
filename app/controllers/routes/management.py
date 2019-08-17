@@ -282,7 +282,6 @@ def gerenciar_comprovantes():
             print(esta_preenchido(form.desaprovar.data))
             print(form.data)
             if esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data) and not esta_preenchido(form.rejeitar.data):
-                print('oi')
                 pagamento = db.session.query(Pagamento).get(int(form.aprovar.data))
                 if pagamento.efetuado is not True and pagamento.metodo_pagamento == 'Comprovante':
                     pagamento.efetuado = True
