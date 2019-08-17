@@ -169,15 +169,17 @@ def envio_comprovante():
         upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'comprovantes')
         if not path.exists(upload_path):
             makedirs(upload_path)
-        comprovante.save(path.join(upload_path, filename))
         pagamento = db.session.query(Pagamento).filter_by(id_participante=participante.id, descricao='Kit').first()
+        if pagamento.efetuado is False:
+            comprovante.save(path.join(upload_path, filename))
         valor_pagamento = get_preco_kit()
         if participante.cupom_desconto is not None:
             valor_pagamento = max(0.00, valor_pagamento - participante.cupom_desconto.valor)
         if pagamento is None:
             pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=valor_pagamento,
                               efetuado=False, arquivo_comprovante=filename, comprovante_enviado=True, metodo_pagamento='Comprovante')
-        elif pagamento.payment_id is None:
+        #Participante não conseguirá enviar comprovante se seu pagamento já foi aprovado/efetuado
+        elif pagamento.payment_id is None and pagamento.efetuado is False:
             pagamento.arquivo_comprovante = filename
 
         if participante.camiseta.quantidade_restante > 0:
