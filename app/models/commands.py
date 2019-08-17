@@ -63,7 +63,7 @@ def populate():
     id = 1
     for permissao in valores['permissoes']:
         print(f'# Adicionando permissões [{id}/{len(valores["permissoes"])}]')
-        db.session.add(Cargo(id=id, nome=permissao))
+        db.session.add(Permissao(id=id, nome=permissao))
         id += 1
 
     id = 1
