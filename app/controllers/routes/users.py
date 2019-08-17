@@ -171,12 +171,20 @@ def envio_comprovante():
             makedirs(upload_path)
         comprovante.save(path.join(upload_path, filename))
         pagamento = db.session.query(Pagamento).filter_by(id_participante=participante.id, descricao='Kit').first()
+        valor_pagamento = get_preco_kit()
+        if participante.cupom_desconto is not None:
+            valor_pagamento = max(0.00, valor_pagamento - participante.cupom_desconto.valor)
         if pagamento is None:
-            pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=get_preco_kit(),
+            pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=valor_pagamento,
                               efetuado=False, arquivo_comprovante=filename, comprovante_enviado=True, metodo_pagamento='Comprovante')
         elif pagamento.payment_id is None:
             pagamento.arquivo_comprovante = filename
+
+        if participante.camiseta.quantidade_restante > 0:
+            participante.camiseta.quantidade_restante = participante.camiseta.quantidade_restante - 1
+
         db.session.add(pagamento)
+        db.session.add(participante)
         db.session.commit()
         flash('Comprovante enviado com sucesso!')
         return redirect(url_for('.dashboard'))
@@ -447,8 +455,10 @@ def executar_pagamento_kit():
                 if payment.execute({"payer_id": payer_id}):
                     pagamento.payer_id, pagamento.efetuado = payer_id, True
                     participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
-                    participante.cupom_desconto.usado = True
+                    if participante.camiseta.quantidade_restante > 0:
+                        participante.camiseta.quantidade_restante = participante.camiseta.quantidade_restante - 1
                     db.session.add(current_user)
+                    db.session.add(participante)
                     db.session.add(pagamento)
                     db.session.commit()
                     return render_template('users/sucesso_pagamento_kit.html', form_login=form_login)
