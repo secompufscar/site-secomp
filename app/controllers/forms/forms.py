@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField, RadioField
+from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField, RadioField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from app.controllers.forms.options import *
@@ -294,3 +294,9 @@ class CadastrarFlagForm(FlaskForm):
 
 class SubmeterFlagForm(FlaskForm):
     flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
+
+class GerenciarComprovantesForm(FlaskForm):
+    aprovar = IntegerField()
+    desaprovar = IntegerField()
+    rejeitar = IntegerField()
+    autorizar = IntegerField()

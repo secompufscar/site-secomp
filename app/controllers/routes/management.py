@@ -269,3 +269,45 @@ def desativar_flag(id):
                         desativada=True, flags=flags, usuario=current_user)
     else:
         abort(403)
+
+@management.route('/gerenciar-comprovantes', methods=['POST', 'GET'])
+@login_required
+def gerenciar_comprovantes():
+    permissoes = current_user.getPermissoes()
+    if("GERENCIAR_COMPROVANTES" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        form = GerenciarComprovantesForm(request.form)
+        if form.validate_on_submit():
+            print(esta_preenchido(form.aprovar.data))
+            print(esta_preenchido(form.desaprovar.data))
+            print(form.data)
+            if esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data) and not esta_preenchido(form.rejeitar.data):
+                pagamento = db.session.query(Pagamento).get(int(form.aprovar.data))
+                if pagamento.efetuado is not True and pagamento.metodo_pagamento == 'Comprovante':
+                    pagamento.efetuado = True
+                    db.session.add(pagamento)
+                    db.session.commit()
+
+            elif esta_preenchido(form.desaprovar.data) and not esta_preenchido(form.aprovar.data) and not esta_preenchido(form.rejeitar.data) and not esta_preenchido(form.autorizar.data):
+                pagamento = db.session.query(Pagamento).get(int(form.desaprovar.data))
+                if pagamento.efetuado is not False and pagamento.metodo_pagamento == 'Comprovante':
+                    pagamento.efetuado = False
+                    db.session.add(pagamento)
+                    db.session.commit()
+
+            elif esta_preenchido(form.rejeitar.data) and not esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data)and not esta_preenchido(form.autorizar.data):
+                pagamento = db.session.query(Pagamento).get(int(form.rejeitar.data))
+                if pagamento.rejeitado is not True and pagamento.metodo_pagamento == 'Comprovante':
+                    pagamento.rejeitado = True
+                    db.session.add(pagamento)
+                    db.session.commit()
+
+            elif esta_preenchido(form.autorizar.data) and not esta_preenchido(form.rejeitar.data) and not esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data):
+                pagamento = db.session.query(Pagamento).get(int(form.autorizar.data))
+                if pagamento.rejeitado is not False and pagamento.metodo_pagamento == 'Comprovante':
+                    pagamento.rejeitado = False
+                    db.session.add(pagamento)
+                    db.session.commit()
+        return render_template('management/gerenciar_comprovantes.html', form=form, form_login=form_login, pagamentos=get_info_usuarios_envio_comprovante())
+    else:
+        abort(403)

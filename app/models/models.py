@@ -415,6 +415,7 @@ class Pagamento(db.Model):
     descricao = Column(String(200), nullable=False)
     valor = Column(Float(precision=2), nullable=False)
     efetuado = Column(Boolean, nullable=False)
+    rejeitado = Column(Boolean, nullable=False, default=False)
     comprovante_enviado = Column(Boolean, nullable=False, default=False)
     arquivo_comprovante = Column(String(100), nullable=True)
     metodo_pagamento = Column(String(100), nullable=False)

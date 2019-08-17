@@ -160,3 +160,18 @@ def kit_pago(participante):
 
 def get_preco_kit():
     return db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().preco_kit
+
+def get_info_usuarios_envio_comprovante():
+     pagamentos = db.session.query(Pagamento).join(Participante)\
+     .filter(Participante.id_evento == get_id_evento_atual(), Pagamento.comprovante_enviado == True,
+             Pagamento.metodo_pagamento == 'Comprovante', Pagamento.descricao == 'Kit')
+     return pagamentos
+
+def esta_preenchido(data):
+    if data == None:
+        return False
+    if data == '':
+        return False
+    if data == []:
+        return False
+    return True
