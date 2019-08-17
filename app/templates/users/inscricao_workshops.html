@@ -17,7 +17,7 @@
 
 	<div class="row justify-content-center pt-1">
 		<div class="col-md-12 text-center">
-			<h2>Atividades</h2>
+			<h2>Inscrição em Workshops</h2>
 		</div>
 
 		<div class="col-md-6">
@@ -38,7 +38,6 @@
 			<table class="table table-striped" cellspacing="0" cellpadding="0">
 				<thead>
 					<tr>
-						<th>Atividade</th>
 						<th>Título</th>
 						<th>Ministrante</th>
 						<th>Vagas disponíveis</th>
@@ -46,20 +45,20 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for atividade in minicursos %}
-					{% if atividade.ativo %}
+
+					{% for atividade in workshops %}
+					{% if atividade.ativo%}
 					<tr>
-						<td>Minicurso</td>
 						<td>{{atividade.titulo}}</td>
 						<td>{{atividade.ministrantes.nome}}</td>
 						<td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
 						<td>
 							{% if participante in atividade.participantes %}
-							<a href="{{ url_for('.desinscrever') }}/{{ atividade.id }}">
+							<a href="{{ url_for('.desinscrever_workshop', id=atividade.id) }}">
 								<button type="button" class="btn btn-danger">Desinscrever-se</button>
 							</a>
 							{% else %}
-							<a href="{{ url_for('.inscricao_atividades')}}/{{ atividade.id }}">
+							<a href="{{ url_for('.inscrever_workshop', id=atividade.id)}}">
 								{% if atividade.vagas_disponiveis > 0 %}
 								<button type="button" class="btn btn-primary">
 									{% else %}
@@ -69,7 +68,6 @@
 									</button>
 							</a>
 							{% endif %}
-							<!-- Trigger the modal with a button -->
 							<button type="button" class="btn btn-success" data-toggle="modal"
 								data-target="#{{atividade.id}}">
 								Visualizar
@@ -92,82 +90,13 @@
 									</div>
 								</div>
 							</div>
-						</td>
-
-					</tr>
-					{% endif %}
-					{% endfor %}
-					{% for atividade in workshops %}
-					{% if atividade.ativo%}
-					<tr>
-						<td>Palestra</td>
-						<td>{{atividade.titulo}}</td>
-						<td>{{atividade.ministrantes.nome}}</td>
-						<td>{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
-						<td>
-							{% if participante in atividade.participantes %}
-							<a href="{{ url_for('.desinscrever') }}/{{ atividade.id }}">
-								<button type="button" class="btn btn-danger">Desinscrever-se</button>
-							</a>
-							{% else %}
-							<a href="{{ url_for('inscricao_atividades') }}/{{ atividade.id }}">
-								<button type="button" class="btn btn-primary">Inscrever-se</button>
-							</a>
-							{% endif %}
-							<div id="{{ atividade.id }}" class="modal fade" role="dialog">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal">&times;</button>
-											<h4 class="modal-title">{{atividade.titulo}}</h4>
-										</div>
-										<div class="modal-body">
-											<p>{{atividade.descricao}}</p>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Fechar
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
 
 						</td>
 					</tr>
 
 					{% endif %}
 					{% endfor %}
-
-					{% for atividade in palestras %}
-					{% if atividade.ativo%}
-					<tr>
-						<td>Palestra</td>
-						<td>{{atividade.titulo}}</td>
-						<td>{{atividade.ministrantes.nome}}</td>
-						<td>Aberto</td>
-						<td>
-							<div id="{{atividade.id}}" class="modal fade" role="dialog">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal">&times;</button>
-											<h4 class="modal-title">{{atividade.titulo}}</h4>
-										</div>
-										<div class="modal-body">
-											<p>{{atividade.descricao}}</p>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Fechar
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</td>
-					</tr>
-
-					{% endif %}
-					{% endfor %}
+				
 				</tbody>
 			</table>
 		</div>
@@ -179,9 +108,9 @@
 	$("#buscar").click(function () {
 		var titulo = $("#filtro").val();
 		if(titulo ) {
-			$(location).attr('href', '/participante/inscricao-atividades/' + titulo);
+			$(location).attr('href', '/participante/inscricao-workshops/' + titulo);
 		} else {
-			$(location).attr('href', '/participante/inscricao-atividades');
+			$(location).attr('href', '/participante/inscricao-workshops');
 		}
 	});
 
