@@ -4,7 +4,7 @@ from datetime import datetime
 from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
 
-from flask import render_template, request, Blueprint, url_for, redirect, current_app, send_from_directory, abort
+from flask import render_template, request, Blueprint, url_for, redirect, current_app, send_from_directory, abort, flash
 from flask_login import login_required, login_user, logout_user, current_user
 from flask_limiter import Limiter
 from flask_limiter.util import get_ipaddr
@@ -75,7 +75,7 @@ def bug_report():
         if form.falha.data == 8:
             info['falha'] = form.outra_falha.data
         else:
-            info['falha'] = opcoes_falha[form.falha.data]
+            info['falha'] = opcoes_falha[form.falha.data][1]
 
         if form.contato.data:
             info['contato'] = form.contato.data
@@ -85,7 +85,7 @@ def bug_report():
             blobs = request.files.getlist('anexo')
             for blob in blobs:
                 filename = secure_filename(blob.filename)
-                filename = f'{titulo}_{filename}'
+                filename = f'{info["titulo"]}_{filename}'
                 upload_path = os.path.join(current_app.config['UPLOAD_FOLDER'], 'reports')
                 if not os.path.exists(upload_path):
                     os.makedirs(upload_path)
@@ -93,8 +93,9 @@ def bug_report():
                 anexos.append(abs_path)
                 blob.save(abs_path)
 
-        enviar_email_generico(info=content) #, anexo=anexos)
-        return render_template('views/bug_report.html', form=form, form_login=form_login, enviado=True)
+        enviar_email_generico(info=info, anexo=anexos)
+        flash("Seu report foi enviado!")
+        return render_template('views/bug_report.html', form=form, form_login=form_login)
     return render_template('views/bug_report.html', form=form, form_login=form_login)
 
 
