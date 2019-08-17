@@ -147,7 +147,7 @@ def login():
             atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(user)
             if user.senha is not None and pbkdf2_sha256.verify(form.senha.data, user.senha):
                 user.autenticado = True
-                user.ultimo_login = datetime.now() 
+                user.ultimo_login = datetime.now()
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
@@ -203,8 +203,22 @@ def pontuacao_compcases():
 @login_required
 def protected(filename):
     if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "MINISTRANTE" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes():
-        filename = os.path.join(current_app.root_path, 'protected', secure_filename(filename))
-        if os.path.exists(filename):
-            return send_from_directory(filename)
+        dir, filename = filename.rsplit('/', 1)
+        filename = secure_filename(filename)
+        caminho = os.path.join(current_app.root_path, 'protected', dir)
+        if os.path.exists(caminho):
+            return send_from_directory(caminho, filename)
+        abort(404)
+    abort(403)
+
+@views.route("/uploads/<path:filename>", methods=["GET"])
+@login_required
+def uploads(filename):
+    if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes() or "GERENCIAR_COMPROVANTES" in current_user.getPermissoes():
+        dir, filename = filename.rsplit('/', 1)
+        filename = secure_filename(filename)
+        caminho = os.path.join(current_app.config['UPLOAD_FOLDER'], dir)
+        if os.path.exists(caminho):
+            return send_from_directory(caminho, filename)
         abort(404)
     abort(403)
