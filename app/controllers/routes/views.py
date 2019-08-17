@@ -1,5 +1,6 @@
 import os
 
+from datetime import datetime
 from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
 
@@ -34,7 +35,7 @@ def index():
     '''
     return redirect(url_for('views.login'))
 
-#@views.route('/contato', methods=['POST', 'GET'])
+@views.route('/contato', methods=['POST', 'GET'])
 def contato_dm():
     """
     Página de contato
@@ -103,37 +104,31 @@ def constr():
     return render_template('views/em_constr.html', title='Página em construção', form_login=form_login)
 
 
-#@views.route('/sobre', methods=["GET", "POST"])
+@views.route('/sobre', methods=["GET", "POST"])
 def sobre():
     form_login = LoginForm(request.form)
     return render_template('views/sobre.html', title='Sobre a Secomp', form_login=form_login)
 
 
-#@views.route('/cronograma', methods=["GET", "POST"])
+@views.route('/cronograma', methods=["GET", "POST"])
 def cronograma():
     form_login = LoginForm(request.form)
     return render_template('views/cronograma.html', title='Cronograma', form_login=form_login, info_cronograma=get_cronograma())
 
 
-#@views.route('/equipe', methods=["GET", "POST"])
+@views.route('/equipe', methods=["GET", "POST"])
 def equipe():
-    import json
-    import os.path as op
-    import app.config as conf
     form_login = LoginForm(request.form)
-    filename = op.join(op.dirname(conf.__file__), 'membros_org.json')
-    with open(filename, 'r') as read_file:
-        data = json.load(read_file)
-    return render_template('views/equipe.html', title='Equipe', data=data, form_login=form_login)
+    return render_template('views/equipe.html', title='Equipe', form_login=form_login, info_equipe=get_equipe(database=False))
 
 
-#@views.route('/faq', methods=["GET", "POST"])
+@views.route('/faq', methods=["GET", "POST"])
 def faq():
     form_login = LoginForm(request.form)
     return render_template('views/faq.html', title='FAQ', form_login=form_login)
 
 
-#@views.route('/ctf', methods=["GET", "POST"])
+@views.route('/ctf', methods=["GET", "POST"])
 def ctf():
     form_login = LoginForm(request.form)
     return render_template('views/ctf.html', title='CTF', form_login=form_login)
@@ -151,12 +146,13 @@ def login():
             atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(user)
             if user.senha is not None and pbkdf2_sha256.verify(form.senha.data, user.senha):
                 user.autenticado = True
+                user.ultimo_login = datetime.now() 
                 db.session.add(user)
                 db.session.commit()
                 login_user(user, remember=True)
                 if atividade_confirmada == False:
                     return redirect(url_for('conteudo.dados_hospedagem_transporte'))
-                return redirect(url_for('views.constr'))
+                return redirect(url_for('views.index'))
         return render_template('views/login.html', form_login=form, form=form, erro=True)
     return render_template('views/login.html', form_login=form, form=form)
 
@@ -174,11 +170,11 @@ def logout():
     logout_user()
     return redirect(url_for('views.login'))
 
-#@views.route("/senhas", methods=["GET"])
+@views.route("/senhas", methods=["GET"])
 def senhas():
     return render_template('views/requisito_50.html')
 
-#@views.route("/patrocinadores", methods=["GET"])
+@views.route("/patrocinadores", methods=["GET"])
 def patrocinadores():
     '''
     Renderiza página referente aos patrocinadores da edição atual
@@ -187,7 +183,7 @@ def patrocinadores():
     patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True)
     return render_template('views/patrocinadores.html', patrocinadores=patrocinadores, form_login=form, edicao=EDICAO_ATUAL)
 
-#@views.route("/pontuacao", methods=["GET"])
+@views.route("/pontuacao", methods=["GET"])
 def pontuacao_compcases():
     '''
     Renderiza página referente a pontuação geral do COMPCases
@@ -206,8 +202,8 @@ def pontuacao_compcases():
 @login_required
 def protected(filename):
     if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "MINISTRANTE" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes():
-        return send_from_directory(
-            os.path.join(current_app.root_path, 'protected'),
-            filename
-        )
-    abort(404)
+        filename = os.path.join(current_app.root_path, 'protected', secure_filename(filename))
+        if os.path.exists(filename):
+            return send_from_directory(filename)
+        abort(404)
+    abort(403)
