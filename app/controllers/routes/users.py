@@ -138,59 +138,6 @@ def dados():
     return render_template('users/dados.html', title='Dados', usuario=usuario,
                             participante=participante, ministrante=ministrante, form_login=form_login)
 
-@users.route('/kit', methods=['POST', 'GET'])
-@login_required
-def kit():
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
-    form_login = LoginForm(request.form)
-    participante = db.session.query(Participante).filter_by(
-        usuario=current_user).first()
-    if participante != None:
-        return render_template('users/kit.html', title='Kit', usuario=usuario,
-                            participante=participante, form_login=form_login)
-    else:
-        return redirect(url_for('.cadastro_participante'))
-
-
-@users.route('/enviar-comprovante', methods=['POST', 'GET'])
-@login_required
-def envio_comprovante():
-    """
-    Página de envio de comprovantes de pagamento
-    """
-    form_login = LoginForm(request.form)
-    form = ComprovanteForm()
-    if form.validate_on_submit():
-        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
-        comprovante = form.comprovante.data
-        filename = secure_filename(comprovante.filename)
-        agora = strftime("%Y%m%d%H%M%S", localtime(time()))
-        filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{agora}_{filename}'
-        upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'comprovantes')
-        if not path.exists(upload_path):
-            makedirs(upload_path)
-        comprovante.save(path.join(upload_path, filename))
-        valor_pagamento = get_preco_kit()
-        cupom_desconto = db.session.query(CupomDesconto).filter(CupomDesconto.participante == participante, CupomDesconto.usado == False).first()
-        if cupom_desconto is not None:
-            valor_pagamento = max(0.00, valor_pagamento - cupom_desconto.valor)
-            cupom_desconto.usado = True
-            db.session.add(cupom_desconto)
-        pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=valor_pagamento,
-        efetuado=False, arquivo_comprovante=filename, comprovante_enviado=True, metodo_pagamento='Comprovante')
-
-        if participante.camiseta.quantidade_restante > 0:
-            participante.camiseta.quantidade_restante = participante.camiseta.quantidade_restante - 1
-
-        db.session.add(pagamento)
-        db.session.add(participante)
-        db.session.commit()
-        flash('Comprovante enviado com sucesso!')
-        return redirect(url_for('.dashboard'))
-    return render_template('users/enviar_comprovante.html', form=form, form_login=form_login, usuario=current_user)
-
-
 @users.route('/verificacao/<token>')
 def verificacao(token):
     """
@@ -437,61 +384,92 @@ def comprar_kit():
         participante = db.session.query(Participante).filter_by(
             id_usuario=current_user.id, id_evento=id_evento).first()
         if participante is not None:
-            form = ComprarKitForm(request.form)
+            form = ComprarKitForm()
             if form.validate_on_submit():
                 if form.comprar.data == 1:
-                    if form.uso_cupom_desconto.data is True:
-                        cupom_desconto = db.session.query(CupomDesconto).filter_by(nome=form.cupom_desconto.data, usado=False).first()
-                        if cupom_desconto is not None and cupom_desconto.usado is False:
-                            participante.cupom_desconto = cupom_desconto
-                    participante.id_camiseta = form.camiseta.data
                     participante.opcao_coffee = form.restricao_coffee.data
-                    participante.pacote = form.comprar.data == 1
                     db.session.add(participante)
                     db.session.flush()
                     db.session.commit()
                     if form.forma_pagamento.data == 2:
-                        return redirect(url_for('.confirmar_pagamento_kit'))
+                        pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
+                        Participante.usuario).join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email,\
+                        Pagamento.descricao == "Kit", Pagamento.efetuado == False, Pagamento.rejeitado == False,
+                        Pagamento.metodo_pagamento == 'PayPal').first()
+                        participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+                        if pagamento is None:
+                            valor_pagamento = get_preco_kit()
+                            if form.uso_cupom_desconto.data is True:
+                                cupom_desconto = db.session.query(CupomDesconto).filter_by(nome=form.cupom_desconto.data, usado=False).first()
+                                if cupom_desconto is not None:
+                                    valor_pagamento = max(0.00, valor_pagamento - cupom_desconto.valor)
+                                    payment = criar_pagamento("Kit", "Este pagamento corresponde ao kit da X SECOMP UFSCar", str(valor_pagamento), request.url_root)
+                                    pagamento = Pagamento(id_participante = participante.id, payment_id=str(payment.id),\
+                                    descricao="Kit", valor=valor_pagamento, efetuado=False, metodo_pagamento='PayPal',
+                                    id_camiseta=form.camiseta.data)
+                                    cupom_desconto.usado = True
+                                    pagamento.cupom_desconto = cupom_desconto
+                                    db.session.add(cupom_desconto)
+                                    db.session.add(pagamento)
+                                    db.session.commit()
+                            else:
+                                payment = criar_pagamento("Kit", "Este pagamento corresponde ao kit da X SECOMP UFSCar", str(valor_pagamento), request.url_root)
+                                pagamento = Pagamento(id_participante = participante.id, payment_id=str(payment.id),\
+                                descricao="Kit", valor=valor_pagamento, efetuado=False, metodo_pagamento='PayPal',
+                                id_camiseta=form.camiseta.data)
+                                db.session.add(pagamento)
+                                db.session.commit()
+                        else:
+                            payment = encontrar_pagamento(pagamento.payment_id)
+                        if payment is not None and pagamento.efetuado == False:
+                            for link in payment.links:
+                                if link.rel == "approval_url":
+                                    approval_url = str(link.href)
+                                    return redirect(approval_url)
+                        return render_template('users/pagamento_kit_efetuado.html', form_login=form_login)
                     elif form.forma_pagamento.data == 1:
-                        return redirect(url_for('.envio_comprovante'))
+                        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
+                        comprovante = form.comprovante.data
+                        filename = secure_filename(comprovante.filename)
+                        agora = strftime("%Y%m%d%H%M%S", localtime(time()))
+                        filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{agora}_{filename}'
+                        upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'comprovantes')
+                        if not path.exists(upload_path):
+                            makedirs(upload_path)
+                        comprovante.save(path.join(upload_path, filename))
+                        valor_pagamento = get_preco_kit()
+                        if form.uso_cupom_desconto.data is True:
+                            cupom_desconto = db.session.query(CupomDesconto).filter_by(nome=form.cupom_desconto.data, usado=False).first()
+                            if cupom_desconto is not None:
+                                valor_pagamento = max(0.00, valor_pagamento - cupom_desconto.valor)
+                                pagamento = Pagamento(id_participante = participante.id,\
+                                descricao="Kit", valor=valor_pagamento, efetuado=False, metodo_pagamento='Comprovante',
+                                id_camiseta=form.camiseta.data, comprovante_enviado=True, arquivo_comprovante=filename)
+                                cupom_desconto.usado = True
+                                pagamento.cupom_desconto = cupom_desconto
+                                db.session.add(cupom_desconto)
+                                db.session.add(pagamento)
+                                db.session.commit()
+                        else:
+                            pagamento = Pagamento(id_participante = participante.id,\
+                            descricao="Kit", valor=valor_pagamento, efetuado=False, metodo_pagamento='Comprovante',
+                            id_camiseta=form.camiseta.data, comprovante_enviado=True, arquivo_comprovante=filename)
+                            db.session.add(pagamento)
+                            db.session.commit()
+                        if pagamento.camiseta.quantidade_restante > 0:
+                            pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
+
+                        db.session.add(pagamento)
+                        db.session.add(participante)
+                        db.session.commit()
+                        flash('Comprovante enviado com sucesso!')
+                        return redirect(url_for('.dashboard'))
             else:
                 return render_template('users/comprar_kit.html', form=form, form_login=form_login)
         else:
             return redirect(url_for('.dashboard'))
     else:
         return redirect(url_for('.verificar_email'))
-
-@users.route('/confirmar-pagamento-kit', methods=["POST", "GET"])
-@login_required
-def confirmar_pagamento_kit():
-    form_login = LoginForm(request.form)
-    pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
-    Participante.usuario).join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email,\
-    Pagamento.descricao == "Kit", Pagamento.efetuado == False, Pagamento.rejeitado == False, Pagamento.metodo_pagamento == 'PayPal').first()
-
-    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
-    if pagamento is None:
-        valor_pagamento = get_preco_kit()
-        cupom_desconto = db.session.query(CupomDesconto).filter(CupomDesconto.participante == participante, CupomDesconto.usado == False).first()
-        if cupom_desconto is not None:
-            valor_pagamento = max(0.00, valor_pagamento - cupom_desconto.valor)
-            cupom_desconto.usado = True
-            db.session.add(cupom_desconto)
-        payment = criar_pagamento("Kit", "Este pagamento corresponde ao kit da X SECOMP UFSCar", str(valor_pagamento), request.url_root)
-        pagamento = Pagamento(id_participante = participante.id, payment_id=str(payment.id),\
-        descricao="Kit", valor=valor_pagamento, efetuado=False, metodo_pagamento='PayPal')
-        db.session.add(pagamento)
-        db.session.commit()
-        print(payment.id)
-    else:
-        payment = encontrar_pagamento(pagamento.payment_id)
-    if payment is not None and pagamento.efetuado == False:
-        for link in payment.links:
-            if link.rel == "approval_url":
-                approval_url = str(link.href)
-                return redirect(approval_url)
-    return render_template('users/pagamento_kit_efetuado.html', form_login=form_login)
-
 
 @users.route('/executar-pagamento-kit', methods=["POST", "GET"])
 @login_required
@@ -511,8 +489,8 @@ def executar_pagamento_kit():
                     pagamento.payer_id, pagamento.efetuado = payer_id, True
                     pagamento.data_hora_pagamento = strftime("%Y-%m-%d %H:%M:%S", localtime(time()))
                     participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
-                    if participante.camiseta.quantidade_restante > 0:
-                        participante.camiseta.quantidade_restante = participante.camiseta.quantidade_restante - 1
+                    if pagamento.camiseta.quantidade_restante > 0:
+                        pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
                     db.session.add(current_user)
                     db.session.add(participante)
                     db.session.add(pagamento)

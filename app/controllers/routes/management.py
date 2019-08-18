@@ -34,9 +34,10 @@ def gerenciar():
 def estoque_camisetas():
     permissoes = current_user.getPermissoes()
     if("ALTERAR_CAMISETAS" in permissoes or current_user.is_admin()):
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         camisetas = db.session.query(Camiseta)
-        return render_template('management/controle_camisetas.html', camisetas=camisetas, usuario=current_user, form_login=form_login)
+        return render_template('management/controle_camisetas.html', camisetas=camisetas, usuario=current_user, participante=participante, form_login=form_login)
     else:
         abort(403)
 
@@ -46,9 +47,10 @@ def estoque_camisetas():
 def estoque_camisetas_por_tamanho(tamanho):
     permissoes = current_user.getPermissoes()
     if("ALTERAR_CAMISETAS" in permissoes or current_user.is_admin()):
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         camisetas = db.session.query(Camiseta).filter_by(tamanho=tamanho)
-        return render_template('management/controle_camisetas.html', camisetas=camisetas, usuario=current_user, form_login=form_login)
+        return render_template('management/controle_camisetas.html', camisetas=camisetas, usuario=current_user, participante=participante, form_login=form_login)
     else:
         abort(403)
 
@@ -58,6 +60,7 @@ def estoque_camisetas_por_tamanho(tamanho):
 def cadastro_patrocinador():
     permissoes = current_user.getPermissoes()
     if("CADASTRAR_PATROCINADOR" in permissoes or current_user.is_admin()):
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         form = PatrocinadorForm(request.form)
         if form.validate_on_submit():
@@ -69,7 +72,7 @@ def cadastro_patrocinador():
             db.session.commit()
             return redirect(url_for('.cadastro-patrocinador'))
         else:
-            return render_template('management/cadastro_patrocinador.html', form=form, form_login=form_login)
+            return render_template('management/cadastro_patrocinador.html', usuario=current_user, participante=participante, form=form, form_login=form_login)
     else:
         abort(403)
 
@@ -78,28 +81,29 @@ def cadastro_patrocinador():
 @login_required
 def vender_kits():
     permissoes = current_user.getPermissoes()
+    meu_participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
     if("VENDA_PRESENCIAL" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = VendaKitForm(request.form)
         if form.validate_on_submit() and form.participante.data is not None:
             camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
             participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
-            if participante.pagamento:
-                return render_template('management/venda_de_kits.html', alerta="Kit já comprado!", form=form, form_login=form_login)
-            elif camiseta.quantidade_restante > 0:
-                participante.id_camiseta = form.camiseta.data
-                participante.pacote = True
-                participante.pagamento = True
+            if camiseta.quantidade_restante > 0:
+                pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=get_preco_kit(),
+                efetuado=True, metodo_pagamento='Presencial')
+                pagamento.id_camiseta = form.camiseta.data
+                participante.pagamentos.append(pagamento)
                 camiseta.quantidade_restante = camiseta.quantidade_restante - 1
                 db.session.add(camiseta)
                 db.session.add(participante)
                 db.session.commit()
                 return render_template('management/venda_de_kits.html', alerta="Compra realizada com sucesso!",
-                                       form=form, form_login=form_login)
+                                       form=form, form_login=form_login, usuario=current_user, participante=meu_participante)
             elif camiseta.quantidade_restante == 0:
                 return render_template('management/venda_de_kits.html', alerta="Sem estoque para " + camiseta.tamanho,
-                                       form=form, form_login=form_login)
-        return render_template('management/venda_de_kits.html', alerta="Preencha o formulário abaixo", form=form, form_login=form_login)
+                                       form=form, form_login=form_login, usuario=current_user, participante=meu_participante)
+        return render_template('management/venda_de_kits.html', alerta="Preencha o formulário abaixo",
+                               form=form, form_login=form_login, usuario=current_user, participante=meu_participante)
     else:
         abort(403)
 
@@ -108,8 +112,9 @@ def vender_kits():
 def sorteia_usuario():
     permissoes = current_user.getPermissoes()
     if("SORTEAR" in permissoes or current_user.is_admin()):
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
-        return render_template('management/sortear_usuario.html', sorteando=False, form_login=form_login)
+        return render_template('management/sortear_usuario.html', usuario=current_user, participante=participante, sorteando=False, form_login=form_login)
     else:
         abort(403)
 
@@ -118,10 +123,11 @@ def sorteia_usuario():
 def sortear():
     permissoes = current_user.getPermissoes()
     if("SORTEAR" in permissoes or current_user.is_admin()):
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         sorteado = db.session.query(Participante)
         sorteado = sorteado[SystemRandom().randint(1, sorteado.count()) - 1]
-        return render_template('management/sortear_usuario.html', sorteado=sorteado, sorteando=True, form_login=form_login)
+        return render_template('management/sortear_usuario.html', usuario=current_user, participante=participante, sorteado=sorteado, sorteando=True, form_login=form_login)
     else:
         abort(403)
 
@@ -158,19 +164,25 @@ def alterar_camiseta():
 def listas():
     permissoes = current_user.getPermissoes()
     if("GERAR_LISTAS" in permissoes or current_user.is_admin()):
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         form = ListasParticipantes(request.form)
         if(form.validate_on_submit()):
             if(form.tipo.data == 0):
-                lista = db.session.query(Atividade).filter_by(titulo=form.atividades.data).first().participantes
-                return render_template('management/listas_participante.html', atividade=form.atividades.data,
-                                        tipo='inscritos', lista=lista, form=form, form_login=form_login)
+                atividade = db.session.query(Atividade).get(form.atividades.data)
+                lista = atividade.participantes
+                return render_template('management/listas_participante.html',  atividade=atividade.titulo + ' - ' + atividade.tipo.nome,
+                                        tipo='inscritos', lista=lista, form=form, form_login=form_login,
+                                        usuario=current_user, participante=participante)
             elif(form.tipo.data == 1):
-                lista = db.session.query(Atividade).filter_by(titulo=form.atividades.data).first().presencas
-                return render_template('management/listas_participante.html', atividade=form.atividades.data,
-                                        tipo='presentes', lista=lista, form=form, form_login=form_login)
+                atividade = db.session.query(Atividade).get(form.atividades.data)
+                lista = atividade.presencas
+                return render_template('management/listas_participante.html', atividade=atividade.titulo + ' - ' + atividade.tipo.nome,
+                                        tipo='presentes', lista=lista, form=form, form_login=form_login,
+                                        usuario=current_user, participante=participante)
         else:
-            return render_template('management/listas_participante.html', form=form, form_login=form_login)
+            return render_template('management/listas_participante.html', form=form, form_login=form_login,
+                                   usuario=current_user, participante=participante)
     else:
         abort(403)
 

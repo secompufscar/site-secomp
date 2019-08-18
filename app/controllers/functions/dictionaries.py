@@ -82,13 +82,17 @@ def get_dicionario_info_evento(edicao):
         atividades = []
         for presenca in presencas:
             atividades.append(presenca.atividades.titulo)
-
+        camisetas = db.session.query(Camiseta).filter(Camiseta.pagamento.efetuado == True,
+                                                      Camiseta.pagamento.id_participante == participante.id).all()
+        tamanhos = []
+        for camiseta in camisetas:
+            tamanhos.append(camiseta.tamanho)
         info = {
             "titulo": str(evento.edicao) + "ª SECOMP UFSCar",
             "data_inscricao": participante.data_inscricao,
             "presencas": atividades,
             "kit_pago": kit_pago(participante),
-            "camiseta": participante.camiseta.tamanho,
+            "camisetas": tamanhos,
                 "opcao_coffee": participante.opcao_coffee,
                 "score_geral": get_score_evento(edicao)
         }
@@ -224,7 +228,7 @@ def get_cronograma():
         quarta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-11 00:00:00', Atividade.data_hora_fim < '2019-09-11 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
         quinta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-12 00:00:00', Atividade.data_hora_fim < '2019-09-12 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
         sexta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-13 00:00:00', Atividade.data_hora_fim < '2019-09-13 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
-    
+
         return {
             "SEG" : segunda,
             "TER": terca,
@@ -235,4 +239,3 @@ def get_cronograma():
     except SQLAlchemyError:
         db.session.rollback()
         return "Erro"
-        

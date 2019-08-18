@@ -97,9 +97,7 @@ class Participante(db.Model):
     id = Column(Integer, primary_key=True)
     id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
-    pacote = Column(Boolean, nullable=False)
     pagamentos = db.relationship('Pagamento', back_populates='participante', lazy=True)
-    id_camiseta = Column(Integer, db.ForeignKey('camiseta.id'), primary_key=False)
     data_inscricao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
@@ -108,7 +106,6 @@ class Participante(db.Model):
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
-    cupom_desconto = db.relationship('CupomDesconto', back_populates='participante', lazy=True)
     flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + "><" + str(self.evento.edicao) + "ª edição>"
@@ -377,7 +374,7 @@ class Camiseta(db.Model):
     __tablename__ = 'camiseta'
     id = Column(Integer, primary_key=True)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
-    participantes = db.relationship('Participante', backref='camiseta', lazy=True)
+    pagamento = db.relationship('Pagamento', back_populates  ='camiseta', lazy=True, uselist=False)
     tamanho = Column(String(30), nullable=False)
     quantidade = Column(Integer, nullable=False)
     ordem_site = Column(Integer, nullable=False)
@@ -410,6 +407,7 @@ class Pagamento(db.Model):
     __tablename__ = 'pagamento'
     id = Column(Integer, primary_key=True)
     id_participante = Column(Integer, db.ForeignKey('participante.id'), primary_key=False)
+    id_camiseta = Column(Integer, db.ForeignKey('camiseta.id'), primary_key=False)
     payment_id = Column(String(200), nullable=True)
     payer_id = Column(String(200), nullable=True)
     descricao = Column(String(200), nullable=False)
@@ -421,6 +419,8 @@ class Pagamento(db.Model):
     metodo_pagamento = Column(String(100), nullable=False)
     data_hora_pagamento = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
+    cupom_desconto = db.relationship('CupomDesconto', back_populates='pagamento', lazy=True, uselist=False)
+    camiseta = db.relationship('Camiseta', back_populates='pagamento', lazy=True, uselist=False)
 
 class URLConteudo(db.Model):
     __tablename__ = 'urlconteudo'
@@ -459,8 +459,8 @@ class AdminModelHistory(db.Model):
 
 class CupomDesconto(db.Model):
     id = Column(Integer, primary_key=True)
-    id_participante = Column(Integer, db.ForeignKey('participante.id'), primary_key=False)
+    id_pagamento = Column(Integer, db.ForeignKey('pagamento.id'), primary_key=False)
     nome = Column(String(200), nullable=False)
     valor = Column(Float(precision=2), nullable=False)
     usado = Column(Boolean, default=False)
-    participante = db.relationship('Participante', back_populates='cupom_desconto', lazy=True)
+    pagamento = db.relationship('Pagamento', back_populates='cupom_desconto', lazy=True, uselist=False)

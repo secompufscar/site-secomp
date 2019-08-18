@@ -21,7 +21,7 @@ def get_participantes():
         query = db.session.query(Participante)
         participantes = []
         for p in query:
-            info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome)
+            info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome + " <" + p.usuario.email + ">")
             participantes.append(info)
         return participantes
     except Exception as e:
@@ -32,10 +32,10 @@ def get_participantes():
 
 def get_atividades():
     try:
-        query = db.session.query(Atividade)
+        query = db.session.query(Atividade).all()
         ativ = []
         for a in query:
-            info = (a.id, a.tipo + ' - ' + a.titulo)
+            info = (a.id, a.tipo.nome + ' - ' + a.titulo)
             ativ.append(info)
         return ativ
     except Exception as e:
