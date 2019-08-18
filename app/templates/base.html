@@ -48,75 +48,86 @@
     <div id="navTop" class="container-fluid">
       {# Marca d'água para a home #}
       <a class="navbar-brand mr-auto" href="{{ url_for('views.index') }}">
-        <img id="nav-logo" src="{{ url_for('static', filename='images/logoTest.png') }}"
-        width="30" height="30" alt="Logo atual da SECOMP" /></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens" 
-      aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
+        <img id="nav-logo" src="{{ url_for('static', filename='images/logoTest.png') }}" width="30" height="30"
+          alt="Logo atual da SECOMP" /></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarItens"
+        aria-controls="navbarItens" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars text-white"></i>
       </button>
       <div class="collapse mr-auto navbar-collapse" id="navbarItens">
-        <ul class="ml-3 navbar-nav mr-auto">
+        <ul class="ml-lg-3 navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.index') }}">
-              <i class="mr-1 fas fa-home"></i> HOME</a>
+              <i class="mr-2 fas fa-home"></i>HOME</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
-              <i class="mr-1 fas fa-heart"></i> SECOMP</a>
+              <i class="mr-2 fas fa-heart"></i>SECOMP</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{{ url_for('views.sobre') }}">
-                <i class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
+                <i class="mr-2 fas fa-book"></i>SOBRE O EVENTO</a>
               <a class="dropdown-item" href="{{ url_for('views.equipe') }}">
-                <i class="mr-1 fas fa-users"></i> EQUIPE</a>
+                <i class="mr-2 fas fa-users"></i>EQUIPE</a>
               <a class="dropdown-item" href="{{ url_for('views.contato_dm') }}">
-                <i class="mr-1 fas fa-comments"></i> CONTATO</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
-                <i class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
+                <i class="mr-2 fas fa-comments"></i>CONTATO</a>
             </div>
           </li>
+
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
-              <i class="mr-1 fas fa-calendar-alt"></i> EVENTOS</a>
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="evento">
+              <i class="mr-2 fas fa-calendar-alt"></i>EVENTOS</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{{ url_for('views.cronograma') }}">
-                <i class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
+                <i class="mr-2 fas fa-book"></i>CRONOGRAMA</a>
               <a class="dropdown-item" href="{{ url_for('views.ctf') }}">
-                <i class="mr-1 fas fa-flag"></i> CTF</a>
+                <i class="mr-2 fas fa-flag"></i>CTF</a>
               <a class="dropdown-item" href="{{ url_for('views.constr') }}">
-                <i class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
+                <i class="mr-2 fas fa-gamepad"></i>GAME JAM</a>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.faq') }}">
-              <i class="mr-1 fas fa-question-circle"></i> FAQ</a>
+              <i class="mr-2 fas fa-question-circle"></i>FAQ</a>
           </li>
         </ul>
 
         <!-- Lado direito da Navbar -->
-        <div class="navbar-nav ml-3">
-          {% if current_user.is_authenticated %}
+        <div class="navbar-nav">
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="config">
-            <i class="mr-1 fas fa-cog"></i></a>
+              <i class="mr-2 fas fa-cog"></i></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
-                <a class="dropdown-item" href="{{ url_for('management.gerenciar') }}">
-                    <i class="mr-1 fas fa-user-secret"></i> GERENCIAR</a>
-                {% endif %}
-                <a class="dropdown-item" href="{{ url_for('users.dashboard') }}">
-                  <i class="mr-1 fas fa-user"></i> PARTICIPANTE</a>
-                <a class="dropdown-item" href="{{ url_for('views.logout') }}">
-                  <i class="mr-1 fas fa-sign-out-alt"></i>SAIR</a>
+              {% if current_user.is_authenticated %}
+              {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
+              <div class="dropdown-item theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                  <input type="checkbox" id="checkbox" />
+                  <div class="slider round"></div>
+                </label>
+                DARK
+              </div>
+              <a class="dropdown-item" href="{{ url_for('management.gerenciar') }}">
+                <i class="mr-2 fas fa-user-secret"></i>GERENCIAR</a>
+              {% endif %}
+              <a class="dropdown-item" href="{{ url_for('users.dashboard') }}">
+                <i class="mr-2 fas fa-user"></i>PARTICIPANTE</a>
+              <a class="dropdown-item" href="{{ url_for('views.logout') }}">
+                <i class="mr-2 fas fa-sign-out-alt"></i>SAIR</a>
             </div>
+            {% else %}
+            <div class="dropdown-item theme-switch-wrapper">
+              <label class="mr-2 theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round"></div>
+              </label>
+              DARK
+            </div>
+            <a class="dropdown-item" href=" " data-toggle="modal" data-target="#modal-login">
+              <i class="mr-2 fas fa-user"></i>ENTRAR</a>
+            <a class="dropdown-item" href="{{ url_for('users.cadastro') }}">
+              <i class="mr-2 fas fa-address-card"></i>INSCREVER</a>
+            {% endif %}
           </div>
-          {% else %}
-          <!-- <a class="nav-item nav-link" href="{{ url_for('views.login') }}"><i class="mr-1 fas fa-user"></i>
-            ENTRAR</a> -->
-          <a class="nav-item nav-link" href=" " data-toggle="modal" data-target="#modal-login"><i class="mr-1 fas fa-user"></i>
-            ENTRAR</a>
-          <a class="nav-item nav-link" href="{{ url_for('views.constr') }}"><i
-                                        class="mr-1 fas fa-address-card"></i> INSCREVER</a>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -124,8 +135,10 @@
 </header>
 {% endblock %}
 
+{% block modal_login %}
 <!-- MODAL DO LOGIN -->
-<div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -147,50 +160,53 @@
         </div>
         <div class="modal-footer">
           <a href="{{url_for('users.esqueci_senha')}}">Esqueci minha senha</a>
-          <button name="submit" type="submit" class="btn btn-primary"><i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
+          <button name="submit" type="submit" class="btn btn-primary"><i
+              class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
         </div>
       </form>
     </div>
   </div>
 </div>
+{% endblock %}
 
 <main>
-  <div id="content" style="padding-top: 53px;">
+  <div id="content">
     {% block content %}{% endblock %}
   </div>
 </main>
 
 {# Rascunho de rodapé #}
 {% block footer %}
-<footer class="navbar bg-dark small pt-4 text-white">
+<footer class="navbar pt-4 text-white">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-sm-8 text-center">
         <p>Desenvolvido por Alcides Mignoso, Daniel Moura, Gabriel Alves, Guilherme Villar, Igor Lúcio,
-        Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Nathan Oliveira, Rafael Murata e Victória De
-        Martini.
+          Karina Mayumi, Lucas Cruz dos Reis, Marcos Felipe, Nathan Oliveira, Rafael Murata e Victória De
+          Martini.
         </p>
 
       </div>
       <div class="col-sm-12">
         <ul class="list-unstyled list-inline social text-center">
           <li class="list-inline-item"><a href="https://facebook.com/secompufscar" target="blank">
-            <i class="fab fa-2x fa-facebook-f"></i></a></li>
+              <i class="fab fa-2x fa-facebook-f"></i></a></li>
           <li class="list-inline-item"><a href="https://twitter.com/secompufscar" target="blank">
-            <i class="fab fa-2x fa-twitter"></i></a></li>
-          <li class="list-inline-item"><a href="https://www.youtube.com/channel/UChj1pycWmHOJDeJkDf6RraA" target="blank">
-            <i class="fab fa-2x fa-youtube"></i></a></li>
+              <i class="fab fa-2x fa-twitter"></i></a></li>
+          <li class="list-inline-item"><a href="https://www.youtube.com/channel/UChj1pycWmHOJDeJkDf6RraA"
+              target="blank">
+              <i class="fab fa-2x fa-youtube"></i></a></li>
           <li class="list-inline-item"><a href="https://instagram.com/secompufscar" target="blank">
-            <i class="fab fa-2x fa-instagram"></i></a></li>
+              <i class="fab fa-2x fa-instagram"></i></a></li>
           <li class="list-inline-item"><a href="mailto:{{ secomp_email }}">
-            <i class="fa fa-2x fa-envelope"></i></a></li>
+              <i class="fa fa-2x fa-envelope"></i></a></li>
         </ul>
       </div>
       <div class="col-sm-12 text-center">
         <p>
-        Departamento de Computação <br />
-        UFSCar - Universidade Federal de São Carlos <br>
-        Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara <br> São Carlos/ SP - CEP 13565-905
+          Departamento de Computação <br />
+          UFSCar - Universidade Federal de São Carlos <br>
+          Rodovia Washington Luís, Km 235 - Bairro Jardim Guanabara <br> São Carlos/ SP - CEP 13565-905
         </p>
       </div>
     </div>
@@ -207,8 +223,24 @@
 <script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
 <script>
-	/*$(document).ready(function(){
-    	$('#content').css("padding-top", $('#navTop').outerHeight() * 1.2);
-  });*/
+  const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+  const currentTheme = localStorage.getItem('theme');
+  if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (currentTheme === 'dark') {
+      toggleSwitch.checked = true;
+    }
+  } function switchTheme(e) {
+    if (e.target.checked) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    }
+    else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    }
+  } toggleSwitch.addEventListener('change', switchTheme, false);
 </script>
-{% endblock %}{% endblock %}
+
+{% endblock %}
+{% endblock %}

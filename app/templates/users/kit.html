@@ -13,8 +13,8 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             {% if participante.pacote: %}
-            <table class="table">
-                <thead class="thead-dark">
+            <table class="table table-borderless">
+                <thead class="bg-dark">
                     <tr>
                         <th scope="col">Kit</th>
                         <th scope="col"></th>
@@ -42,8 +42,12 @@
                 </tbody>
             </table>
             {% else: %}
-            <div class="align-self-center" style="min-height: 50vh;">
-                <button type="button" class="btn btn-primary btn-block">Comprar kit</button>
+            <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
+                <div class="col-md-6">
+                    <button onclick="location.href='comprar-kit'" type="button" class="btn btn-primary btn-block p-3">
+                        <h5>Adquirir kit</h5>
+                    </button>
+                </div>
             </div>
             {% endif %}
         </div>

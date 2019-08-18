@@ -1,0 +1,153 @@
+#content {
+    padding-top: 0;
+}
+
+.col {
+    padding: 2% 0 2% 0;
+}
+
+.counter {
+    text-shadow: -1px 0 #424242, 0 1px #424242, 1px 0 #424242, 0 -1px #424242;
+}
+
+.top-left {
+    position: absolute;
+    left: 0%;
+    top: 25%;
+    width: 40%;
+    transform: translate(0, -20%);
+}
+
+.bottom-right {
+    position: absolute;
+    right: 0%;
+    top: 75%;
+    width: 40%;
+    transform: translate(0, -50%);
+}
+
+.top-left .svg-inline--fa, .bottom-right .svg-inline--fa {
+    font-size: 4em;
+}
+
+.larger {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+@media (max-width: 400px) {
+    .top-left h2, .top-left h5, .bottom-right h2, .bottom-right h5 {
+        text-align: center;
+    }
+
+    .top-left, .bottom-right {
+        width: 90%;
+    }
+}
+
+@media (max-height: 500px) {
+    .larger {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+}
+
+@media (min-width: 401px) and (max-width: 700px) {
+    .larger {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .top-left, .bottom-right {
+        width: 75%;
+    }
+}
+
+@media (min-width: 701px) and (min-height: 501px) {
+    .top-left .svg-inline--fa, .bottom-right .svg-inline--fa {
+        font-size: 6em;
+    }
+}
+
+@media (min-width: 701px) and (max-width: 991px) {
+    .top-left, .bottom-right {
+        width: 50%;
+    }
+}
+
+.bg-fade {
+    background-color: #000000aa;
+    position: relative;
+}
+
+@media (orientation: portrait) {
+    .background {
+        height: 100vh;
+        width: 100%;
+        margin: 0;
+        position: absolute;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .logoP {
+        margin-top: 60px;
+        display: inline-block;
+        width: 70vw;
+    }
+    .logoL {
+        display: none;
+    }
+}
+
+@media (orientation: landscape) {
+    .background {
+        height: 100vh;
+        width: 100%;
+        position: absolute;
+        background-size: cover;
+    }
+    .logoL {
+        margin-top: 60px;
+        display: inline-block;
+        width: 70vw;
+        margin: 3%;
+    }
+    .logoP {
+        display: none;
+    }
+}
+
+@media (max-width: 699px) {
+    .icons .col {
+        flex: 0 0 50%;
+        padding: 4% 0 4% 0;
+    }
+}
+
+@media (min-width: 700px) {
+    .icons .col {
+        flex: 0 0 25%;
+        padding: 2% 0 2% 0;
+    }
+}
+
+.swiper-container {
+    width: 100%;
+    height: 100vh;
+}
+
+.swiper-slide {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}

@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block styles %}
-<link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css" />
+{{ super() }}
 <link href="{{ url_for('static', filename='css/cronograma.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
@@ -11,14 +10,14 @@
 
 <div class="container">
 
-    <div class="row justify-content-center pt-1">
+    <div class="row justify-content-center pt-4">
         <div class="col-md-12 text-center">
             <h2>Cronograma</h2>
         </div>
     </div>
-    <div class="text-center">
+    <div class="text-center pt-2">
         <div class="row align-items-center cronograma">
-            <div class="text-center setaEsquerda" onclick="left_arrow()">
+            <div id="setaEsquerda" class="text-center setaEsquerda" onclick="left_arrow()">
                 <i class="fas fa-2x fa-chevron-left"></i>
             </div>
             <div class="col-md-8 center">
@@ -31,7 +30,7 @@
                                         <th scope="col-md-2" id="th_seg" class="nav_on">
                                             <a onclick="toggle_visibility('seg');">
 
-                                                <h5>09.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">09/09</h5>
                                                 <h4><span id="nav-seg">Seg</span></h4>
                                                 <div id="div_seg" class="day selected"></div>
 
@@ -40,7 +39,7 @@
                                         <th scope="col-md-2" id="th_ter" class="nav_off">
                                             <a onclick="toggle_visibility('ter');">
 
-                                                <h5>10.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">10/09</h5>
                                                 <h4><span id="nav-ter">Ter</span></h4>
                                                 <div id="div_ter" class="day"></div>
 
@@ -49,7 +48,7 @@
                                         <th scope="col-md-2" id="th_qua" class="nav_off">
                                             <a onclick="toggle_visibility('qua');">
 
-                                                <h5>11.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">11/09</h5>
                                                 <h4><span id="nav-qua">Qua</span></h4>
                                                 <div id="div_qua" class="day"></div>
 
@@ -58,7 +57,7 @@
                                         <th scope="col-md-2" id="th_qui" class="nav_off">
                                             <a onclick="toggle_visibility('qui');">
 
-                                                <h5>12.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">12/09</h5>
                                                 <h4><span id="nav-qui">Qui</span></h4>
                                                 <div id="div_qui" class="day"></div>
 
@@ -67,7 +66,7 @@
                                         <th scope="col-md-2" id="th_sex" class="nav_off">
                                             <a onclick="toggle_visibility('sex');">
 
-                                                <h5>13.09.2019</h5>
+                                                <h5 class="pr-4 pl-4">13/09</h5>
                                                 <h4><span id="nav-sex">Sex</span></h4>
                                                 <div id="div_sex" class="day"></div>
 
@@ -80,7 +79,7 @@
                     </nav>
                 </div>
             </div>
-            <div class="text-center setaDireita" onclick="right_arrow()">
+            <div id="setaDireita" class="text-center setaDireita" onclick="right_arrow()">
                 <i class="fas fa-2x fa-chevron-right"></i>
             </div>
         </div>
@@ -88,12 +87,12 @@
 
 
     <div id="seg" style="display: block;">
-        <div class="col-md-12">
+        <div class="col-md-12 pb-4">
             <div class="card">
 
                 <div class="row no-gutters align-items-center">
 
-                    <div class="col-md-2">
+                    <div class="col-md-2 p-4">
                         <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid"
                             alt="">
                     </div>
@@ -103,7 +102,7 @@
                             <h4 class="card-title">Titulo da palestra que a gente sabe que pode ser muito longo de
                                 acordo
                                 com as edições anteriores</h4>
-                            <p class="card-subtitle text-muted">
+                            <p class="card-subtitle text-gray">
                                 Ministrante Fulano de Tal
                                 <br>Cargo na Instituição
                             </p>
@@ -112,7 +111,7 @@
 
                     <div class="col-md-6">
                         <div class="card-body">
-                            <p class="card-subtitle text-muted">
+                            <p class="card-subtitle text-gray">
                                 Mussum Ipsum, cacilds vidis litro abertis. Sapien in monti palavris qui num significa
                                 nadis
                                 i pareci latim. Quem num gosta di mim que vai caçá sua turmis! Atirei o pau no gatis,
@@ -128,7 +127,7 @@
                     </div>
 
                 </div>
-                <div class="card-footer text-muted">
+                <div class="card-footer text-gray">
                     <div class="row no-gutters align-items-center">
                         <div class="col-md-3">
                             <i class="fas fa-map-marker-alt"></i>
@@ -172,7 +171,7 @@
                         <div class="row no-gutters">
                             <div class="col-md-10">
                                 <h5>Ministrante Fulano de Tal</h5>
-                                <p class="text-muted">Cargo naquela instituição muito boa </p>
+                                <p class="text-gray">Cargo naquela instituição muito boa </p>
                             </div>
                             <div class="col-md-2">
                                 <img src="{{ url_for('static', filename='images/logo-colorida.png') }}"
@@ -213,7 +212,7 @@
                     <div class="col-md-4">
                         <div class="card-body">
                             <h4 class="card-title">Titulo da palestra de terça feira dessa vez</h4>
-                            <p class="card-subtitle text-muted">
+                            <p class="card-subtitle text-gray">
                                 Ministrante Fulano de Tal
                                 <br>Cargo na Instituição
                             </p>
@@ -222,14 +221,14 @@
 
                     <div class="col-md-6">
                         <div class="card-body">
-                            <p class="card-subtitle text-muted">
+                            <p class="card-subtitle text-gray">
                                 Descrição gigantesca daquela palestra de terça feira...
-                            </p>href="javascript:seta_direita
+                            </p>
                         </div>
                     </div>
 
                 </div>
-                <div class="card-footer text-muted">
+                <div class="card-footer text-gray">
                     <div class="row no-gutters align-items-center">
                         <div class="col-md-3">
                             <i class="fas fa-map-marker-alt"></i>
@@ -245,7 +244,7 @@
                             <span>08:00 - 10:00</span>
                         </div>
                         <div class="col-md-3">
-                            <button thref="javascript:seta_direitaype="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
+                            <button type="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
                                 data-target="#modal2">
                                 Detalhes
                             </button>
@@ -272,7 +271,7 @@
                         <div class="row no-gutters">
                             <div class="col-md-10">
                                 <h5>Ministrante Fulano de Tal</h5>
-                                <p class="text-muted">Cargo naquela instituição muito boa </p>
+                                <p class="text-gray">Cargo naquela instituição muito boa </p>
                             </div>
                             <div class="col-md-2">
                                 <img src="{{ url_for('static', filename='images/logo-ufscar.png') }}" class="img-fluid"
@@ -294,6 +293,14 @@
     <div id="qui"></div>
     <div id="sex"></div>
 </div>
+
+<script>
+
+    // evita que haja seleção de texto ao clicar duas vezes nas setas
+    jQuery('#setaEsquerda').mousedown(function (e) { e.preventDefault(); });
+    jQuery('#setaDireita').mousedown(function (e) { e.preventDefault(); });
+
+</script>
 
 <script>
     function right_arrow() {
