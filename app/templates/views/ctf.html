@@ -2,73 +2,112 @@
 
 {% block content %}
 
+<style>
+	.bg {
+		background-color: #000000;
+		background-image: url("{{ url_for('static', filename='images/ctf.jpg') }}");
+		height: 80vh;
+		filter: blur(3px);
+		-webkit-filter: blur(3px);
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
 
-	<img class="w-100 img-fluid" style="filter: blur(3px); right: 10px; max-width: 100%;" src="{{url_for('static', filename='images/ctf.jpg')}}">
-	
-	<div class="text-center"> 		
-		<h1 style="font-weight: 600; color: white; font-size: 70px; font-family: hacker; position: absolute; left: 350px; top: 135px; ">Capture The Flag</h1>
-		<h4 style = "position: absolute; color: white; left: 90px; top: 480px;">A SECOMP UFSCar conta com uma competição chamada Capture The Flag (CTF),<br> constituída de desafios que envolvem engenharia reversa, criptografia, computação forense, networking, <br> web hacking e outros temas presentes na área de segurança.</h4>
-	</div>			
+	.title {
+		background-color: #000000aa;
+		color: white;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 100%;
+		padding: 3%;
+		text-align: center;
+	}
+
+	.t1 {
+		font-family: hacker;
+		font-weight: 600;
+		font-size: 400%;
+	}
+
+	.t2 {
+		font-weight: 600;
+	}
+</style>
+
+<div class="container-fluid bg-dark">
+
+	<div class="bg"></div>
+
+	<div class="title">
+		<h1 class="t1">CAPTURE THE FLAG</h1>
+	</div>
+
 </div>
 
-<footer class="navbar pt-4 text-white" style="bottom: 10px;;">
+<div class="pt-4 bg-dark" style="color: #e1e1ff;">
 	<div class="container">
+
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-calendar-alt"></i>
-					<h5 class="pt-2"><strong>QUANDO?</strong></h5>
-					<p><b>Início: a ser divulgado</b></p>
-					<p><b>Fim: a ser divulgado</b></p>
+					<h5 class="t2 pt-2">DATA</h5>
+					<h5>Início: a ser divulgado</h5>
+					<h5>Fim: a ser divulgado</h5>
 				</ul>
 			</div>
 
-			<div class="col-md-3">
+			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-users"></i>
-					<h5 class="pt-2"><strong>EQUIPES?</strong></h5>
-					<p><b>Até 4 participantes limitados à formação com mestrado incompleto</b></p>
+					<h5 class="t2 pt-2">EQUIPES</h5>
+					<h5>Até 4 participantes*</h5>
 				</ul>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-clipboard-check"></i>
-					<h5 class="pt-2"><strong>INSCRIÇÕES</strong></h5>
-					<p><b>Será feita através de plataforma própria disponível no GitHub. Todos
-						os participantes deverão ter conta no site.</b></p>
+					<h5 class="t2 pt-2">INSCRIÇÕES</h5>
+					<h5>Unicamente através da plataforma GitHub</h5>
 				</ul>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-trophy"></i>
-					<h5 class="pt-2"><strong>PREMIAÇÃO</strong></h5>
-					<p><b>4 ingressos para o evento <a href="https://www.h2hc.com.br" target="_blank">H2HC</a></b></p>
-
+					<h5 class="t2 pt-2">PREMIAÇÃO</h5>
+					<h5>4 ingressos para o evento <a href="https://www.h2hc.com.br" target="_blank">H2HC</a></h5>
 				</ul>
 			</div>
-
 		</div>
-		
-	</div>
-	
-	<div class="container">
+
 		<div class="row">
-			<div class="col-md-12">
-				<hr style="background-color:white;">
-				<h4 class="text-center">Descrição:</h4>
-				<h5 style="font-size:17px;" class="text-center"> A competição ocorrerá do dia 11 de setembro de 2018 às 23h59 até dia 13 de setembro de 2018 às 23h59 e terá como formato o Jeopardy-style. Durante a competição as equipes deverão resolver os desafios propostos com a finalidade de obter pontos e também uma melhor classificação. Além dos desafios, haverá flags espalhados durante o evento que também poderão ser utilizados para se obter os pontos. <br><br>
-					Haverá um aquecimento presencial aberto ao público em geral no dia 11 de setembro, que contará com um coffee break opcional pelo valor de R$ 10,00 (e R$ 8,00 para aqueles que compraram o kit da IX SECOMP UFSCar). <br><br>
+			<div class="col-md-12 text-center pb-2">
+				<h4 class="t2 pb-2">Descrição:</h4>
+				<h5 class="pb-2">A competição ocorrerá do dia 11 de setembro de 2018 às
+					23h59 até dia 13 de setembro de 2018 às 23h59 e terá como formato o Jeopardy-style. Durante a
+					competição as equipes deverão resolver os desafios propostos com a finalidade de obter pontos e
+					também uma melhor classificação. Além dos desafios, haverá flags espalhados durante o evento que
+					também poderão ser utilizados para se obter os pontos.
 				</h5>
+				<h5 class="pb-2">
+					Haverá um aquecimento presencial aberto ao público em geral no dia 11 de setembro, que contará com
+					um coffee break opcional pelo valor de R$ 10,00 (e R$ 8,00 para aqueles que compraram o kit da IX
+					SECOMP UFSCar).
+				</h5>
+				<h6>*limitados à formação com mestrado incompleto.</h6>
 			</div>
-		</div>	
-		
-		<button name="submit" type="submit" style="margin-left: 40%; margin-bottom: 10px; color;" class="btn btn-primary"><i class="mr-2 fas fa-sign-in-alt"></i>Acesse o edital</button>
-
 		</div>
 
-	
+		<div class="text-center">
+			<button name="submit" type="submit" class="btn btn-primary m-3"><i
+					class="mr-2 fas fa-sign-in-alt"></i>Acesse o edital</button>
+		</div>
+	</div>
+</div>
 
-</footer>
 <div class="container">
 	<div class="row justify-content-center p-3">
 		<div class="col-md-12 text-center">
@@ -86,5 +125,4 @@
 	</div>
 </div>
 
-	{% endblock %}
-	
+{% endblock %}
