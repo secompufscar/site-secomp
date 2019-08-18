@@ -222,12 +222,21 @@ def verificacao(token):
 @login_required
 def inscricao_minicursos():
     form_login = LoginForm(request.form)
-    tipo_atividade = get_tipos_atividade()
-    minicursos = db.session.query(Atividade).filter_by(
-        tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
-    return render_template('users/inscricao_minicursos.html',
-                           participante=db.session.query(Participante).filter_by(
-                               usuario=current_user).first(), usuario=current_user, minicursos=minicursos, form_login=form_login)
+    agora = datetime.now()
+    evento_atual = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
+    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    if agora >= evento_atual.abertura_minicursos_1_etapa and agora <= evento_atual.fechamento_minicursos_1_etapa\
+            or agora >= evento_atual.abertura_minicursos_2_etapa and agora <= evento_atual.fechamento_minicursos_2_etapa:
+        tipo_atividade = get_tipos_atividade()
+        minicursos = db.session.query(Atividade).filter_by(
+            tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
+        return render_template('users/inscricao_minicursos.html',
+                               participante=participante, usuario=current_user, minicursos=minicursos,
+                               form_login=form_login, inscricao_liberada=1)
+    else:
+        return render_template('users/inscricao_minicursos.html',
+                               participante=participante, usuario=current_user, form_login=form_login,
+                               inscricao_liberada=0)
 
 
 @users.route('/inscricao-workshops')
@@ -246,15 +255,22 @@ def inscricao_workshops():
 @login_required
 def inscricao_minicursos_com_filtro(filtro):
     form_login = LoginForm(request.form)
-    tipo_atividade = get_tipos_atividade()
-    minicursos = db.session.query(Atividade).filter(
-        Atividade.tipo == tipo_atividade['minicurso'], Atividade.titulo.like("%" + filtro + "%"),
-        Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None)
+    agora = datetime.now()
+    evento_atual = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
+    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    if agora >= evento_atual.abertura_minicursos_1_etapa and agora <= evento_atual.fechamento_minicursos_1_etapa:
+        tipo_atividade = get_tipos_atividade()
+        minicursos = db.session.query(Atividade).filter(
+            Atividade.tipo == tipo_atividade['minicurso'], Atividade.titulo.like("%" + filtro + "%"),
+            Atividade.id_evento == get_id_evento_atual(), Atividade.titulo!=None)
 
-    return render_template('users/inscricao_minicursos.html',
-                           participante=db.session.query(Participante).filter_by(
-                               usuario=current_user).first(),
-                           usuario=current_user, minicursos=minicursos, form_login=form_login)
+        return render_template('users/inscricao_minicursos.html',
+                               participante=participante, usuario=current_user, minicursos=minicursos,
+                               form_login=form_login, inscricao_liberada=1)
+    else:
+        return render_template('users/inscricao_minicursos.html',
+                               participante=participante, usuario=current_user, form_login=form_login,
+                               inscricao_liberada=0)
 
 
 @users.route('/inscricao-workshops/<filtro>')
@@ -278,21 +294,64 @@ def inscrever_minicurso(id):
     form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    agora = datetime.now()
+    evento_atual = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
     if atv.vagas_disponiveis > 0:
-        atv.participantes.append(db.session.query(
-            Participante).filter_by(usuario=current_user).first())
-        atv.vagas_disponiveis = atv.vagas_disponiveis - 1
-        db.session.flush()
-        db.session.commit()
-        minicursos = db.session.query(Atividade).filter_by(
-            tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo!=None)
+        if agora >= evento_atual.abertura_minicursos_1_etapa and agora <= evento_atual.fechamento_minicursos_1_etapa:
+            if participante.minicurso_etapa_1 is None:
+                participante.minicurso_etapa_1 = atv.id
+                atv.participantes.append(db.session.query(
+                    Participante).filter_by(usuario=current_user).first())
+                atv.vagas_disponiveis = atv.vagas_disponiveis - 1
+                db.session.flush()
+                db.session.commit()
+                minicursos = db.session.query(Atividade).filter_by(
+                    tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
 
-        return render_template('users/inscricao_minicursos.html',
-                               participante=db.session.query(Participante).filter_by(
-                                   usuario=current_user).first(),
-                               usuario=current_user, minicursos=minicursos, acao="+", form_login=form_login)
+                return render_template('users/inscricao_minicursos.html', participante=participante, usuario=current_user,
+                                       minicursos=minicursos, acao="+", form_login=form_login, inscricao_liberada=1)
+            else:
+                minicursos = db.session.query(Atividade).filter_by(
+                    tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
+                return render_template('users/inscricao_minicursos.html', participante=participante,
+                                       usuario=current_user,
+                                       minicursos=minicursos, acao="limite_excedido", form_login=form_login, inscricao_liberada=1)
+        elif agora >= evento_atual.abertura_minicursos_2_etapa and agora <= evento_atual.fechamento_minicursos_2_etapa:
+            if participante.minicurso_etapa_2 is None:
+                participante.minicurso_etapa_2 = atv.id
+                atv.participantes.append(db.session.query(
+                    Participante).filter_by(usuario=current_user).first())
+                atv.vagas_disponiveis = atv.vagas_disponiveis - 1
+                db.session.flush()
+                db.session.commit()
+                minicursos = db.session.query(Atividade).filter_by(
+                tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo!=None)
+
+                return render_template('users/inscricao_minicursos.html', participante=participante, usuario=current_user,
+                                        minicursos=minicursos, acao="+", form_login=form_login, inscricao_liberada=1)
+            else:
+                minicursos = db.session.query(Atividade).filter_by(
+                    tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
+                return render_template('users/inscricao_minicursos.html', participante=participante,
+                                       usuario=current_user,
+                                       minicursos=minicursos, acao="limite_excedido", form_login=form_login,
+                                       inscricao_liberada=1)
+        else:
+            minicursos = db.session.query(Atividade).filter_by(
+                tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
+            return render_template('users/inscricao_minicursos.html', participante=participante,
+                                   usuario=current_user,
+                                   minicursos=minicursos, acao="inscricao_fechada", form_login=form_login,
+                                   inscricao_liberada=0)
     else:
-        return "Não há vagas disponíveis!"
+        minicursos = db.session.query(Atividade).filter_by(
+            tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
+        return render_template('users/inscricao_minicursos.html', participante=participante,
+                               usuario=current_user,
+                               minicursos=minicursos, acao="vagas_esgotadas", form_login=form_login,
+                               inscricao_liberada=1)
 
 
 @users.route('/inscrever-workshop/<id>')
@@ -324,9 +383,13 @@ def desinscrever_minicurso(id):
     form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
-    if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
-        atv.participantes.remove(db.session.query(
-            Participante).filter_by(usuario=current_user).first())
+    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    if participante in atv.participantes:
+        if atv.id == participante.minicurso_etapa_1:
+            participante.minicurso_etapa_1 = None
+        elif atv.id == participante.minicurso_etapa_2:
+            participante.minicurso_etapa_2 = None
+        atv.participantes.remove(participante)
         atv.vagas_disponiveis = atv.vagas_disponiveis + 1
         db.session.flush()
         db.session.commit()
@@ -335,9 +398,15 @@ def desinscrever_minicurso(id):
         return render_template('users/inscricao_minicursos.html',
                                participante=db.session.query(Participante).filter_by(
                                    usuario=current_user).first(),
-                               usuario=current_user, minicursos=minicursos, acao="-", form_login=form_login)
+                               usuario=current_user, minicursos=minicursos, acao="-", form_login=form_login, inscricao_liberada=1)
     else:
-        return "Não está inscrito nessa atividade!"
+        minicursos = db.session.query(Atividade).filter_by(
+            tipo=tipo_atividade['minicurso'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
+        return render_template('users/inscricao_minicursos.html',
+                               participante=db.session.query(Participante).filter_by(
+                                   usuario=current_user).first(),
+                               usuario=current_user, minicursos=minicursos, acao="nao_inscrito", form_login=form_login,
+                               inscricao_liberada=1)
 
 
 @users.route('/desinscrever-workshop/<id>')
@@ -359,7 +428,12 @@ def desinscrever_workshop(id):
                                    usuario=current_user).first(),
                                usuario=current_user, workshops=workshops, acao="-", form_login=form_login)
     else:
-        return "Não está inscrito nessa atividade!"
+        workshops = db.session.query(Atividade).filter_by(
+            tipo=tipo_atividade['workshop'], id_evento=get_id_evento_atual()).filter(Atividade.titulo != None)
+        return render_template('users/inscricao_workshops.html',
+                               participante=db.session.query(Participante).filter_by(
+                                   usuario=current_user).first(),
+                               usuario=current_user, workshops=workshops, acao="nao_inscrito", form_login=form_login)
 
 
 @users.route('/alterar-senha', methods=["POST", "GET"])

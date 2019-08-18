@@ -6,12 +6,25 @@
 <div class="alert alert-success">
 	<strong>Inscrito!</strong> Sua inscrição foi confirmada com sucesso.
 </div>
-{% endif %}
-{% if acao == "-" %}
+{% elif acao == "-" %}
 <div class="alert alert-success">
 	<strong>Desinscrito!</strong> A sua inscrição foi removida com sucesso.
 </div>
+{% elif acao == "limite_excedido" %}
+<div class="alert alert-danger">
+	Você excedeu o limite de uma inscrição em minicurso por etapa!
+</div>
+{% elif acao == "limite_excedido" %}
+<div class="alert alert-danger">
+	Inscrição em minicursos está fechada neste momento!
+</div>
+{% elif acao == "nao_inscrito" %}
+<div class="alert alert-danger">
+	Não está inscrito nessa atividade!
+</div>
 {% endif %}
+
+
 
 <div class="container">
 
@@ -19,6 +32,8 @@
 		<div class="col-md-12 text-center">
 			<h2>Inscrição em Minicursos</h2>
 		</div>
+
+        {% if inscricao_liberada == 1 %}
 
 		<div class="col-md-6">
 			<div class="input-group mb-3">
@@ -31,6 +46,7 @@
 			</div>
 		</div>
 	</div>
+
 
 	<div id="list" class="row justify-content-center">
 
@@ -99,6 +115,11 @@
 			</table>
 		</div>
 	</div>
+
+    {% elif inscricao_liberada == 0 %}
+        Inscrição em minicursos está fechada neste momento!
+    {% endif %}
+
 </div>
 
 
