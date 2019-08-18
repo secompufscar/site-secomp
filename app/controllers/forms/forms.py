@@ -75,6 +75,10 @@ class ComprarKitForm(FlaskForm):
     forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Enviar Comprovante'),(2,'Paypal')], coerce=int, default=2)
     uso_cupom_desconto = BooleanField('Deseja utilizar um cupom de desconto?', id='uso_cupom_desconto')
     cupom_desconto = StringField('Cupom de Desconto', id='cupom_desconto', validators=[Length(max=200), RequiredIf(uso_cupom_desconto=True), valida_cupom_desconto()], render_kw={'maxlength': 200})
+    comprovante = FileField('Enviar comprovante de pagamento', id="comprovante", validators=[
+            ComprovanteRequired(message=ERRO_INPUT_REQUIRED),
+            FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
+        ])
     recaptcha = RecaptchaField()
 
 

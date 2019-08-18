@@ -15,8 +15,10 @@
     <table class="table text-center table-borderless">
       <thead class="thead bg-dark text-white">
         <tr>
+          <th scope="col">Descrição</th>
           <th scope="col">Status</th>
           <th scope="col">Método</th>
+          <th scope="col">Camiseta</th>
           <th scope="col">Data e Hora</th>
           <th scope="col">Preço</th>
           <th scope="col">Comprovante</th>
@@ -25,6 +27,9 @@
       <tbody>
         {% for pagamento in pagamentos%}
         <tr>
+          <td scope='col'>
+            {{ pagamento.descricao }}
+          </td>
           <td scope='col'>
             {% if pagamento.rejeitado is sameas true %}
             <span style='color: #cc0000;'>Rejeitado</span>
@@ -36,6 +41,9 @@
           </td>
           <td>
             {{ pagamento.metodo_pagamento }}
+          </td>
+          <td>
+            {{ pagamento.camiseta.tamanho }}
           </td>
           <td>
             {{ pagamento.data_hora_pagamento.strftime('%d/%m/%Y %H:%M:%S') }}

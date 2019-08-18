@@ -5,6 +5,13 @@ from wtforms.validators import ValidationError, DataRequired, Optional
 
 from app.models.models import *
 
+import warnings
+from collections import Iterable
+
+from wtforms import FileField as _FileField
+from werkzeug.datastructures import FileStorage
+from wtforms.validators import DataRequired, StopValidation
+
 # Mensagens de erro possíveis nos formulários
 ERRO_INPUT_REQUIRED = "Preencha esse campo."
 ERRO_EMAIL = "Entre com um endereço de email válido."
@@ -121,3 +128,15 @@ def valida_cupom_desconto():
         if not(cupom_desconto is not None and cupom_desconto.usado is False):
             raise ValidationError("Este cupom não é valido")
     return _valida_cupom_desconto
+
+class ComprovanteRequired(DataRequired):
+
+     def __call__(self, form, field):
+        if form.forma_pagamento.data == 1:
+            if not (isinstance(field.data, FileStorage) and field.data):
+                if self.message is None:
+                    message = field.gettext('This field is required.')
+                else:
+                    message = self.message
+
+                raise StopValidation(message)
