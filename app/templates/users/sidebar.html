@@ -15,21 +15,24 @@
 <div class="d-flex" id="wrapper">
 
     <div class="border-right" id="sidebar-wrapper">
-        <div class="sidebar-heading">{{ usuario.primeiro_nome }}</div>
+        <div class="sidebar-heading">
+            {{ usuario.primeiro_nome }}
+        </div>
+
         <div class="list-group list-group-flush">
-            <a href="{{ url_for('users.dashboard') }}"
-                class="list-group-item list-group-item-action">Dashboard</a>
+            <a href="{{ url_for('users.dashboard') }}" class="list-group-item list-group-item-action">Dashboard</a>
 
             <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action">Dados</a>
-            <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action">Editar dados</a>
-            <a href="{{ url_for('users.submeter_flag') }}" class="list-group-item list-group-item-action"> Cadastrar flags</a>
+            <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action">Editar
+                dados</a>
+            <a href="{{ url_for('users.submeter_flag') }}" class="list-group-item list-group-item-action"> Cadastrar
+                flags</a>
 
             {% if participante: %}
 
             <a href="{{ url_for('users.kit') }}" class="list-group-item list-group-item-action">Kit</a>
 
-            <button style="outline: none;"
-                class="list-group-item list-group-item-action dropdown-btn">Inscrições
+            <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Inscrições
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
@@ -40,22 +43,27 @@
             </div>
 
             {% else: %}
-            <a href="{{ url_for('users.cadastro_participante') }}" class="list-group-item list-group-item-action">Inscrever-se</a>
+            <a href="{{ url_for('users.cadastro_participante') }}"
+                class="list-group-item list-group-item-action">Inscrever-se</a>
 
             {% endif %}
 
-            <button style="outline: none;"
-                class="list-group-item list-group-item-action dropdown-btn">Gerenciamento
+            <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Gerenciamento
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
                 <a href="{{ url_for('management.gerenciar') }}"
                     class="list-group-item list-group-item-action">Homepage</a>
-                <a href="{{ url_for('management.vender_kits') }}" class="list-group-item list-group-item-action">Venda de kits</a>
-                <a href="{{ url_for('management.listas') }}" class="list-group-item list-group-item-action">Listagem de participantes</a>
-                <a href="{{ url_for('management.sortear') }}" class="list-group-item list-group-item-action">Sorteio de usuário</a>
-                <a href="{{ url_for('management.gerar_url_conteudo') }}" class="list-group-item list-group-item-action">URL ministrante</a>
-                <a href="{{ url_for('management.cadastro_flags') }}" class="list-group-item list-group-item-action"> Gerenciar Flags </a>
+                <a href="{{ url_for('management.vender_kits') }}" class="list-group-item list-group-item-action">Venda
+                    de kits</a>
+                <a href="{{ url_for('management.listas') }}" class="list-group-item list-group-item-action">Listagem de
+                    participantes</a>
+                <a href="{{ url_for('management.sortear') }}" class="list-group-item list-group-item-action">Sorteio de
+                    usuário</a>
+                <a href="{{ url_for('management.gerar_url_conteudo') }}"
+                    class="list-group-item list-group-item-action">URL ministrante</a>
+                <a href="{{ url_for('management.cadastro_flags') }}" class="list-group-item list-group-item-action">
+                    Gerenciar Flags </a>
             </div>
 
             <a href="/admin" class="list-group-item list-group-item-action">Administração</a>
@@ -63,7 +71,14 @@
         </div>
     </div>
 
-    <div class="container-fluid">
+    <a id="btn-open" class="circle" href="javascript:void(0);" onclick="openNav()">
+        <i class="fas fa-angle-right fa-lg"></i>
+    </a>
+    <a id="btn-close" class="circle" href="javascript:void(0);" onclick="closeNav()">
+        <i class="fa fa-times fa-sm"></i>
+    </a>
+
+    <div id="sidebar-content" class="container-fluid">
         {% block sidebar_content %}{% endblock %}
     </div>
 
@@ -71,6 +86,40 @@
 
 <script>
 
+    function openNav() {
+
+        $("#sidebar-wrapper").fadeIn(200);
+
+        setTimeout(function () {
+            document.getElementById("sidebar-wrapper").style.display = "inline-block";
+            document.getElementById("btn-close").style.display = "inline-block";
+        }, 200);
+
+        document.getElementById("sidebar-wrapper").style.marginLeft = "0";
+        document.getElementById("btn-open").style.display = "none";
+
+        $('#wrapper').attr('style', 'min-height:' + $("#sidebar-wrapper").height() + "px" + ';other-styles');
+    }
+
+    function closeNav() {
+        document.getElementById("sidebar-wrapper").style.marginLeft = "-15rem";
+        document.getElementById("btn-close").style.display = "none";
+
+        setTimeout(function () {
+            document.getElementById("sidebar-wrapper").style.display = "none";
+            document.getElementById("btn-open").style.display = "inline-block";
+        }, 200);
+
+        $(".dropdown-container").css("display", "none");
+
+        if ($("#sidebar-wrapper").height() > $(window).height()) {
+            $('#wrapper').attr('style', 'min-height:100vh;other-styles');
+        }
+
+    }
+</script>
+
+<script>
     var dropdown = document.getElementsByClassName("dropdown-btn");
     var i;
 
@@ -83,8 +132,11 @@
             } else {
                 dropdownContent.style.display = "block";
             }
+            $('#wrapper').attr('style', 'min-height:' + $("#sidebar-wrapper").height() + "px" + ';other-styles');
         });
     }
 
 </script>
 {% endblock %}
+
+{% block footer %}{% endblock %}
