@@ -72,13 +72,18 @@
                 <i class="mr-2 fas fa-comments"></i>CONTATO</a>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.cronograma') }}">
-              <i class="mr-2 fas fa-calendar-alt  "></i>CRONOGRAMA</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.ctf') }}">
-              <i class="mr-2 fas fa-flag"></i>CTF</a>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="evento">
+              <i class="mr-2 fas fa-calendar-alt"></i>EVENTOS</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="{{ url_for('views.cronograma') }}">
+                <i class="mr-2 fas fa-book"></i>CRONOGRAMA</a>
+              <a class="dropdown-item" href="{{ url_for('views.ctf') }}">
+                <i class="mr-2 fas fa-flag"></i>CTF</a>
+              <a class="dropdown-item" href="{{ url_for('views.gamejam') }}">
+                <i class="mr-2 fas fa-gamepad"></i>GAME JAM</a>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.faq') }}">
