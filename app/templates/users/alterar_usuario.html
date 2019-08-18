@@ -65,8 +65,7 @@
           {{ wtf.form_field(form.sobrenome) }}
           {{ wtf.form_field(form.curso) }}
           {{ wtf.form_field(form.outro_curso) }}
-          <button id="continuar" class="btn btn-primary btn-block mt-3 mb-3"
-            type="button">Continuar</button>
+          <button id="continuar" class="btn btn-primary btn-block mt-3 mb-3" type="button">Continuar</button>
         </div>
       </div>
     </div>
@@ -151,48 +150,44 @@
 <script>
   $(document).ready(function ($) {
     $('#data_nasc').mask('00/00/0000');
-    $('#data_nasc').mask('00/00/0000');
-    if ($("#curso option:selected").val() !== '0') {
+  });
+
+  function outroCurso() {
+
+    if ($("#curso :selected").text() == 'Outro') {
+      $('label[for="outro_curso"]').show();
+      $("#outro_curso").show();
+    } else {
       $('label[for="outro_curso"]').hide();
       $("#outro_curso").hide();
     }
-    if ($("#instituicao option:selected").val() !== '0') {
+  };
+
+  function outraInstituicao() {
+
+    if ($("#instituicao :selected").text() == 'Outra') {
+      $('label[for="outra_instituicao"]').show();
+      $("#outra_instituicao").show();
+    } else {
       $('label[for="outra_instituicao"]').hide();
       $("#outra_instituicao").hide();
     }
-    if ($("#cidade option:selected").val() !== '0') {
+  };
+
+  function outraCidade() {
+
+    if ($("#cidade :selected").text() == 'Outra') {
+      $('label[for="outra_cidade"]').show();
+      $("#outra_cidade").show();
+    } else {
       $('label[for="outra_cidade"]').hide();
       $("#outra_cidade").hide();
     }
-    $('#data_nasc').mask('00/00/0000');
-    $("#curso").change(function () {
-      if ($("#curso option:selected").val() === '0') {
-        $('label[for="outro_curso"]').show();
-        $("#outro_curso").show();
-      } else {
-        $('label[for="outro_curso"]').hide();
-        $("#outro_curso").hide();
-      }
-    });
-    $("#instituicao").change(function () {
-      if ($("#instituicao option:selected").val() === '0') {
-        $('label[for="outra_instituicao"]').show();
-        $("#outra_instituicao").show();
-      } else {
-        $('label[for="outra_instituicao"]').hide();
-        $("#outra_instituicao").hide();
-      }
-    });
-    $("#cidade").change(function () {
-      if ($("#cidade option:selected").val() === '0') {
-        $('label[for="outra_cidade"]').show();
-        $("#outra_cidade").show();
-      } else {
-        $('label[for="outra_cidade"]').hide();
-        $("#outra_cidade").hide();
-      }
-    });
-  });
+  };
+
+  ('#curso').onchange = outroCurso();
+  ('#instituicao').onchange = outraInstituicao();
+  ('#cidade').onchange = outraCidade();
 
   document.addEventListener("DOMContentLoaded", function () {
     var elements = document.getElementsByTagName("INPUT");
@@ -209,14 +204,6 @@
     }
   })
 </script>
-
-<script>
-	$(document).ready(function(){
-    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
-  });
-</script>
 {% endblock %}
 
-{% block footer %}
-{% endblock %}
-
+{% block footer %}{% endblock %}
