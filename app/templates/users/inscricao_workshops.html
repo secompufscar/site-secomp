@@ -6,10 +6,13 @@
 <div class="alert alert-success">
 	<strong>Inscrito!</strong> Sua inscrição foi confirmada com sucesso.
 </div>
-{% endif %}
-{% if acao == "-" %}
+{% elif acao == "-" %}
 <div class="alert alert-success">
 	<strong>Desinscrito!</strong> A sua inscrição foi removida com sucesso.
+</div>
+{% elif acao == "nao_inscrito" %}
+<div class="alert alert-danger">
+	Não está inscrito nessa atividade!
 </div>
 {% endif %}
 
