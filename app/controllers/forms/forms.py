@@ -264,8 +264,8 @@ class BugReportForm(BaseRecaptchaForm):
             validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(max=1200)], id='descricao', render_kw={'maxlength': 1200})
     impacto = TextAreaField('Escreva aqui o impacto causado pela falha encontrada, caso seja explorada:', validators=[Length(max=300)], id='impacto',
             render_kw={'maxlength': 300})
-    anexo = FileField('Caso você tenha um vídeo ou print que ajude a ilustrar seu report, envie aqui:', validators=[Optional(),
-        FileAllowed(['webm', 'mkv', 'gif', 'mp4', 'png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)], id='anexo')
+    anexo = FileField('Caso você tenha um vídeo/imagem que ajude a ilustrar seu report ou uma versão em PDF do report, envie aqui:', validators=[Optional(),
+        FileAllowed(['pdf', 'webm', 'mkv', 'gif', 'mp4', 'png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)], id='anexo')
 
 
 class EmailCuston(BaseRecaptchaForm):

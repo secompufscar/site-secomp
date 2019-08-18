@@ -64,11 +64,11 @@
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
               <i class="mr-1 fas fa-heart"></i> SECOMP</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+              <a class="dropdown-item" href="{{ url_for('views.sobre') }}">
                 <i class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+              <a class="dropdown-item" href="{{ url_for('views.equipe') }}">
                 <i class="mr-1 fas fa-users"></i> EQUIPE</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+              <a class="dropdown-item" href="{{ url_for('views.contato_dm') }}">
                 <i class="mr-1 fas fa-comments"></i> CONTATO</a>
               <a class="dropdown-item" href="{{ url_for('views.constr') }}">
                 <i class="mr-1 fas fa-gamepad"></i> GAMEFICAÇÃO</a>
@@ -78,16 +78,16 @@
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="eventos">
               <i class="mr-1 fas fa-calendar-alt"></i> EVENTOS</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+              <a class="dropdown-item" href="{{ url_for('views.cronograma') }}">
                 <i class="mr-1 fas fa-calendar-check"></i> CRONOGRAMA</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+              <a class="dropdown-item" href="{{ url_for('views.ctf') }}">
                 <i class="mr-1 fas fa-flag"></i> CTF</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
-                <i class="mr-1 fas fa-utensils"></i> CHURRASCO</a>
+              <a class="dropdown-item" href="{{ url_for('views.bug_report') }}">
+                <i class="mr-1 fas fa-comments"></i> BUG REPORT</a>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('views.constr') }}">
+            <a class="nav-link" href="{{ url_for('views.faq') }}">
               <i class="mr-1 fas fa-question-circle"></i> FAQ</a>
           </li>
         </ul>
@@ -114,7 +114,7 @@
             ENTRAR</a> -->
           <a class="nav-item nav-link" href=" " data-toggle="modal" data-target="#modal-login"><i class="mr-1 fas fa-user"></i>
             ENTRAR</a>
-          <a class="nav-item nav-link" href="{{ url_for('views.constr') }}"><i
+          <a class="nav-item nav-link" href="{{ url_for('users.cadastro') }}"><i
                                         class="mr-1 fas fa-address-card"></i> INSCREVER</a>
           {% endif %}
         </div>
@@ -153,6 +153,20 @@
     </div>
   </div>
 </div>
+
+<!-- ALERT BOXES PARA MENSAGENS DE FLASH() -->
+{% block flashes %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <script>
+          var msg = "{{ message }}";
+          alert(msg)
+	</script>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+{% endblock %}
 
 <main>
   <div id="content" style="padding-top: 53px;">
