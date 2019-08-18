@@ -86,8 +86,7 @@ def cadastro_participante():
             if form.validate_on_submit() and participante is None:
                 agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 usuario = current_user
-                participante = Participante(id_usuario=usuario.id, id_evento=id_evento, data_inscricao=agora, credenciado=False,
-                                            pacote=False, opcao_coffee=0)
+                participante = Participante(id_usuario=usuario.id, id_evento=id_evento, data_inscricao=agora, credenciado=False, opcao_coffee=0)
                 db.session.add(participante)
                 db.session.flush()
                 db.session.commit()
@@ -507,6 +506,7 @@ def comprar_kit():
                         filename = secure_filename(comprovante.filename)
                         agora = strftime("%Y%m%d%H%M%S", localtime(time()))
                         filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{agora}_{filename}'
+                        filename = filename.replace(' ', '')
                         upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'comprovantes')
                         if not path.exists(upload_path):
                             makedirs(upload_path)
