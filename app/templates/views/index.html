@@ -125,9 +125,8 @@
 
 {% block scripts %}
 
-<script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
-<script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
+{{ super() }}
+
 <script src="{{ url_for('static', filename='swiper/swiper.min.js') }}"></script>
 
 <script>
