@@ -213,8 +213,9 @@ def protected(filename):
 @views.route("/uploads/<path:filename>", methods=["GET"])
 @login_required
 def uploads(filename):
-    if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes() or "GERENCIAR_COMPROVANTES" in current_user.getPermissoes():
-        dir, filename = filename.rsplit('/', 1)
+    participante = db.session.query(Participante).filter(Participante.id_usuario == current_user.id, Participante.id_evento == get_id_evento_atual()).first()
+    dir, filename = filename.rsplit('/', 1)
+    if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes() or "GERENCIAR_COMPROVANTES" in current_user.getPermissoes() or get_permissao_comprovante(participante, filename):
         filename = secure_filename(filename)
         caminho = os.path.join(current_app.config['UPLOAD_FOLDER'], dir)
         if os.path.exists(caminho):

@@ -108,7 +108,7 @@ class Participante(db.Model):
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
-    cupom_desconto = db.relationship('CupomDesconto', back_populates='participante', lazy=True, uselist=False)
+    cupom_desconto = db.relationship('CupomDesconto', back_populates='participante', lazy=True)
     flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + "><" + str(self.evento.edicao) + "ª edição>"
@@ -419,6 +419,7 @@ class Pagamento(db.Model):
     comprovante_enviado = Column(Boolean, nullable=False, default=False)
     arquivo_comprovante = Column(String(100), nullable=True)
     metodo_pagamento = Column(String(100), nullable=False)
+    data_hora_pagamento = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
 
 class URLConteudo(db.Model):
@@ -462,4 +463,4 @@ class CupomDesconto(db.Model):
     nome = Column(String(200), nullable=False)
     valor = Column(Float(precision=2), nullable=False)
     usado = Column(Boolean, default=False)
-    participante = db.relationship('Participante', back_populates='cupom_desconto', lazy=True, uselist=False)
+    participante = db.relationship('Participante', back_populates='cupom_desconto', lazy=True)
