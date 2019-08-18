@@ -77,6 +77,11 @@ def ctf():
     form_login = LoginForm(request.form)
     return render_template('views/ctf.html', title='CTF', form_login=form_login)
 
+@views.route('/gamejam', methods=["GET", "POST"])
+def gamejam():
+    form_login = LoginForm(request.form)
+    return render_template('views/gamejam.html', title='CTF', form_login=form_login)
+
 @views.route('/teste', methods=["GET","POST"])
 def teste():
     form_login = LoginForm(request.form)
