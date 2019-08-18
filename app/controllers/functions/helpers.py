@@ -142,19 +142,19 @@ def get_equipe():
 
     coordenacao_geral = todos.filter(Diretoria.nome == 'Coordenação Geral').all()
 
-    ti = todos.filter(Diretoria.nome == 'Tecnologia da Informação (TI)').all()
-    dm = todos.filter(Diretoria.nome == 'Design & Marketing (DM)').all()
+    ti = todos.filter(Diretoria.nome == 'Tecnologia da Informação').all()
+    dm = todos.filter(Diretoria.nome == 'Design & Marketing').all()
     conteudo = todos.filter(Diretoria.nome == 'Conteúdo').all()
-    jf = todos.filter(Diretoria.nome == 'Jurídico-Financeiro (JF)').all()
+    jf = todos.filter(Diretoria.nome == 'Jurídico-Financeiro').all()
     patrocinio = todos.filter(Diretoria.nome == 'Patrocínio').all()
-    socio = todos.filter(Diretoria.nome == 'Sócio-Cultural').all()
+    socio = todos.filter(Diretoria.nome == 'Sóciocultural').all()
 
     data = [('Coordenação Geral', coordenacao_geral),
-            ('Tecnologia da Informação (TI)', ti),
-            ('Design & Marketing (DM)', dm),
+            ('Tecnologia da Informação', ti),
+            ('Design & Marketing', dm),
             ('Conteúdo', conteudo),
-            ('Jurídico-Financeiro (JF)', jf),
+            ('Jurídico-Financeiro', jf),
             ('Patrocínio', patrocinio),
-            ('Sócio-Cultural', socio)]
+            ('Sociocultural', socio)]
 
     return data
