@@ -72,6 +72,8 @@
             </button>
             <a href="{{ url_for('users.pagamentos') }}"
                 class="list-group-item list-group-item-action bg-light">Pagamentos</a>
+            <a href="{{ url_for('users.presencas') }}"
+                class="list-group-item list-group-item-action bg-light">Presenças</a>
 
             <div class="dropdown-container">
                  <a href="{{ url_for('users.inscricao_minicursos') }}"
@@ -99,6 +101,7 @@
                 <a href="{{ url_for('management.sortear') }}" class="list-group-item list-group-item-action bg-light">Sorteio de usuário</a>
                 <a href="{{ url_for('management.gerar_url_conteudo') }}" class="list-group-item list-group-item-action bg-light">URL ministrante</a>
                 <a href="{{ url_for('management.cadastro_flags') }}" class="list-group-item list-group-item-action bg-light"> Gerenciar Flags </a>
+                  <a href="{{ url_for('management.gerenciar_comprovantes') }}" class="list-group-item list-group-item-action bg-light"> Gerenciar Comprovantes </a>
             </div>
 
             <a href="/admin" class="list-group-item list-group-item-action bg-light">Administração</a>
