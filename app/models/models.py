@@ -102,11 +102,15 @@ class Participante(db.Model):
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
     pontuacao = Column(Integer, nullable=True, default=0)
+    minicurso_etapa_1 = Column(Integer, db.ForeignKey('atividade.id'))
+    minicurso_etapa_2 = Column(Integer, db.ForeignKey('atividade.id'))
     usuario = db.relationship('Usuario', back_populates='participantes_associados', lazy=True)
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
     flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
+
+
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + "><" + str(self.evento.edicao) + "ª edição>"
 
@@ -256,6 +260,10 @@ class Evento(db.Model):
     fim_inscricoes_evento = Column(DateTime, nullable=False)
     ano = Column(Integer, default=datetime.now().year)
     preco_kit = Column(Float(precision=2), nullable=True)
+    abertura_minicursos_1_etapa = Column(DateTime, nullable=False)
+    fechamento_minicursos_1_etapa = Column(DateTime, nullable=False)
+    abertura_minicursos_2_etapa = Column(DateTime, nullable=False)
+    fechamento_minicursos_2_etapa = Column(DateTime, nullable=False)
     participantes = db.relationship('Participante', backref='evento', lazy=True)
     presencas = db.relationship('Presenca', backref='evento', lazy=True)
     atividades = db.relationship('Atividade', backref='evento', lazy=True)
