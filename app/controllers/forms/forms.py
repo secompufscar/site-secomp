@@ -266,11 +266,11 @@ class GerarUrlConteudoForm(FlaskForm):
     tipo_atividade = SelectField("Tipo da Atividade", choices=get_opcoes_tipo_atividade(), id="tipo_atividade", coerce=int, validators=[InputRequired()])
 
 class CadastrarFlagForm(FlaskForm):
-    flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
+    flag = StringField('', validators=[InputRequired(), Length(min=1,max=64)])
     pontos = IntegerField('Pontos', validators=[InputRequired()])
 
 class SubmeterFlagForm(FlaskForm):
-    flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
+    flag = StringField('', validators=[InputRequired(), Length(min=1,max=64)])
 
 class BugReportForm(FlaskForm):
     titulo = StringField('Título', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1, max=64)])

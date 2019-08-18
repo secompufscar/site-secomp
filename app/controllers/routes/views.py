@@ -93,14 +93,8 @@ def cronograma():
 
 @views.route('/equipe', methods=["GET", "POST"])
 def equipe():
-    import json
-    import os.path as op
-    import app.config as conf
     form_login = LoginForm(request.form)
-    filename = op.join(op.dirname(conf.__file__), 'membros_org.json')
-    with open(filename, 'r') as read_file:
-        data = json.load(read_file)
-    return render_template('views/equipe.html', title='Equipe', data=data, form_login=form_login)
+    return render_template('views/equipe.html', title='Equipe', data=get_equipe(), form_login=form_login)
 
 
 @views.route('/faq', methods=["GET", "POST"])
@@ -113,6 +107,11 @@ def faq():
 def ctf():
     form_login = LoginForm(request.form)
     return render_template('views/ctf.html', title='CTF', form_login=form_login)
+
+#@views.route('/gamejam', methods=["GET", "POST"])
+def gamejam():
+    form_login = LoginForm(request.form)
+    return render_template('views/gamejam.html', title='CTF', form_login=form_login)
 
 @views.route('/teste', methods=["GET","POST"])
 def teste():
@@ -136,9 +135,9 @@ def login():
                 login_user(user, remember=True)
                 if atividade_confirmada == False:
                     return redirect(url_for('conteudo.dados_hospedagem_transporte'))
-                return redirect(url_for('views.constr'))
-        return render_template('views/login.html', form_login=form, form=form, erro=True)
-    return render_template('views/login.html', form_login=form, form=form)
+                return redirect(url_for('users.dashboard'))
+        return render_template('views/login.html', form=form, erro=True)
+    return render_template('views/login.html', form=form)
 
 
 @views.route("/logout", methods=["GET"])
