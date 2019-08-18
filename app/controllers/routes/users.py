@@ -536,3 +536,26 @@ def pagamentos():
         return render_template('users/pagamentos.html', usuario=current_user, participante=participante, pagamentos=pagamentos, form_login=form_login)
     else:
         return redirect(url_for('.cadastro_participante'))
+
+@users.route('/presencas', methods=["POST", "GET"])
+@login_required
+def presencas():
+    form_login = LoginForm(request.form)
+    participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
+    if participante is not None:
+        presencas = db.session.query(Presenca).filter(Presenca.id_participante == participante.id, Presenca.id_evento == get_id_evento_atual()).all()
+        limites = {
+            "SEG_INI": datetime.strptime('2019-09-09 00:00:00', '%Y-%m-%d %H:%M:%S'),
+            "SEG_FIM": datetime.strptime('2019-09-09 23:59:59', '%Y-%m-%d %H:%M:%S'),
+            "TER_INI": datetime.strptime('2019-09-10 00:00:00', '%Y-%m-%d %H:%M:%S'),
+            "TER_FIM": datetime.strptime('2019-09-10 23:59:59', '%Y-%m-%d %H:%M:%S'),
+            "QUA_INI": datetime.strptime('2019-09-11 00:00:00', '%Y-%m-%d %H:%M:%S'),
+            "QUA_FIM": datetime.strptime('2019-09-11 23:59:59', '%Y-%m-%d %H:%M:%S'),
+            "QUI_INI": datetime.strptime('2019-09-12 00:00:00', '%Y-%m-%d %H:%M:%S'),
+            "QUI_FIM": datetime.strptime('2019-09-12 23:59:59', '%Y-%m-%d %H:%M:%S'),
+            "SEX_INI": datetime.strptime('2019-09-13 00:00:00', '%Y-%m-%d %H:%M:%S'),
+            "SEX_FIM": datetime.strptime('2019-09-13 23:59:59', '%Y-%m-%d %H:%M:%S')
+        }
+        return render_template('users/presencas.html', usuario=current_user, participante=participante, presencas=presencas, limites=limites,    form_login=form_login)
+    else:
+        return redirect(url_for('.cadastro_participante'))

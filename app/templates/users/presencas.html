@@ -1,0 +1,62 @@
+{% extends "users/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block metas %}
+{{ super() }}
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+{% endblock %}
+
+{% block sidebar_content %}
+<div class="container pt-1">
+  <h2 class="text-center pb-2" style="margin-top: 15px; margin-bottom: 20px;">Minhas presenças no evento</h2>
+
+    <table class="table text-center table-borderless">
+      <thead class="thead bg-dark text-white">
+        <tr>
+          <th scope="col">Data e Hora</th>
+          <th scope="col">Dia da Semana</th>
+          <th scope="col">Atividade</th>
+          <th scope="col">Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for presenca in presencas %}
+        <tr>
+          <td scope='col'>
+            {{ presenca.data_hora_registro.strftime('%d/%m/%Y %H:%M:%S') }}
+          </td>
+          <td>
+            {% if presenca.data_hora_registro > limites.SEG_INI and presenca.data_hora_registro < limites.SEG_FIM %}
+              Segunda
+            {% elif presenca.data_hora_registro > limites.TER_INI and presenca.data_hora_registro < limites.TER_FIM %}
+              Terça
+            {% elif presenca.data_hora_registro > limites.QUA_INI and presenca.data_hora_registro < limites.QUA_FIM %}
+              Quarta
+            {% elif presenca.data_hora_registro > limites.QUI_INI and presenca.data_hora_registro < limites.QUI_FIM %}
+              Quinta
+            {% elif presenca.data_hora_registro > limites.SEX_INI and presenca.data_hora_registro < limites.SEX_FIM %}
+              Sexta
+            {% endif %}
+          </td>
+          <td>
+            {{ presenca.atividade.titulo }}
+          </td>
+          <td>
+            {{ presenca.atividade.tipo.nome }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+<script>
+  function abrir_comprovante(arquivo){
+    url = '{{url_for("views.uploads", filename="")}}' + 'comprovantes/' + arquivo
+    window.open(url)
+  }
+</script>
+
+{% endblock %}

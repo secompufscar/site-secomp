@@ -275,12 +275,10 @@ def desativar_flag(id):
 def gerenciar_comprovantes():
     permissoes = current_user.getPermissoes()
     if("GERENCIAR_COMPROVANTES" in permissoes or current_user.is_admin()):
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         form = GerenciarComprovantesForm(request.form)
         if form.validate_on_submit():
-            print(esta_preenchido(form.aprovar.data))
-            print(esta_preenchido(form.desaprovar.data))
-            print(form.data)
             if esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data) and not esta_preenchido(form.rejeitar.data):
                 pagamento = db.session.query(Pagamento).get(int(form.aprovar.data))
                 if pagamento.efetuado is not True and pagamento.metodo_pagamento == 'Comprovante':
@@ -308,6 +306,6 @@ def gerenciar_comprovantes():
                     pagamento.rejeitado = False
                     db.session.add(pagamento)
                     db.session.commit()
-        return render_template('management/gerenciar_comprovantes.html', form=form, usuario=current_user, form_login=form_login, pagamentos=get_info_usuarios_envio_comprovante())
+        return render_template('management/gerenciar_comprovantes.html', form=form, participante=participante, usuario=current_user, form_login=form_login, pagamentos=get_info_usuarios_envio_comprovante())
     else:
         abort(403)
