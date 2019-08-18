@@ -1,0 +1,64 @@
+{% extends "users/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block metas %}
+{{ super() }}
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+{% endblock %}
+
+{% block sidebar_content %}
+<div class="container pt-1">
+  <h2 class="text-center pb-2" style="margin-top: 15px; margin-bottom: 20px;">Meus Pagamentos</h2>
+
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <th scope="col">Status</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Data e Hora</th>
+          <th scope="col">Preço</th>
+          <th scope="col">Comprovante</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pagamento in pagamentos%}
+        <tr>
+          <td scope='col'>
+            {% if pagamento.rejeitado is sameas true %}
+            <span style='color: #cc0000;'>Rejeitado</span>
+            {% elif pagamento.efetuado is sameas true %}
+              <span style='color: #008000;'>Aprovado</span>
+            {% else %}
+              <span style='color: #cca300;'>Pendente</span>
+            {% endif %}
+          </td>
+          <td>
+            {{ pagamento.metodo_pagamento }}
+          </td>
+          <td>
+            {{ pagamento.data_hora_pagamento.strftime('%d/%m/%Y %H:%M:%S') }}
+          </td>
+          <td scope='col'>
+              R$ {{ pagamento.valor }}
+          </td>
+          <td scope='col'>
+            {% if pagamento.arquivo_comprovante is not none%}
+              <button type='button' title="Visualizar Comprovante" alt="Visualizar Comprovante" class="btn btn-default" onclick= "abrir_comprovante('{{ pagamento.arquivo_comprovante }}')"><i class="fa fa-file-invoice-dollar fa-lg"></i></button>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+<script>
+  function abrir_comprovante(arquivo){
+    url = '{{url_for("views.uploads", filename="")}}' + 'comprovantes/' + arquivo
+    window.open(url)
+  }
+</script>
+
+{% endblock %}

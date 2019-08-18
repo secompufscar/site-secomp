@@ -175,3 +175,10 @@ def esta_preenchido(data):
     if data == []:
         return False
     return True
+
+def get_permissao_comprovante(participante, arquivo):
+     pagamentos = db.session.query(Pagamento).filter(Pagamento.participante == participante, Pagamento.metodo_pagamento == 'Comprovante').all()
+     for pagamento in pagamentos:
+         if pagamento.arquivo_comprovante == arquivo:
+             return True
+     return False

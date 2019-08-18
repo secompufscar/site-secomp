@@ -308,6 +308,6 @@ def gerenciar_comprovantes():
                     pagamento.rejeitado = False
                     db.session.add(pagamento)
                     db.session.commit()
-        return render_template('management/gerenciar_comprovantes.html', form=form, form_login=form_login, pagamentos=get_info_usuarios_envio_comprovante())
+        return render_template('management/gerenciar_comprovantes.html', form=form, usuario=current_user, form_login=form_login, pagamentos=get_info_usuarios_envio_comprovante())
     else:
         abort(403)
