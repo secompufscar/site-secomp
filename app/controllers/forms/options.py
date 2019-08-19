@@ -19,11 +19,11 @@ opcoes_falha = [
 ]
 
 opcoes_como_conheceu = [
-        (0, "Pelo Departamento de Computação da UFSCar"),
-        (1, "Através de amigos"),
-        (2, "Pela nossa página do facebook"),
-        (3, "Por cartazes espalhados em São Carlos"),
-        (4, "Outro")
+    (0, "Pelo Departamento de Computação da UFSCar"),
+    (1, "Através de amigos"),
+    (2, "Pela nossa página do facebook"),
+    (3, "Por cartazes espalhados em São Carlos"),
+    (4, "Outro")
 ]
 
 def get_opcoes_cidades():
@@ -59,6 +59,7 @@ def get_opcoes_cursos():
         for curso in cursos:
             info = (curso.id, curso.nome)
             info_cursos.append(info)
+        print(info_cursos)
         return info_cursos
     except Exception as e:
         print(e)
@@ -73,8 +74,8 @@ def get_opcoes_camisetas():
         for camiseta in camisetas:
             if camiseta.quantidade_restante > 0:
                 info = (camiseta.id, camiseta.tamanho)
-                info_camisetas.append(info)
-
+                info_camisetas.append(info) 
+        print(info_camisetas)
         return info_camisetas
     except Exception as e:
         print(e)
