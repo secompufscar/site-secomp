@@ -19,11 +19,11 @@ opcoes_falha = [
 ]
 
 opcoes_como_conheceu = [
-        (0, "Pelo Departamento de Computação da UFSCar"),
-        (1, "Através de amigos"),
-        (2, "Pela nossa página do facebook"),
-        (3, "Por cartazes espalhados em São Carlos"),
-        (4, "Outro")
+    (0, "Pelo Departamento de Computação da UFSCar"),
+    (1, "Através de amigos"),
+    (2, "Pela nossa página do facebook"),
+    (3, "Por cartazes espalhados em São Carlos"),
+    (4, "Outro")
 ]
 
 def get_opcoes_cidades():
