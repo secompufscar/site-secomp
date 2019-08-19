@@ -8,9 +8,13 @@
 {% endblock%}
 
 {% block conteudo %}
-  <span style="color:black;">Acesse o link abaixo para alterar sua senha:</span><br>
-  <p style="word-break: break-all;padding:0;margin:0">{{ info.link }}</p>
-  <span style="color:black;">Se você não solicitou a alteração de senha, ignore este email</span>
+  {% if info.link %}
+    <span style="color:black;">Acesse o link abaixo para alterar sua senha:</span><br>
+    <p style="word-break: break-all;padding:0;margin:0">{{ info.link }}</p>
+  {% else %}
+    <span style="color:black;">Sua senha foi alterada com sucesso!</span><br>
+  {% endif %}
+  <span style="color:black;">Se você não solicitou a alteração de senha ou acha que tem algo errado com a sua conta, entre em contato conosco pelo <a href="mailto:ti@secompufscar.com.br">email</a>.</span>
 {% endblock %}
 
 {% block footer %}

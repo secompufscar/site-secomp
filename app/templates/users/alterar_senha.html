@@ -10,6 +10,7 @@
             <label class="control-label">Digite a nova senha abaixo</label>
             <form method="POST" action="{{ form.action }}">
                 {{ form.hidden_tag() }}
+		{{ wtf.form_field(form.senha_atual) }}
                 {{ wtf.form_field(form.nova_senha) }}
                 {{ wtf.form_field(form.confirmacao) }}
                 <div class="text-center">

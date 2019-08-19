@@ -2,7 +2,7 @@ from os import path, makedirs
 
 from bcrypt import gensalt
 from flask import request, redirect, flash, Blueprint, current_app
-from flask_login import login_required, login_user
+from flask_login import login_required, login_user, fresh_login_required
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
@@ -379,20 +379,31 @@ def desinscrever_workshop(id):
 
 
 @users.route('/alterar-senha', methods=["POST", "GET"])
-@login_required
+@fresh_login_required
 def alterar_senha():
     form_login = LoginForm(request.form)
     form = AlterarSenhaForm(request.form)
     if email_confirmado():
         if form.validate_on_submit():
-            usuario = db.session.query(Usuario).filter_by(
-                email=current_user.email).first()
-            enc = pbkdf2_sha256.encrypt(
-                form.nova_senha.data, rounds=10000, salt_size=15)
-            usuario.senha = enc
-            db.session.add(usuario)
-            db.session.commit()
-            return redirect(url_for('views.login'))
+            usuario = db.session.query(Usuario).filter_by(email=current_user.email).first()
+            if pbkdf2_sha256.verify(form.senha_atual.data, usuario.senha):
+                nova_senha = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+                usuario.senha = nova_senha
+                db.session.add(usuario)
+                db.session.commit()
+                # Envia e-mail informando ao usuário que a senha foi alterada
+                info = {'assunto': 'Alteração de Senha', 
+                        'nome': current_user.primeiro_nome,
+                        'email': current_user.email,
+                        'titulo': 'ALTERAÇÃO DE SENHA',
+                        'template': 'email/alteracao_senha.html',
+                        'footer': 'TI X SECOMP UFSCar'}
+                enviar_email_generico(info)
+                flash('Senha alterada com sucesso!')
+                return redirect(url_for('views.login'))
+            else:
+                flash('Senha atual incorreta!')
+                return render_template('users/alterar_senha.html', form=form, action=request.base_url, form_login=form_login)
         else:
             return render_template('users/alterar_senha.html', form=form, action=request.base_url, form_login=form_login)
     else:
