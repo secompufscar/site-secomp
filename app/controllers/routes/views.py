@@ -153,7 +153,7 @@ def login():
                 login_user(user, remember=True)
                 if atividade_confirmada == False:
                     return redirect(url_for('conteudo.dados_hospedagem_transporte'))
-                return redirect(url_for('views.index'))
+                return redirect(url_for('users.dashboard'))
         return render_template('views/login.html', form_login=form, form=form, erro=True)
     return render_template('views/login.html', form_login=form, form=form)
 

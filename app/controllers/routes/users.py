@@ -74,54 +74,50 @@ def verificar_email():
 @login_required
 def cadastro_participante():
     form_login = LoginForm(request.form)
-    id_evento = db.session.query(Evento).filter_by(
-        edicao=EDICAO_ATUAL).first().id
-    if current_user.email_verificado:
-        participante = db.session.query(Participante).filter_by(
-            id_usuario=current_user.id, id_evento=id_evento).first()
-        if participante is None:
-            form = ParticipanteForm(request.form)
-            participante = db.session.query(Participante).filter_by(
-                id_usuario=current_user.id, id_evento=id_evento).first()
-            if form.validate_on_submit() and participante is None:
-                agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                usuario = current_user
-                participante = Participante(id_usuario=usuario.id, id_evento=id_evento, data_inscricao=agora, credenciado=False, opcao_coffee=0)
-                db.session.add(participante)
-                db.session.flush()
-                db.session.commit()
-                return redirect(url_for('.comprar_kit'))
+    try:
+        id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
+        if current_user.email_verificado:
+            participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+            if participante is None:
+                form = ParticipanteForm(request.form)
+                participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+                if form.validate_on_submit() and participante is None:
+                    agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    participante = Participante(id_usuario=current_user.id, id_evento=id_evento, data_inscricao=agora, credenciado=False, opcao_coffee=0)
+                    db.session.add(participante)
+                    db.session.flush()
+                    db.session.commit()
+                    return redirect(url_for('.comprar_kit'))
+                else:
+                    return render_template('users/cadastro_participante.html', form=form, form_login=form_login)
             else:
-                return render_template('users/cadastro_participante.html', form=form, form_login=form_login)
+                return redirect(url_for('.dashboard'))
         else:
-            return redirect(url_for('.dashboard'))
-    else:
-        return redirect(url_for('.verificar_email'))
+            return redirect(url_for('.verificar_email'))
+    except SQLAlchemyError:
+        db.session.rollback()
+        return redirect(url_for('.dashboard'))
 
 
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
     form_login = LoginForm(request.form)
     if email_confirmado():
         participante = db.session.query(Participante).filter_by(
             usuario=current_user).first()
-        return render_template('users/dashboard_usuario.html', title='Dashboard', usuario=usuario,
-                               participante=participante, form_login=form_login)
+        return render_template('users/dashboard_usuario.html', title='Dashboard', usuario=current_user, participante=participante, form_login=form_login)
     else:
         serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         salt = gensalt().decode('utf-8')
         token = serializer.dumps(current_user.email, salt=salt)
-        usuario = current_user
-        usuario.salt = salt
-        usuario.token_email = token
-        usuario.email_verificado = False
-        db.session.add(usuario)
+        current_user.salt = salt
+        current_user.token_email = token
+        current_user.email_verificado = False
+        db.session.add(current_user)
         db.session.commit()
-        enviar_email_confirmacao(usuario.email, token)
-        login_user(usuario, remember=True)
+        enviar_email_confirmacao(current_user, token)
+        login_user(current_user, remember=True)
         return redirect(url_for('.verificar_email'))
 
 @users.route('/dados', methods=['POST', 'GET'])
