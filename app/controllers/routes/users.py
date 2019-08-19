@@ -89,7 +89,7 @@ def cadastro_participante():
                     db.session.commit()
                     return redirect(url_for('.comprar_kit'))
                 else:
-                    return render_template('users/cadastro_participante.html', form=form, form_login=form_login)
+                    return render_template('users/cadastro_participante.html', form=form, form_login=form_login, usuario=current_user)
             else:
                 return redirect(url_for('.dashboard'))
         else:
@@ -98,6 +98,33 @@ def cadastro_participante():
         db.session.rollback()
         return redirect(url_for('.dashboard'))
 
+
+@users.route('/alterar-dados-usuario', methods=['POST', 'GET'])
+@login_required
+def alterar_usuario():
+    form_login = LoginForm(request.form)
+    usuario = db.session.query(Usuario).filter_by(id=current_user.id).first()
+    form = EdicaoUsuarioForm(request.form)
+    if form.validate_on_submit and request.method == 'POST':
+        usuario.primeiro_nome = form.primeiro_nome.data
+        usuario.sobrenome = form.sobrenome.data
+        usuario.id_curso = verifica_outro_escolhido(form.curso, Curso(nome=str(form.outro_curso.data).strip()))
+        usuario.id_instituicao = verifica_outro_escolhido(form.instituicao, Instituicao(nome=form.outra_instituicao.data))
+        usuario.id_cidade = verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data))
+        usuario.data_nascimento = form.data_nasc.data
+        db.session.flush()
+        db.session.commit()
+        return redirect(url_for('.dashboard'))
+    else:
+        form.primeiro_nome.data = usuario.primeiro_nome
+        form.sobrenome.data = usuario.sobrenome
+        form.curso.data = usuario.id_curso
+        form.instituicao.data = usuario.id_instituicao
+        form.cidade.data = usuario.id_cidade
+        form.data_nasc.data = usuario.data_nascimento
+        return render_template('users/alterar_usuario.html', usuario=current_user,
+                                participante = db.session.query(Participante).filter_by(
+                                usuario=current_user).first(), form=form, form_login=form_login)
 
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
@@ -392,7 +419,7 @@ def alterar_senha():
                 db.session.add(usuario)
                 db.session.commit()
                 # Envia e-mail informando ao usuário que a senha foi alterada
-                info = {'assunto': 'Alteração de Senha', 
+                info = {'assunto': 'Alteração de Senha',
                         'nome': current_user.primeiro_nome,
                         'email': current_user.email,
                         'titulo': 'ALTERAÇÃO DE SENHA',

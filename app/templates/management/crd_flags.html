@@ -1,19 +1,18 @@
 {% extends "users/sidebar.html" %}
 {% import "wtf.html" as wtf %}
 
-
 {% block sidebar_content %}
 <div class="container">
 
-    <div class="row">
+    <div class="row justify-content-center pt-1">
 
-        <div class="col-md-6" style="width: 50%;margin-left : 25%">
-            <h3 class="text-center" style="padding-top: 50px">Cadastro de novas flags</h3>
+        <div class="col-md-6">
+            <h3 class="text-center">Cadastro de novas flags</h3>
             {% if cadastrado %}
-                <center><h5>A Flag foi cadastrada com sucesso</h5></center>
+                <h5>A Flag foi cadastrada com sucesso</h5>
             {% endif %}
             {% if desativada %}
-                <center><h5>A Flag foi desativada com sucesso</h5></center>
+                <h5>A Flag foi desativada com sucesso</h5>
             {% endif %}
 
             <form method="POST" action="{{ url_for('management.cadastro_flags') }}">
@@ -26,8 +25,8 @@
         </div>
 	</div>
 
-    <div id="list" class="row" style="padding-top: 25px;">
-		<div class="table-responsive col-lg-12">
+    <div id="list" class="row pt-4">
+		<div class="table-responsive">
 			<table class="table table-striped">
 				<thead>
 					<tr>
