@@ -45,7 +45,7 @@
         </div>
         {% endif %}
 
-        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['APROVAR_COMPROVANTES'].usuarios %}
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERENCIAR_COMPROVANTES'].usuarios %}
         <div class="col-md-6 p-3">
             <form action="">
                 <h4>Pagamentos</h4>
@@ -99,7 +99,7 @@
             </form>
         </div>
         {% endif %}
-      
+
         {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CONTEUDO'].usuarios %}
         <div class="col-md-6 p-3">
             <div>

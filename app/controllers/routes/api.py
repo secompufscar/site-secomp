@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, abort, url_for, Blueprint
-from flask import jsonify
+from flask import jsonify, current_app
 from app.controllers.functions.dictionaries import *
 
 from app.controllers.functions.helpers import get_participantes_da_atividade_json
@@ -31,15 +31,52 @@ def patrocinadores(edicao):
 def atividades(edicao):
     return jsonify(get_atividades(edicao))
 
-
-#@api.route('/patrocinadores')
-def patrocinadores():
-    return  jsonify(get_patrocinadores())
-
-
 #@api.route('/img/<url>')
 def retornaImg(url):
     return url #TODO (quando estiver no servidor) hospedagem de imagens
+
+
+
+@api.route('/ler-presenca', methods=['POST'])
+def ler_presenca():
+    '''
+    Essa rota vai receber via POST o id de participante, o id da atividade e registrar a presença caso a key do aplicativo bata com a
+    key do arquivo config/development.py, chamada de KEY_API_PRESENCA.
+    '''
+    data = request.get_json(force=True)
+    id_participante = int(data['id_participante'])
+    id_atividade = int(data['id_atividade'])
+    key = data['key']
+    if(key == current_app.config['KEY_API_PRESENCA']):
+        try:
+            participante = db.session.query(Participante).filter_by(id=id_participante).first()
+
+            if (db.session.query(Presenca).filter_by(id_atividade=id_atividade,
+                                                         id_participante=id_participante).first() != None):
+                inscrito =  participante in db.session.query(Atividade).filter_by(id=id_atividade).participantes
+                presenca = Presenca(data_hora_registro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                    id_atividade=id_atividade,
+                                    id_participante=id_participante,
+                                    id_evento=get_id_evento_atual(),
+                                    inscrito=inscrito)
+                db.session.add(presenca)
+                db.session.flush()
+                db.session.commit()
+                info = {
+                    "Participante" : participante.primeiro_nome + " " + participante.sobrenome,
+                    "Status" : "SUCCESS"
+                }
+                return jsonify(info)
+            else:
+                info = {
+                    "Participante": participante.primeiro_nome + " " + participante.sobrenome,
+                    "Status": "JA_LIDO"
+                }
+                return jsonify(info)
+        except:
+            return jsonify("ERROR")
+    else:
+        return jsonify("INVALID KEY")
 
 
 @api.route('/executa-email-custon', methods=['POST'])
@@ -140,3 +177,4 @@ def pesquisa_usuario_por_atividade():
 
         participantes = get_participantes_da_atividade_json(int(atividadeID))
         return jsonify(participantes)
+

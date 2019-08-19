@@ -3,208 +3,199 @@
 @import "variables";
 @import "mixins";
 
+#content {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  min-height: 75vh;
+  padding-top: 53px;
+}
+
+// Style switch
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  color: var(--font-color);
+}
+
+.theme-switch {
+  display: inline-block;
+  position: relative;
+  margin: auto 0 auto 0;
+  height: 15px;
+  width: 30px;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.bg-dark {
+  background-color: var(--bg-dark) !important;
+}
+
+.slider {
+  background-color: #ccc;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  content: "";
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: $dark-gray;
+}
+
+input:checked + .slider:before {
+  transform: translateX(15px);
+}
+
+.slider.round {
+  border-radius: 15px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+// end
+
 // Rules
-header{
-    @include main-gradient;
-    a{
-	font: {
-	    weight: 600;
-	}
-	color: $white;
-	@include main-font;
-	&:hover {
-	    color: $white70;
-	}
+header {
+  @include main-gradient;
+  a {
+    font: {
+      weight: 600;
     }
+    color: $white;
+    @include main-font;
+    &:hover {
+      color: $white70;
+    }
+  }
 }
 
-.small {
-    font-size: 14px;
+.bg-gradient-secomp {
+  @include main-gradient;
+}
+.btn {
+  border: none;
 }
 
-.bg-gradient-secomp{
-    @include main-gradient;
+.btn-primary {
+  background-color: $secomp1;
 }
 
-.carousel{ 
-    &-item {
-	height: 100vh;
-	width:  100vw;
-	object-fit: fill;
-	text-shadow: 1px 1px 5px black;
-    }
-}
-.dropdown{
-    &-menu a {
-	font-size: 12px;
-    }
-    > &-toggle:active {
-	/*Without this, clicking will make it sticky*/
-	pointer-events: visible;
-    }
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+  background-color: $secomp2 !important;
 }
 
-.desc {
-    padding-bottom: 10%;
+.btn-link:hover,
+.btn-link:focus {
+  text-decoration: none;
+}
+
+.carousel {
+  &-item {
+    height: 100vh;
+    width: 100vw;
+    object-fit: fill;
+    text-shadow: 1px 1px 5px black;
+  }
+}
+
+.dropdown {
+  &-menu {
+    background-color: var(--bg-color);
+  }
+  &-menu a {
+    font-size: 12px;
+    color: var(--font-color);
+  }
+  &-item:hover {
+    color: var(--font-color);
+    background: var(--hover-color);
+  }
+  &-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: visible;
+  }
 }
 
 footer {
-    background-color: $dark-gray;
-    ul li{
-	padding: 1%;	
-	a{
-	    color: $white;
-	    &:hover{
-		color: $secomp2;
-	    }
-	}
+  background-color: var(--footer-color);
+  ul li {
+    padding: 1%;
+    a {
+      color: $white;
+      transition: 0.2s;
+      &:hover {
+        color: $secomp2;
+        transition: 0.2s;
+      }
     }
-}
-
-#barrinha {
-    @include main-gradient;
-    padding: 0.5%;
-}
-
-#nav-logo {
-    object-fit: contain;
-    // padding: 1px;
-} 
-
-#video {
-    height: 80vh;
+  }
 }
 
 .sobre-img {
-    object-fit: cover;
-    max-height: 70vh;
-    width: 100vh;
+  object-fit: cover;
+  max-height: 70vh;
+  width: 100vh;
 }
 
-/* CSS para os cards da página '/equipe' */
-
-.frontside {
-    position: relative;
-    @include vert-rotate(0deg); 
-    z-index: 2;
-    margin-bottom: 30px;
-    @media (min-width: 576px) {
-        height: 250px;
-        width: 250px;
-    }
+/* Imagens com texto em cima */
+.overlay {
+  background-color: #000000;
+  position: relative;
 }
 
-.img-equipe {
-    width: 6rem;
-    height: 6rem;
-    object-fit: cover; 
+.opac {
+  filter: opacity(0.4);
 }
 
-.backside {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: white;
-    @media (min-width: 576px) {
-        height: 250px;
-        width: 250px;
-    }
-    @include vert-rotate(-180deg); 
-    @include box-shadow((5px, 7px, 9px, -4px), rgb(158, 158, 158));
+.overlay-text {
+  position: absolute;
+  color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+/* fim-imagens */
+
+#barrinha {
+  @include main-gradient;
+  padding: 0.5%;
 }
 
-.image-flip:hover .backside,
-.image-flip.hover .backside {
-    @include vert-rotate(0deg); 
-    border-radius: .25rem;
+#nav-logo {
+  object-fit: contain;
+  transition: 0.2s;
 }
 
-.image-flip:hover .frontside,
-.image-flip.hover .frontside {
-    @include vert-rotate(180deg);
+#nav-logo:hover {
+  animation: spin 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 
-.mainflip {
-    @include trans-style(preserve-3d);
-    @include anim-transition(1s);
-    -moz-transform: perspective(1000px);
-    position: relative;
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
-
-.frontside,
-.backside {
-    @include trans-style(preserve-3d);
-    @include anim-transition(1s);
-    @include backface-visibility(hidden);
+#video {
+  height: 80vh;
 }
-
-.frontside .card,
-.backside .card {
-    /* Ajustar para ficar responsivo com a largura da tela */
-    min-height: 250px;
-}
-
-.backside .card p {
-    font-size: 0.8em;
-}
-
-.frontside .card .card-title,
-.backside .card .card-title {
-    color: $secomp3 !important;
-}
-
-.frontside .card .card-body img {
-    width: 20vh;
-    height: 20vh;
-    border-radius: 50%;
-}
-
-#portfolio .container-fluid .portfolio-box:hover .portfolio-box-caption {
-    opacity: 0.8;
-}
-
-#portfolio .container-fluid .portfolio-box .portfolio-box-caption{
-
-    background: rgba(244,98,58,.9);
-        -webkit-transition: opacity .25s ease;
-        transition: opacity .25s ease;
-    }
-
-    a.portfolio-box {
-        color: #f4623a;
-        text-decoration: none;
-        background-color: transparent;
-      }
-      
-      a.portfolio-box:hover {
-        color: #d6370c;
-        text-decoration: underline;
-      }
-
-      #portfolio .container-fluid .portfolio-box .portfolio-box-caption {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        bottom: 0;
-        text-align: center;
-        opacity: 0;
-        color: #fff;
-        background-image: linear-gradient(to right, #008bb5, #00cfa1); 
-        -webkit-transition: opacity .25s ease;
-        transition: opacity .25s ease;
-        text-align: center;
-    }

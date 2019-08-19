@@ -1,13 +1,67 @@
+:root {
+    --font-gray: #666666;
+    --card-color: #fff;
+    --nav-color: #fff;
+    --selected-color: #00cfa1;
+    --border-color: #ced2d6;
+}
+
+[data-theme=dark] {
+    --font-gray: #aaaaaa;
+    --card-color: #343A40;
+    --nav-color: #ffffff11;
+    --selected-color: #ff205b;
+    --border-color: #646A70;
+}
+
+.card {
+    background-color: var(--card-color);
+}
+
+.card-body {
+    background-color: var(--card-color);
+}
+
+.modal-content {
+    background-color: var(--card-color);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color) !important;
+}
+
 .card img {
     border-radius: 50%;
 }
-.day {
-    height: 0.3rem;
-    margin: 0 -7% -7% -7%;
-    border-radius: 10%;
+
+.text-gray {
+    color: var(--font-gray);
 }
+
+.day {
+    height: 0.2rem;
+    margin: 0 -5% -7% -5%;
+}
+
+th {
+    color: var(--font-color);
+    background-color: var(--nav-color);
+    border: 1px solid var(--border-color) !important;
+}
+
 .nav-crono a {
     cursor: default;
+    color: var(--font-color);
+}
+
+.setaDireita {
+    text-align: right !important;
+    width: auto;
+    margin-left: auto;
 }
 
 @media (max-width: 991px) {
@@ -30,7 +84,7 @@
 
 @media (min-width: 992px) {
     .selected {
-        background-color: #00cfa1;
+        background-color: var(--selected-color);
         color: #fff;
         text-align: center;
     }
