@@ -2,7 +2,7 @@ from os import path, makedirs
 
 from bcrypt import gensalt
 from flask import request, redirect, flash, Blueprint, current_app
-from flask_login import login_required, login_user
+from flask_login import login_required, login_user, fresh_login_required
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
@@ -74,54 +74,50 @@ def verificar_email():
 @login_required
 def cadastro_participante():
     form_login = LoginForm(request.form)
-    id_evento = db.session.query(Evento).filter_by(
-        edicao=EDICAO_ATUAL).first().id
-    if current_user.email_verificado:
-        participante = db.session.query(Participante).filter_by(
-            id_usuario=current_user.id, id_evento=id_evento).first()
-        if participante is None:
-            form = ParticipanteForm(request.form)
-            participante = db.session.query(Participante).filter_by(
-                id_usuario=current_user.id, id_evento=id_evento).first()
-            if form.validate_on_submit() and participante is None:
-                agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                usuario = current_user
-                participante = Participante(id_usuario=usuario.id, id_evento=id_evento, data_inscricao=agora, credenciado=False, opcao_coffee=0)
-                db.session.add(participante)
-                db.session.flush()
-                db.session.commit()
-                return redirect(url_for('.comprar_kit'))
+    try:
+        id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
+        if current_user.email_verificado:
+            participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+            if participante is None:
+                form = ParticipanteForm(request.form)
+                participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+                if form.validate_on_submit() and participante is None:
+                    agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    participante = Participante(id_usuario=current_user.id, id_evento=id_evento, data_inscricao=agora, credenciado=False, opcao_coffee=0)
+                    db.session.add(participante)
+                    db.session.flush()
+                    db.session.commit()
+                    return redirect(url_for('.comprar_kit'))
+                else:
+                    return render_template('users/cadastro_participante.html', form=form, form_login=form_login)
             else:
-                return render_template('users/cadastro_participante.html', form=form, form_login=form_login)
+                return redirect(url_for('.dashboard'))
         else:
-            return redirect(url_for('.dashboard'))
-    else:
-        return redirect(url_for('.verificar_email'))
+            return redirect(url_for('.verificar_email'))
+    except SQLAlchemyError:
+        db.session.rollback()
+        return redirect(url_for('.dashboard'))
 
 
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 def dashboard():
-    usuario = db.session.query(Usuario).filter_by(
-        id=current_user.id).first()
     form_login = LoginForm(request.form)
     if email_confirmado():
         participante = db.session.query(Participante).filter_by(
             usuario=current_user).first()
-        return render_template('users/dashboard_usuario.html', title='Dashboard', usuario=usuario,
-                               participante=participante, form_login=form_login)
+        return render_template('users/dashboard_usuario.html', title='Dashboard', usuario=current_user, participante=participante, form_login=form_login)
     else:
         serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         salt = gensalt().decode('utf-8')
         token = serializer.dumps(current_user.email, salt=salt)
-        usuario = current_user
-        usuario.salt = salt
-        usuario.token_email = token
-        usuario.email_verificado = False
-        db.session.add(usuario)
+        current_user.salt = salt
+        current_user.token_email = token
+        current_user.email_verificado = False
+        db.session.add(current_user)
         db.session.commit()
-        enviar_email_confirmacao(usuario.email, token)
-        login_user(usuario, remember=True)
+        enviar_email_confirmacao(current_user, token)
+        login_user(current_user, remember=True)
         return redirect(url_for('.verificar_email'))
 
 @users.route('/dados', methods=['POST', 'GET'])
@@ -383,20 +379,31 @@ def desinscrever_workshop(id):
 
 
 @users.route('/alterar-senha', methods=["POST", "GET"])
-@login_required
+@fresh_login_required
 def alterar_senha():
     form_login = LoginForm(request.form)
     form = AlterarSenhaForm(request.form)
     if email_confirmado():
         if form.validate_on_submit():
-            usuario = db.session.query(Usuario).filter_by(
-                email=current_user.email).first()
-            enc = pbkdf2_sha256.encrypt(
-                form.nova_senha.data, rounds=10000, salt_size=15)
-            usuario.senha = enc
-            db.session.add(usuario)
-            db.session.commit()
-            return redirect(url_for('views.login'))
+            usuario = db.session.query(Usuario).filter_by(email=current_user.email).first()
+            if pbkdf2_sha256.verify(form.senha_atual.data, usuario.senha):
+                nova_senha = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+                usuario.senha = nova_senha
+                db.session.add(usuario)
+                db.session.commit()
+                # Envia e-mail informando ao usuário que a senha foi alterada
+                info = {'assunto': 'Alteração de Senha', 
+                        'nome': current_user.primeiro_nome,
+                        'email': current_user.email,
+                        'titulo': 'ALTERAÇÃO DE SENHA',
+                        'template': 'email/alteracao_senha.html',
+                        'footer': 'TI X SECOMP UFSCar'}
+                enviar_email_generico(info)
+                flash('Senha alterada com sucesso!')
+                return redirect(url_for('views.login'))
+            else:
+                flash('Senha atual incorreta!')
+                return render_template('users/alterar_senha.html', form=form, action=request.base_url, form_login=form_login)
         else:
             return render_template('users/alterar_senha.html', form=form, action=request.base_url, form_login=form_login)
     else:

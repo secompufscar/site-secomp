@@ -5,7 +5,7 @@ from passlib.hash import pbkdf2_sha256
 from werkzeug import secure_filename
 
 from flask import render_template, request, Blueprint, url_for, redirect, current_app, send_from_directory, abort, flash
-from flask_login import login_required, login_user, logout_user, current_user
+from flask_login import login_required, login_user, logout_user, current_user, confirm_login
 from flask_limiter import Limiter
 from flask_limiter.util import get_ipaddr
 
@@ -153,10 +153,27 @@ def login():
                 login_user(user, remember=True)
                 if atividade_confirmada == False:
                     return redirect(url_for('conteudo.dados_hospedagem_transporte'))
-                return redirect(url_for('views.index'))
+                return redirect(url_for('users.dashboard'))
         return render_template('views/login.html', form_login=form, form=form, erro=True)
     return render_template('views/login.html', form_login=form, form=form)
 
+
+@limiter.limit("50/day")
+@views.route("/confirm-login", methods=["GET", "POST"])
+def relogin():
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        user = db.session.query(Usuario).filter_by(email=form.email.data).first()
+        if user:
+            if user.senha is not None and pbkdf2_sha256.verify(form.senha.data, user.senha):
+                user.autenticado = True
+                user.ultimo_login = datetime.now()
+                db.session.add(user)
+                db.session.commit()
+                confirm_login()
+                return redirect(url_for('users.dashboard'))
+        return render_template('views/login.html', form_login=form, form=form, erro=True)
+    return render_template('views/login.html', form_login=form, form=form)
 
 @views.route("/logout", methods=["GET"])
 @login_required

@@ -110,7 +110,7 @@ def create_app(config=None):
     @login_manager.needs_refresh_handler
     def refresh_callback():
         flash(u'Para proteção da sua conta, faça login novamente para poder acessar esta página.')
-        return redirect('/login')
+        return redirect('/confirm-login')
 
     babel = Babel(app)
 
