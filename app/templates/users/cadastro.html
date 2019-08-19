@@ -87,10 +87,6 @@
             {{ wtf.form_field(form.recaptcha) }}
           </div>
 
-          {% for error in form.recaptcha.errors %}
-          <span class="help-block">{{ error }}</span>
-          {% endfor %}
-
           <div class="row justify-content-center">
             <div class="col-md-6">
               <button type="button" id="voltar" class="btn text-white btn-secondary pb-1">Voltar</button>
