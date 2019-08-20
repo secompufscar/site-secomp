@@ -130,7 +130,7 @@ body {
     #wrapper.toggled #sidebar-wrapper {
         margin-left: -15rem;
     }
-    #btn-open {
+    #btn-open, #btn-close {
         display: none;
     }
 }
