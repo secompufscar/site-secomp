@@ -12,7 +12,7 @@ from app.models.models import *
 api = Blueprint('api', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/api')
 
-#@api.route('/')
+@api.route('/')
 def index():
     return "Welcome to SECOMP: API"
 
@@ -63,17 +63,18 @@ def ler_presenca():
                 db.session.flush()
                 db.session.commit()
                 info = {
-                    "Participante" : participante.primeiro_nome + " " + participante.sobrenome,
+                    "Participante" : participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
                     "Status" : "SUCCESS"
                 }
                 return jsonify(info)
             else:
                 info = {
-                    "Participante": participante.primeiro_nome + " " + participante.sobrenome,
+                    "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
                     "Status": "JA_LIDO"
                 }
                 return jsonify(info)
-        except:
+        except Exception as e:
+            print(e)
             return jsonify("ERROR")
     else:
         return jsonify("INVALID KEY")
