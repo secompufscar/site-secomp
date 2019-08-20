@@ -28,6 +28,9 @@ def get_participantes():
         print(e)
         return None
 
+def get_participantes_da_atividade_json(id):
+    return 1
+
 
 
 def get_atividades():
