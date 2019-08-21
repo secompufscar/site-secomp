@@ -64,9 +64,7 @@
           {{ wtf.form_field(form.primeiro_nome) }}
           {{ wtf.form_field(form.sobrenome) }}
           {{ wtf.form_field(form.curso) }}
-          <span id="outro_curso1">
           {{ wtf.form_field(form.outro_curso) }}
-          </span>
           <button id="continuar" class="btn btn-primary btn-block mt-3 mb-3" type="button">Continuar</button>
         </div>
       </div>
@@ -113,7 +111,7 @@
 <script>
   $(document).ready(function ($) {
     $("label[for='outro_curso']").hide();
-    $("#outro_curso1").hide();
+    $("#outro_curso").hide();
     $("label[for='outra_instituicao']").hide();
     $("#outra_instituicao").hide();
     $("label[for='outra_cidade']").hide();
