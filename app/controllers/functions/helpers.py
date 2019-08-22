@@ -45,6 +45,23 @@ def get_atividades():
         print(e)
         return None
 
+def get_atividades_api():
+    try:
+        query = db.session.query(Atividade).all()
+        ativ = []
+        for a in query:
+            info = {
+                "id": a.id,
+                "tipo": a.tipo.nome,
+                "titulo": a.titulo,
+                "local": a.local,
+                "descricao": a.descricao
+            }
+            ativ.append(info)
+        return {"count": len(ativ), "results": ativ}
+    except Exception as e:
+        print(e)
+        return None
 
 def get_participantes_sem_kit():
     try:

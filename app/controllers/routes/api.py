@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, abort, url_for, Blueprint
 from flask import jsonify, current_app
 from app.controllers.functions.dictionaries import *
 
-from app.controllers.functions.helpers import get_participantes_da_atividade_json
+from app.controllers.functions.helpers import get_participantes_da_atividade_json, get_atividades_api
 from app.controllers.functions.email import enviar_email_custon
 
 from app.controllers.forms.options import get_opcoes_ecustom_extensao
@@ -29,7 +29,7 @@ def patrocinadores(edicao):
 
 @api.route('/atividades/<edicao>')
 def atividades(edicao):
-    return jsonify(get_atividades(edicao))
+    return jsonify(get_atividades_api())
 
 #@api.route('/img/<url>')
 def retornaImg(url):
