@@ -82,9 +82,9 @@
 									</button>
 							</a>
 							{% endif %}
-							<!-- Trigger the modal with a button -->
 							<button type="button" class="btn btn-success" data-toggle="modal"
-								data-target="#modal{{atividade.id}}">
+								data-target="#modal{{ atividade.id }}"
+								onclick="$('#modal{{ atividade.id }}').appendTo('body')">
 								Visualizar
 							</button>
 
@@ -98,58 +98,55 @@
 		</div>
 	</div>
 
-	{% for atividade in minicursos %}
-	{% if atividade.ativo %}
-
-	<div id="modal{{ atividade.id }}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title text-center">
-						{{atividade.titulo}}
-					</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<div class="row no-gutters">
-						<div class="col-md-10">
-							<h5>{{atividade.ministrantes.nome}}</h5>
-							<p class="text-muted">{{atividade.ministrantes.nome}}</p>
-						</div>
-						<div class="col-md-2">
-							<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid"
-								alt="">
-						</div>
-					</div>
-
-					<h5>Descrição</h5>
-					<p>{{atividade.descricao}}</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	{% endif %}
-	{% endfor %}
-
 	{% elif inscricao_liberada == 0 %}
 	Inscrição em minicursos está fechada neste momento!
 	{% endif %}
 
 </div>
 
+{% for atividade in minicursos %}
+{% if atividade.ativo %}
+
+<div id="modal{{ atividade.id }}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title text-center">
+					{{atividade.titulo}}
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row no-gutters">
+					<div class="col-md-10">
+						<h5>{{atividade.ministrantes.nome}}</h5>
+						<p class="text-muted">{{atividade.ministrantes.nome}}</p>
+					</div>
+					<div class="col-md-2">
+						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid"
+							alt="">
+					</div>
+				</div>
+
+				<h5>Descrição</h5>
+				<p>{{atividade.descricao}}</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endfor %}
 
 <script type="text/javascript">
 	$("#buscar").click(function () {
 		var titulo = $("#filtro").val();
 		if (titulo) {
 			$(location).attr('href', '/participante/inscricao-minicursos/' + titulo);
-		} else {
-			$(location).attr('href', '/participante/inscricao-minicursos');
 		}
 	});
 
