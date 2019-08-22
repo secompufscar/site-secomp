@@ -69,7 +69,7 @@
         {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['SORTEAR'].usuarios %}
         <div class="col-md-6 p-3">
             <h4>Sortear participante presente</h4>
-            <a href="{{url_for('.sortear')}}" class="btn btn-primary">Sortear</a>
+            <a href="{{url_for('.sorteia_usuario')}}" class="btn btn-primary">Sortear participante</a>
         </div>
         {% endif %}
 
