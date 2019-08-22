@@ -19,6 +19,15 @@ users = Blueprint('users', __name__, static_folder='static',
                   template_folder='templates', url_prefix='/participante')
 
 
+def email_verificado_required(func):
+    def decorated_view(*args, **kwargs):
+        if not current_user.email_verificado:
+            return redirect(url_for('users.verificar_email'))
+        return func(*args, **kwargs)
+    decorated_view.__name__ = func.__name__
+    return decorated_view
+
+
 @users.route('/cadastro', methods=['POST', 'GET'])
 def cadastro():
     """
@@ -68,7 +77,6 @@ def verificar_email():
         msg = 'Confirme o email de verificação que te enviamos!'
         status = False
     return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante, form_login=form_login)
-
 
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
@@ -127,6 +135,7 @@ def alterar_usuario():
                                 usuario=current_user).first(), form=form, form_login=form_login)
 
 @users.route('/dashboard', methods=['POST', 'GET'])
+@email_verificado_required
 @login_required
 def dashboard():
     form_login = LoginForm(request.form)
@@ -135,16 +144,8 @@ def dashboard():
             usuario=current_user).first()
         return render_template('users/dashboard_usuario.html', title='Dashboard', usuario=current_user, participante=participante, form_login=form_login)
     else:
-        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-        salt = gensalt().decode('utf-8')
-        token = serializer.dumps(current_user.email, salt=salt)
-        current_user.salt = salt
-        current_user.token_email = token
-        current_user.email_verificado = False
         db.session.add(current_user)
         db.session.commit()
-        enviar_email_confirmacao(current_user, token)
-        login_user(current_user, remember=True)
         return redirect(url_for('.verificar_email'))
 
 @users.route('/dados', methods=['POST', 'GET'])
@@ -189,6 +190,7 @@ def verificacao(token):
 
 @users.route('/inscricao-minicursos')
 @login_required
+@email_verificado_required
 def inscricao_minicursos():
     form_login = LoginForm(request.form)
     agora = datetime.now()
@@ -210,6 +212,7 @@ def inscricao_minicursos():
 
 @users.route('/inscricao-workshops')
 @login_required
+@email_verificado_required
 def inscricao_workshops():
     form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
@@ -222,6 +225,7 @@ def inscricao_workshops():
 
 @users.route('/inscricao-minicursos/<filtro>')
 @login_required
+@email_verificado_required
 def inscricao_minicursos_com_filtro(filtro):
     form_login = LoginForm(request.form)
     agora = datetime.now()
@@ -244,6 +248,7 @@ def inscricao_minicursos_com_filtro(filtro):
 
 @users.route('/inscricao-workshops/<filtro>')
 @login_required
+@email_verificado_required
 def inscricao_workshops_com_filtro(filtro):
     form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
@@ -259,6 +264,7 @@ def inscricao_workshops_com_filtro(filtro):
 
 @users.route('/inscrever-minicurso/<id>')
 @login_required
+@email_verificado_required
 def inscrever_minicurso(id):
     form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
@@ -325,6 +331,7 @@ def inscrever_minicurso(id):
 
 @users.route('/inscrever-workshop/<id>')
 @login_required
+@email_verificado_required
 def inscrever_workshop(id):
     form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
@@ -346,8 +353,10 @@ def inscrever_workshop(id):
         return "Não há vagas disponíveis!"
 
 
+
 @users.route('/desinscrever-minicurso/<id>')
 @login_required
+@email_verificado_required
 def desinscrever_minicurso(id):
     form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
@@ -380,6 +389,7 @@ def desinscrever_minicurso(id):
 
 @users.route('/desinscrever-workshop/<id>')
 @login_required
+@email_verificado_required
 def desinscrever_workshop(id):
     form_login = LoginForm(request.form)
     tipo_atividade = get_tipos_atividade()
@@ -407,6 +417,7 @@ def desinscrever_workshop(id):
 
 @users.route('/alterar-senha', methods=["POST", "GET"])
 @fresh_login_required
+@email_verificado_required
 def alterar_senha():
     form_login = LoginForm(request.form)
     form = AlterarSenhaForm(request.form)
@@ -483,6 +494,7 @@ def confirmar_alteracao_senha(token):
 
 @users.route('/comprar-kit', methods=["POST", "GET"])
 @login_required
+@email_verificado_required
 def comprar_kit():
     form_login = LoginForm(request.form)
     id_evento = db.session.query(Evento).filter_by(
@@ -581,6 +593,7 @@ def comprar_kit():
 
 @users.route('/executar-pagamento-kit', methods=["POST", "GET"])
 @login_required
+@email_verificado_required
 def executar_pagamento_kit():
     form_login = LoginForm(request.form)
     payment_id = request.args.get('paymentId')
@@ -614,6 +627,7 @@ def executar_pagamento_kit():
 
 @users.route('/pagamentos', methods=["POST", "GET"])
 @login_required
+@email_verificado_required
 def pagamentos():
     form_login = LoginForm(request.form)
     participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
@@ -625,6 +639,7 @@ def pagamentos():
 
 @users.route('/presencas', methods=["POST", "GET"])
 @login_required
+@email_verificado_required
 def presencas():
     form_login = LoginForm(request.form)
     participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()

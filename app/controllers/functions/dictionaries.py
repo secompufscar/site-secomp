@@ -223,11 +223,11 @@ def get_equipe(database=True):
 
 def get_cronograma():
     try:
-        segunda = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-09 00:00:00', Atividade.data_hora_fim < '2019-09-09 23:59:00' , Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
-        terca = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-10 00:00:00', Atividade.data_hora_fim < '2019-09-10 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
-        quarta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-11 00:00:00', Atividade.data_hora_fim < '2019-09-11 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
-        quinta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-12 00:00:00', Atividade.data_hora_fim < '2019-09-12 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
-        sexta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-13 00:00:00', Atividade.data_hora_fim < '2019-09-13 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None).order_by(Atividade.data_hora_inicio).all()
+        segunda = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-09 00:00:00', Atividade.data_hora_fim < '2019-09-09 23:59:00' , Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
+        terca = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-10 00:00:00', Atividade.data_hora_fim < '2019-09-10 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
+        quarta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-11 00:00:00', Atividade.data_hora_fim < '2019-09-11 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
+        quinta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-12 00:00:00', Atividade.data_hora_fim < '2019-09-12 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
+        sexta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-13 00:00:00', Atividade.data_hora_fim < '2019-09-13 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
 
         return {
             "SEG" : segunda,

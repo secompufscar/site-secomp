@@ -182,3 +182,6 @@ def get_permissao_comprovante(participante, arquivo):
          if pagamento.arquivo_comprovante == arquivo:
              return True
      return False
+
+def diretorio_publico(diretorio):
+    return diretorio == "fotos_ministrantes"
