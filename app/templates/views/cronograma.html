@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
 {% block styles %}
-<link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css" />
+
+{{ super() }}
+
 <link href="{{ url_for('static', filename='css/cronograma.css') }}" rel="stylesheet" type="text/css" />
+
 {% endblock %}
 
 {% block content %}
