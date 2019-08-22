@@ -35,12 +35,13 @@ def cadastro():
         hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
         usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
                           data_cadastro=agora, primeiro_nome=form.primeiro_nome.data, sobrenome=form.sobrenome.data,
-                          id_curso=verifica_outro_escolhido(form.curso, Curso(nome=str(form.outro_curso.data).strip())),
+                          id_curso=verifica_outro_escolhido(form.curso, Curso(nome=(form.outro_curso.data))),
                           id_instituicao=verifica_outro_escolhido(form.instituicao,
                                                                   Instituicao(nome=form.outra_instituicao.data)),
                           id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
                           data_nascimento=form.data_nasc.data, token_email=token, autenticado=True, salt=salt)
         como_conheceu = ComoConheceu(usuario=usuario, opcao=form.como_conheceu.data, outro=form.outro_como_conheceu.data)
+        db.session.add(usuario)
         db.session.add(usuario)
         db.session.add(como_conheceu)
         db.session.flush()
@@ -108,7 +109,7 @@ def alterar_usuario():
     if form.validate_on_submit and request.method == 'POST':
         usuario.primeiro_nome = form.primeiro_nome.data
         usuario.sobrenome = form.sobrenome.data
-        usuario.id_curso = verifica_outro_escolhido(form.curso, Curso(nome=str(form.outro_curso.data).strip()))
+        usuario.id_curso = verifica_outro_escolhido(form.curso, Curso(nome=(form.outro_curso.data)))
         usuario.id_instituicao = verifica_outro_escolhido(form.instituicao, Instituicao(nome=form.outra_instituicao.data))
         usuario.id_cidade = verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data))
         usuario.data_nascimento = form.data_nasc.data

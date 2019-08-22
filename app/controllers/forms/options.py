@@ -3,7 +3,8 @@ from app.models.models import *
 opcoes_restricao = [
     (1, "Nenhum"),
     (2, "Vegetariano"),
-    (3, "Vegano")
+    (3, "Vegano"),
+    (4, "Diabético")
 ]
 
 opcoes_falha = [
@@ -30,9 +31,15 @@ def get_opcoes_cidades():
     try:
         cidades = db.session.query(Cidade).order_by("nome").all()
         info_cidades = []
+        objeto_outro = Cidade()
         for cidade in cidades:
-            info = (cidade.id, cidade.nome)
-            info_cidades.append(info)
+            if cidade.nome != 'Outra':
+                info = (cidade.id, cidade.nome)
+                info_cidades.append(info)
+            else:
+                objeto_outro = (cidade.id, cidade.nome)
+        if objeto_outro:
+            info_cidades.append(objeto_outro)
         return info_cidades
     except Exception as e:
         print(e)
@@ -43,9 +50,15 @@ def get_opcoes_instituicoes():
     try:
         instituicoes = db.session.query(Instituicao).order_by("nome").all()
         info_instituicoes = []
+        objeto_outro = Instituicao()
         for instituicao in instituicoes:
-            info = (instituicao.id, instituicao.nome)
-            info_instituicoes.append(info)
+            if instituicao.nome != 'Outra':
+                info = (instituicao.id, instituicao.nome)
+                info_instituicoes.append(info)
+            else:
+                objeto_outro = (instituicao.id, instituicao.nome)
+        if objeto_outro:
+            info_instituicoes.append(objeto_outro)
         return info_instituicoes
     except Exception as e:
         print(e)
@@ -56,9 +69,15 @@ def get_opcoes_cursos():
     try:
         cursos = db.session.query(Curso).order_by("nome").all()
         info_cursos = []
+        objeto_outro = Curso()
         for curso in cursos:
-            info = (curso.id, curso.nome)
-            info_cursos.append(info)
+            if curso.nome != 'Outro':
+                info = (curso.id, curso.nome)
+                info_cursos.append(info)
+            else:
+                objeto_outro = (curso.id, curso.nome)
+        if objeto_outro:
+            info_cursos.append(objeto_outro)
         print(info_cursos)
         return info_cursos
     except Exception as e:
