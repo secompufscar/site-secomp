@@ -1,122 +1,152 @@
-{% extends "base.html" %}
+{% extends "users/sidebar.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block content %}
-<script>
-  function continuar2(){
-    $(location).attr('href','/participante/dashboard');
-  }
-</script>
-<style>
-  #pergunta{
-    margin-top:15px;
-  }
-  .help-block{
-    color: red;
-  }
-</style>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+{% block sidebar_content %}
 
-            <h2 id="pergunta" class="text-center" style='margin-bottom:30px'><i class="fa fa-lg fa-cart-plus"></i> Deseja comprar o kit da SECOMP UFSCar?</h2>
-            <form method="POST" action="{{url_for('users.comprar_kit')}}" enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
-            {{ wtf.form_field(form.comprar) }}
-            <div id='info_kit'>
-              {{ wtf.form_field(form.camiseta) }}
-              {{ wtf.form_field(form.restricao_coffee) }}
-              <div style="margin-bottom:8px;">Escolha a forma de pagamento</div>
-              {{ wtf.form_field(form.forma_pagamento) }}
-              <div id="info_conta" style='margin-bottom: 10px'>
-                <div>Conta: 1189071-1</div>
-                <div>Agência: 4779</div>
-                <div>Banco: Banco do Brasil</div>
-                <div>Cidade: São Carlos</div>
-                <div>Estado: SP</div>
-                {{ wtf.form_field(form.comprovante) }}
-              </div>
-              {{ wtf.form_field(form.uso_cupom_desconto) }}
-              <div id="desconto">
-              {{ wtf.form_field(form.cupom_desconto) }}
-              </div>
-              {{ wtf.form_field(form.recaptcha) }}
-              <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
-            </div>
-            <button type='button' id='continuar' class="btn btn-primary" onclick='continuar2()'>Continuar</button>
-            </form>
-        </div>
+<style>
+    .help-block {
+        color: red;
+    }
+</style>
+
+<div class="container pt-4 pb-4">
+
+
+    <div class="col-md-12">
+        <h2 id="pergunta" class="text-center pb-4"><i class="fa fa-lg fa-cart-plus"></i>
+            Deseja comprar o kit da SECOMP UFSCar?</h2>
     </div>
+
+    <form method="POST" action="{{url_for('users.comprar_kit')}}" enctype="multipart/form-data">
+
+        {{ form.hidden_tag() }}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                {{ wtf.form_field(form.comprar) }}
+            </div>
+        </div>
+
+        <div id='info_kit'>
+
+            <div class="row justify-content-around">
+                <div class="col-md-4">
+                    {{ wtf.form_field(form.camiseta) }}
+                    {{ wtf.form_field(form.restricao_coffee) }}
+                </div>
+                <div class="col-md-4">
+                    <p>Escolha a forma de pagamento</p>
+                    {{ wtf.form_field(form.forma_pagamento) }}
+                    <div class="pt-2">
+                        {{ wtf.form_field(form.uso_cupom_desconto) }}
+                    </div>
+                    <div id="desconto">
+                        {{ wtf.form_field(form.cupom_desconto) }}
+                    </div>
+                </div>
+
+                <div class="col-md-6 pt-3" id="info_conta">
+                    <h4>Dados para transferência</h4>
+                    <p>Conta: 1189071-1
+                        <br>Agência: 4779
+                        <br>Banco: Banco do Brasil
+                        <br>Cidade: São Carlos
+                        <br>Estado: SP</p>
+                    {{ wtf.form_field(form.comprovante) }}
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="recaptcha-responsive">
+                    {{ wtf.form_field(form.recaptcha) }}
+                </div>
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary p-3">Confirmar Pagamento</button>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type='button' id='continuar' class="btn btn-primary" onclick='continuar2()'>Continuar</button>
+        </div>
+    </form>
 </div>
+
+
 
 {% endblock %}
 
 {% block scripts %}
+
+{{ super() }}
+
+<script>
+    function continuar2() {
+        $(location).attr('href', '/participante/dashboard');
+    }
+</script>
+
 <script>
 
-    $(document).ready(function(){
-          if ($('#comprar-0').is(':checked')){
-              $('#info_kit').show();
-              $('#continuar').hide();
-          }
+    $(document).ready(function () {
+        if ($('#comprar-0').is(':checked')) {
+            $('#info_kit').show();
+            $('#continuar').hide();
+        }
 
 
-          if ($('#comprar-1').is(':checked')){
-              $('#info_kit').hide();
-              $('#continuar').show();
-          }
+        if ($('#comprar-1').is(':checked')) {
+            $('#info_kit').hide();
+            $('#continuar').show();
+        }
 
+        if ($('#forma_pagamento-0').is(':checked')) {
+            $('#info_conta').show();
+        }
 
+        if ($('#forma_pagamento-1').is(':checked')) {
+            $('#info_conta').hide();
+        }
 
-          if ($('#forma_pagamento-0').is(':checked')){
-              $('#info_conta').show();
-          }
-
-          if ($('#forma_pagamento-1').is(':checked')){
-              $('#info_conta').hide();
-          }
-
-          if ($('#uso_cupom_desconto').is(':checked')){
-              $('#desconto').show();
-          }
-          else{
-              $('#desconto').hide();
-          }
+        if ($('#uso_cupom_desconto').is(':checked')) {
+            $('#desconto').show();
+        }
+        else {
+            $('#desconto').hide();
+        }
 
     });
     $('#info_kit').hide();
     $('#info_conta').hide();
     $('#desconto').hide();
-    $('#comprar-0').change(function() {
-        if ($('#comprar-0').is(':checked')){
+    $('#comprar-0').change(function () {
+        if ($('#comprar-0').is(':checked')) {
             $('#info_kit').show();
             $('#continuar').hide();
         }
     });
 
-    $('#comprar-1').change(function() {
-        if ($('#comprar-1').is(':checked')){
+    $('#comprar-1').change(function () {
+        if ($('#comprar-1').is(':checked')) {
             $('#info_kit').hide();
             $('#continuar').show();
         }
     });
 
-    $('#forma_pagamento-0').change(function() {
-        if ($('#forma_pagamento-0').is(':checked')){
+    $('#forma_pagamento-0').change(function () {
+        if ($('#forma_pagamento-0').is(':checked')) {
             $('#info_conta').show();
         }
     });
-    $('#forma_pagamento-1').change(function() {
-        if ($('#forma_pagamento-1').is(':checked')){
+    $('#forma_pagamento-1').change(function () {
+        if ($('#forma_pagamento-1').is(':checked')) {
             $('#info_conta').hide();
         }
     });
 
-    $('#uso_cupom_desconto').change(function() {
-        if ($('#uso_cupom_desconto').is(':checked')){
+    $('#uso_cupom_desconto').change(function () {
+        if ($('#uso_cupom_desconto').is(':checked')) {
             $('#desconto').show();
         }
-        else{
+        else {
             $('#desconto').hide();
         }
     });
@@ -125,11 +155,4 @@
 
 </script>
 
-<script>
-	$(document).ready(function(){
-    	$('#content').css("padding-top", $('#navTop').height() * 1.2);
-  });
-</script>
 {% endblock %}
-
-{% block footer %}{% endblock %}
