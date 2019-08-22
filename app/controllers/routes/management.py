@@ -241,7 +241,7 @@ def gerar_url_conteudo():
                         atividade.ministrantes.append(ministrante)
                     db.session.add(atividade)
                     db.session.commit()
-        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(request.url_root), form_login=form_login, url_root=request.url_root)
+        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(request.url_root), form_login=form_login, url_root=request.url_root, usuario=current_user)
     else:
         abort(403)
 

@@ -213,6 +213,16 @@ class Atividade(db.Model):
         else:
             return 'Atividade <' + str(self.id) + '>'
 
+    @property
+    def ministrantes_confirmados_atividade(self):
+        ministrantes_confirmados = []
+        ministrantes = self.ministrantes
+        for m in ministrantes:
+            r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=m.id, id_atividade=self.id, confirmado=True).first()
+            if r is not None:
+                ministrantes_confirmados.append(m)
+        return ministrantes_confirmados
+
 class InfoMinicurso(db.Model):
     __tablename__ = 'info_minicurso'
     id = Column(Integer, primary_key=True)
