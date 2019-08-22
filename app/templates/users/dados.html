@@ -69,6 +69,7 @@
 
                         {% endif %}
                     </tr>
+
                     <tr>
                         <th scope="row">Pontuação COMPCases</th>
                         {% if (participante != None) %}
@@ -79,6 +80,30 @@
                     </tr>
 
                 </tbody>
+
+                {% if (participante.pagamentos != None) %}
+                <thead class="thead bg-dark text-white">
+                    <tr>
+                        <th scope="col">Kit</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Restrição do Coffee Break</th>
+                        <td>{{ restricao_alimentar }}</td>
+                    </tr>
+                        <tr>
+                            <th scope="row">Tamanho de Camiseta</th>
+                            <td>
+                            {% for p in participante.pagamentos %}
+                                    {{ p.camiseta }}</br>
+                            {% endfor %}
+                            </td>
+                        </tr>
+                </tbody>
+                {% endif %}
+
             </table>
         </div>
     </div>

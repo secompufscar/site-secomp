@@ -1,7 +1,7 @@
 from app.models.models import *
 
 opcoes_restricao = [
-    (1, "Nenhum"),
+    (1, "Nenhuma"),
     (2, "Vegetariano"),
     (3, "Vegano"),
     (4, "Diabético")
