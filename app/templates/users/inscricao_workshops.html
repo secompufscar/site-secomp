@@ -2,6 +2,15 @@
 {% import "wtf.html" as wtf %}
 
 
+{% block styles %}
+
+{{ super() }}
+
+<link href="{{ url_for('static', filename='css/cronograma.css') }}" rel="stylesheet" type="text/css" />
+
+{% endblock %}
+
+
 {% block sidebar_content %}
 
 {% if acao == "+" %}
@@ -18,26 +27,26 @@
 </div>
 {% endif %}
 
-<div class="container">
+<div class="container pt-3">
 
-	<div class="row justify-content-center pt-1">
+	<div class="row justify-content-center">
 		<div class="col-md-12 text-center">
 			<h2>Inscrição em Workshops</h2>
 		</div>
 
-		<div class="col-md-6">
-			<div class="input-group mb-3">
+		<div class="col-md-6 pt-2">
+			<div class="input-group">
 				<input name="filtro" class="form-control" id="filtro" type="text" placeholder="Pesquisar por título">
 				<div class="input-group-append">
-					<button id="buscar" class="btn btn-default" type="button">
-						<span class="fas fa-search"></span>
-					</button>
+					<a style="cursor: pointer;" id="buscar" class="btn">
+						<i class="fas fa-search"></i>
+					</a>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div id="list" class="row justify-content-center">
+	<div id="list" class="row justify-content-center pt-3">
 
 		<div class="table-responsive col-md-12">
 			<table class="table table-striped" cellspacing="0" cellpadding="0">
@@ -116,8 +125,10 @@
 					</div>
 				</div>
 
-				<h5>Descrição</h5>
-				<p>{{atividade.descricao}}</p>
+				<div class="col-md-12 text-gray">
+					<h5>Descrição</h5>
+					<p>{{atividade.descricao}}</p>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
