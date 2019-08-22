@@ -50,12 +50,16 @@ def get_atividades_api():
         query = db.session.query(Atividade).all()
         ativ = []
         for a in query:
+            ministrantes = []
+            for m in a.ministrantes:
+                ministrantes.append(m.usuario.primeiro_nome)
             info = {
                 "id": a.id,
                 "tipo": a.tipo.nome,
                 "titulo": a.titulo,
                 "local": a.local,
-                "descricao": a.descricao
+                "descricao": a.descricao,
+                "ministrantes": ministrantes
             }
             ativ.append(info)
         return {"count": len(ativ), "results": ativ}
