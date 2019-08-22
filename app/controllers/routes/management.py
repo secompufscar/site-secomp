@@ -22,9 +22,10 @@ management = Blueprint('management', __name__, static_folder='static',
 def gerenciar():
     if current_user.is_admin():
         form_login = LoginForm(request.form)
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         permissoes = db.session.query(Permissao).all()
         permissoes = {x.nome: x for x in permissoes}
-        return render_template('management/gerenciar.html', usuario=current_user, permissoes=permissoes, form_login=form_login)
+        return render_template('management/gerenciar.html', usuario=current_user, participante=participante, permissoes=permissoes, form_login=form_login)
     else:
         abort(403)
 
@@ -137,6 +138,7 @@ def alterar_camiseta():
     permissoes = current_user.getPermissoes()
     if("ALTERAR_CAMISETAS" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form = AlteraCamisetaForm(request.form)
         if form.validate_on_submit() and form.participante.data is not None:
             participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
@@ -150,12 +152,12 @@ def alterar_camiseta():
                 db.session.add(camiseta)
                 db.session.add(participante)
                 db.session.commit()
-                return render_template('management/alterar_camisetas.html', participante=participante, camiseta=camiseta,
+                return render_template('management/alterar_camisetas.html', participante=participante, usuario=current_user, camiseta=camiseta,
                                        sucesso='s', form=form, form_login=form_login)
             else:
-                return render_template('management/alterar_camisetas.html', participante=participante, camiseta=camiseta,
+                return render_template('management/alterar_camisetas.html', participante=participante, usuario=current_user, camiseta=camiseta,
                                        sucesso='n', form=form, form_login=form_login)
-        return render_template('management/alterar_camisetas.html', form=form, form_login=form_login)
+        return render_template('management/alterar_camisetas.html', participante=participante, usuario=current_user, form=form, form_login=form_login)
     else:
         abort(403)
 
@@ -195,9 +197,10 @@ def email_custom():
     permissoes = current_user.getPermissoes()
     if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form = EmailCuston(request.form)
 
-        return render_template('management/email_custom.html', form=form, form_login=form_login)
+        return render_template('management/email_custom.html', form=form, form_login=form_login, usuario=current_user, participante=participante)
     else:
         abort(403)
 
@@ -208,6 +211,7 @@ def gerar_url_conteudo():
     if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = GerarUrlConteudoForm(request.form)
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         emails = request.form.getlist('emails[]')
         if form.validate_on_submit():
             atividade_removida = request.form.getlist('removido')
@@ -241,7 +245,8 @@ def gerar_url_conteudo():
                         atividade.ministrantes.append(ministrante)
                     db.session.add(atividade)
                     db.session.commit()
-        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(request.url_root), form_login=form_login, url_root=request.url_root)
+        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(request.url_root),
+                                usuario=current_user, participante=participante, form_login=form_login, url_root=request.url_root)
     else:
         abort(403)
 
@@ -251,6 +256,7 @@ def cadastro_flags():
     permissoes = current_user.getPermissoes()
     if("CONTEUDO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form = CadastrarFlagForm(request.form)
         if form.validate_on_submit():
             flag = Flag(codigo=form.flag.data, pontos=form.pontos.data)
@@ -258,10 +264,12 @@ def cadastro_flags():
             db.session.flush()
             db.session.commit()
             flags = db.session.query(Flag).filter_by(ativa=True).all()
-            return render_template("management/crd_flags.html", form_login=form_login, form=form, cadastrado=True, desativada=False, flags=flags, usuario=current_user)
+            return render_template("management/crd_flags.html", form_login=form_login, form=form, cadastrado=True,
+                                    desativada=False, flags=flags, usuario=current_user, participante=participante)
         else:
             flags = db.session.query(Flag).filter_by(ativa=True).all()
-            return render_template("management/crd_flags.html", form_login=form_login, form=form, cadastrado=False, desativada=False, flags=flags, usuario=current_user)
+            return render_template("management/crd_flags.html", form_login=form_login, form=form, cadastrado=False,
+                                    desativada=False, flags=flags, usuario=current_user, participante=participante)
     else:
         abort(403)
 
@@ -271,6 +279,7 @@ def desativar_flag(id):
     permissoes = current_user.getPermissoes()
     if("CONTEUDO" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
+        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form = CadastrarFlagForm(request.form)
         flag = db.session.query(Flag).filter_by(id=id).first()
         flag.ativa = False
@@ -278,7 +287,7 @@ def desativar_flag(id):
         db.session.commit()
         flags = db.session.query(Flag).filter_by(ativa=True).all()
         return render_template("management/crd_flags.html", form_login=form_login, form=form, cadastrado=False,
-                        desativada=True, flags=flags, usuario=current_user)
+                        desativada=True, flags=flags, usuario=current_user, participante=participante)
     else:
         abort(403)
 
