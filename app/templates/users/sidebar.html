@@ -20,13 +20,20 @@
         <div class="list-group list-group-flush">
             <a href="{{ url_for('users.dashboard') }}" class="list-group-item list-group-item-action">Dashboard</a>
 
-            <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action">Dados</a>
-            <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action">Editar
-                dados</a>
+            <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Dados
+                <i class="fa fa-caret-down"></i>
+            </button>
+
+            <div class="dropdown-container">
+
+                <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action">Exibir</a>
+                <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action">Editar</a>
+
+            </div>
 
             {% if participante %}
 
-            <a href="{{ url_for('users.comprar_kit') }}" class="list-group-item list-group-item-action">Kit</a>
+            <a href="{{ url_for('users.comprar_kit') }}" class="list-group-item list-group-item-action">Compra de Kit</a>
             <a href="{{ url_for('users.pagamentos') }}" class="list-group-item list-group-item-action">Pagamentos</a>
 
             <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Atividades
@@ -40,7 +47,6 @@
                     class="list-group-item list-group-item-action">Minicursos</a>
                 <a href="{{ url_for('users.inscricao_workshops') }}"
                     class="list-group-item list-group-item-action">Workshops</a>
-                <a href="#" class="list-group-item list-group-item-action">Desafio de Programadores</a>
 
             </div>
 

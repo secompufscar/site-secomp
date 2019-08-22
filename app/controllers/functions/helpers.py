@@ -186,3 +186,15 @@ def get_permissao_comprovante(participante, arquivo):
 
 def diretorio_publico(diretorio):
     return diretorio == "fotos_ministrantes"
+
+def get_nome_restricao(id_restricao):
+    if id_restricao == 1:
+        return "Nenhuma"
+    elif id_restricao == 2:
+        return "Vegetariano"
+    elif id_restricao == 3:
+        return "Vegano"
+    elif id_restricao == 4:
+        return "Diabético"
+    else:
+        return "";

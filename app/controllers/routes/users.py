@@ -153,10 +153,14 @@ def dados():
         id=current_user.id).first()
     participante = db.session.query(Participante).filter_by(
         usuario=current_user).first()
+    if participante is not None:
+        restricao_alimentar = get_nome_restricao(participante.opcao_coffee)
+    else:
+        restricao_alimentar = ''
     ministrante = db.session.query(Ministrante).filter_by(
         usuario=current_user).first()
     return render_template('users/dados.html', title='Dados', usuario=usuario,
-                            participante=participante, ministrante=ministrante)
+                            participante=participante, ministrante=ministrante, restricao_alimentar=restricao_alimentar)
 
 @users.route('/verificacao/<token>')
 def verificacao(token):
