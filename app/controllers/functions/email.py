@@ -207,7 +207,7 @@ def enviar_email_aviso_sucesso_confirmacao_pagamento_paypal(usuario, pagamento):
             "nome": usuario.primeiro_nome,
             "titulo": 'PAGAMENTO CONFIRMADO',
             "email": usuario.email,
-            "valor": "{:2.2f}".format(pagamento.valor),
+            "valor": "{:2.2f}".format(pagamento.valor).replace('.', ','),
             "template": 'email/pagamento_kit_confirmado.html',
             "footer": 'TI X SECOMP UFSCar'
             }

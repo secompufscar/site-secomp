@@ -618,7 +618,7 @@ def comprar_kit():
                         return redirect(url_for('.dashboard'))
             else:
                 return render_template('users/comprar_kit.html', usuario=current_user, participante = db.session.query(
-                                        Participante).filter_by(usuario=current_user).first(), form=form)
+                                        Participante).filter_by(usuario=current_user).first(), form=form, valor="{:2.2f}".format(get_preco_kit()).replace('.', ','))
         else:
             return redirect(url_for('.dashboard'))
     else:
