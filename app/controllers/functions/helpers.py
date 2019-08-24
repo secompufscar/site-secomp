@@ -59,7 +59,6 @@ def get_participantes_sem_kit():
 def cadastra_objeto_generico(objeto):
     try:
         db.session.add(objeto)
-        db.session.flush()
         db.session.commit()
         return objeto
 
