@@ -16,7 +16,7 @@
       font-weight: bold;
     }
     .titulo{
-      font-size: 30px;
+      font-size: 25px;
       font-weight: bold;
     }
     #info_paypal, #info_conta{
@@ -75,13 +75,12 @@
                     </div>
                 </div>
 
-                <div class="col-md-4" id="info_conta">
-                <div class="titulo pb-4">Dados de Transferência</div>
-                    <p><b>Conta:</b> 1189071-1
-                        <br><b>Agência:</b> 4779
-                        <br><b>Banco:</b> Banco do Brasil
-                        <br><b>Cidade:</b> São Carlos
-                        <br><b>Estado:</b> SP</p>
+                <div class="col-md-6 pt-3" id="info_conta">
+                    <div class="titulo pb-4">Dados para transferência</div>
+                    <p><b>Agência:</b> 1888-0
+                        <br><b>Conta:</b> 35716-2
+                        <br><b>CPNJ:</b> 30800496/0001-49
+                        <br><b>Banco:</b> Banco do Brasil</p>
                     {{ wtf.form_field(form.comprovante) }}
                     <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
                 </div>
