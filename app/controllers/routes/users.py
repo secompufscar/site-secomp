@@ -171,7 +171,6 @@ def dados():
 @login_required
 @limiter.limit("500/year")
 @limiter.limit("50/month")
-@limiter.limit("40/week")
 @limiter.limit("20/day")
 @limiter.limit("20/hour")
 @limiter.limit("1/minute")
@@ -496,7 +495,6 @@ def esqueci_senha():
 
 @limiter.limit("500/year")
 @limiter.limit("50/month")
-@limiter.limit("40/week")
 @limiter.limit("20/day")
 @limiter.limit("20/hour")
 @limiter.limit("1/minute")
