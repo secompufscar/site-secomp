@@ -33,13 +33,16 @@ def cadastro():
     """
     Renderiza a página de cadastro do projeto
     """
-    serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     form_login = LoginForm(request.form)
     form = CadastroForm(request.form)
-    email = form.email.data
-    salt = gensalt().decode('utf-8')
-    token = serializer.dumps(email, salt=salt)
+    form.curso.choices = get_opcoes_cursos()
+    form.instituicao.choices = get_opcoes_instituicoes()
+    form.cidade.choices = get_opcoes_cidades()
     if form.validate_on_submit():
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        email = form.email.data
+        salt = gensalt().decode('utf-8')
+        token = serializer.dumps(email, salt=salt)
         agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
         usuario = Usuario(email=email, senha=hash, ultimo_login=agora,
@@ -50,7 +53,6 @@ def cadastro():
                           id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
                           data_nascimento=form.data_nasc.data, token_email=token, autenticado=True, salt=salt)
         como_conheceu = ComoConheceu(usuario=usuario, opcao=form.como_conheceu.data, outro=form.outro_como_conheceu.data)
-        db.session.add(usuario)
         db.session.add(usuario)
         db.session.add(como_conheceu)
         db.session.flush()
@@ -134,8 +136,8 @@ def alterar_usuario():
                                 usuario=current_user).first(), form=form)
 
 @users.route('/dashboard', methods=['POST', 'GET'])
-@email_verificado_required
 @login_required
+@email_verificado_required
 def dashboard():
     if email_confirmado():
         participante = db.session.query(Participante).filter_by(
@@ -539,6 +541,10 @@ def comprar_kit():
                                 if link.rel == "approval_url":
                                     approval_url = str(link.href)
                                     return redirect(approval_url)
+
+                        if pagamento.camiseta.quantidade_restante > 0:
+                            pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
+
                         return render_template('users/pagamento_kit_efetuado.html')
                     elif form.forma_pagamento.data == 1:
                         participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
@@ -604,8 +610,6 @@ def executar_pagamento_kit():
                 if payment.execute({"payer_id": payer_id}):
                     pagamento.payer_id, pagamento.efetuado = payer_id, True
                     pagamento.data_hora_pagamento = strftime("%Y-%m-%d %H:%M:%S", localtime(time()))
-                    if pagamento.camiseta.quantidade_restante > 0:
-                        pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
                     db.session.add(current_user)
                     db.session.add(participante)
                     db.session.add(pagamento)
