@@ -61,7 +61,7 @@
 				<tbody>
 
 					{% for atividade in workshops %}
-					{% if atividade.ativo %}
+					{% if atividade.ativo and atividade.vagas_totais %}
 					<tr>
 						<td>{{atividade.titulo}}</td>
 						<td>{{atividade.ministrantes.nome}}</td>
