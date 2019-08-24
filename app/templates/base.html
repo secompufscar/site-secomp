@@ -157,6 +157,9 @@
           {{ form_login.hidden_tag() }}
           {{ wtf.form_field(form_login.email) }}
           {{ wtf.form_field(form_login.senha) }}
+          <div class="recaptcha-responsive">
+  					{{ wtf.form_field(form_login.recaptcha) }}
+  				</div>
         </div>
         <div class="modal-footer">
           <a href="{{url_for('users.esqueci_senha')}}">Esqueci minha senha</a>

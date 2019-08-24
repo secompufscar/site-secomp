@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm, RecaptchaField
+from flask_wtf import FlaskForm, RecaptchaField, Recaptcha
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField, RadioField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
@@ -8,16 +8,16 @@ from app.controllers.forms.validators import *
 from app.controllers.functions.helpers import get_participantes, get_atividades
 
 class BaseRecaptchaForm(FlaskForm):
-    recaptcha = RecaptchaField()
+    recaptcha = RecaptchaField(validators=[Recaptcha(message="Você deve completar a checagem de validação do recaptcha.")])
 
-class LoginForm(FlaskForm):
+class LoginForm(BaseRecaptchaForm):
     email = StringField('Email', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
     senha = PasswordField('Senha', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
 
 
-class CadastroForm(FlaskForm):
+class CadastroForm(BaseRecaptchaForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
@@ -42,7 +42,6 @@ class CadastroForm(FlaskForm):
                           format="%d/%m/%Y", id="data_nasc")
     como_conheceu = SelectField('Como você conheceu a SECOMP?', choices=opcoes_como_conheceu, coerce=int)
     outro_como_conheceu = StringField("Outro", id="outro_como_conheceu", validators=[Length(max=200)])
-    recaptcha = RecaptchaField()
 
 class EdicaoUsuarioForm(FlaskForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
@@ -66,7 +65,7 @@ class ParticipanteForm(FlaskForm):
     leu_termos = BooleanField('Li e concordo com os termos de uso', id="li_termos")
 
 
-class ComprarKitForm(FlaskForm):
+class ComprarKitForm(BaseRecaptchaForm):
     comprar = RadioField('Deseja comprar o kit da SECOMP UFSCar?', id='comprar', choices=[(1,'Sim'),(2,'Não')], coerce=int, default=2)
     camiseta = SelectField('Camiseta', choices=get_opcoes_camisetas(
     ), id="camiseta", default="P Feminino", coerce=int)
@@ -79,7 +78,6 @@ class ComprarKitForm(FlaskForm):
             ComprovanteRequired(message=ERRO_INPUT_REQUIRED),
             FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
         ])
-    recaptcha = RecaptchaField()
 
 
 class AlterarSenhaForm(FlaskForm):

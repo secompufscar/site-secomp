@@ -94,7 +94,8 @@ def vender_kits():
                 efetuado=True, metodo_pagamento='Presencial')
                 pagamento.id_camiseta = form.camiseta.data
                 participante.pagamentos.append(pagamento)
-                camiseta.quantidade_restante = camiseta.quantidade_restante - 1
+                if camiseta.quantidade_restante > 0:
+                    camiseta.quantidade_restante = camiseta.quantidade_restante - 1
                 db.session.add(camiseta)
                 db.session.add(participante)
                 db.session.commit()
