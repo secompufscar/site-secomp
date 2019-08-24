@@ -30,7 +30,7 @@ def enviar_email_generico(info=None, anexo=None):
     if info is None:
         global _teste
         info = _teste
-    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['MAIL_USERNAME'])),
+    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['DEFAULT_MAIL_SENDER'])),
                   recipients=[info['email']])
 
     print(info['template'])
