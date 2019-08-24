@@ -198,3 +198,17 @@ def enviar_email_aviso_pagamento_kit_rejeitado(usuario):
             "footer": 'TI X SECOMP UFSCar'
             }
     enviar_email_generico(info)
+
+def enviar_email_aviso_sucesso_confirmacao_pagamento_paypal(usuario, pagamento):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'PAGAMENTO CONFIRMADO',
+            "email": usuario.email,
+            "valor": "{:2.2f}".format(pagamento.valor),
+            "template": 'email/pagamento_kit_confirmado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
