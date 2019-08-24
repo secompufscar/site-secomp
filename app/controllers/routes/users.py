@@ -628,6 +628,7 @@ def comprar_kit():
 @login_required
 @email_verificado_required
 def executar_pagamento_kit():
+    form_login = LoginForm(request.form)
     payment_id = request.args.get('paymentId')
     pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
     Participante.usuario).join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email,\
@@ -646,12 +647,13 @@ def executar_pagamento_kit():
                     db.session.add(participante)
                     db.session.add(pagamento)
                     db.session.commit()
-                    return render_template('users/sucesso_pagamento_kit.html', usuario=current_user, participante=participante)
+                    enviar_email_aviso_sucesso_confirmacao_pagamento_paypal(pagamento.participante.usuario, pagamento)
+                    return render_template('users/sucesso_pagamento_kit.html', usuario=current_user, participante=participante, form_login=form_login)
                 else:
-                    return render_template('users/erro_pagamento_kit.html', usuario=current_user, participante=participante)
+                    return render_template('users/erro_pagamento_kit.html', usuario=current_user, participante=participante, form_login=form_login)
                     print(payment.error)
         else:
-            return render_template('users/pagamento_kit_efetuado.html', usuario=current_user, participante=participante)
+            return render_template('users/pagamento_kit_efetuado.html', usuario=current_user, participante=participante, form_login=form_login)
     else:
         return redirect(url_for('.dashboard'))
 
