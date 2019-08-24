@@ -172,3 +172,29 @@ def enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPas
                 naoEnviados.append(temp)
 
     return naoEnviados
+
+def enviar_email_aviso_pagamento_kit_aprovado(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'COMPROVANTE APROVADO',
+            "email": usuario.email,
+            "template": 'email/pagamento_kit_aprovado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+def enviar_email_aviso_pagamento_kit_rejeitado(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'COMPROVANTE NÃO APROVADO',
+            "email": usuario.email,
+            "template": 'email/pagamento_kit_rejeitado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
