@@ -7,6 +7,7 @@ from app.controllers.forms.forms import *
 from app.models.models import *
 from app.controllers.functions.dictionaries import *
 from app.controllers.functions.helpers import *
+from app.controllers.functions.email import *
 from app.controllers.forms.validators import *
 
 from secrets import token_urlsafe
@@ -294,27 +295,37 @@ def gerenciar_comprovantes():
             if esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data) and not esta_preenchido(form.rejeitar.data):
                 pagamento = db.session.query(Pagamento).get(int(form.aprovar.data))
                 if pagamento.efetuado is not True and pagamento.metodo_pagamento == 'Comprovante':
-                    pagamento.efetuado = True
-                    db.session.add(pagamento)
-                    db.session.commit()
+                    if pagamento.rejeitado is not True:
+                        if pagamento.camiseta.quantidade_restante > 0:
+                            pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
+                        pagamento.efetuado = True
+                        db.session.add(pagamento)
+                        db.session.commit()
+                        enviar_email_aviso_pagamento_kit_aprovado(pagamento.participante.usuario)
 
             elif esta_preenchido(form.desaprovar.data) and not esta_preenchido(form.aprovar.data) and not esta_preenchido(form.rejeitar.data) and not esta_preenchido(form.autorizar.data):
                 pagamento = db.session.query(Pagamento).get(int(form.desaprovar.data))
                 if pagamento.efetuado is not False and pagamento.metodo_pagamento == 'Comprovante':
-                    pagamento.efetuado = False
-                    db.session.add(pagamento)
-                    db.session.commit()
+                    if pagamento.rejeitado is not True:
+                        pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante + 1
+                        pagamento.efetuado = False
+                        db.session.add(pagamento)
+                        db.session.commit()
 
             elif esta_preenchido(form.rejeitar.data) and not esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data)and not esta_preenchido(form.autorizar.data):
                 pagamento = db.session.query(Pagamento).get(int(form.rejeitar.data))
                 if pagamento.rejeitado is not True and pagamento.metodo_pagamento == 'Comprovante':
+                    pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante + 1
                     pagamento.rejeitado = True
                     db.session.add(pagamento)
                     db.session.commit()
+                    enviar_email_aviso_pagamento_kit_rejeitado(pagamento.participante.usuario)
 
             elif esta_preenchido(form.autorizar.data) and not esta_preenchido(form.rejeitar.data) and not esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data):
                 pagamento = db.session.query(Pagamento).get(int(form.autorizar.data))
                 if pagamento.rejeitado is not False and pagamento.metodo_pagamento == 'Comprovante':
+                    if pagamento.camiseta.quantidade_restante > 0:
+                        pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
                     pagamento.rejeitado = False
                     db.session.add(pagamento)
                     db.session.commit()

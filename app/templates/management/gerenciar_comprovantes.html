@@ -48,6 +48,7 @@
           <th scope="col">Rejeitar</th>
           <th scope="col">Preço</th>
           <th scope="col">Participante</th>
+          <th scope="col">Email</th>
           <th scope="col">Comprovante</th>
         </tr>
       </thead>
@@ -94,6 +95,11 @@
             <td scope='col'>
               {{ pagamento.participante.usuario.primeiro_nome }} {{ pagamento.participante.usuario.sobrenome }}
             </td>
+
+            <td scope='col'>
+              {{ pagamento.participante.usuario.email }}
+            </td>
+
             <td scope='col'>
               <button type='button' title="Visualizar Comprovante" alt="Visualizar Comprovante" class="btn btn-default" onclick= "abrir_comprovante('{{ pagamento.arquivo_comprovante }}')"><i class="fa fa-file-invoice-dollar fa-lg"></i></button>
             </td>
