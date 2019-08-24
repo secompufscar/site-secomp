@@ -14,6 +14,10 @@ from app.controllers.functions.helpers import *
 from app.models.models import *
 from sqlalchemy.orm import aliased
 from app.controllers.functions.paypal import *
+from flask_limiter import Limiter
+from flask_limiter.util import get_ipaddr
+
+limiter = Limiter(current_app, key_func=get_ipaddr)
 
 users = Blueprint('users', __name__, static_folder='static',
                   template_folder='templates', url_prefix='/participante')
@@ -164,6 +168,13 @@ def dados():
     return render_template('users/dados.html', title='Dados', usuario=usuario,
                             participante=participante, ministrante=ministrante, restricao_alimentar=restricao_alimentar)
 
+@login_required
+@limiter.limit("500/year")
+@limiter.limit("50/month")
+@limiter.limit("40/week")
+@limiter.limit("20/day")
+@limiter.limit("20/hour")
+@limiter.limit("1/minute")
 @users.route('/verificacao/<token>')
 def verificacao(token):
     """
@@ -465,7 +476,12 @@ def esqueci_senha():
         flash('Este e-mail não está cadastrado no site.')
     return render_template("users/esqueci_senha.html", status_envio_email=False, form=form, form_login=form_login)
 
-
+@limiter.limit("500/year")
+@limiter.limit("50/month")
+@limiter.limit("40/week")
+@limiter.limit("20/day")
+@limiter.limit("20/hour")
+@limiter.limit("1/minute")
 @users.route('/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
 def confirmar_alteracao_senha(token):
     form = AlterarSenhaForm(request.form)
