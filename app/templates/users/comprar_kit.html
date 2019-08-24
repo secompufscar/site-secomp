@@ -7,6 +7,21 @@
     .help-block {
         color: red;
     }
+   .radio{
+      display: block;
+      float: left;
+      padding-right: 30px;
+    }
+    label[for=camiseta], label[for=restricao_coffee], label[for=cupom_desconto], label[for=comprovante], #forma_pagamento, .checkbox > label{
+      font-weight: bold;
+    }
+    .titulo{
+      font-size: 30px;
+      font-weight: bold;
+    }
+    #info_paypal, #info_conta{
+      padding-top:0px;
+    }
 </style>
 
 <div class="container pt-4 pb-4">
@@ -20,23 +35,39 @@
     <form method="POST" action="{{url_for('users.comprar_kit')}}" enctype="multipart/form-data">
 
         {{ form.hidden_tag() }}
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                {{ wtf.form_field(form.comprar) }}
+        <div class="row justify-content-around no-gutters">
+        <div class="col-md-4">
+        <div id="escolha_compra">
+              <div class="row justify-content-around no-gutters">
+                <div class="col">
+              <div>{{ wtf.form_field(form.comprar) }}</div><br>
             </div>
+            </div>
+
+            <div class="row justify-content-around no-gutters">
+              <div class="col">
+              <div style="font-size:25px"><b>Preço do KIT:</b> R$ {{ valor }}</div>
+          </div>
+          </div>
+
+            <div class="row justify-content-around no-gutters">
+              <div class="col">
+            <button type='button' id='continuar' class="btn btn-primary" onclick='continuar2()'>Continuar</button>
+          </div>
+          </div>
         </div>
-
+      </div>
+      <div class="col-md-4">
+      </div>
+      </div>
         <div id='info_kit'>
-
-            <div class="row justify-content-around">
+            <div class="row justify-content-around no-gutters">
                 <div class="col-md-4">
                     {{ wtf.form_field(form.camiseta) }}
                     {{ wtf.form_field(form.restricao_coffee) }}
-                </div>
-                <div class="col-md-4">
-                    <p>Escolha a forma de pagamento</p>
-                    {{ wtf.form_field(form.forma_pagamento) }}
-                    <div class="pt-2">
+                    <p id="forma_pagamento">Escolha a forma de pagamento</p>
+                    {{ wtf.form_field(form.forma_pagamento) }}<br>
+                    <div class="pt-4">
                         {{ wtf.form_field(form.uso_cupom_desconto) }}
                     </div>
                     <div id="desconto">
@@ -44,33 +75,37 @@
                     </div>
                 </div>
 
-                <div class="col-md-6 pt-3" id="info_conta">
-                    <h4>Dados para transferência</h4>
-                    <p>Conta: 1189071-1
-                        <br>Agência: 4779
-                        <br>Banco: Banco do Brasil
-                        <br>Cidade: São Carlos
-                        <br>Estado: SP</p>
+                <div class="col-md-4" id="info_conta">
+                <div class="titulo pb-4">Dados de Transferência</div>
+                    <p><b>Conta:</b> 1189071-1
+                        <br><b>Agência:</b> 4779
+                        <br><b>Banco:</b> Banco do Brasil
+                        <br><b>Cidade:</b> São Carlos
+                        <br><b>Estado:</b> SP</p>
                     {{ wtf.form_field(form.comprovante) }}
+                    <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
+                </div>
+                <div class="col-md-4" id="info_paypal">
+                    <div class="titulo pb-4">Informações PayPal</div>
+                    <div class="pb-3">Após pressionar "confirmar pagamento", você será redirecionado ao PayPal para completar e confirmar seu pagamento</div>
+                    <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
                 </div>
             </div>
+          </div>
 
-            <div class="row justify-content-center">
-                <div class="recaptcha-responsive">
-                    {{ wtf.form_field(form.recaptcha) }}
-                </div>
-                <div class="col-md-12 text-center">
-                    <button type="submit" class="btn btn-primary p-3">Confirmar Pagamento</button>
-                </div>
+          <div class="row justify-content-around no-gutters">
+          <div class="col-md-4">
+          <div id="recaptcha">
+            <div class="recaptcha-responsive">
+                {{ wtf.form_field(form.recaptcha) }}
             </div>
+          </div>
         </div>
-        <div class="text-center">
-            <button type='button' id='continuar' class="btn btn-primary" onclick='continuar2()'>Continuar</button>
+        <div class="col-md-4">
         </div>
-    </form>
+        </div>
 </div>
-
-
+</form>
 
 {% endblock %}
 
@@ -89,6 +124,7 @@
     $(document).ready(function () {
         if ($('#comprar-0').is(':checked')) {
             $('#info_kit').show();
+            $('#recaptcha').show();
             $('#continuar').hide();
         }
 
@@ -96,14 +132,17 @@
         if ($('#comprar-1').is(':checked')) {
             $('#info_kit').hide();
             $('#continuar').show();
+            $('#recaptcha').hide();
         }
 
         if ($('#forma_pagamento-0').is(':checked')) {
-            $('#info_conta').show();
+          $('#info_conta').show();
+          $('#info_paypal').hide();
         }
 
         if ($('#forma_pagamento-1').is(':checked')) {
-            $('#info_conta').hide();
+          $('#info_conta').hide();
+          $('#info_paypal').show();
         }
 
         if ($('#uso_cupom_desconto').is(':checked')) {
@@ -120,6 +159,7 @@
     $('#comprar-0').change(function () {
         if ($('#comprar-0').is(':checked')) {
             $('#info_kit').show();
+            $('#recaptcha').show();
             $('#continuar').hide();
         }
     });
@@ -127,18 +167,21 @@
     $('#comprar-1').change(function () {
         if ($('#comprar-1').is(':checked')) {
             $('#info_kit').hide();
+            $('#recaptcha').hide();
             $('#continuar').show();
         }
     });
 
     $('#forma_pagamento-0').change(function () {
         if ($('#forma_pagamento-0').is(':checked')) {
-            $('#info_conta').show();
+              $('#info_conta').show();
+              $('#info_paypal').hide();
         }
     });
     $('#forma_pagamento-1').change(function () {
         if ($('#forma_pagamento-1').is(':checked')) {
-            $('#info_conta').hide();
+              $('#info_conta').hide();
+              $('#info_paypal').show();
         }
     });
 

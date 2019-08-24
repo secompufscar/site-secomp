@@ -72,7 +72,7 @@ class ComprarKitForm(FlaskForm):
     ), id="camiseta", default="P Feminino", coerce=int)
     restricao_coffee = SelectField(
         'Restrição para o Coffee-Break', choices=opcoes_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
-    forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Enviar Comprovante'),(2,'Paypal')], coerce=int, default=2)
+    forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Transferência bancária'),(2,'PayPal')], coerce=int, default=2)
     uso_cupom_desconto = BooleanField('Deseja utilizar um cupom de desconto?', id='uso_cupom_desconto')
     cupom_desconto = StringField('Cupom de Desconto', id='cupom_desconto', validators=[Length(max=200), RequiredIf(uso_cupom_desconto=True), valida_cupom_desconto()], render_kw={'maxlength': 200})
     comprovante = FileField('Enviar comprovante de pagamento', id="comprovante", validators=[
