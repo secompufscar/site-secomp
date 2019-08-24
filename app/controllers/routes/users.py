@@ -568,6 +568,8 @@ def comprar_kit():
                                 db.session.commit()
                             if pagamento.camiseta.quantidade_restante > 0:
                                 pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
+                                db.session.add(pagamento)
+                                db.session.commit()
                         else:
                             payment = encontrar_pagamento(pagamento.payment_id)
                         if payment is not None and pagamento.efetuado == False:
