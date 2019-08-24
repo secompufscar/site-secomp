@@ -71,7 +71,7 @@
 				</thead>
 				<tbody>
 					{% for atividade in minicursos %}
-					{% if atividade.ativo %}
+					{% if atividade.ativo and atividade.vagas_totais %}
 					<tr>
 						<td class="align-middle">{{atividade.titulo}}</td>
 						<td class="align-middle">{{atividade.ministrantes.nome}}</td>
