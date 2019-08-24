@@ -29,6 +29,9 @@
 				{{ form.hidden_tag() }}
 				{{ wtf.form_field(form.email) }}
 				{{ wtf.form_field(form.senha) }}
+				<div class="recaptcha-responsive">
+					{{ wtf.form_field(form.recaptcha) }}
+				</div>
 
 				<div class="row justify-content-center text-center">
 					<div class="col-md-12">
