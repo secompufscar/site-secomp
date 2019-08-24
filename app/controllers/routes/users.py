@@ -566,6 +566,8 @@ def comprar_kit():
                                 id_camiseta=form.camiseta.data)
                                 db.session.add(pagamento)
                                 db.session.commit()
+                            if pagamento.camiseta.quantidade_restante > 0:
+                                pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
                         else:
                             payment = encontrar_pagamento(pagamento.payment_id)
                         if payment is not None and pagamento.efetuado == False:
@@ -573,9 +575,6 @@ def comprar_kit():
                                 if link.rel == "approval_url":
                                     approval_url = str(link.href)
                                     return redirect(approval_url)
-
-                        if pagamento.camiseta.quantidade_restante > 0:
-                            pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
 
                         return render_template('users/pagamento_kit_efetuado.html')
                     elif form.forma_pagamento.data == 1:
