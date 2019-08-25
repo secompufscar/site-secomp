@@ -43,7 +43,8 @@ class CadastroForm(BaseRecaptchaForm):
     como_conheceu = SelectField('Como você conheceu a SECOMP?', choices=opcoes_como_conheceu, coerce=int)
     outro_como_conheceu = StringField("Outro", id="outro_como_conheceu", validators=[Length(max=200)])
 
-class EdicaoUsuarioForm(FlaskForm):
+
+class EdicaoUsuarioForm(BaseRecaptchaForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
@@ -58,7 +59,6 @@ class EdicaoUsuarioForm(FlaskForm):
     outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe(), so_letras()])
     data_nasc = DateField("Data de Nascimento",
                           format="%d/%m/%Y", id="data_nasc")
-    recaptcha = RecaptchaField()
 
 
 class ParticipanteForm(FlaskForm):
