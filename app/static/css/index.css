@@ -30,11 +30,31 @@
     font-size: 4em;
 }
 
+.bg-fade {
+    background-color: #000000aa;
+    position: relative;
+}
+
+.top-left .bg-fade, .bottom-right .bg-fade {
+    border-radius: 1rem;
+}
+
 .larger {
     padding-left: 2rem;
     padding-right: 2rem;
     padding-top: 2rem;
     padding-bottom: 2rem;
+}
+
+.background {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    filter: blur(3px);
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 @media (max-width: 400px) {
@@ -76,20 +96,7 @@
     }
 }
 
-.bg-fade {
-    background-color: #000000aa;
-    position: relative;
-}
-
 @media (orientation: portrait) {
-    .background {
-        height: 100vh;
-        width: 100%;
-        margin: 0;
-        position: absolute;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
     .logoP {
         margin-top: 60px;
         display: inline-block;
@@ -101,12 +108,6 @@
 }
 
 @media (orientation: landscape) {
-    .background {
-        height: 100vh;
-        width: 100%;
-        position: absolute;
-        background-size: cover;
-    }
     .logoL {
         margin-top: 60px;
         display: inline-block;
