@@ -86,7 +86,9 @@
                 </div>
                 <div class="col-md-4" id="info_paypal">
                     <div class="titulo pb-4">Informações PayPal</div>
-                    <div class="pb-3">Após pressionar "confirmar pagamento", você será redirecionado ao PayPal para completar e confirmar seu pagamento</div>
+                    <div class="pb-3">Após pressionar "confirmar pagamento", você será redirecionado ao PayPal para finalizar e confirmar seu pagamento.
+                    Caso você possua algum pagamento pendente, você será redirecionado novamente para o PayPay para finalizá-lo. Se quiser alterar as
+                     informações do KIT você precisará <a href="{{ url_for('users.pagamentos') }}"> cancelar seu pagamento pendente</a></div>
                     <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
                 </div>
             </div>
