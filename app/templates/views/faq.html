@@ -3,7 +3,7 @@
 {% block styles %}
 {{ super() }}
 
-<link href="{{ url_for('static', filename='css/faq.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='css/faq.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block content %}
@@ -103,37 +103,6 @@
 		</div>
 	</div>
 </div>
-
-
-<!-- Este forms seria igual à página de contato?
-			 Deveria ser implementado então por wtforms?
-			 Ou apenas um link para redirecionar para a página de contato?
-
-			 
-		<div class="col-md-5"> 
-				<div class="pt-3 text-center">
-						<h3 class="md-1">
-							<br>Tem alguma dúvida sobre o evento? Entre em contato com a organização
-						</h3> <br>
-				</div>
-				<form>
-						<div class="form-group">
-								<label for="id_nome">Seu nome:</label>
-								<input type="text" name="nome" style="border-radius:4px;" placeholder="Seu nome" required="" id="id_nome">
-							</div>
-							<div class="form-group">								
-								<label for="id_email">Seu e-mail:</label>
-								<input type="email" name="email" style="border-radius:4px;" placeholder="Seu e-mail" required="" id="id_email">
-							</div>
-							<div class="form-group">								
-								<label for="id_mensagem">Mensagem:</label><br>
-								<textarea name="mensagem" cols="40" rows="5" style="border-radius:4px;" placeholder="Sua mensagem" required="" id="id_mensagem"></textarea>
-							</div>
-							<center>
-							<button type="button" class="btn btn-secondary bg-gradient-secomp"><i class="fas fa-location-arrow"></i> Enviar mensagem</button>
-								</center>
-						</form>
-		</div>-->
 
 <div class="container">
 	<div class="row justify-content-center p-3">
