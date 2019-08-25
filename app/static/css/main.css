@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
 :root {
   --primary-color: $secomp1;
   --secondary-color: $secomp2;
@@ -23,6 +25,7 @@
   color: var(--font-color);
   min-height: 75vh;
   padding-top: 53px;
+  font-family: "Lato", "Clear Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 .theme-switch-wrapper {
@@ -90,7 +93,7 @@ header a {
   font-weight: 600;
   color: #fff;
   font-size: 14.5px;
-  font-family: "Clear Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-family: "Lato", "Clear Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 header a:hover {
   color: rgba(255, 255, 255, 0.7);
