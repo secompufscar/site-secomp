@@ -119,7 +119,7 @@ def cronograma():
 @views.route('/equipe', methods=["GET", "POST"])
 def equipe():
     form_login = LoginForm(request.form)
-    return render_template('views/equipe.html', title='Equipe', form_login=form_login, info_equipe=get_equipe())
+    return render_template('views/equipe.html', title='Equipe', form_login=form_login, info_equipe=get_equipe(database=False))
 
 @views.route('/faq', methods=["GET", "POST"])
 def faq():
