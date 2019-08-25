@@ -164,7 +164,7 @@ def get_preco_kit():
 def get_info_usuarios_envio_comprovante():
      pagamentos = db.session.query(Pagamento).join(Participante)\
      .filter(Participante.id_evento == get_id_evento_atual(), Pagamento.comprovante_enviado == True,
-             Pagamento.metodo_pagamento == 'Comprovante', Pagamento.descricao == 'Kit')
+             Pagamento.metodo_pagamento == 'Comprovante', Pagamento.descricao == 'Kit', Pagamento.cancelado == False).all()
      return pagamentos
 
 def esta_preenchido(data):

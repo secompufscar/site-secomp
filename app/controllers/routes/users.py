@@ -542,7 +542,7 @@ def comprar_kit():
                         pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
                         Participante.usuario).join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email,\
                         Pagamento.descricao == "Kit", Pagamento.efetuado == False, Pagamento.rejeitado == False,
-                        Pagamento.metodo_pagamento == 'PayPal').first()
+                        Pagamento.metodo_pagamento == 'PayPal', Pagamento.cancelado == False).first()
                         participante = db.session.query(Participante).filter_by(usuario=current_user).first()
                         if pagamento is None:
                             valor_pagamento = get_preco_kit()
@@ -634,7 +634,7 @@ def executar_pagamento_kit():
     pagamento = db.session.query(Pagamento).join(Pagamento.participante).join(aliased(Participante.usuario),
     Participante.usuario).join(aliased(Usuario), Usuario).filter(Usuario.email == current_user.email,\
     Pagamento.descricao == "Kit", Pagamento.payment_id == payment_id, Pagamento.efetuado == False,\
-    Pagamento.rejeitado == False, Pagamento.metodo_pagamento == 'PayPal').first()
+    Pagamento.rejeitado == False, Pagamento.metodo_pagamento == 'PayPal', Pagamento.cancelado == False).first()
     participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
     payer_id = request.args.get('PayerID')
     if pagamento is not None:
@@ -664,8 +664,19 @@ def executar_pagamento_kit():
 def pagamentos():
     participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
     if participante is not None:
+        form = CancelarPagamentoForm(request.form)
         pagamentos = db.session.query(Pagamento).filter(Pagamento.participante == participante)
-        return render_template('users/pagamentos.html', usuario=current_user, participante=participante, pagamentos=pagamentos)
+        print(form.validate_on_submit())
+        print(form.cancelar.data)
+        if form.validate_on_submit():
+            pagamento = db.session.query(Pagamento).filter(Pagamento.id == int(form.cancelar.data), Pagamento.participante == participante,
+                                                            Pagamento.cancelado == False, Pagamento.efetuado == False,  Pagamento.rejeitado == False).first()
+            if pagamento is not None:
+                pagamento.cancelado = True
+                pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante + 1
+                db.session.add(pagamento)
+                db.session.commit()
+        return render_template('users/pagamentos.html', usuario=current_user, participante=participante, pagamentos=pagamentos, form=form)
     else:
         return redirect(url_for('.cadastro_participante'))
 
