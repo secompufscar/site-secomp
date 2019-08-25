@@ -1,5 +1,5 @@
 :root {
-    --font-gray: #666666;
+    --font-gray: #555555;
     --card-color: #fff;
     --nav-color: #fff;
     --selected-color: #00cfa1;
@@ -7,7 +7,7 @@
 }
 
 [data-theme=dark] {
-    --font-gray: #aaaaaa;
+    --font-gray: #c0c0c0;
     --card-color: #343A40;
     --nav-color: #ffffff11;
     --selected-color: #ff205b;
@@ -64,6 +64,10 @@
     margin-left: auto;
 }
 
+.setaEsquerda, .setaDireita {
+    cursor: pointer;
+}
+
 @media (max-width: 991px) {
     .nav_on {
         display: block;
@@ -83,6 +87,7 @@
 }
 
 @media (min-width: 992px) {
+
     .selected {
         background-color: var(--selected-color);
         color: #fff;

@@ -1,26 +1,14 @@
-
-
 {% extends "base.html" %}
 {% block styles %}
-<link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css" />
+
+{{ super() }}
+
 <link href="{{ url_for('static', filename='css/cronograma.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
+
 {% block content %}
-<style>
-   .oculto{
-   display: none;
-   }
-   .modal-lg {
-    max-width: 45% !important;
-  }
-  .nav_off, .nav_on, .nav_off > a > h5, .nav_off > a > h4, .nav_off > a > div,
-  .nav_on > a > h5, .nav_on > a > h4, .nav_on > a > div, .setaDireita, .setaEsquerda,
-  .setaDireita > svg > path, .setaEsquerda > svg > path {
-    cursor: pointer;
-  }
-</style>
-<div class="container">
+
+<div class="container pb-2">
    <div class="row justify-content-center pt-1">
       <div class="col-md-12 text-center">
          <h2>Cronograma</h2>
@@ -88,12 +76,11 @@
    {% macro atividades_do_dia(lista_atividades, id_div, dia_semana) -%}
    <div id="{{ id_div }}" style="display: block;">
       <div class="col-md-12">
-        {% for atividade in lista_atividades %}
-         <div class="card" style="margin-bottom: 30px;">
+         {% for atividade in lista_atividades %}
+         <div class="card mb-4">
             <div class="row no-gutters align-items-center">
                <div class="col-md-2">
-                  <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid"
-                     alt="">
+                  <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid p-1" alt="">
                </div>
                <div class="col-md-4">
                   <div class="card-body">
@@ -104,7 +91,7 @@
                         -
                         {% endif %}
                      </h4>
-                     <p class="card-subtitle text-muted">
+                     <p class="card-subtitle text-gray">
                         {% for ministrante in atividade.ministrantes %}
                         {{ministrante.usuario.primeiro_nome}} {{ministrante.usuario.sobrenome}}
                         {% if ministrante.profissao is not sameas none %}
@@ -117,7 +104,7 @@
                </div>
                <div class="col-md-6">
                   <div class="card-body">
-                     <p class="card-subtitle text-muted">
+                     <p class="card-subtitle text-gray">
                         {% if atividade.descricao is not sameas none %}
                         {{ atividade.descricao }}
                         {% else %}
@@ -127,50 +114,50 @@
                   </div>
                </div>
             </div>
-            <div class="card-footer text-muted">
+            <div class="card-footer text-gray">
                <div class="row no-gutters align-items-center">
-                  <div class="col-md-3">
-                     <i class="fas fa-map-marker-alt"></i>
+                  <div class="col-md-3 mt-1 mb-1">
+                     <i class="fas fa-map-marker-alt mr-1"></i>
                      <span>
-                     {% if atividade.local is not sameas none %}
-                     {{ atividade.local }}
-                     {% else %}
-                     Local ainda não disponível
-                     {% endif %}
+                        {% if atividade.local is not sameas none %}
+                        {{ atividade.local }}
+                        {% else %}
+                        Local ainda não disponível
+                        {% endif %}
+                     </span>
+                  </div>
+                  <div class="col-md-3 mt-1 mb-1">
+                     <i class="fas fa-calendar-alt mr-1"></i>
+                     <span>
+                        {% if atividade.data_hora_inicio is not sameas none %}
+                        {{ dia_semana }}
+                        {{ atividade.data_hora_inicio.strftime('%d/%m/%Y') }}
+                        {% else %}
+                        Horário ainda não disponível
+                        {% endif %}
+                     </span>
+                  </div>
+                  <div class="col-md-3 mt-1 mb-1">
+                     <i class="fas fa-clock mr-1"></i>
+                     <span>
+                        {% if atividade.data_hora_inicio is not sameas none and atividade.data_hora_fim is not sameas none %}
+                        {{ atividade.data_hora_inicio.strftime('%H:%M') }} -
+                        {{ atividade.data_hora_fim.strftime('%H:%M') }}
+                        {% else %}
+                        Horário ainda não disponível
+                        {% endif %}
                      </span>
                   </div>
                   <div class="col-md-3">
-                     <i class="fas fa-calendar-alt"></i>
-                     <span>
-                     {% if atividade.data_hora_inicio is not sameas none %}
-                     {{ dia_semana }}
-                     {{ atividade.data_hora_inicio.strftime('%d/%m/%Y') }}
-                     {% else %}
-                     Horário ainda não disponível
-                     {% endif %}
-                     </span>
-                  </div>
-                  <div class="col-md-3">
-                     <i class="fas fa-clock"></i>
-                     <span>
-                     {% if atividade.data_hora_inicio is not sameas none and atividade.data_hora_fim is not sameas none %}
-                     {{ atividade.data_hora_inicio.strftime('%H:%M') }} -
-                     {{ atividade.data_hora_fim.strftime('%H:%M') }}
-                     {% else %}
-                     Horário ainda não disponível
-                     {% endif %}
-                     </span>
-                  </div>
-                  <div class="col-md-3">
-                      {% if atividade.ministrantes_confirmados_atividade | length > 0 %}
-                     <button type="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
+                     {% if atividade.ministrantes_confirmados_atividade | length > 0 %}
+                     <button type="button" class="btn btn-primary float-right" data-toggle="modal"
                         data-target="#modal{{atividade.titulo.replace(' ', '')}}">
-                     Detalhes
+                        Detalhes
                      </button>
                      {% else %}
 
-                     <button type="button" style='cursor:default' id="btn-modal" class="btn btn-primary float-right">
-                     Sem detalhes
+                     <button type="button" disabled class="btn btn-secondary float-right">
+                        Sem detalhes
                      </button>
                      {% endif %}
                   </div>
@@ -178,29 +165,30 @@
             </div>
          </div>
          {% macro modal_ministrantes(atividade) -%}
-         <div class="modal fade" id="modal{{ atividade.titulo.replace(' ', '') }}" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
-            aria-hidden="true">
+         <div class="modal fade" id="modal{{ atividade.titulo.replace(' ', '') }}" tabindex="-1" role="dialog"
+            aria-labelledby="modal1Title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                {% for ministrante in atividade.ministrantes_confirmados_atividade %}
                {% if loop.index == 1 %}
                <div id="{{ atividade.titulo.replace(' ', '') }}{{ loop.index }}" class="modal-content">
-                {% else %}
-                <div id="{{ atividade.titulo.replace(' ', '') }}{{ loop.index }}" class="modal-content oculto">
-                {% endif %}
+                  {% else %}
+                  <div id="{{ atividade.titulo.replace(' ', '') }}{{ loop.index }}" class="modal-content d-none">
+                     {% endif %}
                      <div class="modal-header">
                         <h5 class="modal-title text-center">
-                           <b>{{ atividade.titulo }} </b>
+                           <b>{{ atividade.titulo }}</b>
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                           <span aria-hidden="true">&times;</span>
                         </button>
                      </div>
                      <div class="modal-body">
                         <div class="row pl-2 pr-2 align-items-center">
                            {% if atividade.ministrantes_confirmados_atividade|length > 0 %}
-                           <div class="col-sm-">
+                           <div class="col-1">
                               {% set aux = atividade.titulo.replace(" ", "") %}
-                              <div class="text-center setaEsquerda" onclick="mLeftArrow('{{ aux }}', {{ atividade.ministrantes_confirmados_atividade|length }} )">
+                              <div id="mSetaEsquerda" class="text-center setaEsquerda"
+                                 onclick="mLeftArrow('{{ aux }}', {{ atividade.ministrantes_confirmados_atividade|length }} )">
                                  <i class="fas fa-2x fa-chevron-left"></i>
                               </div>
                               {% endif %}
@@ -216,7 +204,7 @@
                                        {{ ministrante.usuario.primeiro_nome }} {{ ministrante.usuario.sobrenome }}
                                        {% endif %}
                                     </h5>
-                                    <p class="text-muted">
+                                    <p class="text-gray">
                                        {%if ministrante.profissao is sameas none %}
                                        Sem informações
                                        {% else %}
@@ -226,43 +214,45 @@
                                  </div>
                                  <div class="col-md-2">
                                     {% if ministrante.foto is not sameas none %}
-                                    <img src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
+                                    <img
+                                       src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
                                        class="img-fluid" alt="">
                                     {% else %}
-                                    <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid"
-                                       alt="">
+                                    <img src="{{ url_for('static', filename='images/logo-colorida.png') }}"
+                                       class="img-fluid" alt="">
                                     {% endif %}
                                  </div>
                               </div>
-                              <div style="margin-top:10px;">
-                              <h5><b>Biografia</b></h5>
-                              <p style="height:230px; overflow-y: auto; border-style:solid;border-left:0px;border-top:0px;border-width:1px;border-color:#d9d9d9;">
+
+                              <h5 class="pt-2"><b>Biografia</b></h5>
+                              <p>
                                  {% if ministrante.biografia is not sameas none %}
                                  {{ ministrante.biografia }}
                                  {% else %}
                                  Sem informações
                                  {% endif %}
                               </p>
-                            </div>
-                            <div>
-                              {% if ministrante.facebook is not sameas None %}
-                              <b>Facebook:</b> {{ ministrante.facebook }}
-                              {% endif %}
-                              {% if ministrante.twitter is not sameas None %}
-                              <b>Twitter:</b> {{ ministrante.twitter }}
-                              {% endif %}
-                              {% if ministrante.linkedin is not sameas None %}
-                              <b>LinkedIn:</b> {{ ministrante.linkedin }}
-                              {% endif %}
-                              {% if ministrante.github is not sameas None %}
-                              <b>Github:</b> {{ ministrante.github }}
-                              {% endif %}
-                            </div>
+
+                              <p>
+                                 {% if ministrante.facebook is not sameas None %}
+                                 <b>Facebook:</b> {{ ministrante.facebook }}
+                                 {% endif %}
+                                 {% if ministrante.twitter is not sameas None %}
+                                 <br><b>Twitter:</b> {{ ministrante.twitter }}
+                                 {% endif %}
+                                 {% if ministrante.linkedin is not sameas None %}
+                                 <br><b>LinkedIn:</b> {{ ministrante.linkedin }}
+                                 {% endif %}
+                                 {% if ministrante.github is not sameas None %}
+                                 <br><b>Github:</b> {{ ministrante.github }}
+                                 {% endif %}
+                              </p>
                            </div>
-                           <div class="col-sm-">
+                           <div class="col-1">
                               {% if atividade.ministrantes_confirmados_atividade|length > 0 %}
                               {% set aux = atividade.titulo.replace(" ", "") %}
-                              <div class="text-center setaDireita" onclick="mRightArrow('{{ aux }}', {{atividade.ministrantes_confirmados_atividade|length}} )">
+                              <div id="mSetaDireita" class="text-center setaDireita"
+                                 onclick="mRightArrow('{{ aux }}', {{atividade.ministrantes_confirmados_atividade|length}} )">
                                  <i class="fas fa-2x fa-chevron-right"></i>
                               </div>
                               {% endif %}
@@ -272,107 +262,114 @@
                      <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                      </div>
+                  </div>
+                  {% endfor %}
                </div>
-               {% endfor %}
             </div>
-          </div>
             {%- endmacro %}
             {{ modal_ministrantes(atividade) }}
-        {% endfor %}
+            {% endfor %}
+         </div>
       </div>
-    </div>
-   {%- endmacro %}
-   {{ atividades_do_dia(info_cronograma.SEG, "seg", "Segunda") }}
-   {{ atividades_do_dia(info_cronograma.TER, "ter", "Terça") }}
-   {{ atividades_do_dia(info_cronograma.QUA, "qua", "Quarta") }}
-   {{ atividades_do_dia(info_cronograma.QUI, "qui", "Quinta") }}
-   {{ atividades_do_dia(info_cronograma.SEX, "sex", "Sexta") }}
+      {%- endmacro %}
+      {{ atividades_do_dia(info_cronograma.SEG, "seg", "Segunda") }}
+      {{ atividades_do_dia(info_cronograma.TER, "ter", "Terça") }}
+      {{ atividades_do_dia(info_cronograma.QUA, "qua", "Quarta") }}
+      {{ atividades_do_dia(info_cronograma.QUI, "qui", "Quinta") }}
+      {{ atividades_do_dia(info_cronograma.SEX, "sex", "Sexta") }}
+   </div>
 </div>
 <script>
    document.getElementById('ter').style.display = 'none'
    document.getElementById('qua').style.display = 'none'
    document.getElementById('qui').style.display = 'none'
    document.getElementById('sex').style.display = 'none'
-     function right_arrow() {
-         switch (document.querySelector('.selected').id) {
-             case "div_seg":
-                 toggle_visibility('ter'); break;
-             case "div_ter":
-                 toggle_visibility('qua'); break;
-             case "div_qua":
-                 toggle_visibility('qui'); break;
-             case "div_qui":
-                 toggle_visibility('sex'); break;
-             case "div_sex":
-                 toggle_visibility('seg'); break;
-             default: break;
+   function right_arrow() {
+      switch (document.querySelector('.selected').id) {
+         case "div_seg":
+            toggle_visibility('ter'); break;
+         case "div_ter":
+            toggle_visibility('qua'); break;
+         case "div_qua":
+            toggle_visibility('qui'); break;
+         case "div_qui":
+            toggle_visibility('sex'); break;
+         case "div_sex":
+            toggle_visibility('seg'); break;
+         default: break;
+      }
+   }
+   function left_arrow() {
+      switch (document.querySelector('.selected').id) {
+         case "div_seg":
+            toggle_visibility('sex'); break;
+         case "div_ter":
+            toggle_visibility('seg'); break;
+         case "div_qua":
+            toggle_visibility('ter'); break;
+         case "div_qui":
+            toggle_visibility('qua'); break;
+         case "div_sex":
+            toggle_visibility('qui'); break;
+         default: break;
+      }
+   }
+   function toggle_visibility(id) {
+      var listaDias = ['seg', 'ter', 'qua', 'qui', 'sex'];
+      var i;
+      var target = document.getElementById(id);
+
+      for (i = 0; i < 5; i++) {
+
+         var content = document.getElementById(listaDias[i]);
+         var th = document.getElementById('th_' + listaDias[i]);
+         var div = document.getElementById('div_' + listaDias[i]);
+
+         if (content == target) {
+            content.style.display = 'block';
+            th.className = "nav_on";
+            div.className = "day selected";
          }
-     }
-     function left_arrow() {
-         switch (document.querySelector('.selected').id) {
-             case "div_seg":
-                 toggle_visibility('sex'); break;
-             case "div_ter":
-                 toggle_visibility('seg'); break;
-             case "div_qua":
-                 toggle_visibility('ter'); break;
-             case "div_qui":
-                 toggle_visibility('qua'); break;
-             case "div_sex":
-                 toggle_visibility('qui'); break;
-             default: break;
+         else {
+            content.style.display = 'none';
+            th.className = "nav_off";
+            div.className = "day";
          }
-     }
-     function toggle_visibility(id) {
-         var listaDias = ['seg', 'ter', 'qua', 'qui', 'sex'];
-         var i;
-         var target = document.getElementById(id);
+      }
+   }
 
-         for (i = 0; i < 5; i++) {
+   selector_count = 1;
 
-             var content = document.getElementById(listaDias[i]);
-             var th = document.getElementById('th_' + listaDias[i]);
-             var div = document.getElementById('div_' + listaDias[i]);
+   function mRightArrow(atividade, tamanho) {
 
-             if (content == target) {
-                 content.style.display = 'block';
-                 th.className = "nav_on";
-                 div.className = "day selected";
-             }
-             else {
-                 content.style.display = 'none';
-                 th.className = "nav_off";
-                 div.className = "day";
-             }
-         }
-     }
-
-     selector_count = 1;
-
-     function mRightArrow(atividade, tamanho){
-
-       var atual =  atividade + selector_count.toString();
-       selector_count = (selector_count + 1);
-       if(selector_count > tamanho){
+      var atual = atividade + selector_count.toString();
+      selector_count = (selector_count + 1);
+      if (selector_count > tamanho) {
          selector_count = 1;
-       }
-       var proximo = atividade + selector_count.toString();
-       $('#' + atual).addClass('oculto');
-       $('#' + proximo).removeClass('oculto');
+      }
+      var proximo = atividade + selector_count.toString();
+      $('#' + atual).addClass('d-none');
+      $('#' + proximo).removeClass('d-none');
 
-     }
-     function mLeftArrow(atividade, tamanho){
+   }
+   function mLeftArrow(atividade, tamanho) {
 
-       var atual =  atividade + selector_count.toString();
-       selector_count = (selector_count - 1);
-       if(selector_count == 0){
+      var atual = atividade + selector_count.toString();
+      selector_count = (selector_count - 1);
+      if (selector_count == 0) {
          selector_count = tamanho;
-       }
-       var anterior = atividade + selector_count.toString();
-       $('#' + atual).addClass('oculto');
-       $('#' + anterior).removeClass('oculto');
+      }
+      var anterior = atividade + selector_count.toString();
+      $('#' + atual).addClass('d-none');
+      $('#' + anterior).removeClass('d-none');
+   }
+</script>
 
+<script>
 
-     }
+   // evita que ocorra seleção de texto ao clicar várias vezes nas setas
+   jQuery('.setaEsquerda').mousedown(function (e) { e.preventDefault(); });
+   jQuery('.setaDireita').mousedown(function (e) { e.preventDefault(); });
+
 </script>
 {% endblock %}
