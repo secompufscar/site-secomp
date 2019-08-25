@@ -5,22 +5,43 @@
 <div class="container">
 	<div class="row justify-content-center pt-4">
 		<div class="col-md-12">
-			<h1 class="text-center">Patrocinadores - 2019</h1>
+			<h1 class="text-center">Patrocinadores</h1>
 		</div>
 	</div>
-	{% for p in patrocinadores %}
-	{% if p.ativo_site %}
-	<div class="row justify-content-center pt-1">
-		<div class="card" style="width: 18rem;">
-			<div class="card-body">
-				<h5 class="card-title">{{p.nome_empresa}}</h5>
-				<h6 class="card-subtitle mb-2 text-muted">{{p.cota.nome}}</h6>
-				<p class="card-text">Descrição</p>
-				<a href="{{p.link_website}}" class="card-link">Site</a>
+	<div class="row">
+		{% for p in patrocinadores %}
+		{% if p.ativo_site %}
+		{% if p.id_cota == 1 %}
+		<div class="col-md-12 justify-content-center pt-3 card-center card-diamante" style="margin-bottom: 5rem; float: right;">
+			<div class="card diamante">
+				<div class="card-body">
+					<h5 class="card-title">{{p.nome_empresa}}</h5>
+					<h6 class="card-subtitle mb-2 text-muted">{{p.cota.nome}}</h6>
+					<a href="{{p.link_website}}" class="card-link">Site</a>
+					<img src="{{p.logo}}" class="img-card-patrocinio">
+				</div>
 			</div>
 		</div>
+		{% else %}
+		<div class="col-md-4 justify-content-center pt-3 card-center" style="margin-bottom: 1rem;">
+			<div class="card" style="width: auto;">
+				<div class="card-body">
+					<h5 class="card-title">{{p.nome_empresa}}</h5>
+					<h6 class="card-subtitle mb-2 text-muted">{{p.cota.nome}}</h6>
+					<a href="{{p.link_website}}" class="card-link">Site</a>
+					<img src="{{p.logo}}" style="width: 25%; position: absolute; top: 15%; right: 5%;">
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		{% endif %}
+		{% endfor %}
 	</div>
-	{% endif %}
-	{% endfor %}
 </div>
+
+<script>
+function patrocionio(){
+	
+}
+</script>
 {% endblock %}
