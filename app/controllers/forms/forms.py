@@ -301,3 +301,6 @@ class GerenciarComprovantesForm(FlaskForm):
     desaprovar = IntegerField()
     rejeitar = IntegerField()
     autorizar = IntegerField()
+
+class CancelarPagamentoForm(FlaskForm):
+    cancelar = IntegerField()

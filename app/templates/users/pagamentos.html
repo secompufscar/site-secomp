@@ -11,7 +11,8 @@
 {% block sidebar_content %}
 <div class="container pt-1">
   <h2 class="text-center pb-2" style="margin-top: 15px; margin-bottom: 20px;">Meus pagamentos</h2>
-
+    <form method="POST" id='form' action="{{url_for('users.pagamentos')}}">
+      {{ form.hidden_tag() }}
     <table class="table text-center table-borderless">
       <thead class="thead bg-dark text-white">
         <tr>
@@ -22,6 +23,7 @@
           <th scope="col">Data e Hora</th>
           <th scope="col">Preço</th>
           <th scope="col">Comprovante</th>
+          <th scope="col">Cancelar</th>
         </tr>
       </thead>
       <tbody>
@@ -31,12 +33,16 @@
             {{ pagamento.descricao }}
           </td>
           <td scope='col'>
+            {% if pagamento.cancelado is sameas False%}
             {% if pagamento.rejeitado is sameas true %}
             <span style='color: #cc0000;'>Rejeitado</span>
             {% elif pagamento.efetuado is sameas true %}
               <span style='color: #008000;'>Aprovado</span>
             {% else %}
               <span style='color: #cca300;'>Pendente</span>
+            {% endif %}
+            {% else %}
+            <span style='color: #1B1B32;'>Cancelado</span>
             {% endif %}
           </td>
           <td>
@@ -56,10 +62,16 @@
               <button type='button' title="Visualizar Comprovante" alt="Visualizar Comprovante" class="btn btn-default" onclick= "abrir_comprovante('{{ pagamento.arquivo_comprovante }}')"><i class="fa fa-file-invoice-dollar fa-lg"></i></button>
             {% endif %}
           </td>
+          <td scope='col'>
+            {% if pagamento.cancelado is sameas False and pagamento.efetuado is sameas False%}
+              <button type='submit' name='cancelar' title="Cancelar Pagamento" alt="Cancelar Pagamento" class="btn btn-primary" value='{{ pagamento.id }}'>Cancelar Pagamento</button>
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
+  </form>
 </div>
 
 <script>
