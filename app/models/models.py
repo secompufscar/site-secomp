@@ -108,6 +108,7 @@ class Participante(db.Model):
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
+    uuid = Column(String(512), nullable=True)
     flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
 
 
