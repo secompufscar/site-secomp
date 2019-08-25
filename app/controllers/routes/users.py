@@ -157,6 +157,13 @@ def dashboard():
 def dados():
     usuario = db.session.query(Usuario).filter_by(
         id=current_user.id).first()
+    return render_template('users/dados.html', title='Dados Pessoais', usuario=usuario)
+
+@users.route('/dados-participante', methods=['POST', 'GET'])
+@login_required
+def dados_participante():
+    usuario = db.session.query(Usuario).filter_by(
+        id=current_user.id).first()
     participante = db.session.query(Participante).filter_by(
         usuario=current_user).first()
     if participante is not None:
@@ -165,7 +172,7 @@ def dados():
         restricao_alimentar = ''
     ministrante = db.session.query(Ministrante).filter_by(
         usuario=current_user).first()
-    return render_template('users/dados.html', title='Dados', usuario=usuario,
+    return render_template('users/dados_participante.html', title='Dados de Participante', usuario=usuario,
                             participante=participante, ministrante=ministrante, restricao_alimentar=restricao_alimentar)
 
 @login_required
