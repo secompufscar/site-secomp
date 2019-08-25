@@ -79,9 +79,24 @@
                         {% endif %}
                     </tr>
 
+                    <tr>
+                        <th scope="row">Inscrições em Atividades</th>
+                        {% if (participante != None) %}
+                            {% if (participante.atividades) %}
+                            <td>
+                            {% for a in participante.atividades %}
+                                {{ a.titulo }}</br>
+                            {% endfor %}
+                            </td>
+                            {% endif %}
+                        {% else: %}
+                        <td><a href="{{url_for('.cadastro_participante')}}">Inscreva-se na SECOMP UFSCar para participar se inscrever em minicursos e workshop.</a></td>
+                        {% endif %}
+                    </tr>
+
                 </tbody>
 
-                {% if (participante.pagamentos != None) %}
+                {% if participante.pagamentos %}
                 <thead class="thead bg-dark text-white">
                     <tr>
                         <th scope="col">Kit</th>
@@ -97,7 +112,13 @@
                             <th scope="row">Tamanho de Camiseta</th>
                             <td>
                             {% for p in participante.pagamentos %}
-                                    {{ p.camiseta }}</br>
+                                {% if p.rejeitado is not sameas true %}
+                                    {% if p.efetuado is sameas true %}
+                                    {{ p.camiseta }} {{ ' (pagamento aprovado)' }}</br>
+                                    {% else %}
+                                    {{ p.camiseta }} {{ ' (pagamento pendente)' }}</br>
+                                    {% endif %}
+                                {% endif %}
                             {% endfor %}
                             </td>
                         </tr>

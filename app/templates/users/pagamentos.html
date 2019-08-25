@@ -11,6 +11,8 @@
 {% block sidebar_content %}
 <div class="container pt-1">
   <h2 class="text-center pb-2" style="margin-top: 15px; margin-bottom: 20px;">Meus pagamentos</h2>
+  <p class="pb-1"><small>* O cancelamento de pagamentos realizados através de <b>transferência bancária</b> deve ser efetuado caso haja
+    envio de comprovante errado. O valor transferido não será, em nenhuma hipótese, estornado.</small></p>
     <form method="POST" id='form' action="{{url_for('users.pagamentos')}}">
       {{ form.hidden_tag() }}
     <table class="table text-center table-borderless">
@@ -23,7 +25,7 @@
           <th scope="col">Data e Hora</th>
           <th scope="col">Preço</th>
           <th scope="col">Comprovante</th>
-          <th scope="col">Cancelar</th>
+          <th scope="col">Cancelar*</th>
         </tr>
       </thead>
       <tbody>
