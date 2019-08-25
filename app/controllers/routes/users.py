@@ -16,6 +16,7 @@ from sqlalchemy.orm import aliased
 from app.controllers.functions.paypal import *
 from flask_limiter import Limiter
 from flask_limiter.util import get_ipaddr
+import uuid
 
 limiter = Limiter(current_app, key_func=get_ipaddr)
 
@@ -97,7 +98,8 @@ def cadastro_participante():
                 participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
                 if form.validate_on_submit() and participante is None:
                     agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    participante = Participante(id_usuario=current_user.id, id_evento=id_evento, data_inscricao=agora, credenciado=False, opcao_coffee=0)
+                    participante = Participante(id_usuario=current_user.id, id_evento=id_evento, data_inscricao=agora, credenciado=False, opcao_coffee=0,
+                                    uuid=str(uuid.uuid1()))
                     db.session.add(participante)
                     db.session.flush()
                     db.session.commit()
@@ -664,6 +666,12 @@ def executar_pagamento_kit():
             return render_template('users/pagamento_kit_efetuado.html', usuario=current_user, participante=participante, form_login=form_login)
     else:
         return redirect(url_for('.dashboard'))
+
+@users.route('/cancelar-pagamento-kit', methods=["POST", "GET"])
+@login_required
+@email_verificado_required
+def cancelar_pagamento_kit():
+    return redirect(url_for('users.pagamentos'))
 
 @users.route('/pagamentos', methods=["POST", "GET"])
 @login_required
