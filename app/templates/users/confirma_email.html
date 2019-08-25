@@ -8,9 +8,9 @@
 				<i class="fa fa-4x fa-check"></i>
 				<h4>{{ resultado }}</h4>
 				{% if ministrante %}
-					<button onclick="location.href='{{url_for('conteudo.dados_hospedagem_transporte')}}'">Continuar</button>
+					<button class="btn btn-primary" onclick="location.href='{{url_for('conteudo.dados_hospedagem_transporte')}}'">Continuar</button>
 				{% else: %}
-					<button onclick="location.href='{{url_for('users.cadastro_participante')}}'">Continuar</button>
+					<button class="btn btn-primary" onclick="location.href='{{url_for('users.cadastro_participante')}}'">Continuar</button>
 				{% endif %}
 			{% else: %}
 				<i class="fa fa-4x fa-envelope"></i>

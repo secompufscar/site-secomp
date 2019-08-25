@@ -64,7 +64,7 @@
           </td>
           <td scope='col'>
             {% if pagamento.cancelado is sameas False and pagamento.efetuado is sameas False%}
-              <button type='submit' name='cancelar' title="Cancelar Pagamento" alt="Cancelar Pagamento" class="btn btn-primary" value='{{ pagamento.id }}'>Cancelar Pagamento</button>
+              <button type='submit' name='cancelar' title="Cancelar Pagamento" alt="Cancelar Pagamento" class="btn btn-danger" value='{{ pagamento.id }}'>Cancelar Pagamento</button>
             {% endif %}
           </td>
         </tr>
