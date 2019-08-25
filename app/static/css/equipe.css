@@ -1,11 +1,9 @@
 :root {
-    --bg-color: #fff;
     --border-color: #00000020;
 }
 
 [data-theme=dark] {
-    --bg-color: #00141a;
-    --border-color: #ffffff70;
+    --border-color: #ffffff44;
 }
 
 .frontside {
