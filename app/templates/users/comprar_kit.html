@@ -83,34 +83,39 @@
             Deseja comprar o kit da SECOMP UFSCar?</h2>
     </div>
 
-    <div class="row justify-content-center pb-3">
-        <img id="img_kit" src="{{ url_for('static', filename='images/kit_secomp.jpeg') }}" />
-    </div>
-
     <form method="POST" action="{{url_for('users.comprar_kit')}}" enctype="multipart/form-data">
 
         {{ form.hidden_tag() }}
         <div class="row justify-content-around no-gutters">
-            <div class="col-sm-8">
+            <div class="col-md-8 p-0 mb-4">
                 <div id="escolha_compra">
-                    <div class="row justify-content-around no-gutters">
-                        <div class="col">
+                    <div class="row no-gutters">
+                        <div class="col-sm-2 ml-4 p-0 align-bottom">
                             <div class="row">
                                 {{ wtf.form_field(form.comprar) }}
                             </div>
-                            <div class="row">
-                                <button type='button' id='continuar' class="btn btn-primary"
-                                    onclick='continuar2()'>Continuar</button>
-                            </div>
                         </div>
 
-                        <div class="col text-right" style="font-size:25px;"><b>Preço do KIT:</b> R$ {{ valor }}</div>
+                        <div class="col-sm-4 ml-4">
+                          <div class="row">
+                              <button type='button' id='continuar' class="btn btn-primary"
+                                  onclick='continuar2()'>Voltar à Dashboard</button>
+                          </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
-        <div id='info_kit'>
-            <div class="row justify-content-around no-gutters">
+        <div class="row justify-content-around no-gutters">
+          <div class="col-md-4 text-right" style="font-size:25px;"><b>Preço do KIT:</b> R$ {{ valor }}</div>
+        </div>
+        <div class="row justify-content-center pb-3 mt-4">
+            <img id="img_kit" src="{{ url_for('static', filename='images/kit_xsecomp.png') }}" />
+        </div>
+        <a name="pagamento"></a>
+        <div id='info_kit' class="mt-4">
+            <div class="row justify-content-around noheader-gutters">
                 <div class="col-md-4">
                     {{ wtf.form_field(form.camiseta) }}
                     <a href="#" class="m-0 p-0" data-toggle="modal" data-target="#modalCamisetas"
@@ -163,7 +168,7 @@
     </form>
 </div>
 
-<div class="modal fade" id="modalCamisetas" tabindex="-1" role="dialog" aria-labelledby="Tabela de tamanhos"
+<div class="modal fade" id="modalCamisetas" tabindex=header"-1" role="dialog" aria-labelledby="Tabela de tamanhos"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content" style="width: auto; margin: auto;">
@@ -176,7 +181,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <img id="img_kit" src="{{ url_for('static', filename='images/tamanho_camisetas.jpeg') }}" />
+                <img id="img_kit" src="{{ url_for('static', filename='images/tamanho_camisetas.jpg') }}" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -204,6 +209,7 @@
             $('#info_kit').show();
             $('#recaptcha').show();
             $('#continuar').hide();
+            location.href = "#pagamento";
         }
 
 
@@ -235,6 +241,7 @@
     $('#desconto').hide();
     $('#comprar-0').change(function () {
         if ($('#comprar-0').is(':checked')) {
+            location.href = "#pagamento";
             $('#info_kit').show();
             $('#recaptcha').show();
             $('#continuar').hide();
