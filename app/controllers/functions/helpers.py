@@ -66,7 +66,6 @@ def cadastra_objeto_generico(objeto):
         print(e)
         return None
 
-
 def verifica_outro_escolhido(campo, objeto):
     opcao_digitada = dict(campo.choices).get(campo.data)
     if opcao_digitada == 'Outro' or opcao_digitada == 'Outra':

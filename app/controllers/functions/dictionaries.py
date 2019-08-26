@@ -202,13 +202,14 @@ def get_urls_conteudo(url_root):
 
 def get_equipe(database=True):
     try:
-        info_equipe = None
+        info_equipe = {}
         if database:
             diretorias = db.session.query(Diretoria).all()
-            if len(diretorias):
-                info_equipe = {diretoria.nome: {membro.nome: {'img': membro.foto}
-                                                for membro in diretoria.membros}
-                               for diretoria in diretorias}
+            if len(diretorias) > 0:
+                for diretoria in diretorias:
+                    info_equipe[diretoria.nome] = {}
+                    for membro in diretoria.membros:
+                        info_equipe[diretoria.nome][membro.nome] = {'img': membro.foto}
         else:
             import json
             import os.path as op
