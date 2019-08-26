@@ -250,9 +250,9 @@
                            </div>
                            <div class="col-1">
                               {% if atividade.ministrantes_confirmados_atividade|length > 0 %}
-                              {% set aux = atividade.titulo.replace(" ", "") %}
+                              {% set aux = atividade.id %}
                               <div id="mSetaDireita" class="text-center setaDireita"
-                                 onclick="mRightArrow('{{ aux }}', {{atividade.ministrantes_confirmados_atividade|length}} )">
+                                 onclick="mRightArrow('modalcontent{{ aux }}', {{atividade.ministrantes_confirmados_atividade|length}} )">
                                  <i class="fas fa-2x fa-chevron-right"></i>
                               </div>
                               {% endif %}
