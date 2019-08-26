@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+	.bg {
+		background-image: url("{{ url_for('static', filename='images/bgDesafio.jpg') }}");
+		height: 80vh;
+		filter: blur(2px);
+		-webkit-filter: blur(2px);
+		background-position: 45%;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+
+	.title {
+		background-color: #000000aa;
+		color: white;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 100%;
+		padding: 3%;
+		text-align: center;
+	}
+
+	.t1 {
+		font-family: hacker;
+		font-weight: 600;
+		font-size: 3rem;
+		text-shadow: 2px 2px #a0a0a044;
+	}
+
+	.t2 {
+		font-weight: 600;
+	}
+
+	@media(max-width: 460px) {
+		.t1 {
+			font-size: 2rem;
+		}
+	}
+
+	@media(min-width: 600px) {
+		.t1 {
+			font-size: 4rem;
+		}
+	}
+</style>
+
+<div class="container-fluid bg-dark pt-3">
+
+	<div class="bg"></div>
+
+	<div class="title">
+		<h1 class="t1">DESAFIO DE PROGRAMADORES</h1>
+	</div>
+
+</div>
+
+<div class="pt-4 bg-dark" style="color: #e1e1ff;">
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-3 mt-2">
+				<ul class="list-unstyled list-inline social text-center">
+					<i class="fas fa-4x fa-calendar-alt"></i>
+					<h5 class="t2 pt-2">DATA</h5>
+					<h5>Início: Sexta (13/09) às 08h00</h5>
+					<h5>Fim: Sexta (13/09) às 12h30</h5>
+				</ul>
+			</div>
+
+			<div class="col-md-3 mt-2">
+				<ul class="list-unstyled list-inline social text-center">
+					<i class="fas fa-4x fa-users"></i>
+					<h5 class="t2 pt-2">EQUIPES</h5>
+					<h5>Até 3 integrantes*</h5>
+				</ul>
+			</div>
+			<div class="col-md-3 mt-2">
+				<ul class="list-unstyled list-inline social text-center">
+					<i class="fas fa-4x fa-clipboard-check"></i>
+					<h5 class="t2 pt-2">INSCRIÇÕES</h5>
+					<h5>Em breve</h5>
+				</ul>
+			</div>
+			<div class="col-md-3 mt-2">
+				<ul class="list-unstyled list-inline social text-center">
+					<i class="fas fa-4x fa-trophy"></i>
+					<h5 class="t2 pt-2">PREMIAÇÃO</h5>
+					<h5>De até R$ 800,00</h5>
+					<h6>(confira o edital)</h6>
+				</ul>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12 text-center pb-2">
+				<h4 class="t2 pb-2">Descrição:</h4>
+
+				<h5 class="pb-2">O Desafio de Programadores da X SECOMP UFSCar realizado com apoio do Prof. Dr. Diego
+					Furtado Silva, é uma competição de programação onde times formados por até três integrantes devem
+					resolver o maior número de problemas no menor tempo possível.</h5>
+				</h5>
+				<h5 class="pb-4">
+					A competição ocorrerá no dia 13 de Setembro de 2019 das 08h00 às 12h30, no Departamento de
+					Computação da Universidade Federal de São Carlos.
+					Além disso, a competição contará com equipes competindo em três níveis de dificuldade e premiação em
+					dinheiro para o primeiro e segundo lugar de cada categoria.
+					Para participar, basta estar inscrito na X SECOMP e preencher o formulário.
+				</h5>
+				<h5 class="pb-4"><b>ATENÇÃO!</b> O número de vagas é limitado à 30 equipes.</h5>
+				<h6>*todos os integrantes devem estar inscritos na X SECOMP</h6>
+			</div>
+		</div>
+
+		<div class="text-center">
+			<button disabled name="submit" type="submit" class="btn btn-secondary m-3"><i
+					class="mr-2 fas fa-sign-in-alt"></i>Acesse o edital</button>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row justify-content-center p-3">
+		<div class="col-md-12 text-center">
+			<h4>Realização</h4>
+		</div>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">
+		</div>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">
+		</div>
+		<div class="col-sm-3 align-self-center">
+			<img class="img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">
+		</div>
+	</div>
+</div>
+
+{% endblock %}
