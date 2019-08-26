@@ -594,6 +594,7 @@ def comprar_kit():
                         agora = strftime("%Y%m%d%H%M%S", localtime(time()))
                         filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{agora}_{filename}'
                         filename = filename.replace(' ', '')
+                        file_name = secure_filename(comprovante.filename)
                         upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'comprovantes')
                         if not path.exists(upload_path):
                             makedirs(upload_path)
