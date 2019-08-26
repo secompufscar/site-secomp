@@ -57,14 +57,10 @@ def get_participantes_sem_kit():
 
 
 def cadastra_objeto_generico(objeto):
-    try:
-        db.session.add(objeto)
-        db.session.commit()
-        return objeto
+    db.session.add(objeto)
+    db.session.commit()
+    return objeto
 
-    except Exception as e:
-        print(e)
-        return None
 
 
 def verifica_outro_escolhido(campo, objeto):
