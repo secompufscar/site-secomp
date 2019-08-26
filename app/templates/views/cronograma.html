@@ -151,7 +151,7 @@
                   <div class="col-md-3">
                      {% if atividade.ministrantes_confirmados_atividade | length > 0 %}
                      <button type="button" class="btn btn-primary float-right" data-toggle="modal"
-                        data-target="#modal{{atividade.titulo.replace(' ', '')}}">
+                        data-target="#modal{{atividade.id}}">
                         Detalhes
                      </button>
                      {% else %}
@@ -165,14 +165,14 @@
             </div>
          </div>
          {% macro modal_ministrantes(atividade) -%}
-         <div class="modal fade" id="modal{{ atividade.titulo.replace(' ', '') }}" tabindex="-1" role="dialog"
+         <div class="modal fade" id="modal{{ atividade.id }}" tabindex="-1" role="dialog"
             aria-labelledby="modal1Title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                {% for ministrante in atividade.ministrantes_confirmados_atividade %}
                {% if loop.index == 1 %}
-               <div id="{{ atividade.titulo.replace(' ', '') }}{{ loop.index }}" class="modal-content">
+               <div id="modalcontent{{ atividade.id }}{{ loop.index }}" class="modal-content">
                   {% else %}
-                  <div id="{{ atividade.titulo.replace(' ', '') }}{{ loop.index }}" class="modal-content d-none">
+                  <div id="modalcontent{{ atividade.id }}{{ loop.index }}" class="modal-content d-none">
                      {% endif %}
                      <div class="modal-header">
                         <h5 class="modal-title text-center">
@@ -186,9 +186,9 @@
                         <div class="row pl-2 pr-2 align-items-center">
                            {% if atividade.ministrantes_confirmados_atividade|length > 0 %}
                            <div class="col-1">
-                              {% set aux = atividade.titulo.replace(" ", "") %}
+                              {% set aux = atividade.id %}
                               <div id="mSetaEsquerda" class="text-center setaEsquerda"
-                                 onclick="mLeftArrow('{{ aux }}', {{ atividade.ministrantes_confirmados_atividade|length }} )">
+                                 onclick="mLeftArrow('modalcontent{{ aux }}', {{ atividade.ministrantes_confirmados_atividade|length }} )">
                                  <i class="fas fa-2x fa-chevron-left"></i>
                               </div>
                               {% endif %}
@@ -234,17 +234,17 @@
                               </p>
 
                               <p>
-                                 {% if ministrante.facebook is not sameas None %}
-                                 <b>Facebook:</b> {{ ministrante.facebook }}
+                                 {% if ministrante.facebook %}
+                                 <i class="fab fa-facebook-square"></i> {{ ministrante.facebook }}
                                  {% endif %}
-                                 {% if ministrante.twitter is not sameas None %}
-                                 <br><b>Twitter:</b> {{ ministrante.twitter }}
+                                 {% if ministrante.twitter %}
+                                 <br><i class="fab fa-twitter-square"></i> {{ ministrante.twitter }}
                                  {% endif %}
-                                 {% if ministrante.linkedin is not sameas None %}
-                                 <br><b>LinkedIn:</b> {{ ministrante.linkedin }}
+                                 {% if ministrante.linkedin %}
+                                 <br><i class="fab fa-linkedin"></i>  {{ ministrante.linkedin }}
                                  {% endif %}
-                                 {% if ministrante.github is not sameas None %}
-                                 <br><b>Github:</b> {{ ministrante.github }}
+                                 {% if ministrante.github %}
+                                 <br><i class="fab fa-github-square"></i>  {{ ministrante.github }}
                                  {% endif %}
                               </p>
                            </div>
