@@ -33,10 +33,8 @@ def enviar_email_generico(info=None, anexo=None):
     msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['DEFAULT_MAIL_SENDER'])),
                   recipients=[info['email']])
 
-    print(info['template'])
     try:
         msg.html = render_template(info['template'], info=info)
-        print(msg.html)
 
         # Parte que cuida dos anexos
         if not (anexo is None or anexo == []):
@@ -59,7 +57,6 @@ def enviar_email_generico(info=None, anexo=None):
 
     try:
         global mail
-        print(msg)
         mail.send(msg)
     except Exception as e:  # Erros mais prováveis são devido ao email_config, printa error em um arquivo
         try:

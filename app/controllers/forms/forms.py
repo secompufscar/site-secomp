@@ -81,7 +81,7 @@ class ComprarKitForm(BaseRecaptchaForm):
 
 
 class AlterarSenhaForm(FlaskForm):
-    senha_atual = PasswordField('Senha Atual', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
+    senha_atual = PasswordField('Senha Atual', Length(min=0, max=20, message=ERRO_TAMANHO_SENHA)])
     nova_senha = PasswordField('Nova Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA), EqualTo('confirmacao', message=ERRO_COMPARA_SENHAS)])
     confirmacao = PasswordField('Confirmação de Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
 
