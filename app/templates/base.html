@@ -80,10 +80,10 @@
                 <i class="mr-2 fas fa-book"></i>CRONOGRAMA</a>
               <a class="dropdown-item" href="{{ url_for('views.ctf') }}">
                 <i class="mr-2 fas fa-flag"></i>CTF</a>
-              <a class="dropdown-item" href="{{ url_for('views.constr') }}">
+              <a class="dropdown-item" href="{{ url_for('views.desafio') }}">
+                <i class="mr-2 fas fa-laptop-code"></i>DESAFIO</a>
+              <a class="dropdown-item" href="{{ url_for('views.gamejam') }}">
                 <i class="mr-2 fas fa-gamepad"></i>GAME JAM</a>
-              <a class="dropdown-item" href="{{ url_for('views.bug_report') }}">
-                <i class="mr-1 fas fa-comments"></i> BUG REPORT</a>
             </div>
           </li>
           <li class="nav-item">
@@ -93,20 +93,25 @@
         </ul>
 
         <!-- Lado direito da Navbar -->
-        <div class="navbar-nav">
+        <div class="ml-3 navbar-nav">
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="config">
               <i class="mr-2 fas fa-cog"></i></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              {% if current_user.is_authenticated %}
-              {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
               <div class="dropdown-item theme-switch-wrapper">
-                <label class="theme-switch" for="checkbox">
+                <label class="mr-2 theme-switch" for="checkbox">
                   <input type="checkbox" id="checkbox" />
                   <div class="slider round"></div>
                 </label>
                 DARK
               </div>
+
+              <a class="dropdown-item" href="{{ url_for('views.bug_report') }}">
+                <i class="mr-1 fas fa-bug"></i> BUG REPORT</a>
+
+              {% if current_user.is_authenticated %}
+              {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
+
               <a class="dropdown-item" href="{{ url_for('management.gerenciar') }}">
                 <i class="mr-2 fas fa-user-secret"></i>GERENCIAR</a>
               {% endif %}
@@ -116,13 +121,7 @@
                 <i class="mr-2 fas fa-sign-out-alt"></i>SAIR</a>
             </div>
             {% else %}
-            <div class="dropdown-item theme-switch-wrapper">
-              <label class="mr-2 theme-switch" for="checkbox">
-                <input type="checkbox" id="checkbox" />
-                <div class="slider round"></div>
-              </label>
-              DARK
-            </div>
+            
             <a class="dropdown-item" href=" " data-toggle="modal" data-target="#modal-login">
               <i class="mr-2 fas fa-user"></i>ENTRAR</a>
             <a class="dropdown-item" href="{{ url_for('users.cadastro') }}">
