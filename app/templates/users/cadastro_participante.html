@@ -8,6 +8,10 @@
             <h2 class="text-center">Informações sobre o evento</h2>
             <form method="POST" action="{{url_for('users.cadastro_participante')}}">
             {{ form.hidden_tag() }}
+            <div>
+                <p>Termo e Condições de Inscrição</p>
+               <embed src="{{ url_for('static', filename='juridic/termo_condicoes_inscricao_participante.pdf') }}" type="application/pdf" width="100%" height="600px"></embed>
+            </div>
             {{ wtf.form_field(form.leu_termos) }}
                 <button type="submit" class="btn btn-primary">Inscrever-se</button>
             </form>
