@@ -3,7 +3,7 @@
 
 {% block sidebar_content %}
 
-<link href="{{ url_for("static", filename="css/forms.css") }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css" />
 
 <style>
   .tab-form {
@@ -48,13 +48,18 @@
 </style>
 
 <div class="container pb-2">
-  <div class="tab-form">
-    <div class="tabmenu" id="firsttab"></div>
-    <div class="tabmenu" id="secondtab"></div>
-  </div>
-  <div class="col-md-12 text-center p-2">
-    <h2>Edição de dados - Usuário</h2>
-  </div>
+    <div class="row justify-content-center">
+      <div class="col-8">
+          <div class="tab-form">
+            <div class="tabmenu" id="firsttab"></div>
+            <div class="tabmenu" id="secondtab"></div>
+          </div>
+      </div>
+    </div>
+  
+    <div class="col-sm-12 text-center p-2">
+      <h2>Edição de dados</h2>
+    </div>
 
   <form method="POST" action="{{ url_for('users.alterar_usuario') }}" novalidate>
     <div id="secao1">
