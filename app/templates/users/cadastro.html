@@ -6,6 +6,13 @@
 <link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css" />
 
 <style>
+
+/* Sobrescreve tema escuro para forçar o claro */
+[data-theme=dark] {
+  --font-color: #424242;
+  --bg-color: #fff;
+}
+
   .tab-form {
     overflow: auto;
   }
@@ -222,11 +229,6 @@
   })
 </script>
 
-<script>
-	$(document).ready(function(){
-    	$("#content").css("padding-top", $("#navTop").height() * 1.2);
-  });
-</script>
 {% endblock %}
 
 {% block footer %}
