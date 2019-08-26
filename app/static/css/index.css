@@ -33,9 +33,6 @@
 .bg-fade {
     background-color: #000000aa;
     position: relative;
-}
-
-.top-left .bg-fade, .bottom-right .bg-fade {
     border-radius: 1rem;
 }
 
@@ -46,6 +43,11 @@
     padding-bottom: 2rem;
 }
 
+.top-left .row, .bottom-right .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
 .background {
     height: 100vh;
     width: 100%;
@@ -53,7 +55,7 @@
     filter: blur(3px);
     position: absolute;
     background-size: cover;
-    background-position: center;
+    background-position: 62%;
     background-repeat: no-repeat;
 }
 
@@ -63,7 +65,7 @@
     }
 
     .top-left, .bottom-right {
-        width: 90%;
+        width: 80%;
     }
 }
 
@@ -80,7 +82,7 @@
         padding-right: 1rem;
     }
     .top-left, .bottom-right {
-        width: 75%;
+        width: 65%;
     }
 }
 
