@@ -132,6 +132,11 @@ def ctf():
     form_login = LoginForm(request.form)
     return render_template('views/ctf.html', title='CTF', form_login=form_login)
 
+@views.route('/desafio', methods=["GET", "POST"])
+def desafio():
+    form_login = LoginForm(request.form)
+    return render_template('views/desafio.html', title='CTF', form_login=form_login)
+
 
 @limiter.limit("50/day")
 @views.route("/login", methods=["GET", "POST"])
