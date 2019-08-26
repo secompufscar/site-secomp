@@ -8,16 +8,7 @@
 
 <style>
 	#car1 {
-		background-image: url("{{ url_for('static', filename='images/car1.jpg') }}");
-	}
-
-	#car2 {
-		background-image: url("{{ url_for('static', filename='images/car2.jpg') }}");
-
-	}
-
-	#car3 {
-		background-image: url("{{ url_for('static', filename='images/car3.jpg') }}");
+		background-image: url("{{ url_for('static', filename='images/bg.jpeg') }}");
 	}
 
 	#content {
@@ -28,13 +19,12 @@
 
 
 {% block content %}
-
+<img id="car1" class="background">
 <div class="swiper-container">
 	<div class="swiper-wrapper">
 		<div class="swiper-slide">
-			<img id="car1" class="background">
 
-			<div id="bg1" class="col-md-12 text-center">
+			<div class="col-md-12 text-center">
 				<div class="row align-items-center justify-content-center text-center text-white bg-fade">
 					<div class="col-md-12">
 						<img class="logoL" src="{{ url_for('static', filename='images/logo-branca.png') }}">
@@ -61,29 +51,26 @@
 		</div>
 
 		<div class="swiper-slide">
-			<img id="car2" class="background">
 
-			<div id="bg2" class="container-fluid text-center">
+			<div class="container-fluid text-center">
 				<div class="top-left">
-					<div class="row larger align-items-center text-white bg-fade">
-						<div class="col-6 text-right">
-							<i class="fas fa-microphone pr-1"></i>
-						</div>
-						<div class="col-6 text-left pl-1">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
 							<h2>Palestras</h2>
-							<h5>Todos os dias</h5>
+						</div>
+						<div class="col-4">
+							<i class="fas fa-microphone-alt"></i>
 						</div>
 					</div>
 				</div>
 
 				<div class="bottom-right">
-					<div class="row larger align-items-center text-white bg-fade">
-						<div class="col-6 text-right pr-1">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
 							<h2>Minicursos</h2>
-							<h5>De 4 a 6 horas</h5>
 						</div>
-						<div class="col-6 text-left">
-							<i class="fas fa-laptop-code pl-1"></i>
+						<div class="col-4">
+							<i class="fas fa-laptop-code"></i>
 						</div>
 					</div>
 				</div>
@@ -91,30 +78,154 @@
 		</div>
 
 		<div class="swiper-slide">
-			<img id="car3" class="background">
 
-			<div id="bg2" class="container-fluid text-center">
+			<div class="container-fluid text-center">
 				<div class="top-left">
-					<div class="row larger align-items-center text-white bg-fade">
-						<div class="col-6 text-right pr-1">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
 							<h2>Workshops</h2>
-							<h5>Para aprender a prática</h5>
 						</div>
-						<div class="col-6 text-left">
-							<i class="fas fa-code-branch pl-1"></i>
+						<div class="col-4">
+							<i class="fas fa-code-branch"></i>
 						</div>
 					</div>
 				</div>
 
 				<div class="bottom-right">
-					<div class="row larger align-items-center text-white bg-fade">
-						<div class="col-6 text-right pr-1">
-							<h2>Feira empresarial</h2>
-							<h5>Aproximando oportunidades</h5>
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
+							<h2>Palestras</h2>
+							<h3>Empresariais</h3>
 						</div>
-						<div class="col-6 text-left">
-							<i class="fas fa-briefcase pl-1"></i>
+						<div class="col-4">
+							<i class="fas fa-briefcase"></i>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="swiper-slide">
+
+			<div class="container-fluid text-center">
+				<div class="top-left">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
+							<h2>Mesas Redondas</h2>
+						</div>
+						<div class="col-4">
+							<i class="fas fa-users"></i>
+						</div>
+					</div>
+				</div>
+
+				<div class="bottom-right">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
+							<h2>Feira Empresarial</h2>
+						</div>
+						<div class="col-4">
+							<i class="fas fa-building"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="swiper-slide">
+
+			<div class="container-fluid text-center">
+				<div class="top-left">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
+							<h2>Feira de Projetos</h2>
+						</div>
+						<div class="col-4">
+							<i class="fas fa-graduation-cap"></i>
+						</div>
+					</div>
+				</div>
+
+				<div class="bottom-right">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
+							<h2>Processos Seletivos</h2>
+						</div>
+						<div class="col-4">
+							<i class="fas fa-clipboard"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="swiper-slide">
+
+			<div class="container-fluid text-center">
+				<div class="top-left">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
+							<h2>Game Night</h2>
+							<h5>By: Caenc</h5>
+						</div>
+						<div class="col-4">
+							<i class="fas fa-gamepad"></i>
+						</div>
+					</div>
+				</div>
+
+				<div class="bottom-right">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
+							<h3>CTF</h3>
+							<h4>Desafio de Programadores</h4>
+						</div>
+						<div class="col-4">
+							<i class="fas fa-trophy"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="swiper-slide">
+
+			<div class="container-fluid text-center">
+				<div class="top-left">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
+							<h2>Career Talks</h2>
+						</div>
+						<div class="col-4">
+							<i class="fas fa-comments"></i>
+						</div>
+					</div>
+				</div>
+
+				<div class="bottom-right">
+					<div class="larger row align-items-center text-white bg-fade">
+						<div class="col-8">
+							<h2>Game Jam</h2>
+						</div>
+						<div class="col-4">
+							<i class="fas fa-ghost"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="swiper-slide">
+
+			<div class="container-fluid text-center">
+				<div class="row justify-content-center align-items-center text-white bg-fade">
+					<div class="col-md-12">
+						<h1 style="padding-top: 6vh; padding-bottom: 9vh; font-size: 6vh;">Quer participar?</h1>
+						<a href="{{ url_for('users.cadastro') }}"
+							style="font-size: 4vh; padding: 2vh; text-decoration: none; background-color: #008cb5ee; color: #fff; border-radius: 1rem;">
+							Inscreva-se já!</a>
+						<h5 style="padding-top: 10vh; padding-bottom: 6vh;">O evento é gratuito e aberto para toda a
+							comunidade (:</h5>
 					</div>
 				</div>
 			</div>
@@ -164,7 +275,7 @@
 	var body = document.body;
 	var slider = new Swiper('.swiper-container', {
 		pagination: '.swiper-pagination',
-		direction: 'vertical',
+		direction: 'horizontal',
 		slidesPerView: 1,
 		paginationClickable: true,
 		mousewheelControl: true,

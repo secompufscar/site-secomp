@@ -57,14 +57,10 @@ def get_participantes_sem_kit():
 
 
 def cadastra_objeto_generico(objeto):
-    try:
-        db.session.add(objeto)
-        db.session.commit()
-        return objeto
+    db.session.add(objeto)
+    db.session.commit()
+    return objeto
 
-    except Exception as e:
-        print(e)
-        return None
 
 def verifica_outro_escolhido(campo, objeto):
     opcao_digitada = dict(campo.choices).get(campo.data)
@@ -100,13 +96,14 @@ def valida_url_codigo(usuario, codigo):
     if(usuario is None):
         if (atividade is not None):
             return True, atividade, emails
-        else:
-            return False, atividade, emails
     else:
-        if(atividade is not None and ministrante.usuario.email in emails):
-            return True, atividade, emails
+        if(ministrante is not None):
+            if(atividade is not None and ministrante.usuario.email in emails):
+                return True, atividade, emails
         else:
-            return False, atividade, emails
+            if(atividade is not None and "CONTEUDO" in usuario.getPermissoes()):
+                return True, atividade, emails
+    return False, atividade, emails
 
 
 def get_id_evento_atual():
@@ -117,9 +114,11 @@ def confirmacao_atividade_ministrante(usuario):
     atividade = None
     if usuario.ministrante is not None:
         r = db.session.query(RelacaoAtividadeMinistrante).filter(RelacaoAtividadeMinistrante.id_ministrante == usuario.ministrante.id,
-                                                                                                RelacaoAtividadeMinistrante.confirmado == None).first()
-        if r is not None:
-            atividade = db.session.query(Atividade).get(r.id_atividade)
+                                                                                                RelacaoAtividadeMinistrante.confirmado == None).all()
+        for relacao in r:
+            a = db.session.query(Atividade).get(relacao.id_atividade)
+            if a is not None:
+                atividade = a
     if atividade is not None:
         if atividade.tipo.nome == "Palestra":
             view = 'cadastro_palestra'
@@ -131,6 +130,10 @@ def confirmacao_atividade_ministrante(usuario):
             view = 'cadastro_mesa_redonda'
         elif atividade.tipo.nome == "Feira de Projetos":
             view = 'cadastro_feira_projetos'
+        elif atividade.tipo.nome == "Roda de Conversa":
+            view = 'cadastro_feira_projetos'
+        elif atividade.tipo.nome == "Workshop":
+            view = 'cadastro_workshop'
         return False, atividade, view
     else:
         return True, None, None
@@ -140,8 +143,9 @@ def get_tipos_atividade():
     palestra = db.session.query(TipoAtividade).filter_by(nome='Palestra').first()
     mesa_redonda = db.session.query(TipoAtividade).filter_by(nome='Mesa Redonda').first()
     palestra_empresarial = db.session.query(TipoAtividade).filter_by(nome='Palestra Empresarial').first()
-    feira_projetos = db.session.query(TipoAtividade).filter_by(nome='Feira Projetos').first()
+    feira_projetos = db.session.query(TipoAtividade).filter_by(nome='Feira de Projetos').first()
     workshop = db.session.query(TipoAtividade).filter_by(nome='Workshop').first()
+    roda_conversa = db.session.query(TipoAtividade).filter_by(nome='Roda de Conversa').first()
 
     tipo_atividade = {
         'minicurso': minicurso,
@@ -149,6 +153,7 @@ def get_tipos_atividade():
         'mesa_redonda': mesa_redonda,
         'palestra_empresarial': palestra_empresarial,
         'feira_projetos': feira_projetos,
+        'roda_conversa': roda_conversa,
         'workshop': workshop
     }
     return tipo_atividade
