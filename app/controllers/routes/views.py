@@ -55,7 +55,6 @@ def bug_report():
     """
     Página de envio do bug report
     """
-
     form_login = LoginForm(request.form)
     form = BugReportForm()
 
@@ -115,7 +114,6 @@ def cronograma():
     form_login = LoginForm(request.form)
     return render_template('views/cronograma.html', title='Cronograma', form_login=form_login, info_cronograma=get_cronograma())
 
-
 @views.route('/equipe', methods=["GET", "POST"])
 def equipe():
     form_login = LoginForm(request.form)
@@ -129,8 +127,11 @@ def faq():
 
 @views.route('/ctf', methods=["GET", "POST"])
 def ctf():
+    '''
     form_login = LoginForm(request.form)
     return render_template('views/ctf.html', title='CTF', form_login=form_login)
+    '''
+    return redirect(url_for('views.index'))
 
 @views.route('/gamejam', methods=["GET", "POST"])
 def gamejam():
@@ -141,7 +142,6 @@ def gamejam():
 def desafio():
     form_login = LoginForm(request.form)
     return render_template('views/desafio.html', title='CTF', form_login=form_login)
-
 
 @limiter.limit("50/day")
 @views.route("/login", methods=["GET", "POST"])
@@ -205,9 +205,12 @@ def patrocinadores():
     '''
     Renderiza página referente aos patrocinadores da edição atual
     '''
+    '''
     form = LoginForm(request.form)
     patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True)
     return render_template('views/patrocinadores.html', patrocinadores=patrocinadores, form_login=form, edicao=EDICAO_ATUAL)
+    '''
+    return redirect(url_for('views.index'))
 
 @views.route("/pontuacao", methods=["GET"])
 def pontuacao_compcases():

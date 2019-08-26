@@ -86,6 +86,8 @@ def vender_kits():
     if("VENDA_PRESENCIAL" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = VendaKitForm(request.form)
+        form.participante.choices = get_participantes()
+        form.camiseta.choices = get_opcoes_camisetas()
         if form.validate_on_submit() and form.participante.data is not None:
             camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
             participante = db.session.query(Participante).filter_by(id=form.participante.data).first()

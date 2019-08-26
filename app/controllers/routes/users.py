@@ -26,7 +26,7 @@ users = Blueprint('users', __name__, static_folder='static',
 
 def email_verificado_required(func):
     def decorated_view(*args, **kwargs):
-        if not current_user.email_verificado:
+        if  not current_user.email_verificado:
             return redirect(url_for('users.verificar_email'))
         return func(*args, **kwargs)
     decorated_view.__name__ = func.__name__
@@ -67,7 +67,6 @@ def cadastro():
         return redirect(url_for('.verificar_email'))
 
     return render_template('users/cadastro.html', form=form, form_login=form_login)
-
 
 @users.route('/verificar-email')
 @login_required
@@ -120,7 +119,7 @@ def cadastro_participante():
 def alterar_usuario():
     usuario = db.session.query(Usuario).filter_by(id=current_user.id).first()
     form = EdicaoUsuarioForm(request.form)
-    if form.validate_on_submit and request.method == 'POST':
+    if form.validate_on_submit() and request.method == 'POST':
         usuario.primeiro_nome = form.primeiro_nome.data
         usuario.sobrenome = form.sobrenome.data
         usuario.id_curso = verifica_outro_escolhido(form.curso, Curso(nome=(form.outro_curso.data)))
@@ -681,8 +680,6 @@ def pagamentos():
     if participante is not None:
         form = CancelarPagamentoForm(request.form)
         pagamentos = db.session.query(Pagamento).filter(Pagamento.participante == participante)
-        print(form.validate_on_submit())
-        print(form.cancelar.data)
         if form.validate_on_submit():
             pagamento = db.session.query(Pagamento).filter(Pagamento.id == int(form.cancelar.data), Pagamento.participante == participante,
                                                             Pagamento.cancelado == False, Pagamento.efetuado == False,  Pagamento.rejeitado == False).first()
