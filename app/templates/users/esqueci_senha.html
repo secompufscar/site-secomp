@@ -10,7 +10,7 @@
 
         <div class="col-md-8">
 
-                <h3 class="text-center">Recuperação de senha</h3>
+            <h3 class="text-center">Recuperação de senha</h3>
 
             {% if status_envio_email == False: %}
             <form action="{{url_for('users.esqueci_senha')}}" method="POST">
