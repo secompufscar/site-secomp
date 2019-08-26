@@ -13,13 +13,14 @@
 		<div class="col-md-12 text-center">
 			<h2>FAQ</h2>
 		</div>
-
 		<div class="col-md-12 pt-3">
+					<p> *podem ocorrer alterações sem aviso prévio </p>
+
 			<div class="accordion" id="accordion">
 				<div class="card">
 					<a data-toggle="collapse" data-target="#collapseOne" aria-expanded="false"
-						aria-controls="collapseTwo">
-						<div class="card-header" id="headingTwo">
+						aria-controls="collapseOne">
+						<div class="card-header" id="headingOne">
 							<h5 class="mb-0">
 								<h5><i class="fas fa-sort-down pb-2"></i>
 									Não estudo na UFSCar, posso participar do evento?
@@ -44,12 +45,24 @@
 					</a>
 					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
 						<div class="card-body text-justify">
-							O acesso ao conteúdo do evento é gratuito para todos os participantes. Entretanto,
-							teremos opções de pacotes para compra do kit do participante que contará com camiseta
-							personalizada do evento, caneca, diversos brindes e acesso a todos os coffee breaks do
-							evento. Aos que quiserem participar apenas do Capture the Flag (CTF), também será possível
-							comprar um pacote mais barato que contempla apenas a inscrição na modalidade. Mais detalhes
-							sobre os pacotes serão divulgados em breve.
+								O acesso ao conteúdo do evento é gratuito para todos os participantes. Entretanto, vendemos um kit que contém: uma camiseta personalizada do evento, diversos brindes que variam de acordo com a edição e acesso aos coffee breaks realizados ao longo da Semana. <br>
+
+								Também realizamos um churrasco de integração, cujo ingresso é vendido separadamente.<br>
+								
+								<br>
+								
+								O que tem no KIT da X SECOMP, e como posso adquiri-lo? <br>
+								
+								Este ano nosso kit contém:<br>
+								- Camiseta personalizada com a arte da edição do evento<br>
+								- Copo ecológico de fibra de bambu<br>
+								- Mochila-saco ecológica de algodão<br>
+								- Adesivo personalizado com a logomarca do evento<br>
+								- Adesivo personalizado com a arte da edição<br>
+								- Tirante para crachá<br>
+								- Acesso aos 9 coffee breaks realizado ao longo da Semana. <br>
+								<br>
+								Você pode adquirir seu kit através do site, após realizar as inscrições, ou presencialmente. Em nossa página do facebook divulgamos o período em que as vendas ficarão abertas, além do local e horário para a compra presencial.
 						</div>
 					</div>
 				</div>
@@ -59,33 +72,12 @@
 						<div class="card-header" id="headingThree">
 							<h5 class="mb-0">
 								<h5><i class="fas fa-sort-down pb-2"></i>
-									Qual a forma de pagamento, caso eu queira comprar o kit?
-								</h5>
-						</div>
-					</a>
-					<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-						<div class="card-body text-justify">
-							Você poderá pagar com cartão de crédito via PayPal, realizando depósito ou
-							transferência bancária para uma conta do Banco do Brasil, ou ainda poderá pagar
-							presencialmente no
-							Departamento de Computação da UFSCar em dias e horários a serem divulgados em nossa
-							página
-							do Facebook.
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false"
-						aria-controls="collapseFour">
-						<div class="card-header" id="headingFour">
-							<h5 class="mb-0">
-								<h5><i class="fas fa-sort-down pb-2"></i>
 									Há limite de vagas?
 								</h5>
 							</h5>
 						</div>
 					</a>
-					<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+					<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
 						<div class="card-body text-justify">
 							Minicursos e workshops possuem limite de vagas que serão divulgados junto à
 							descrição de cada atividade ou no edital. As vagas são preenchidas por ordem de inscrição.
@@ -99,41 +91,184 @@
 						</div>
 					</div>
 				</div>
+				<div class="card">
+					<a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false"
+						aria-controls="collapseFour">
+						<div class="card-header" id="headingFour">
+							<h5 class="mb-0">
+								<h5><i class="fas fa-sort-down pb-2"></i>
+									Quando abrem/fecham as inscrições para o evento?
+								</h5>
+							</h5>
+						</div>
+					</a>
+					<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+						<div class="card-body text-justify">
+							<div class="col-md-8 center">
+								<div class="col-md-12 text-center">
+									<nav class="navbar nav-crono navbar-light navbar-expand-lg">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<div class="collapse navbar-collapse" id="navbarContent">
+														<th scope="col-md-2" id="th_seg" class="nav_on">
+															<a onclick="toggle_visibility('seg');">
+																
+																<h5 class="pr-4 pl-4">Início</h5>
+																<h4><span id="nav-seg">26/08/2019 12:30</span></h4>
+																<div id="div_seg" class="day selected"></div>
+				
+															</a>
+														</th>
+														<th scope="col-md-2" id="th_ter" class="nav_off">
+															<a onclick="toggle_visibility('ter');">
+				
+																<h5 class="pr-4 pl-4">Fim</h5>
+																<h4><span id="nav-ter">04/09/2019 12:30</span></h4>
+																<div id="div_ter" class="day"></div>
+				
+															</a>
+														</th>
+													</div>
+												</tr>
+												<thead>
+										</table>
+									</nav>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<a data-toggle="collapse" data-target="#collapseFive" aria-expanded="false"
+						aria-controls="collapseFive">
+						<div class="card-header" id="headingFive">
+							<h5 class="mb-0">
+								<h5><i class="fas fa-sort-down pb-2"></i>
+									Como funcionam as rodadas de minicursos?
+								</h5>
+							</h5>
+						</div>
+					</a>
+					<div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+						<div class="card-body text-justify">
+							No dia 30/08 abre a primeira etapa de inscrição em minicursos, o participante terá direito a uma vaga nessa etapa e poderá
+							preencher a vaga até dia 02/09 ás 20:00. A segunda etapa de inscrição em minicurso abre no dia 03/09 e funcionará exatamente como a primeira etapa, no entanto, se voce não se inscreveu
+							em nada na primeira etapa não poderá se inscrever em duas atividades na segunda etapa, só será aceito uma inscrição por etapa.
+							<br>É possível se inscrever e desinscrever quantas vezes quiser dentro do prazo de cada etapa. <br>Caso você se inscreva em um minicurso na primeira etapa 
+							e na segunda decida se desincrever, mesmo assim não terá duas vagas na segunda etapa.
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<a data-toggle="collapse" data-target="#collapseSix" aria-expanded="false"
+						aria-controls="collapseSix">
+						<div class="card-header" id="headingSix">
+							<h5 class="mb-0">
+								<h5><i class="fas fa-sort-down pb-2"></i>
+									Quando abrem/fecham as inscrições para os minicursos?
+								</h5>
+							</h5>
+						</div>
+					</a>
+					<div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+						<div class="card-body text-justify">
+							<div class="col-md-12 center">
+								<div class="col-md-12 text-center">
+									<nav class="navbar nav-crono navbar-light navbar-expand-lg">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<div class="collapse navbar-collapse" id="navbarContent">
+														<th scope="col-md-2" id="th_seg" class="nav_on">
+															<a onclick="toggle_visibility('seg');">
+																
+																<h5 class="pr-4 pl-4">Início - Etapa 1</h5>
+																<h4><span id="nav-seg">30/08/2019 12:30</span></h4>
+																<div id="div_seg" class="day selected"></div>
+				
+															</a>
+														</th>
+														<th scope="col-md-2" id="th_ter" class="nav_off">
+															<a onclick="toggle_visibility('ter');">
+				
+																<h5 class="pr-4 pl-4">Fim - Etapa 1</h5>
+																<h4><span id="nav-ter">03/09/2019 09:30</span></h4>
+																<div id="div_ter" class="day"></div>
+				
+															</a>
+														</th>
+														<th scope="col-md-2" id="th_ter" class="nav_off">
+															<a onclick="toggle_visibility('ter');">
+				
+																<h5 class="pr-4 pl-4">Início - Etapa 2</h5>
+																<h4><span id="nav-ter">03/09/2019 12:30</span></h4>
+																<div id="div_ter" class="day"></div>
+				
+															</a>
+														</th>
+														<th scope="col-md-2" id="th_ter" class="nav_off">
+															<a onclick="toggle_visibility('ter');">
+				
+																<h5 class="pr-4 pl-4">Fim - Etapa 2</h5>
+																<h4><span id="nav-ter">Enquanto houverem vagas</span></h4>
+																<div id="div_ter" class="day"></div>
+				
+															</a>
+														</th>
+													</div>
+												</tr>
+												<thead>
+										</table>
+									</nav>
+								</div>
+							</div>
+					
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+						<a data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false"
+							aria-controls="collapseSeven">
+							<div class="card-header" id="headingSeven">
+								<h5 class="mb-0">
+									<h5><i class="fas fa-sort-down pb-2"></i>
+										Como posso me tornar um patrocinador da SECOMP UFSCar? 
+									</h5>
+							</div>
+						</a>
+						<div id="collapseSeven" class="collapse show" aria-labelledby="headingSeven" data-parent="#accordion">
+							<div class="card-body text-justify">
+									Primeiramente gostaríamos de agradecer o interesse! <br>
+									Você pode entrar em contato com nossa equipe de Patrocínio, enviando um email para contato@secompufscar.com.br 
+							</div>
+						</div>
+					</div>
+					<div class="card">
+							<a data-toggle="collapse" data-target="#collapseEight" aria-expanded="false"
+								aria-controls="collapseEight">
+								<div class="card-header" id="headingEight">
+									<h5 class="mb-0">
+										<h5><i class="fas fa-sort-down pb-2"></i>
+											Gostaria de apresentar algo na SECOMP UFSCar. Como proceder?
+										</h5>
+								</div>
+							</a>
+							<div id="collapseEight" class="collapse show" aria-labelledby="headingEight" data-parent="#accordion">
+								<div class="card-body text-justify">
+										Agradecemos muito pelo interesse em agregar algo ao nosso evento! <br>
+										Você pode entrar em contato com nossa equipe de Conteúdo, enviando um email para conteudo@secompufscar.com.br
+
+								</div>
+							</div>
+						</div>
+
 			</div>
 		</div>
 	</div>
 </div>
 
-
-<!-- Este forms seria igual à página de contato?
-			 Deveria ser implementado então por wtforms?
-			 Ou apenas um link para redirecionar para a página de contato?
-
-			 
-		<div class="col-md-5"> 
-				<div class="pt-3 text-center">
-						<h3 class="md-1">
-							<br>Tem alguma dúvida sobre o evento? Entre em contato com a organização
-						</h3> <br>
-				</div>
-				<form>
-						<div class="form-group">
-								<label for="id_nome">Seu nome:</label>
-								<input type="text" name="nome" style="border-radius:4px;" placeholder="Seu nome" required="" id="id_nome">
-							</div>
-							<div class="form-group">								
-								<label for="id_email">Seu e-mail:</label>
-								<input type="email" name="email" style="border-radius:4px;" placeholder="Seu e-mail" required="" id="id_email">
-							</div>
-							<div class="form-group">								
-								<label for="id_mensagem">Mensagem:</label><br>
-								<textarea name="mensagem" cols="40" rows="5" style="border-radius:4px;" placeholder="Sua mensagem" required="" id="id_mensagem"></textarea>
-							</div>
-							<center>
-							<button type="button" class="btn btn-secondary bg-gradient-secomp"><i class="fas fa-location-arrow"></i> Enviar mensagem</button>
-								</center>
-						</form>
-		</div>-->
 
 <div class="container">
 	<div class="row justify-content-center p-3">
