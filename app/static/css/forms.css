@@ -1,17 +1,17 @@
-body {
-  background-image: linear-gradient(to right, #008cb5, #00cfa1);
+.form-control {
+  border: 1px solid #ced4da88;
+  color: var(--font-color);
+  background-color: var(--sidebar-color);
 }
 
-.container {
+.form-control:disabled, .form-control[readonly] {
+  color: #777777;
   background-color: var(--bg-color);
-  width: 50%;
 }
 
-@media(max-width: 990px) {
-  .container {
-    background-color: var(--bg-color);
-    width: 80%;
-  }
+.select2-selection, .select2-container, .select2-results__option, #select2-tipo_atividade-container {
+  color: var(--font-color) !important;
+  background-color: var(--bg-color) !important;
 }
 
 a {

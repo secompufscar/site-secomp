@@ -6,6 +6,8 @@
 <link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css" />
 
 <style>
+
+
   .tab-form {
     overflow: auto;
   }
@@ -48,32 +50,36 @@
 </style>
 
 <div class="container pb-2">
-  <div class="tab-form">
-    <div class="tabmenu" id="firsttab"></div>
-    <div class="tabmenu" id="secondtab"></div>
+  <div class="row justify-content-center">
+    <div class="col-8">
+        <div class="tab-form">
+          <div class="tabmenu" id="firsttab"></div>
+          <div class="tabmenu" id="secondtab"></div>
+        </div>
+    </div>
   </div>
-  <div class="col-lg-12 text-center p-2">
+
+  <div class="col-sm-12 text-center p-2">
     <h2>Cadastro de Usuário</h2>
   </div>
 
-  <form method="POST" action="{{url_for("users.cadastro")}}" novalidate>
+  <form method="POST" action="{{ url_for('users.cadastro') }}" novalidate>
     <div id="secao1">
       <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-6">
           {{ form.hidden_tag() }}
           {{ wtf.form_field(form.primeiro_nome) }}
           {{ wtf.form_field(form.sobrenome) }}
           {{ wtf.form_field(form.email) }}
           {{ wtf.form_field(form.senha) }}
           {{ wtf.form_field(form.confirmacao) }}
-          <button id="continuar" class="btn btn-primary btn-block mt-3 mb-3"
-            type="button">Continuar</button>
+          <button id="continuar" class="btn btn-primary btn-block mt-3 mb-3" type="button">Continuar</button>
         </div>
       </div>
     </div>
     <div id="secao2">
       <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-6">
           {{ wtf.form_field(form.curso) }}
           {{ wtf.form_field(form.outro_curso) }}
           {{ wtf.form_field(form.instituicao) }}
@@ -95,7 +101,7 @@
               <button type="submit" class="btn btn-primary text-white pb-1">Cadastrar</button>
             </div>
           </div>
-    </div>
+        </div>
   </form>
 </div>
 {% endblock %}
@@ -196,13 +202,13 @@
       }
     });
     $("#como_conheceu").change(function () {
-        if ($("#como_conheceu :selected").text() === "Outro") {
-            $("label[for='outro_como_conheceu']").show();
-            $("#outro_como_conheceu").show();
-        } else {
-            $("label[for='outro_como_conheceu']").hide();
-            $("#outro_como_conheceu").hide();
-        }
+      if ($("#como_conheceu :selected").text() === "Outro") {
+        $("label[for='outro_como_conheceu']").show();
+        $("#outro_como_conheceu").show();
+      } else {
+        $("label[for='outro_como_conheceu']").hide();
+        $("#outro_como_conheceu").hide();
+      }
     });
   });
 
@@ -222,12 +228,4 @@
   })
 </script>
 
-<script>
-	$(document).ready(function(){
-    	$("#content").css("padding-top", $("#navTop").height() * 1.2);
-  });
-</script>
-{% endblock %}
-
-{% block footer %}
 {% endblock %}

@@ -30,11 +30,33 @@
     font-size: 4em;
 }
 
+.bg-fade {
+    background-color: #000000aa;
+    position: relative;
+    border-radius: 1rem;
+}
+
 .larger {
     padding-left: 2rem;
     padding-right: 2rem;
     padding-top: 2rem;
     padding-bottom: 2rem;
+}
+
+.top-left .row, .bottom-right .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.background {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    filter: blur(3px);
+    position: absolute;
+    background-size: cover;
+    background-position: 62%;
+    background-repeat: no-repeat;
 }
 
 @media (max-width: 400px) {
@@ -43,7 +65,7 @@
     }
 
     .top-left, .bottom-right {
-        width: 90%;
+        width: 80%;
     }
 }
 
@@ -60,7 +82,7 @@
         padding-right: 1rem;
     }
     .top-left, .bottom-right {
-        width: 75%;
+        width: 65%;
     }
 }
 
@@ -76,20 +98,7 @@
     }
 }
 
-.bg-fade {
-    background-color: #000000aa;
-    position: relative;
-}
-
 @media (orientation: portrait) {
-    .background {
-        height: 100vh;
-        width: 100%;
-        margin: 0;
-        position: absolute;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
     .logoP {
         margin-top: 60px;
         display: inline-block;
@@ -101,12 +110,6 @@
 }
 
 @media (orientation: landscape) {
-    .background {
-        height: 100vh;
-        width: 100%;
-        position: absolute;
-        background-size: cover;
-    }
     .logoL {
         margin-top: 60px;
         display: inline-block;
