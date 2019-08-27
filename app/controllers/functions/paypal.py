@@ -2,7 +2,7 @@ from flask import current_app
 import paypalrestsdk
 
 paypalrestsdk.configure({
-  "mode": "sandbox", # sandbox or live
+  "mode": "live", # sandbox or live
   "client_id": current_app.config['PAYPAL_CLIENT_ID'],
   "client_secret": current_app.config['PAYPAL_CLIENT_SECRET'] })
 
