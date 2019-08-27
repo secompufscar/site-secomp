@@ -85,6 +85,30 @@ def verificar_email():
         status = False
     return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante, form_login=form_login)
 
+@login_required
+@limiter.limit("40/year")
+@limiter.limit("20/month")
+@limiter.limit("20/day")
+@limiter.limit("20/hour")
+@limiter.limit("5/minute")
+@users.route('/reenviar-email', methods=['POST', 'GET'])
+@login_required
+def reenviar_email():
+    form_login = LoginForm(request.form)
+    form = BaseRecaptchaForm(request.form)
+    usuario = current_user
+    if form.validate_on_submit():
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        email = current_user.email
+        salt = gensalt().decode('utf-8')
+        token = serializer.dumps(email, salt=salt)
+        usuario.token_email = token
+        db.session.add(usuario)
+        db.session.commit()
+        enviar_email_confirmacao(usuario, token)
+        return render_template('users/email_reenviado.html', form_login=form_login, usuario=usuario)
+    return render_template('users/reenviar_email.html', form_login=form_login, usuario=usuario, form=form)
+
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
