@@ -564,6 +564,7 @@ def comprar_kit():
             id_usuario=current_user.id, id_evento=id_evento).first()
         if participante is not None:
             form = ComprarKitForm()
+            form.camiseta.choices = get_opcoes_camisetas()
             if form.validate_on_submit():
                 if form.comprar.data == 1:
                     participante.opcao_coffee = form.restricao_coffee.data
