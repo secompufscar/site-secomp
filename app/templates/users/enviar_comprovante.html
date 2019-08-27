@@ -8,9 +8,7 @@
       <form method='POST' enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.comprovante) }}
-	<div class="recaptcha-responsive">
-	  {{ wtf.form_field(form.recaptcha) }}
-	</div>
+        {{ wtf.form_field(form.recaptcha) }}
         <button type='submit' class='btn btn-primary'>Enviar</button>
       </form>
     </div>

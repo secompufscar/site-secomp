@@ -100,7 +100,7 @@
                                 {{ wtf.form_field(form.comprar) }}
                             </div>
                             <button type='button' id='continuar' class="btn btn-primary"
-                                    onclick='continuar2()'>Dashboard</button>
+                                onclick='continuar2()'>Dashboard</button>
                         </div>
 
                         <div class="col-6">
@@ -157,9 +157,7 @@
         <div class="row justify-content-around no-gutters">
             <div class="col-md-4">
                 <div id="recaptcha">
-                    <div class="recaptcha-responsive">
-                        {{ wtf.form_field(form.recaptcha) }}
-                    </div>
+                    {{ wtf.form_field(form.recaptcha) }}
                 </div>
             </div>
             <div class="col-md-4">
