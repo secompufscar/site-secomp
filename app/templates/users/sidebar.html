@@ -28,7 +28,10 @@
 
                 <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action">Dados Pessoais</a>
                 <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action">Editar Dados Pessoais</a>
+                
+                {% if participante %}
                 <a href="{{ url_for('users.dados_participante') }}" class="list-group-item list-group-item-action">Dados de Participante</a>
+                {% endif %}
 
             </div>
 
