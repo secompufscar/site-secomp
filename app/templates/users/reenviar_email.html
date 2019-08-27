@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+  .help-block{
+    color: red;
+  }
+</style>
+
+<div class="container pt-4 pb-4">
+	<div class="row justify-content-center" style="min-height: 70vh;">
+		<div class="col-md-8 text-center align-self-center">
+				<i class="fa fa-4x fa-envelope"></i>
+				<h4>Se vocẽ não recebeu seu email de confirmação, aperte o botão abaixo para reenviá-lo novamente*</h4>
+				{% if form is not sameas none %}
+				<form method="POST" action="{{url_for('users.reenviar_email')}}">
+					{{ form.hidden_tag() }}
+					<div class="row mt-4 justify-content-center">
+						<div class="col-lg-4">
+							{{ wtf.form_field(form.recaptcha) }}
+						</div>
+					</div>
+					<div class="row mt-4 justify-content-center">
+						<div class="col-md-4 mb-5">
+							<button type="submit" style="height: 50px; width:200px; font-size: 20px;" class="btn btn-primary">Reenviar</button>
+						</div>
+						</div>
+					</div>
+				</form>
+			{% endif %}
+      <div style="font-size:15px;">*Por favor, confira sua caixa de e-mail. Tente listar todos os e-mails. Caso o e-mail não esteja em Spam, Promoções, ou em outra pasta, solicite o reenvio de e-mail. Caso o problema persista, contate a diretoria de TI da X SECOMP UFSCar pelo e-mail ti@secompufscar.com.br.</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

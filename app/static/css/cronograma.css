@@ -34,7 +34,7 @@
     border-top: 1px solid var(--border-color) !important;
 }
 
-.card img {
+.card img, .modal-body img {
     border-radius: 50%;
 }
 

@@ -26,7 +26,7 @@ users = Blueprint('users', __name__, static_folder='static',
 
 def email_verificado_required(func):
     def decorated_view(*args, **kwargs):
-        if not current_user.email_verificado:
+        if  not current_user.email_verificado:
             return redirect(url_for('users.verificar_email'))
         return func(*args, **kwargs)
     decorated_view.__name__ = func.__name__
@@ -84,6 +84,30 @@ def verificar_email():
         msg = 'Confirme o email de verificação que te enviamos!'
         status = False
     return render_template('users/confirma_email.html', resultado=msg, status=status, ministrante=ministrante, form_login=form_login)
+
+@login_required
+@limiter.limit("40/year")
+@limiter.limit("20/month")
+@limiter.limit("20/day")
+@limiter.limit("20/hour")
+@limiter.limit("5/minute")
+@users.route('/reenviar-email', methods=['POST', 'GET'])
+@login_required
+def reenviar_email():
+    form_login = LoginForm(request.form)
+    form = BaseRecaptchaForm(request.form)
+    usuario = current_user
+    if form.validate_on_submit():
+        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+        email = current_user.email
+        salt = gensalt().decode('utf-8')
+        token = serializer.dumps(email, salt=salt)
+        usuario.token_email = token
+        db.session.add(usuario)
+        db.session.commit()
+        enviar_email_confirmacao(usuario, token)
+        return render_template('users/email_reenviado.html', form_login=form_login, usuario=usuario)
+    return render_template('users/reenviar_email.html', form_login=form_login, usuario=usuario, form=form)
 
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
@@ -540,6 +564,7 @@ def comprar_kit():
             id_usuario=current_user.id, id_evento=id_evento).first()
         if participante is not None:
             form = ComprarKitForm()
+            form.camiseta.choices = get_opcoes_camisetas()
             if form.validate_on_submit():
                 if form.comprar.data == 1:
                     participante.opcao_coffee = form.restricao_coffee.data
@@ -594,7 +619,7 @@ def comprar_kit():
                         agora = strftime("%Y%m%d%H%M%S", localtime(time()))
                         filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{agora}_{filename}'
                         filename = filename.replace(' ', '')
-                        filename = secure_filename(filename)
+                        file_name = secure_filename(comprovante.filename)
                         upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'comprovantes')
                         if not path.exists(upload_path):
                             makedirs(upload_path)
