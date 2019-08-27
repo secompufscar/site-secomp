@@ -182,7 +182,8 @@ def dashboard():
 def dados():
     usuario = db.session.query(Usuario).filter_by(
         id=current_user.id).first()
-    return render_template('users/dados.html', title='Dados Pessoais', usuario=usuario)
+    return render_template('users/dados.html', title='Dados Pessoais', usuario=usuario,
+                            participante = db.session.query(Participante).filter_by(usuario=current_user).first())
 
 @users.route('/dados-participante', methods=['POST', 'GET'])
 @login_required
