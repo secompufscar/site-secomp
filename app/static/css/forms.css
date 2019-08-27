@@ -22,3 +22,12 @@ a:hover {
   color: #00cfa1;
   text-decoration: none;
 }
+
+.btn {
+  font-weight: bold;
+  border: none;
+}
+
+.btn:hover {
+  background-color: #00cfa1;
+}

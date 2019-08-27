@@ -147,33 +147,6 @@ header a:hover {
   pointer-events: visible;
 }
 
-@media(orientation: portrait) and (max-width: 339px) {
-  .recaptcha-responsive {
-    transform: scale(0.75);
-    -webkit-transform: scale(0.75);
-    transform-origin: 0 0;
-    -webkit-transform-origin: 0 0;
-  }
-}
-
-@media(orientation: portrait) and (min-width: 340px) and (max-width: 374px) {
-  .recaptcha-responsive {
-    transform: scale(0.8);
-    -webkit-transform: scale(0.8);
-    transform-origin: 0 0;
-    -webkit-transform-origin: 0 0;
-  }
-}
-
-@media(orientation: portrait) and (min-width: 375px) and (max-width: 450px) {
-  .recaptcha-responsive {
-    transform: scale(0.9);
-    -webkit-transform: scale(0.9);
-    transform-origin: 0 0;
-    -webkit-transform-origin: 0 0;
-  }
-}
-
 .help-block {
   color: red;
 }
