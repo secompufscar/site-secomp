@@ -244,6 +244,7 @@ def protected(filename):
 def uploads(filename):
     participante = db.session.query(Participante).filter(Participante.id_usuario == current_user.id, Participante.id_evento == get_id_evento_atual()).first()
     dir, filename = filename.rsplit('/', 1)
+    dir = dir.replace(' ', '')
     if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes() or "GERENCIAR_COMPROVANTES" in current_user.getPermissoes() or get_permissao_comprovante(participante, filename) or diretorio_publico(dir):
         filename = secure_filename(filename)
         caminho = os.path.join(current_app.config['UPLOAD_FOLDER'], dir)

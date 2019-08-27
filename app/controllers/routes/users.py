@@ -119,7 +119,7 @@ def cadastro_participante():
 def alterar_usuario():
     usuario = db.session.query(Usuario).filter_by(id=current_user.id).first()
     form = EdicaoUsuarioForm(request.form)
-    if form.validate_on_submit and request.method == 'POST':
+    if form.validate_on_submit() and request.method == 'POST':
         usuario.primeiro_nome = form.primeiro_nome.data
         usuario.sobrenome = form.sobrenome.data
         usuario.id_curso = verifica_outro_escolhido(form.curso, Curso(nome=(form.outro_curso.data)))
@@ -527,7 +527,7 @@ def confirmar_alteracao_senha(token):
             print(e)
             flash("Falha na confirmação de link do email.")
         return redirect(url_for('views.login'))
-    return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login)
+    return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login, status_envio_email=True)
 
 @users.route('/comprar-kit', methods=["POST", "GET"])
 @login_required
@@ -594,6 +594,7 @@ def comprar_kit():
                         agora = strftime("%Y%m%d%H%M%S", localtime(time()))
                         filename = f'{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{agora}_{filename}'
                         filename = filename.replace(' ', '')
+                        filename = secure_filename(filename)
                         upload_path = path.join(current_app.config['UPLOAD_FOLDER'], 'comprovantes')
                         if not path.exists(upload_path):
                             makedirs(upload_path)
