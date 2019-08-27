@@ -78,41 +78,41 @@
 
 <div class="container pt-4 pb-4">
 
-    <div class="col-md-12">
-        <h2 id="pergunta" class="text-center pb-4"><i class="fa fa-lg fa-cart-plus"></i>
+    <div class="col-md-12 text-center pb-1">
+        <h2 id="pergunta"><i class="fa fa-lg fa-cart-plus"></i>
             Deseja comprar o kit da SECOMP UFSCar?</h2>
+        <h5>A compra pode ser efetuada a qualquer momento</h5>
+    </div>
+
+    <div class="row justify-content-center pb-3 mt-4">
+        <img id="img_kit" src="{{ url_for('static', filename='images/kit_secomp.jpeg') }}" />
     </div>
 
     <form method="POST" action="{{url_for('users.comprar_kit')}}" enctype="multipart/form-data">
 
         {{ form.hidden_tag() }}
         <div class="row justify-content-around no-gutters">
-            <div class="col-md-8 p-0 mb-4">
+            <div class="col-md-8 mb-4">
                 <div id="escolha_compra">
-                    <div class="row no-gutters">
-                        <div class="col-sm-2 ml-4 p-0 align-bottom">
+                    <div class="row justify-content-between no-gutters">
+                        <div class="col-4">
                             <div class="row">
                                 {{ wtf.form_field(form.comprar) }}
                             </div>
+                            <button type='button' id='continuar' class="btn btn-primary"
+                                    onclick='continuar2()'>Dashboard</button>
                         </div>
 
-                        <div class="col-sm-4 ml-4">
-                          <div class="row">
-                              <button type='button' id='continuar' class="btn btn-primary"
-                                  onclick='continuar2()'>Voltar à Dashboard</button>
-                          </div>
+                        <div class="col-6">
+                            <h4 class="text-right">
+                                <b>Valor:</b> R$ {{ valor }}
+                            </h4>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row justify-content-around no-gutters">
-          <div class="col-md-4 text-right" style="font-size:25px;"><b>Preço do KIT:</b> R$ {{ valor }}</div>
-        </div>
-        <div class="row justify-content-center pb-3 mt-4">
-            <img id="img_kit" src="{{ url_for('static', filename='images/kit_secomp.jpeg') }}" />
-        </div>
+
         <a name="pagamento"></a>
         <div id='info_kit' class="mt-4">
             <div class="row justify-content-around noheader-gutters">
