@@ -1,1 +1,0 @@
-(530, b'5.5.1 Authentication Required. Learn more at\n5.5.1  https://support.google.com/mail/?p=WantAuthError w126sm4070900qkd.68 - gsmtp', '=?utf-8?q?SECOMP_UFSCar?= <>') daniel.lucio.moura@gmail.com ter, 20 ago 2019 15:37:04
