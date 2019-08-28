@@ -1,12 +1,13 @@
 :root {
     --sidebar-color: #f5f5f5;
-    --sidebar-border: #00000020;
+    --sidebar-border: #d4d4d4;
+    --sidebar-hover-color: #dfdfdf;
 }
 
 [data-theme=dark] {
     --sidebar-color: #090c0e;
     --sidebar-border: var(--primary-color);
-    --sidebar-hover-color: #00000044;
+    --sidebar-hover-color: #202020;
     --hover-font-color: #ffffff;
 }
 
