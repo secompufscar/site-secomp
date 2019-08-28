@@ -4,8 +4,7 @@
 
 <style>
 	.bg {
-		background-color: #000000;
-		background-image: url("{{ url_for('static', filename='images/car3.jpg') }}");
+		background-image: url("{{ url_for('static', filename='images/bgJam.jpg') }}");
 		height: 80vh;
 		filter: blur(3px);
 		-webkit-filter: blur(3px);
@@ -15,7 +14,7 @@
 	}
 
 	.title {
-		background-color: #000000aa;
+		background-color: #000000cc;
 		color: white;
 		position: absolute;
 		top: 50%;
@@ -38,7 +37,7 @@
 	}
 </style>
 
-<div class="container-fluid bg-dark">
+<div class="container-fluid bg-dark pt-3">
 
 	<div class="bg"></div>
 
@@ -72,14 +71,21 @@
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-clipboard-check"></i>
 					<h5 class="t2 pt-2">INSCRIÇÕES</h5>
-					<h5>Através de forms do Google?</h5>
+					<h5>De 25/08 até o 07/09</h5>
+					<h6>
+						<a href="https://docs.google.com/forms/d/e/1FAIpQLSfbN20cDaWeGCGRL8wyyik8sjgHltvTOAuNSh_FvqOEw-PUEQ/viewform?usp=sf_link"
+							target="_blank">
+							Acesse o formulário
+						</a>
+					</h6>
 				</ul>
 			</div>
 			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-trophy"></i>
 					<h5 class="t2 pt-2">PREMIAÇÃO</h5>
-					<h5>Rola prêmio na gamejam?</h5>
+					<h5>1° Lugar - Ingressos para a BGS</h5>
+					<h5>2° Lugar - R$300,00 em cupons</h5>
 				</ul>
 			</div>
 		</div>
@@ -88,18 +94,49 @@
 			<div class="col-md-12 text-center pb-2">
 				<h4 class="t2 pb-2">Descrição:</h4>
 
-				<h5 class="pb-2">Tem que trocar esse texto
+				<h5>Se você se interessa por Desenvolvimento de Jogos, está mais do que convidado a
+					participar da nossa Game Jam em parceria com o GAMSo! Junte-se com amigos e participe dessa maratona
+					de desenvolvimento para aprender e desenvolver seu próprio jogo sobre um TEMA SURPRESA que será
+					divulgado na abertura da Game Jam!</h5>
 				</h5>
-				<h5 class="pb-2">
-					Pedir para o conteúdo
+				<h5 class="pb-4">
+					O jogo deverá possuir os arquivos do jogo e um arquivo de instrução para rodá-lo (especificar SO,
+					etc)
 				</h5>
-				<h6>Página inativa until further notice</h6>
+			</div>
+			<div class="col-md-12">
+				<h5>
+					Os jogos serão avaliados pelos critérios de:
+				</h5>
+				<ul class="pb-4">
+					<li>
+						Fidelidade do tema (jogos não relacionados ao tema serão automaticamente desclassificados);
+					</li>
+					<li>
+						Progressão do jogo (jogo com início, meio e fim);
+					</li>
+					<li>
+						Criatividade (auto explicativo);
+					</li>
+					<li>
+						Ambientação (jogos que se importam em ser coerentes no visual, para que fique fácil de jogar ou
+						que proporcionam certa imersão ao jogo, como clima propício, etc).
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-12 text-center">
+				<h5 class="pb-4"><b>ATENÇÃO!</b> As vagas são limitadas a 40 participantes no total.</h5>
+				<h6>*todos os integrantes devem estar inscritos na X SECOMP</h6>
 			</div>
 		</div>
 
 		<div class="text-center">
-			<button name="submit" type="submit" class="btn btn-primary m-3"><i
-					class="mr-2 fas fa-sign-in-alt"></i>Acesse o edital</button>
+			<a href="{{ url_for('static', filename='juridic/edital_game_jam.pdf') }}" target="_blank"
+				class="btn btn-primary m-3">
+				<i class="mr-2 fas fa-pen"></i>Acesse o edital</a>
+			<a href="https://docs.google.com/forms/d/e/1FAIpQLSfbN20cDaWeGCGRL8wyyik8sjgHltvTOAuNSh_FvqOEw-PUEQ/viewform?usp=sf_link"
+				target="_blank" class="btn btn-primary m-3">
+				<i class="mr-2 fas fa-sign-in-alt"></i>Inscreva-se!</a>
 		</div>
 	</div>
 </div>

@@ -7,19 +7,9 @@ $white: #fff !default;
 $white70: rgba(255, 255, 255, 0.7) !default;
 $dark-gray: #212121 !default;
 
-$secomp-colors: () !default;
-$secomp-colors: map-merge(
-  (
-    "secomp1": $secomp1,
-    "secomp2": $secomp2,
-    "secomp3": $secomp3
-  ),
-  $secomp-colors
-);
-
 :root {
-  --primary-color: $secomp1;
-  --secondary-color: $secomp2;
+  --primary-color: #008cb5;
+  --secondary-color: #00cfa1;
   --font-color: #424242;
   --bg-color: #fff;
   --bg-dark: #001014;
@@ -28,11 +18,11 @@ $secomp-colors: map-merge(
 }
 
 [data-theme="dark"] {
-  --primary-color: $secomp1;
-  --secondary-color: $secomp4;
+  --primary-color: #00465c;
+  --secondary-color: #ff305d;
   --font-color: #e1e1ff;
-  --bg-color: #00141a;
-  --bg-dark: #00242F;
+  --bg-color: #0d1314;
+  --bg-dark: #152125;
   --hover-color: #333;
   --footer-color: #00080a;
 }

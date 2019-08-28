@@ -7,6 +7,7 @@ from app.controllers.forms.forms import *
 from app.models.models import *
 from app.controllers.functions.dictionaries import *
 from app.controllers.functions.helpers import *
+from app.controllers.functions.email import *
 from app.controllers.forms.validators import *
 
 from secrets import token_urlsafe
@@ -85,6 +86,8 @@ def vender_kits():
     if("VENDA_PRESENCIAL" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
         form = VendaKitForm(request.form)
+        form.participante.choices = get_participantes()
+        form.camiseta.choices = get_opcoes_camisetas()
         if form.validate_on_submit() and form.participante.data is not None:
             camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
             participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
@@ -93,7 +96,8 @@ def vender_kits():
                 efetuado=True, metodo_pagamento='Presencial')
                 pagamento.id_camiseta = form.camiseta.data
                 participante.pagamentos.append(pagamento)
-                camiseta.quantidade_restante = camiseta.quantidade_restante - 1
+                if camiseta.quantidade_restante > 0:
+                    camiseta.quantidade_restante = camiseta.quantidade_restante - 1
                 db.session.add(camiseta)
                 db.session.add(participante)
                 db.session.commit()
@@ -241,7 +245,7 @@ def gerar_url_conteudo():
                         atividade.ministrantes.append(ministrante)
                     db.session.add(atividade)
                     db.session.commit()
-        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(request.url_root), form_login=form_login, url_root=request.url_root)
+        return render_template("management/gerar_url_conteudo.html", form=form, dict_urls=get_urls_conteudo(request.url_root), form_login=form_login, url_root=request.url_root, usuario=current_user)
     else:
         abort(403)
 
@@ -294,27 +298,37 @@ def gerenciar_comprovantes():
             if esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data) and not esta_preenchido(form.rejeitar.data):
                 pagamento = db.session.query(Pagamento).get(int(form.aprovar.data))
                 if pagamento.efetuado is not True and pagamento.metodo_pagamento == 'Comprovante':
-                    pagamento.efetuado = True
-                    db.session.add(pagamento)
-                    db.session.commit()
+                    if pagamento.rejeitado is not True:
+                        if pagamento.camiseta.quantidade_restante > 0:
+                            pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
+                        pagamento.efetuado = True
+                        db.session.add(pagamento)
+                        db.session.commit()
+                        enviar_email_aviso_pagamento_kit_aprovado(pagamento.participante.usuario)
 
             elif esta_preenchido(form.desaprovar.data) and not esta_preenchido(form.aprovar.data) and not esta_preenchido(form.rejeitar.data) and not esta_preenchido(form.autorizar.data):
                 pagamento = db.session.query(Pagamento).get(int(form.desaprovar.data))
                 if pagamento.efetuado is not False and pagamento.metodo_pagamento == 'Comprovante':
-                    pagamento.efetuado = False
-                    db.session.add(pagamento)
-                    db.session.commit()
+                    if pagamento.rejeitado is not True:
+                        pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante + 1
+                        pagamento.efetuado = False
+                        db.session.add(pagamento)
+                        db.session.commit()
 
             elif esta_preenchido(form.rejeitar.data) and not esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data)and not esta_preenchido(form.autorizar.data):
                 pagamento = db.session.query(Pagamento).get(int(form.rejeitar.data))
                 if pagamento.rejeitado is not True and pagamento.metodo_pagamento == 'Comprovante':
+                    pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante + 1
                     pagamento.rejeitado = True
                     db.session.add(pagamento)
                     db.session.commit()
+                    enviar_email_aviso_pagamento_kit_rejeitado(pagamento.participante.usuario)
 
             elif esta_preenchido(form.autorizar.data) and not esta_preenchido(form.rejeitar.data) and not esta_preenchido(form.aprovar.data) and not esta_preenchido(form.desaprovar.data):
                 pagamento = db.session.query(Pagamento).get(int(form.autorizar.data))
                 if pagamento.rejeitado is not False and pagamento.metodo_pagamento == 'Comprovante':
+                    if pagamento.camiseta.quantidade_restante > 0:
+                        pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
                     pagamento.rejeitado = False
                     db.session.add(pagamento)
                     db.session.commit()

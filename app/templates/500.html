@@ -4,15 +4,14 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="row justify-content-center pt-1">
+<div class="container pt-1 pb-3">
+    <div class="row justify-content-center">
         <div class="col-md-12 text-center">
-            <h1>Erro 500 - Erro interno no servidor</h1>
-            <h3>O servidor encontrou um erro interno ou configuração inválida e não foi possível completar sua
-                requisição.</h3>
-            <a>
-                <img id="error-dog" src="{{ url_for('static', filename='images/500.jpg') }}" alt="Imagem do erro 500">
-            </a>
+            <h1 class="pt-1">Erro 500 - Erro interno no servidor</h1>
+            <h3 class="pt-1">O servidor encontrou um erro interno ou configuração inválida e
+                não foi possível completar sua requisição.</h3>
+            <img style="max-width: 90vw;" class="pt-2" id="error-dog"
+                src="{{ url_for('static', filename='images/500.jpg') }}" alt="Imagem do erro 500">
         </div>
     </div>
 </div>

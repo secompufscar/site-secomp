@@ -30,13 +30,11 @@ def enviar_email_generico(info=None, anexo=None):
     if info is None:
         global _teste
         info = _teste
-    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['MAIL_USERNAME'])),
+    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['DEFAULT_MAIL_SENDER'])),
                   recipients=[info['email']])
 
-    print(info['template'])
     try:
         msg.html = render_template(info['template'], info=info)
-        print(msg.html)
 
         # Parte que cuida dos anexos
         if not (anexo is None or anexo == []):
@@ -59,7 +57,6 @@ def enviar_email_generico(info=None, anexo=None):
 
     try:
         global mail
-        print(msg)
         mail.send(msg)
     except Exception as e:  # Erros mais prováveis são devido ao email_config, printa error em um arquivo
         try:
@@ -172,3 +169,43 @@ def enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPas
                 naoEnviados.append(temp)
 
     return naoEnviados
+
+def enviar_email_aviso_pagamento_kit_aprovado(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'COMPROVANTE APROVADO',
+            "email": usuario.email,
+            "template": 'email/pagamento_kit_aprovado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+def enviar_email_aviso_pagamento_kit_rejeitado(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'COMPROVANTE NÃO APROVADO',
+            "email": usuario.email,
+            "template": 'email/pagamento_kit_rejeitado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+def enviar_email_aviso_sucesso_confirmacao_pagamento_paypal(usuario, pagamento):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'PAGAMENTO CONFIRMADO',
+            "email": usuario.email,
+            "valor": "{:2.2f}".format(pagamento.valor).replace('.', ','),
+            "template": 'email/pagamento_kit_confirmado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)

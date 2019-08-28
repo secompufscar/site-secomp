@@ -1,5 +1,6 @@
-from app.models.models import *
+# -*- coding: utf-8 -*-
 
+from app.models.models import *
 
 def populate():
     valores = {
@@ -7,7 +8,7 @@ def populate():
         'instituicoes': ['UFSCar', 'USP', 'UNESP', 'Unicamp'],
         'cidades': ['São Carlos', 'São Paulo', 'Campinas', 'Rio Claro'],
         'diretorias': ['Coordenação Geral', 'TI', 'Design & Marketing', 'Conteúdo',
-                        'Jurídico-Financeira', 'Sociocultural'],
+                        'Jurídico-Financeira', 'Sóciocultural'],
         'cargos': ['Membro', 'Diretora', 'Diretor', 'Voluntária', 'Voluntário'],
         'cotas': ['Diamante', 'Ouro', 'Prata', 'Apoio'],
         'permissoes': ['ADMIN', 'SORTEAR', 'GERAR_LISTAS', 'VENDA_PRESENCIAL',

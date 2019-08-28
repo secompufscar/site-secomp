@@ -3,7 +3,7 @@
 {% block styles %}
 {{ super() }}
 
-<link href="{{ url_for('static', filename='css/faq.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='css/faq.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block content %}
@@ -13,17 +13,16 @@
 		<div class="col-md-12 text-center">
 			<h2>FAQ</h2>
 		</div>
-
 		<div class="col-md-12 pt-3">
 			<div class="accordion" id="accordion">
+
 				<div class="card">
 					<a data-toggle="collapse" data-target="#collapseOne" aria-expanded="false"
-						aria-controls="collapseTwo">
-						<div class="card-header" id="headingTwo">
-							<h5 class="mb-0">
-								<h5><i class="fas fa-sort-down pb-2"></i>
-									Não estudo na UFSCar, posso participar do evento?
-								</h5>
+						aria-controls="collapseOne">
+						<div class="card-header" id="headingOne">
+							<h5><i class="fas fa-sort-down pb-2"></i>
+								Não estudo na UFSCar, posso participar do evento?
+							</h5>
 						</div>
 					</a>
 					<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
@@ -32,56 +31,81 @@
 						</div>
 					</div>
 				</div>
+
 				<div class="card">
 					<a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
 						aria-controls="collapseTwo">
 						<div class="card-header" id="headingTwo">
-							<h5 class="mb-0">
 
-								<h5><i class="fas fa-sort-down pb-2"></i> O evento é pago?
-								</h5>
+
+							<h5><i class="fas fa-sort-down pb-2"></i>
+								O evento é pago?
+							</h5>
 						</div>
 					</a>
 					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
 						<div class="card-body text-justify">
-							O acesso ao conteúdo do evento é gratuito para todos os participantes. Entretanto,
-							teremos opções de pacotes para compra do kit do participante que contará com camiseta
-							personalizada do evento, caneca, diversos brindes e acesso a todos os coffee breaks do
-							evento. Aos que quiserem participar apenas do Capture the Flag (CTF), também será possível
-							comprar um pacote mais barato que contempla apenas a inscrição na modalidade. Mais detalhes
-							sobre os pacotes serão divulgados em breve.
+							O acesso ao conteúdo do evento é gratuito para todos os participantes. Entretanto, vendemos
+							um kit que contém: uma camiseta personalizada do evento, diversos brindes que variam de
+							acordo com a edição e acesso aos coffee breaks realizados ao longo da Semana. <br>
+
+							Também realizamos um churrasco de integração, cujo ingresso é vendido separadamente.<br>
 						</div>
 					</div>
 				</div>
+
 				<div class="card">
 					<a data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
 						aria-controls="collapseThree">
 						<div class="card-header" id="headingThree">
-							<h5 class="mb-0">
-								<h5><i class="fas fa-sort-down pb-2"></i>
-									Qual a forma de pagamento, caso eu queira comprar o kit?
-								</h5>
+
+
+							<h5><i class="fas fa-sort-down pb-2"></i>
+								O que tem no KIT da X SECOMP, e como posso adquiri-lo?
+							</h5>
 						</div>
 					</a>
 					<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
 						<div class="card-body text-justify">
-							Você poderá pagar com cartão de crédito via PayPal, realizando depósito ou
-							transferência bancária para uma conta do Banco do Brasil, ou ainda poderá pagar
-							presencialmente no
-							Departamento de Computação da UFSCar em dias e horários a serem divulgados em nossa
-							página
-							do Facebook.
+
+							<h6>Este ano nosso kit contém:</h6>
+							<ul>
+								<li>
+									Camiseta personalizada com a arte da edição do evento;
+								</li>
+								<li>
+									Copo ecológico de fibra de bambu;
+								</li>
+								<li>
+									Mochila-saco ecológica de algodão;
+								</li>
+								<li>
+									Adesivo personalizado com a logomarca do evento;
+								</li>
+								<li>
+									Adesivo personalizado com a arte da edição;
+								</li>
+								<li>
+									Tirante para crachá;
+								</li>
+								<li>
+									Acesso aos 9 coffee breaks realizado ao longo da Semana.
+								</li>
+							</ul>
+
+							Você pode adquirir seu kit através do site, após realizar as inscrições, ou presencialmente.
+							Em nossa página do facebook divulgamos o período em que as vendas ficarão abertas, além do
+							local e horário para a compra presencial.
 						</div>
 					</div>
 				</div>
+
 				<div class="card">
 					<a data-toggle="collapse" data-target="#collapseFour" aria-expanded="false"
 						aria-controls="collapseFour">
 						<div class="card-header" id="headingFour">
-							<h5 class="mb-0">
-								<h5><i class="fas fa-sort-down pb-2"></i>
-									Há limite de vagas?
-								</h5>
+							<h5><i class="fas fa-sort-down pb-2"></i>
+								Há limite de vagas?
 							</h5>
 						</div>
 					</a>
@@ -99,41 +123,128 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="card">
+					<a data-toggle="collapse" data-target="#collapseFive" aria-expanded="false"
+						aria-controls="collapseFive">
+						<div class="card-header" id="headingFive">
+							<h5><i class="fas fa-sort-down pb-2"></i>
+								Quando abrem/fecham as inscrições para o evento?
+							</h5>
+						</div>
+					</a>
+					<div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+						<div class="card-body text-justify">
+							<p><b>Início:</b> 26/08/2019 12:30</p>
+							<p><b>Término:</b> 04/09/2019 12:30</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<a data-toggle="collapse" data-target="#collapseSix" aria-expanded="false"
+						aria-controls="collapseSix">
+						<div class="card-header" id="headingSix">
+							<h5><i class="fas fa-sort-down pb-2"></i>
+								Quando abrem/fecham as inscrições para os minicursos?
+							</h5>
+						</div>
+					</a>
+					<div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+						<div class="card-body text-justify">
+							<h5><b>Primeira etapa</b></h5>
+							<p><b>Início:</b> 30/08/2019 12:30</p>
+							<p class="pb-1"><b>Fim:</b> 03/09/2019 09:30</p>
+
+							<h5><b>Segunda etapa</b></h5>
+							<p><b>Início:</b> 03/09/2019 09:30</p>
+							<p><b>Fim:</b> -</p>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<a data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false"
+						aria-controls="collapseSeven">
+						<div class="card-header" id="headingSeven">
+							<h5><i class="fas fa-sort-down pb-2"></i>
+								Como funcionam as rodadas de minicursos?
+							</h5>
+						</div>
+					</a>
+					<div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
+						<div class="card-body text-justify">
+							<p>
+								As inscrições em minicurso são gratuitas, contudo possuem limite de vagas, que são
+								preenchidas por ordem de inscrição.
+							</p>
+
+							<p>
+								Este ano as inscrições serão realizadas em duas etapas, que funcionarão da seguinte
+								maneira:<br>
+								1) Em cada uma das etapas o participante poderá se inscrever em apenas um minicurso;<br>
+								2) Enquanto cada etapa estiver aberta, o participante poderá cancelar sua inscrição (em
+								um
+								minicurso previamente inscrito) e se inscrever em outro à vontade, desde que, no final
+								de
+								cada etapa, o participante tenha se inscrito em apenas um minicurso na tal etapa.<br>
+							</p>
+
+							<p>
+								Assim, o participante poderá finalizar o período de inscrições ocupando vaga em dois
+								minicursos.
+							</p>
+
+							<p>
+								Vale avisar que caso o participante cancele na segunda etapa sua inscrição no minicurso
+								selecionado na primeira, continuará podendo apenas se inscrever em um único minicurso
+								nesta
+								segunda etapa. Finalizando o período de inscrições com no máximo uma vaga.
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<a data-toggle="collapse" data-target="#collapseEight" aria-expanded="false"
+						aria-controls="collapseEight">
+						<div class="card-header" id="headingEight">
+							<h5><i class="fas fa-sort-down pb-2"></i>
+								Como posso me tornar um patrocinador da SECOMP UFSCar?
+							</h5>
+						</div>
+					</a>
+					<div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
+						<div class="card-body text-justify">
+							Primeiramente gostaríamos de agradecer o interesse! <br>
+							Você pode entrar em contato com nossa equipe de Patrocínio, enviando um email para
+							<a href="mailto:contato@secompufscar.com.br">contato@secompufscar.com.br</a>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<a data-toggle="collapse" data-target="#collapseNine" aria-expanded="false"
+						aria-controls="collapseNine">
+						<div class="card-header" id="headingNine">
+							<h5><i class="fas fa-sort-down pb-2"></i>
+								Gostaria de apresentar algo na SECOMP UFSCar. Como proceder?
+							</h5>
+						</div>
+					</a>
+					<div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordion">
+						<div class="card-body text-justify">
+							Agradecemos muito pelo interesse em agregar algo ao nosso evento! <br>
+							Você pode entrar em contato com nossa equipe de Conteúdo, enviando um email para
+							<a href="conteudo@secompufscar.com.br">conteudo@secompufscar.com.br</a>
+						</div>
+					</div>
+				</div>
 			</div>
+			<h6 class="text-right"><b>Observação: </b>Podem ocorrer alterações sem aviso prévio.</h6>
 		</div>
 	</div>
 </div>
-
-
-<!-- Este forms seria igual à página de contato?
-			 Deveria ser implementado então por wtforms?
-			 Ou apenas um link para redirecionar para a página de contato?
-
-			 
-		<div class="col-md-5"> 
-				<div class="pt-3 text-center">
-						<h3 class="md-1">
-							<br>Tem alguma dúvida sobre o evento? Entre em contato com a organização
-						</h3> <br>
-				</div>
-				<form>
-						<div class="form-group">
-								<label for="id_nome">Seu nome:</label>
-								<input type="text" name="nome" style="border-radius:4px;" placeholder="Seu nome" required="" id="id_nome">
-							</div>
-							<div class="form-group">								
-								<label for="id_email">Seu e-mail:</label>
-								<input type="email" name="email" style="border-radius:4px;" placeholder="Seu e-mail" required="" id="id_email">
-							</div>
-							<div class="form-group">								
-								<label for="id_mensagem">Mensagem:</label><br>
-								<textarea name="mensagem" cols="40" rows="5" style="border-radius:4px;" placeholder="Sua mensagem" required="" id="id_mensagem"></textarea>
-							</div>
-							<center>
-							<button type="button" class="btn btn-secondary bg-gradient-secomp"><i class="fas fa-location-arrow"></i> Enviar mensagem</button>
-								</center>
-						</form>
-		</div>-->
 
 <div class="container">
 	<div class="row justify-content-center p-3">

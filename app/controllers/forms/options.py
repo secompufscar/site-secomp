@@ -1,9 +1,10 @@
 from app.models.models import *
 
 opcoes_restricao = [
-    (1, "Nenhum"),
+    (1, "Nenhuma"),
     (2, "Vegetariano"),
-    (3, "Vegano")
+    (3, "Vegano"),
+    (4, "Diabético")
 ]
 
 opcoes_falha = [
@@ -30,9 +31,15 @@ def get_opcoes_cidades():
     try:
         cidades = db.session.query(Cidade).order_by("nome").all()
         info_cidades = []
+        objeto_outro = False
         for cidade in cidades:
-            info = (cidade.id, cidade.nome)
-            info_cidades.append(info)
+            if cidade.nome != 'Outra':
+                info = (cidade.id, cidade.nome)
+                info_cidades.append(info)
+            else:
+                objeto_outro = True
+        if objeto_outro is False:
+            info_cidades.append((0, "Outra"))
         return info_cidades
     except Exception as e:
         print(e)
@@ -43,9 +50,15 @@ def get_opcoes_instituicoes():
     try:
         instituicoes = db.session.query(Instituicao).order_by("nome").all()
         info_instituicoes = []
+        objeto_outro = False
         for instituicao in instituicoes:
-            info = (instituicao.id, instituicao.nome)
-            info_instituicoes.append(info)
+            if instituicao.nome != 'Outra':
+                info = (instituicao.id, instituicao.nome)
+                info_instituicoes.append(info)
+            else:
+                objeto_outro = True
+        if objeto_outro is False:
+            info_instituicoes.append((0, "Outra"))
         return info_instituicoes
     except Exception as e:
         print(e)
@@ -56,10 +69,15 @@ def get_opcoes_cursos():
     try:
         cursos = db.session.query(Curso).order_by("nome").all()
         info_cursos = []
+        objeto_outro = False
         for curso in cursos:
-            info = (curso.id, curso.nome)
-            info_cursos.append(info)
-        print(info_cursos)
+            if curso.nome != 'Outro':
+                info = (curso.id, curso.nome)
+                info_cursos.append(info)
+            else:
+                objeto_outro = True
+        if objeto_outro is False:
+            info_cursos.append((0, "Outro"))
         return info_cursos
     except Exception as e:
         print(e)
@@ -74,8 +92,7 @@ def get_opcoes_camisetas():
         for camiseta in camisetas:
             if camiseta.quantidade_restante > 0:
                 info = (camiseta.id, camiseta.tamanho)
-                info_camisetas.append(info) 
-        print(info_camisetas)
+                info_camisetas.append(info)
         return info_camisetas
     except Exception as e:
         print(e)

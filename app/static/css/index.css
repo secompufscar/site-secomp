@@ -1,9 +1,5 @@
 #content {
-    padding-top: 0;
-}
-
-.col {
-    padding: 2% 0 2% 0;
+    padding-top: 0 !important;
 }
 
 .counter {
@@ -27,46 +23,104 @@
 }
 
 .top-left .svg-inline--fa, .bottom-right .svg-inline--fa {
-    font-size: 4em;
+    font-size: 8vh;
+}
+
+.swiper-slide a {
+    text-decoration: none;
+}
+
+.swiper-slide a:hover {
+    color: var(--secondary-color);
+}
+
+
+.bg-fade {
+    background-color: #000000aa;
+    position: relative;
+    border-radius: 1rem;
 }
 
 .larger {
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
 }
 
-@media (max-width: 400px) {
-    .top-left h2, .top-left h5, .bottom-right h2, .bottom-right h5 {
-        text-align: center;
-    }
+.top-left .row, .bottom-right .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
 
+.background {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    filter: blur(3px);
+    position: absolute;
+    background-size: cover;
+    background-position: 62%;
+    background-repeat: no-repeat;
+}
+
+.swiper-pagination-bullet {
+    height: 2.5vh !important;
+    width: 2.5vh !important;
+    opacity: 1 !important;
+    background-color: #ffffff88 !important;
+}
+
+.swiper-pagination-bullet-active {
+    margin-bottom: 1vh !important;
+    background-color: var(--primary-color) !important;
+}
+
+@media (orientation: portrait) {
+    .logoP {
+        margin-top: 60px;
+        display: inline-block;
+        max-width: 70vw;
+    }
+    .logoL {
+        display: none;
+    }
+}
+
+@media (orientation: landscape) {
+    .logoL {
+        margin-top: 60px;
+        display: inline-block;
+        max-width: 70vw;
+        max-height: 30vh;
+        margin: 3%;
+    }
+    .logoP {
+        display: none;
+    }
+}
+
+@media (max-width: 370px) {
     .top-left, .bottom-right {
         width: 90%;
     }
 }
 
-@media (max-height: 500px) {
-    .larger {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
-}
-
-@media (min-width: 401px) and (max-width: 700px) {
-    .larger {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+@media (min-width: 371px) and (max-width: 450px) {
     .top-left, .bottom-right {
-        width: 75%;
+        width: 80%;
+    }
+    .logoL {
+        max-width: 50vw;
     }
 }
 
-@media (min-width: 701px) and (min-height: 501px) {
-    .top-left .svg-inline--fa, .bottom-right .svg-inline--fa {
-        font-size: 6em;
+@media (min-width: 451px) and (max-width: 700px) {
+    .top-left, .bottom-right {
+        width: 65%;
+    }
+    .logoL {
+        max-width: 55vw;
     }
 }
 
@@ -76,59 +130,28 @@
     }
 }
 
-.bg-fade {
-    background-color: #000000aa;
-    position: relative;
-}
-
-@media (orientation: portrait) {
-    .background {
-        height: 100vh;
-        width: 100%;
-        margin: 0;
-        position: absolute;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
-    .logoP {
-        margin-top: 60px;
-        display: inline-block;
-        width: 70vw;
-    }
+@media (orientation: landscape) and (max-height: 400px) {
     .logoL {
-        display: none;
+        max-height: 25vh;
+        max-width: 35vw;
     }
 }
 
-@media (orientation: landscape) {
-    .background {
-        height: 100vh;
-        width: 100%;
-        position: absolute;
-        background-size: cover;
-    }
-    .logoL {
-        margin-top: 60px;
-        display: inline-block;
-        width: 70vw;
-        margin: 3%;
-    }
-    .logoP {
-        display: none;
+@media (max-height: 310px) {
+    .top-left, .bottom-right {
+        width: 45%;
     }
 }
 
 @media (max-width: 699px) {
     .icons .col {
         flex: 0 0 50%;
-        padding: 4% 0 4% 0;
     }
 }
 
 @media (min-width: 700px) {
     .icons .col {
         flex: 0 0 25%;
-        padding: 2% 0 2% 0;
     }
 }
 

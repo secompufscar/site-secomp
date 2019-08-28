@@ -25,7 +25,7 @@ def index():
     """
     Renderiza a página inicial do projeto
     """
-    
+
     form_login = LoginForm(request.form)
     return render_template('views/index.html', title='Página inicial',
                            secomp_now=secomp_now[0], secomp=secomp[0],
@@ -55,7 +55,6 @@ def bug_report():
     """
     Página de envio do bug report
     """
-
     form_login = LoginForm(request.form)
     form = BugReportForm()
 
@@ -115,11 +114,10 @@ def cronograma():
     form_login = LoginForm(request.form)
     return render_template('views/cronograma.html', title='Cronograma', form_login=form_login, info_cronograma=get_cronograma())
 
-
 @views.route('/equipe', methods=["GET", "POST"])
 def equipe():
     form_login = LoginForm(request.form)
-    return render_template('views/equipe.html', title='Equipe', form_login=form_login, info_equipe=get_equipe())
+    return render_template('views/equipe.html', title='Equipe', form_login=form_login, info_equipe=get_equipe(database=False))
 
 @views.route('/faq', methods=["GET", "POST"])
 def faq():
@@ -129,9 +127,21 @@ def faq():
 
 @views.route('/ctf', methods=["GET", "POST"])
 def ctf():
+    '''
     form_login = LoginForm(request.form)
     return render_template('views/ctf.html', title='CTF', form_login=form_login)
+    '''
+    return redirect(url_for('views.index'))
 
+@views.route('/gamejam', methods=["GET", "POST"])
+def gamejam():
+    form_login = LoginForm(request.form)
+    return render_template('views/gamejam.html', title='CTF', form_login=form_login)
+
+@views.route('/desafio', methods=["GET", "POST"])
+def desafio():
+    form_login = LoginForm(request.form)
+    return render_template('views/desafio.html', title='CTF', form_login=form_login)
 
 @limiter.limit("50/day")
 @views.route("/login", methods=["GET", "POST"])
@@ -195,9 +205,12 @@ def patrocinadores():
     '''
     Renderiza página referente aos patrocinadores da edição atual
     '''
+    '''
     form = LoginForm(request.form)
     patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True)
     return render_template('views/patrocinadores.html', patrocinadores=patrocinadores, form_login=form, edicao=EDICAO_ATUAL)
+    '''
+    return redirect(url_for('views.index'))
 
 @views.route("/pontuacao", methods=["GET"])
 def pontuacao_compcases():
@@ -231,7 +244,7 @@ def protected(filename):
 def uploads(filename):
     participante = db.session.query(Participante).filter(Participante.id_usuario == current_user.id, Participante.id_evento == get_id_evento_atual()).first()
     dir, filename = filename.rsplit('/', 1)
-    if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes() or "GERENCIAR_COMPROVANTES" in current_user.getPermissoes() or get_permissao_comprovante(participante, filename):
+    if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes() or "GERENCIAR_COMPROVANTES" in current_user.getPermissoes() or get_permissao_comprovante(participante, filename) or diretorio_publico(dir):
         filename = secure_filename(filename)
         caminho = os.path.join(current_app.config['UPLOAD_FOLDER'], dir)
         if os.path.exists(caminho):
