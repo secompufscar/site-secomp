@@ -52,8 +52,8 @@ class Usuario(db.Model):
     admin = Column(Boolean, default=False)
     autenticado = Column(Boolean, default=False)
     email_verificado = Column(Boolean, default=False)
-    ultimo_login = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
-    data_cadastro = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    ultimo_login = Column(DateTime, default=datetime.now())
+    data_cadastro = Column(DateTime, default=datetime.now())
     participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
     salt = Column(String(30), nullable=True)
     token_alteracao_senha = Column(String(90), nullable=True)
@@ -98,7 +98,7 @@ class Participante(db.Model):
     id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     pagamentos = db.relationship('Pagamento', back_populates='participante', lazy=True)
-    data_inscricao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    data_inscricao = Column(DateTime, default=datetime.now())
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
     pontuacao = Column(Integer, nullable=True, default=0)
@@ -108,6 +108,7 @@ class Participante(db.Model):
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
+    uuid = Column(String(512), nullable=True)
     flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
 
 
@@ -212,6 +213,16 @@ class Atividade(db.Model):
             return self.titulo
         else:
             return 'Atividade <' + str(self.id) + '>'
+
+    @property
+    def ministrantes_confirmados_atividade(self):
+        ministrantes_confirmados = []
+        ministrantes = self.ministrantes
+        for m in ministrantes:
+            r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=m.id, id_atividade=self.id, confirmado=True).first()
+            if r is not None:
+                ministrantes_confirmados.append(m)
+        return ministrantes_confirmados
 
 class InfoMinicurso(db.Model):
     __tablename__ = 'info_minicurso'
@@ -332,7 +343,7 @@ class Patrocinador(db.Model):
     cota = db.relationship('CotaPatrocinio', backref='cota_patrocinio', lazy=True)
     ordem_site = Column(Integer, nullable=True)
     link_website = Column(String(200), nullable=True)
-    ultima_atualizacao_em = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    ultima_atualizacao_em = Column(DateTime, default=datetime.now())
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
                               back_populates='patrocinadores')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_patrocinador, lazy=True,
@@ -423,10 +434,11 @@ class Pagamento(db.Model):
     valor = Column(Float(precision=2), nullable=False)
     efetuado = Column(Boolean, nullable=False)
     rejeitado = Column(Boolean, nullable=False, default=False)
+    cancelado = Column(Boolean, nullable=False, default=False)
     comprovante_enviado = Column(Boolean, nullable=False, default=False)
     arquivo_comprovante = Column(String(100), nullable=True)
     metodo_pagamento = Column(String(100), nullable=False)
-    data_hora_pagamento = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    data_hora_pagamento = Column(DateTime, default=datetime.now())
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
     cupom_desconto = db.relationship('CupomDesconto', back_populates='pagamento', lazy=True, uselist=False)
     camiseta = db.relationship('Camiseta', back_populates='pagamento', lazy=True, uselist=False)
@@ -463,7 +475,7 @@ class AdminModelHistory(db.Model):
     acao = Column(String(200), nullable=False)
     nome_modelo = Column(String(200), nullable=True)
     id_modelo = Column(Integer)
-    data_hora_acao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    data_hora_acao = Column(DateTime, default=datetime.now())
     usuario = db.relationship('Usuario', backref='historico_admin', lazy=True)
 
 class CupomDesconto(db.Model):

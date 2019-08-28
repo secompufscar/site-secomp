@@ -1,12 +1,13 @@
 :root {
     --sidebar-color: #f5f5f5;
-    --border-color: #00000020;
+    --sidebar-border: #d4d4d4;
+    --sidebar-hover-color: #dfdfdf;
 }
 
 [data-theme=dark] {
-    --sidebar-color: #00242F;
-    --border-color: #88888870;
-    --sidebar-hover-color: #00000044;
+    --sidebar-color: #090c0e;
+    --sidebar-border: var(--primary-color);
+    --sidebar-hover-color: #202020;
     --hover-font-color: #ffffff;
 }
 
@@ -23,8 +24,12 @@ h1, h2, h3, h4, h5, h6, span, tr, i {
 }
 
 .list-group-item-action {
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--sidebar-border);
     color: var(--font-color);
+}
+
+.dropdown-container .list-group-item-action {
+    border: none;
 }
 
 .list-group .list-group-item-action:hover, .list-group .list-group-item-action:focus {
@@ -33,7 +38,7 @@ h1, h2, h3, h4, h5, h6, span, tr, i {
 }
 
 .border-right {
-    border-right: 1px solid var(--border-color) !important;
+    border-right: 1px solid var(--sidebar-border) !important;
 }
 
 .form-control {
@@ -58,7 +63,7 @@ body {
 
 .circle {
     color: var(--font-color);
-    background-color: var(--border-color);
+    background-color: var(--sidebar-border);
     z-index: 2;
     text-align: center;
     line-height: 2rem;
@@ -130,7 +135,7 @@ body {
     #wrapper.toggled #sidebar-wrapper {
         margin-left: -15rem;
     }
-    #btn-open {
+    #btn-open, #btn-close {
         display: none;
     }
 }

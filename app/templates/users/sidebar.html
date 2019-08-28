@@ -1,122 +1,134 @@
 {% extends "base.html" %}
 
+{% block modal_login %}{% endblock %}
+
+{% block styles %}
+
+{{ super() }}
+<link href="{{ url_for('static', filename='css/sidebar.css') }}" rel="stylesheet" type="text/css" />
+
+{% endblock %}
+
 {% block content %}
-<style>
-    body {
-        overflow-x: hidden;
-    }
 
-    #sidebar-wrapper {
-        min-height: 100vh;
-        margin-left: -15rem;
-        -webkit-transition: margin .25s ease-out;
-        -moz-transition: margin .25s ease-out;
-        -o-transition: margin .25s ease-out;
-        transition: margin .25s ease-out;
-    }
-
-    #sidebar-wrapper .sidebar-heading {
-        padding: 0.875rem 1.25rem;
-        font-size: 1.2rem;
-    }
-
-    #sidebar-wrapper .list-group {
-        width: 15rem;
-    }
-
-    #wrapper.toggled #sidebar-wrapper {
-        margin-left: 0;
-    }
-
-    .dropdown-container {
-        display: none;
-    }
-
-    .dropdown-container a {
-        padding-left: 12%;
-    }
-
-    @media (min-width: 768px) {
-        #sidebar-wrapper {
-            margin-left: 0;
-        }
-
-        #page-content-wrapper {
-            min-width: 0;
-            width: 100%;
-        }
-
-        #wrapper.toggled #sidebar-wrapper {
-            margin-left: -15rem;
-        }
-    }
-</style>
 <div class="d-flex" id="wrapper">
 
-    <div class="bg-light border-right" id="sidebar-wrapper">
-        <div class="sidebar-heading">{{ usuario.primeiro_nome }}</div>
+    <div class="border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">
+            {{ usuario.primeiro_nome }}
+        </div>
         <div class="list-group list-group-flush">
-            <a href="{{ url_for('users.dashboard') }}"
-                class="list-group-item list-group-item-action bg-light">Dashboard</a>
+            <a href="{{ url_for('users.dashboard') }}" class="list-group-item list-group-item-action">Dashboard</a>
 
-            <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action bg-light">Dados</a>
-            <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action bg-light">Editar dados</a>
-
-            {% if participante: %}
-
-            <a href="{{ url_for('users.comprar_kit') }}" class="list-group-item list-group-item-action bg-light">Kit</a>
-
-            <button style="outline: none;"
-                class="list-group-item list-group-item-action dropdown-btn bg-light">Inscrições
+            <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Dados
                 <i class="fa fa-caret-down"></i>
             </button>
-            <a href="{{ url_for('users.pagamentos') }}"
-                class="list-group-item list-group-item-action bg-light">Pagamentos</a>
-            <a href="{{ url_for('users.presencas') }}"
-                class="list-group-item list-group-item-action bg-light">Presenças</a>
 
             <div class="dropdown-container">
-                 <a href="{{ url_for('users.inscricao_minicursos') }}"
-                    class="list-group-item list-group-item-action bg-light">Minicursos</a>
-                 <a href="{{ url_for('users.inscricao_workshops') }}"
-                    class="list-group-item list-group-item-action bg-light">Workshops</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Desafio de Programadores</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light">Hackaton</a>
+
+                <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action">Dados Pessoais</a>
+                <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action">Editar Dados Pessoais</a>
+                
+                {% if participante %}
+                <a href="{{ url_for('users.dados_participante') }}" class="list-group-item list-group-item-action">Dados de Participante</a>
+                {% endif %}
+
             </div>
 
-            {% else: %}
-            <a href="{{ url_for('users.cadastro_participante') }}" class="list-group-item list-group-item-action bg-light">Inscrever-se</a>
+            {% if participante %}
+
+            <a href="{{ url_for('users.comprar_kit') }}" class="list-group-item list-group-item-action">Compra de Kit</a>
+            <a href="{{ url_for('users.pagamentos') }}" class="list-group-item list-group-item-action">Pagamentos</a>
+
+            <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Atividades
+                <i class="fa fa-caret-down"></i>
+            </button>
+
+            <div class="dropdown-container">
+
+                <a href="{{ url_for('users.presencas') }}" class="list-group-item list-group-item-action">Presenças</a>
+                <a href="{{ url_for('users.inscricao_minicursos') }}"
+                    class="list-group-item list-group-item-action">Minicursos</a>
+                <a href="{{ url_for('users.inscricao_workshops') }}"
+                    class="list-group-item list-group-item-action">Workshops</a>
+
+            </div>
+
+            {% else %}
+            <a href="{{ url_for('users.cadastro_participante') }}"
+                class="list-group-item list-group-item-action">Inscrever-se</a>
 
             {% endif %}
 
-            <button style="outline: none;"
-                class="list-group-item list-group-item-action dropdown-btn bg-light">Gerenciamento
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="{{ url_for('management.gerenciar') }}"
-                    class="list-group-item list-group-item-action bg-light">Homepage</a>
-                <a href="{{ url_for('management.vender_kits') }}" class="list-group-item list-group-item-action bg-light">Venda de kits</a>
-                <a href="{{ url_for('management.listas') }}" class="list-group-item list-group-item-action bg-light">Listagem de participantes</a>
-                <a href="{{ url_for('management.sortear') }}" class="list-group-item list-group-item-action bg-light">Sorteio de usuário</a>
-                <a href="{{ url_for('management.gerar_url_conteudo') }}" class="list-group-item list-group-item-action bg-light">URL ministrante</a>
-                <a href="{{ url_for('management.cadastro_flags') }}" class="list-group-item list-group-item-action bg-light"> Gerenciar Flags </a>
-                  <a href="{{ url_for('management.gerenciar_comprovantes') }}" class="list-group-item list-group-item-action bg-light"> Gerenciar Comprovantes </a>
-            </div>
+            {% if "ADMIN" in current_user.getPermissoes() or
+            "CONTEUDO" in current_user.getPermissoes() or
+            "PATROCINIO" in current_user.getPermissoes() or
+            "NOTIFICACOES_APP" in current_user.getPermissoes() or
+            "VENDA_PRESENCIAL" in current_user.getPermissoes() or
+            "APROVAR_COMPROVANTES" in current_user.getPermissoes() or
+            "GERAR_CRACHAS" in current_user.getPermissoes() or
+            "GERAR_LISTAS" in current_user.getPermissoes() or
+            "SORTEAR" in current_user.getPermissoes() %}
 
-            <a href="/admin" class="list-group-item list-group-item-action bg-light">Administração</a>
-            <a href="{{url_for('views.logout')}}" class="list-group-item list-group-item-action bg-light">Logout</a>
+            <a href="{{ url_for('management.gerenciar') }}"
+                class="list-group-item list-group-item-action">Gerenciamento</a>
+
+            {% endif %}
+
+            {% if "ADMIN" in current_user.getPermissoes() %}
+
+            <a href="/admin" class="list-group-item list-group-item-action">Administração</a>
+
+            {% endif %}
+
+            <a href="{{url_for('views.logout')}}" class="list-group-item list-group-item-action">Logout</a>
         </div>
     </div>
 
-    <div class="container-fluid">
+    <a id="btn-open" class="circle" href="javascript:void(0);" onclick="openNav()">
+        <i class="fas fa-angle-right fa-lg"></i>
+    </a>
+    <a id="btn-close" class="circle" href="javascript:void(0);" onclick="closeNav()">
+        <i class="fa fa-times fa-sm"></i>
+    </a>
+
+    <div id="sidebar-content" class="container-fluid">
         {% block sidebar_content %}{% endblock %}
     </div>
-
 </div>
 
-<script>
+{% endblock %}
 
+{% block scripts %}
+
+{{ super() }}
+
+<script>
+    function openNav() {
+        $("#sidebar-wrapper").fadeIn(200);
+        setTimeout(function () {
+            document.getElementById("sidebar-wrapper").style.display = "inline-block";
+            document.getElementById("btn-close").style.display = "inline-block";
+        }, 200);
+        document.getElementById("sidebar-wrapper").style.marginLeft = "0";
+        document.getElementById("btn-open").style.display = "none";
+        $('#wrapper').attr('style', 'min-height:' + $("#sidebar-wrapper").height() + "px" + ';other-styles');
+    }
+    function closeNav() {
+        document.getElementById("sidebar-wrapper").style.marginLeft = "-15rem";
+        document.getElementById("btn-close").style.display = "none";
+        setTimeout(function () {
+            document.getElementById("sidebar-wrapper").style.display = "none";
+            document.getElementById("btn-open").style.display = "inline-block";
+        }, 200);
+        $(".dropdown-container").css("display", "none");
+        if ($("#sidebar-wrapper").height() > $(window).height()) {
+            $('#wrapper').attr('style', 'min-height:100vh;other-styles');
+        }
+    }
+</script>
+
+<script>
     var dropdown = document.getElementsByClassName("dropdown-btn");
     var i;
 
@@ -133,4 +145,7 @@
     }
 
 </script>
+
 {% endblock %}
+
+{% block footer %}{% endblock %}

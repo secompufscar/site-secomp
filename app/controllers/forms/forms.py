@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm, RecaptchaField
+from flask_wtf import FlaskForm, RecaptchaField, Recaptcha
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField, RadioField, SubmitField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
@@ -8,16 +8,16 @@ from app.controllers.forms.validators import *
 from app.controllers.functions.helpers import get_participantes, get_atividades
 
 class BaseRecaptchaForm(FlaskForm):
-    recaptcha = RecaptchaField()
+    recaptcha = RecaptchaField(validators=[Recaptcha(message="Você deve completar a checagem de validação do recaptcha.")])
 
-class LoginForm(FlaskForm):
+class LoginForm(BaseRecaptchaForm):
     email = StringField('Email', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
     senha = PasswordField('Senha', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
 
 
-class CadastroForm(FlaskForm):
+class CadastroForm(BaseRecaptchaForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
@@ -42,9 +42,9 @@ class CadastroForm(FlaskForm):
                           format="%d/%m/%Y", id="data_nasc")
     como_conheceu = SelectField('Como você conheceu a SECOMP?', choices=opcoes_como_conheceu, coerce=int)
     outro_como_conheceu = StringField("Outro", id="outro_como_conheceu", validators=[Length(max=200)])
-    recaptcha = RecaptchaField()
 
-class EdicaoUsuarioForm(FlaskForm):
+
+class EdicaoUsuarioForm(BaseRecaptchaForm):
     primeiro_nome = StringField('Primeiro Nome', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Length(min=1, max=30), so_letras()], id="primeiro_nome")
     sobrenome = StringField('Sobrenome', validators=[InputRequired(
@@ -59,31 +59,29 @@ class EdicaoUsuarioForm(FlaskForm):
     outra_cidade = StringField("Outra Cidade", id="outra_cidade", validators=[erro_cidade_existe(), so_letras()])
     data_nasc = DateField("Data de Nascimento",
                           format="%d/%m/%Y", id="data_nasc")
-    recaptcha = RecaptchaField()
 
 
 class ParticipanteForm(FlaskForm):
-    leu_termos = BooleanField('Li e concordo com os termos de uso', id="li_termos")
+    leu_termos = BooleanField('Li e concordo com os termos de uso', validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], id="li_termos")
 
 
-class ComprarKitForm(FlaskForm):
+class ComprarKitForm(BaseRecaptchaForm):
     comprar = RadioField('Deseja comprar o kit da SECOMP UFSCar?', id='comprar', choices=[(1,'Sim'),(2,'Não')], coerce=int, default=2)
     camiseta = SelectField('Camiseta', choices=get_opcoes_camisetas(
     ), id="camiseta", default="P Feminino", coerce=int)
     restricao_coffee = SelectField(
         'Restrição para o Coffee-Break', choices=opcoes_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
-    forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Enviar Comprovante'),(2,'Paypal')], coerce=int, default=2)
+    forma_pagamento = RadioField('Forma de pagamento do kit', id='forma_pagamento', choices=[(1,'Transferência bancária'),(2,'PayPal')], coerce=int, default=2)
     uso_cupom_desconto = BooleanField('Deseja utilizar um cupom de desconto?', id='uso_cupom_desconto')
     cupom_desconto = StringField('Cupom de Desconto', id='cupom_desconto', validators=[Length(max=200), RequiredIf(uso_cupom_desconto=True), valida_cupom_desconto()], render_kw={'maxlength': 200})
     comprovante = FileField('Enviar comprovante de pagamento', id="comprovante", validators=[
             ComprovanteRequired(message=ERRO_INPUT_REQUIRED),
             FileAllowed(['png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)
         ])
-    recaptcha = RecaptchaField()
 
 
 class AlterarSenhaForm(FlaskForm):
-    senha_atual = PasswordField('Senha Atual', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA)])
+    senha_atual = PasswordField('Senha Atual', validators=[Length(min=0, max=20, message=ERRO_TAMANHO_SENHA)])
     nova_senha = PasswordField('Nova Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20, message=ERRO_TAMANHO_SENHA), EqualTo('confirmacao', message=ERRO_COMPARA_SENHAS)])
     confirmacao = PasswordField('Confirmação de Senha', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=8, max=20)])
 
@@ -209,7 +207,7 @@ class CadastroInformacoesPalestra(FlaskForm):
     requisitos_tecnicos = TextAreaField('Requisitos de Hardware/Software', id='requisitos_tecnicos', validators=[Length(max=1024)], render_kw={'maxlength': 1024})
     planejamento = TextAreaField('Planejamento', validators=[InputRequired(), Length(max=2056)], id='planejamento', render_kw={'maxlength': 2056})
     material = FileField('Material', validators=[
-        FileAllowed(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'rar', 'zip', 'tar', '7z', 'gz', 'taz', 'tgz'],
+        FileAllowed(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'rar', 'zip', 'tar', 'z', 'gz', 'taz', 'tgz'],
                     message=ERRO_EXTENSAO_INVALIDA)
         ], id='material')
     perguntas = TextAreaField('Perguntas referentes à palestra', validators=[InputRequired(), Length(max=1024)], id='perguntas', render_kw={'maxlength': 1024})
@@ -303,3 +301,6 @@ class GerenciarComprovantesForm(FlaskForm):
     desaprovar = IntegerField()
     rejeitar = IntegerField()
     autorizar = IntegerField()
+
+class CancelarPagamentoForm(FlaskForm):
+    cancelar = IntegerField()

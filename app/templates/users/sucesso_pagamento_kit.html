@@ -4,9 +4,9 @@
 <div class="container pt-4 pb-4">
 	<div class="row justify-content-center" style="min-height: 70vh;">
 		<div class="col-md-8 text-center align-self-center">
-      <i class="fa fa-4x fa-check-circle" style='margin-bottom: 30px'></i>
+			<i class="fa fa-4x fa-check-circle mb-3"></i>
 			<h4>O Pagamento do kit foi efetuado com sucesso!</h4>
-			<button onclick="location.href='{{url_for('users.dashboard')}}'">Voltar</button>
+			<a href="{{ url_for('users.dashboard') }}" class="btn btn-primary">Voltar</a>
 		</div>
 	</div>
 </div>
