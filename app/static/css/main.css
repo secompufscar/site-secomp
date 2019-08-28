@@ -9,7 +9,7 @@
 }
 
 [data-theme=dark] {
-  --primary-color: #008cb544;
+  --primary-color: #00465c;
   --secondary-color: #ff305d;
   --font-color: #e1e1ff;
   --bg-color: #0d1314;
@@ -99,6 +99,10 @@ header a {
 
 header a:hover {
   color: rgba(255, 255, 255, 0.7);
+}
+
+a:hover {
+  text-decoration: none;
 }
 
 .bg-gradient-secomp {
