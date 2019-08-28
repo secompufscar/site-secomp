@@ -92,16 +92,21 @@ def vender_kits():
             camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
             participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
             if camiseta.quantidade_restante > 0:
-                pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=get_preco_kit(),
+                valor = form.valor.data
+                pagamento = Pagamento(id_participante=participante.id, descricao="Kit", valor=valor,
                 efetuado=True, metodo_pagamento='Presencial')
                 pagamento.id_camiseta = form.camiseta.data
                 participante.pagamentos.append(pagamento)
                 if camiseta.quantidade_restante > 0:
                     camiseta.quantidade_restante = camiseta.quantidade_restante - 1
+                participante.opcao_coffee = form.restricao_coffee.data
+                alerta = "Compra de " + participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome \
+                         + " realizada com sucesso! R$ " + str(valor) + ". Camiseta: " + camiseta.tamanho + \
+                         " e restrição alimentar: " + get_nome_restricao(participante.opcao_coffee)
                 db.session.add(camiseta)
                 db.session.add(participante)
                 db.session.commit()
-                return render_template('management/venda_de_kits.html', alerta="Compra realizada com sucesso!",
+                return render_template('management/venda_de_kits.html', alerta=alerta,
                                        form=form, form_login=form_login, usuario=current_user, participante=meu_participante)
             elif camiseta.quantidade_restante == 0:
                 return render_template('management/venda_de_kits.html', alerta="Sem estoque para " + camiseta.tamanho,

@@ -127,6 +127,10 @@ class AlteraCamisetaForm(FlaskForm):
 class VendaKitForm(FlaskForm):
     participante = SelectField("Inscrições na SECOMP 2019", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
+    restricao_coffee = SelectField(
+        'Restrição para o Coffee-Break', choices=opcoes_restricao, default="Nenhum", coerce=int, id="restricao_coffee")
+    valor = StringField("Valor", validators=[InputRequired()])
+
 
 
 class ListasParticipantes(FlaskForm):
