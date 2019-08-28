@@ -31,12 +31,12 @@
     border: solid 1px var(--border-color);
 }
 
-.card:hover .img-equipe {
+.card-dual:hover .img-equipe {
     display: none;
     transition: 0.7s;
 }
 
-.card:hover .desc-membro {
+.card-dual:hover .desc-membro {
     -webkit-animation: fadeIn 0.7s;
     -moz-animation: fadeIn 0.7s;
     -o-animation: fadeIn 0.7s;
