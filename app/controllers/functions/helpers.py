@@ -201,3 +201,12 @@ def get_nome_restricao(id_restricao):
         return "Diabético"
     else:
         return "";
+
+def possui_permissao(usuario):
+    permissoes = usuario.getPermissoes()
+    if "ALTERAR_CAMISETAS" in permissoes or "CADASTRAR_PATROCINADOR" in permissoes or "VENDA_PRESENCIAL" in permissoes \
+        or "SORTEAR" in permissoes or "SORTEAR" in permissoes or "GERAR_LISTAS" in permissoes \
+        or "ENVIAR_EMAIL" in permissoes or "CONTEUDO" in permissoes or "GERENCIAR_COMPROVANTES" in permissoes:
+        return True
+    else:
+        return False

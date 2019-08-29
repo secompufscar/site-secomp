@@ -21,7 +21,7 @@ management = Blueprint('management', __name__, static_folder='static',
 @management.route('/')
 @login_required
 def gerenciar():
-    if current_user.is_admin():
+    if possui_permissao(current_user) or current_user.is_admin():
         form_login = LoginForm(request.form)
         permissoes = db.session.query(Permissao).all()
         permissoes = {x.nome: x for x in permissoes}
