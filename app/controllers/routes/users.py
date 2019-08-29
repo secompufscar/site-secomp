@@ -104,6 +104,7 @@ def reenviar_email():
             salt = gensalt().decode('utf-8')
             token = serializer.dumps(email, salt=salt)
             usuario.token_email = token
+            usuario.salt = salt
             db.session.add(usuario)
             db.session.commit()
             enviar_email_confirmacao(usuario, token)
@@ -554,7 +555,7 @@ def confirmar_alteracao_senha(token):
             print(e)
             flash("Falha na confirmação de link do email.")
         return redirect(url_for('views.login'))
-    return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login)
+    return render_template("users/alterar_senha.html", form=form, action=request.base_url, form_login=form_login, status_envio_email=True)
 
 @users.route('/comprar-kit', methods=["POST", "GET"])
 @login_required

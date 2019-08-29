@@ -82,7 +82,9 @@
           {{ wtf.form_field(form.cidade) }}
           {{ wtf.form_field(form.outra_cidade) }}
           {{ wtf.form_field(form.data_nasc) }}
-          {{ wtf.form_field(form.recaptcha) }}
+          <div class="recaptcha-responsive">
+            {{ wtf.form_field(form.recaptcha) }}
+          </div>
 
           {% for error in form.recaptcha.errors %}
           <span class="help-block">{{ error }}</span>
