@@ -104,6 +104,7 @@ def reenviar_email():
             salt = gensalt().decode('utf-8')
             token = serializer.dumps(email, salt=salt)
             usuario.token_email = token
+            usuario.salt = salt
             db.session.add(usuario)
             db.session.commit()
             enviar_email_confirmacao(usuario, token)
