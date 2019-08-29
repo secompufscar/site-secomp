@@ -83,7 +83,7 @@
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-clipboard-check"></i>
 					<h5 class="t2 pt-2">INSCRIÇÕES</h5>
-					<h5>Em breve</h5>
+					<h5>A partir de 30 de agosto</h5>
 				</ul>
 			</div>
 			<div class="col-md-3 mt-2">
@@ -91,7 +91,9 @@
 					<i class="fas fa-4x fa-trophy"></i>
 					<h5 class="t2 pt-2">PREMIAÇÃO</h5>
 					<h5>De até R$ 800,00</h5>
-					<h6>(confira o edital)</h6>
+					<h6>Confira o <a href="{{ url_for('static', filename='juridic/edital_desafio_progamadores.pdf') }}">
+							edital</a>
+					</h6>
 				</ul>
 			</div>
 		</div>
@@ -119,8 +121,9 @@
 		</div>
 
 		<div class="text-center">
-			<button disabled name="submit" type="submit" class="btn btn-secondary m-3"><i
-					class="mr-2 fas fa-sign-in-alt"></i>Acesse o edital</button>
+			<a href="{{ url_for('static', filename='juridic/edital_desafio_programadores.pdf') }}"
+				class="btn btn-primary m-3">
+				<i class="mr-2 fas fa-sign-in-alt"></i>Acesse o edital</a>
 		</div>
 	</div>
 </div>

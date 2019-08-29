@@ -94,21 +94,23 @@ def verificar_email():
 @users.route('/reenviar-email', methods=['POST', 'GET'])
 @login_required
 def reenviar_email():
-    form_login = LoginForm(request.form)
-    form = BaseRecaptchaForm(request.form)
-    usuario = current_user
-    if form.validate_on_submit():
-        serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
-        email = current_user.email
-        salt = gensalt().decode('utf-8')
-        token = serializer.dumps(email, salt=salt)
-        usuario.token_email = token
-        db.session.add(usuario)
-        db.session.commit()
-        enviar_email_confirmacao(usuario, token)
-        return render_template('users/email_reenviado.html', form_login=form_login, usuario=usuario)
-    return render_template('users/reenviar_email.html', form_login=form_login, usuario=usuario, form=form)
-
+    if current_user.email_verificado is not True:
+        form_login = LoginForm(request.form)
+        form = BaseRecaptchaForm(request.form)
+        usuario = current_user
+        if form.validate_on_submit():
+            serializer = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
+            email = current_user.email
+            salt = gensalt().decode('utf-8')
+            token = serializer.dumps(email, salt=salt)
+            usuario.token_email = token
+            db.session.add(usuario)
+            db.session.commit()
+            enviar_email_confirmacao(usuario, token)
+            return render_template('users/email_reenviado.html', form_login=form_login, usuario=usuario)
+        return render_template('users/reenviar_email.html', form_login=form_login, usuario=usuario, form=form)
+    else:
+        return redirect(url_for('users.verificar_email'))
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
@@ -182,7 +184,8 @@ def dashboard():
 def dados():
     usuario = db.session.query(Usuario).filter_by(
         id=current_user.id).first()
-    return render_template('users/dados.html', title='Dados Pessoais', usuario=usuario)
+    return render_template('users/dados.html', title='Dados Pessoais', usuario=usuario,
+                            participante = db.session.query(Participante).filter_by(usuario=current_user).first())
 
 @users.route('/dados-participante', methods=['POST', 'GET'])
 @login_required

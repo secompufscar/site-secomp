@@ -65,10 +65,12 @@ class AppFileAdmin(FileAdmin):
 
 class UploadsFileAdmin(FileAdmin):
     can_download = True
-    @classmethod
-    def is_accessible(cls):
+
+    def is_accessible(self):
+        if "ADMIN" in current_user.getPermissoes():
+           self.can_delete = True
         if "CONTEUDO" in current_user.getPermissoes():
-            cls.can_delete = False
+            self.can_delete = False
         return current_user.is_authenticated and current_user.is_admin()
 
     @classmethod

@@ -9,7 +9,7 @@
 }
 
 [data-theme=dark] {
-  --primary-color: #008cb544;
+  --primary-color: #00465c;
   --secondary-color: #ff305d;
   --font-color: #e1e1ff;
   --bg-color: #0d1314;
@@ -70,11 +70,11 @@ body {
   transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #212121;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(15px);
 }
 
@@ -89,14 +89,20 @@ input:checked + .slider:before {
 header {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
 }
+
 header a {
   font-weight: 600;
   color: #fff;
   font-size: 14.5px;
   font-family: "Clear Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+
 header a:hover {
   color: rgba(255, 255, 255, 0.7);
+}
+
+a:hover {
+  text-decoration: none;
 }
 
 .bg-gradient-secomp {
@@ -111,15 +117,11 @@ header a:hover {
   background-color: #008cb5;
 }
 
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary.active {
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
   background-color: #00cfa1 !important;
 }
 
-.btn-link:hover,
-.btn-link:focus {
+.btn-link:hover, .btn-link:focus {
   text-decoration: none;
 }
 
@@ -133,30 +135,40 @@ header a:hover {
 .dropdown-menu {
   background-color: var(--bg-color);
 }
+
 .dropdown-menu a {
   font-size: 12px;
   color: var(--font-color);
 }
+
 .dropdown-item:hover {
   color: var(--font-color);
   background: var(--hover-color);
 }
+
 .dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: visible;
+}
+
+.help-block {
+  color: red;
 }
 
 footer {
   background-color: var(--footer-color);
   color: #ddd;
 }
+
 footer ul li {
   padding: 1%;
 }
+
 footer ul li a {
   color: #ddd;
   transition: 0.2s;
 }
+
 footer ul li a:hover {
   color: var(--secondary-color);
   transition: 0.2s;
@@ -169,6 +181,7 @@ footer ul li a:hover {
 }
 
 /* Imagens com texto em cima */
+
 .overlay {
   background-color: #000000;
   position: relative;
@@ -187,6 +200,7 @@ footer ul li a:hover {
 }
 
 /* fim-imagens */
+
 #barrinha {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
   padding: 0.5%;
@@ -207,6 +221,7 @@ footer ul li a:hover {
     transform: rotate(360deg);
   }
 }
+
 #video {
   height: 80vh;
 }
