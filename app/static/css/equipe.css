@@ -17,12 +17,12 @@
     top: 0;
     left: 0;
     /* background: white; */
-}   
+}
 
 .img-equipe {
     width: 10rem;
     height: 10rem;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
 .card {
@@ -31,21 +31,23 @@
     border: solid 1px var(--border-color);
 }
 
-.card:hover .img-equipe {
-    display: none;
-    transition: 0.7s;
+.card-info {
+    position: absolute;
+    margin-top: 3%;
+    right: 3%;
+    opacity: 0.1;
 }
 
-.card:hover .desc-membro {
+.card-dual:hover .img-equipe, .card:hover .card-info {
+    display: none;
+}
+
+.card-dual:hover .desc-membro {
     -webkit-animation: fadeIn 0.7s;
     -moz-animation: fadeIn 0.7s;
     -o-animation: fadeIn 0.7s;
     animation: fadeIn 0.7s;
     display: block;
-}
-
-.diretor {
-    border: solid 1px rgba(0, 196, 163, 0.424);
 }
 
 @-webkit-keyframes fadeIn {
@@ -100,8 +102,4 @@
     width: 10rem;
     height: 10rem;
     border-radius: 50%;
-}
-
-.bg-diretor {
-    background-color: #000000;
 }

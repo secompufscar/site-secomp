@@ -6,8 +6,6 @@
 <link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css" />
 
 <style>
-
-
   .tab-form {
     overflow: auto;
   }
@@ -52,10 +50,10 @@
 <div class="container pb-2">
   <div class="row justify-content-center">
     <div class="col-8">
-        <div class="tab-form">
-          <div class="tabmenu" id="firsttab"></div>
-          <div class="tabmenu" id="secondtab"></div>
-        </div>
+      <div class="tab-form">
+        <div class="tabmenu" id="firsttab"></div>
+        <div class="tabmenu" id="secondtab"></div>
+      </div>
     </div>
   </div>
 
@@ -89,16 +87,14 @@
           {{ wtf.form_field(form.data_nasc) }}
           {{ wtf.form_field(form.como_conheceu) }}
           {{ wtf.form_field(form.outro_como_conheceu) }}
-          <div class="recaptcha-responsive">
-            {{ wtf.form_field(form.recaptcha) }}
-          </div>
+          {{ wtf.form_field(form.recaptcha) }}
 
           <div class="row justify-content-center">
             <div class="col-md-6">
-              <button type="button" id="voltar" class="btn text-white btn-secondary pb-1">Voltar</button>
+              <button type="button" id="voltar" class="btn text-white btn-secondary btn-block pb-1">Voltar</button>
             </div>
             <div class="col-md-6">
-              <button type="submit" class="btn btn-primary text-white pb-1">Cadastrar</button>
+              <button type="submit" class="btn btn-primary text-white btn-block pb-1">Cadastrar</button>
             </div>
           </div>
         </div>
