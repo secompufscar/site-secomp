@@ -163,9 +163,7 @@ def alterar_usuario():
         form.instituicao.data = usuario.id_instituicao
         form.cidade.data = usuario.id_cidade
         form.data_nasc.data = usuario.data_nascimento
-        return render_template('users/alterar_usuario.html', usuario=current_user,
-                                participante = db.session.query(Participante).filter_by(
-                                usuario=current_user).first(), form=form)
+        return render_template('users/alterar_usuario.html', usuario=current_user, form=form)
 
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
