@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, abort, url_for, Blueprint
 from flask import jsonify, current_app
 from app.controllers.functions.dictionaries import *
 
-from app.controllers.functions.helpers import get_participantes_da_atividade_json
+from app.controllers.functions.helpers import get_participantes_da_atividade_json, get_atividades_api
 from app.controllers.functions.email import enviar_email_custon
 
 from app.controllers.forms.options import get_opcoes_ecustom_extensao
@@ -12,7 +12,7 @@ from app.models.models import *
 api = Blueprint('api', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/api')
 
-#@api.route('/')
+@api.route('/')
 def index():
     return "Welcome to SECOMP: API"
 
@@ -29,7 +29,7 @@ def patrocinadores(edicao):
 
 @api.route('/atividades/<edicao>')
 def atividades(edicao):
-    return jsonify(get_atividades(edicao))
+    return jsonify(get_atividades_api())
 
 #@api.route('/img/<url>')
 def retornaImg(url):
@@ -63,17 +63,18 @@ def ler_presenca():
                 db.session.flush()
                 db.session.commit()
                 info = {
-                    "Participante" : participante.primeiro_nome + " " + participante.sobrenome,
+                    "Participante" : participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
                     "Status" : "SUCCESS"
                 }
                 return jsonify(info)
             else:
                 info = {
-                    "Participante": participante.primeiro_nome + " " + participante.sobrenome,
+                    "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
                     "Status": "JA_LIDO"
                 }
                 return jsonify(info)
-        except:
+        except Exception as e:
+            print(e)
             return jsonify("ERROR")
     else:
         return jsonify("INVALID KEY")
