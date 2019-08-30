@@ -1,0 +1,18 @@
+{% extends "email/base.html" %}
+{% block titulo %}
+  {{ info.titulo }}
+{% endblock %}
+
+{% block saudacao %}
+  Olá, {{ info.nome }}!
+{% endblock%}
+
+{% block conteudo %}
+  <span style="color:black;">Infelizmente, o comprovante de pagamento que você enviou não foi aprovado :(<span><br>
+  <span style="color:black;">Na próxima tentativa certifique-se de que enviou um comprovante com informações válidas
+    e, caso tenha qualquer dúvida, entre em contato com financeiro@secompufscar.com.br<span><br>
+{% endblock %}
+
+{% block footer %}
+  {{ info.footer }}
+{% endblock %}

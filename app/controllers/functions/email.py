@@ -1,3 +1,5 @@
+import magic
+
 from time import strftime, gmtime
 
 from flask import url_for, render_template, current_app
@@ -5,20 +7,21 @@ from flask_login import current_user
 from flask_mail import Mail, Message
 
 from app.models.models import db, Usuario
+from app.controllers.functions.helpers import get_usuarios_query, get_path_anexo
 
 mail = Mail()
 
 _teste = {
     "assunto": 'Teste',  # assunto do email
     "nome": 'Pessoa',  # nome do destinatário
-        "titulo": "EMAIL TESTE",
+    "titulo": "EMAIL TESTE",
     "email": 'ti@secompufscar.com.br',  # email destino
     "template": 'email/teste.html',  # path do template (raiz dentro do diretório 'templates')
     "footer": 'TI X SECOMP UFSCar'
 }
 
 
-def enviar_email_generico(info=None):
+def enviar_email_generico(info=None, anexo=None):
     """
     Função que envia um email genérico recebendo um dicionário, que deve ter dados obrigatórios
     (ver dicionario teste) mas pode ter dados a mais a serem passados para o template
@@ -27,13 +30,31 @@ def enviar_email_generico(info=None):
     if info is None:
         global _teste
         info = _teste
-    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['MAIL_USERNAME'])),
+    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['DEFAULT_MAIL_SENDER'])),
                   recipients=[info['email']])
+
     try:
         msg.html = render_template(info['template'], info=info)
-        print(msg.html)
+
+        # Parte que cuida dos anexos
+        if not (anexo is None or anexo == []):
+            for fileName in anexo:
+                try:
+                    mimetype = magic.from_file(fileName, mime=True)
+                    with open(fileName, "rb") as fp:
+                        try:
+                            msg.attach(fileName, mimetype, fp.read())
+                        except Exception as e:
+                            print("Erro no anexo. {}".format(e))
+                            return (info, e)
+                except Exception as e:
+                    print("Erro ao abrir arquivo do anexo. {}".format(e))
+                    return (info, e)
+
     except Exception as e:
-        print(e)
+        print("Erro no template. {}".format(e))
+        return (info, e)
+
     try:
         global mail
         mail.send(msg)
@@ -43,7 +64,7 @@ def enviar_email_generico(info=None):
             log.write(f"{str(e)} {info['email']} {strftime('%a, %d %b %Y %H:%M:%S', gmtime())}\n")
             log.close()
         except Exception:
-            return
+            return (info, e)
 
 
 def enviar_email_confirmacao(usuario, token):
@@ -58,7 +79,7 @@ def enviar_email_confirmacao(usuario, token):
             "email": usuario.email,
             "template": 'email/confirmacao_de_email.html',
             "link": str(link),
-            "footer": 'TI X SECCOMP UFSCar'
+            "footer": 'TI X SECOMP UFSCar'
             }
     enviar_email_generico(info)
 
@@ -107,3 +128,84 @@ def email_confirmado():
     except Exception as e:
         print(e)
         return None
+
+
+def enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPasta, complemento, selecionados, extencao):
+    '''
+    Envia um ou mais emails customizados
+    Podendo ou não ter anexo
+    '''
+    usuarios = get_usuarios_query()
+
+    naoEnviados = []
+
+    for i in selecionados:
+        usuario = usuarios.filter_by(id=i).first()
+
+        info = {
+            "assunto": assunto,
+            "nome": usuario.primeiro_nome,
+            "titulo": titulo,
+            "email": usuario.email,
+            "template": "email/" + template,
+            "footer": 'TI X SECOMP UFSCar'
+        }
+
+        # Verifica a existencia de anexo
+        if (temAnexo):
+            files = []
+            files.append(get_path_anexo(anexoBase, anexoPasta, complemento, usuario, extencao))
+
+            temp = enviar_email_generico(info, files)
+
+            # Cria a lista de erros
+            if not (temp == None or temp == []):
+                naoEnviados.append(temp)
+        else:
+            temp = enviar_email_generico(info, None)
+
+            # Cria a lista de erros
+            if not (temp == None or temp == []):
+                naoEnviados.append(temp)
+
+    return naoEnviados
+
+def enviar_email_aviso_pagamento_kit_aprovado(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'COMPROVANTE APROVADO',
+            "email": usuario.email,
+            "template": 'email/pagamento_kit_aprovado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+def enviar_email_aviso_pagamento_kit_rejeitado(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'COMPROVANTE NÃO APROVADO',
+            "email": usuario.email,
+            "template": 'email/pagamento_kit_rejeitado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+def enviar_email_aviso_sucesso_confirmacao_pagamento_paypal(usuario, pagamento):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'PAGAMENTO CONFIRMADO',
+            "email": usuario.email,
+            "valor": "{:2.2f}".format(pagamento.valor).replace('.', ','),
+            "template": 'email/pagamento_kit_confirmado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)

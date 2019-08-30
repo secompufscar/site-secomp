@@ -1,0 +1,17 @@
+{% extends "email/base.html" %}
+{% block titulo %}
+  {{ info.titulo }}
+{% endblock %}
+
+{% block saudacao %}
+  Olá, {{ info.nome }}!
+{% endblock%}
+
+{% block conteudo %}
+  <span style="color:black;">Seu comprovante de pagamento do kit da X SECOMP UFSCar foi aprovado :)<span><br>
+  <span style="color:black;">Agora, aguardamos a sua presença na #melhorsecomp!<span><br>
+{% endblock %}
+
+{% block footer %}
+  {{ info.footer }}
+{% endblock %}

@@ -1,5 +1,5 @@
 :root {
-    --font-gray: #666666;
+    --font-gray: #555555;
     --card-color: #fff;
     --nav-color: #fff;
     --selected-color: #00cfa1;
@@ -7,8 +7,8 @@
 }
 
 [data-theme=dark] {
-    --font-gray: #aaaaaa;
-    --card-color: #343A40;
+    --font-gray: #c0c0c0;
+    --card-color: #191e1f;
     --nav-color: #ffffff11;
     --selected-color: #ff205b;
     --border-color: #646A70;
@@ -34,7 +34,7 @@
     border-top: 1px solid var(--border-color) !important;
 }
 
-.card img {
+.card img, .modal-body img {
     border-radius: 50%;
 }
 
@@ -47,7 +47,7 @@
     margin: 0 -5% -7% -5%;
 }
 
-th {
+.cronograma th {
     color: var(--font-color);
     background-color: var(--nav-color);
     border: 1px solid var(--border-color) !important;
@@ -62,6 +62,10 @@ th {
     text-align: right !important;
     width: auto;
     margin-left: auto;
+}
+
+.setaEsquerda, .setaDireita {
+    cursor: pointer;
 }
 
 @media (max-width: 991px) {
@@ -83,6 +87,7 @@ th {
 }
 
 @media (min-width: 992px) {
+
     .selected {
         background-color: var(--selected-color);
         color: #fff;

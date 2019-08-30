@@ -1,5 +1,6 @@
-from app.models.models import *
+# -*- coding: utf-8 -*-
 
+from app.models.models import *
 
 def populate():
     valores = {
@@ -7,12 +8,13 @@ def populate():
         'instituicoes': ['UFSCar', 'USP', 'UNESP', 'Unicamp'],
         'cidades': ['São Carlos', 'São Paulo', 'Campinas', 'Rio Claro'],
         'diretorias': ['Coordenação Geral', 'TI', 'Design & Marketing', 'Conteúdo',
-                        'Jurídico-Financeira', 'Sociocultural'],
+                        'Jurídico-Financeira', 'Sóciocultural'],
         'cargos': ['Membro', 'Diretora', 'Diretor', 'Voluntária', 'Voluntário'],
         'cotas': ['Diamante', 'Ouro', 'Prata', 'Apoio'],
         'permissoes': ['ADMIN', 'SORTEAR', 'GERAR_LISTAS', 'VENDA_PRESENCIAL',
                        'GERAR_CRACHAS', 'ALTERAR_CAMISETAS', 'NOTIFICACOES_APP',
-                       'APROVAR_COMPROVANTES'],
+                       'GERENCIAR_COMPROVANTES', 'MINISTRANTE', 'CONTEUDO',
+                        'PATROCINIO'],
         'camisetas': ['P Feminino', 'M Feminino', 'G Feminino', 'GG Feminino',
                       'P Masculino', 'M Masculino', 'G Masculino', 'GG Masculino']
     }
@@ -22,7 +24,12 @@ def populate():
                           data_hora_inicio='2019-09-09 08:30:00',
                           data_hora_fim='2019-09-13 18:30:00',
                           inicio_inscricoes_evento='2019-02-10 12:00:00',
-                          fim_inscricoes_evento='2019-08-10 23:59:00'))
+                          fim_inscricoes_evento='2019-08-10 23:59:00'),
+                          abertura_minicursos_1_etapa='2019-08-10 23:59:00',
+                          fechamento_minicursos_1_etapa='2019-08-10 23:59:00',
+                          abertura_minicursos_2_etapa='2019-08-10 23:59:00',
+                          fechamento_minicursos_2_etapa='2019-08-10 23:59:00',
+                          preco_kit=40.00)
 
     id = 1
     for curso in valores['cursos']:
@@ -63,7 +70,7 @@ def populate():
     id = 1
     for permissao in valores['permissoes']:
         print(f'# Adicionando permissões [{id}/{len(valores["permissoes"])}]')
-        db.session.add(Cargo(id=id, nome=permissao))
+        db.session.add(Permissao(id=id, nome=permissao))
         id += 1
 
     id = 1
@@ -74,4 +81,3 @@ def populate():
         id += 1
 
     db.session.commit()
-

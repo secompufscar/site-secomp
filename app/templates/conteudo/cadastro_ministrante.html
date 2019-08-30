@@ -3,6 +3,50 @@
 
 {% block content %}
 
+<style>
+  .tooltip1 {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tooltip1 .tooltiptext1 {
+    visibility: hidden;
+    width:500px;
+    background-color: black;
+    color: #fff;
+    text-align: justify;
+    border-radius: 6px;
+    padding: 5px 9px 5px 9px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  @media (max-width:550px){
+    .tooltip1 .tooltiptext1 {
+      visibility: hidden;
+      width:250px;
+      background-color: black;
+      color: #fff;
+      text-align: justify;
+      border-radius: 6px;
+      padding: 5px 9px 5px 9px;
+
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+  }
+
+  .tooltip1:hover .tooltiptext1 {
+    visibility: visible;
+  }
+
+  .help-block {
+    color: red;
+  }
+</style>
+
 <div class="container pt-4 pb-4">
   <div class="row justify-content-center">
     <div class="col-md-7">
@@ -26,9 +70,8 @@
         {{ wtf.form_field(form.twitter) }}
         {{ wtf.form_field(form.linkedin) }}
         {{ wtf.form_field(form.github) }}
-        <div class="recaptcha-responsive">
-          {{ wtf.form_field(form.recaptcha) }}
-        </div>
+        {{ wtf.form_field(form.recaptcha) }}
+        <p>ATENÇÃO! Ainda é necessário o preenchimento de informações essenciais para ocorrência da atividade e vinda ao evento! Confirme seu endereço de e-mail para ter acesso a página em que isto deve ser feito.</p>
         <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
       </form>
     </div>
@@ -38,5 +81,8 @@
 <script>
   $('#data_nascimento').mask('00/00/0000');
   $('#telefone').mask('(00)00000-0000');
+
+  $("label[for='data_nascimento']").prepend('<div class="tooltip1"><img src="{{url_for("static", filename="images/info-icon.svg")}}" width=16>&nbsp;<span class="tooltiptext1">Formato dd/mm/aaaa.</span></div>');
+
 </script>
 {% endblock %}

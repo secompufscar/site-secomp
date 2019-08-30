@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}SECOMP UFSCar - Erro 403{% endblock %}
+
+{% block content %}
+
+<div class="container pt-1 pb-3">
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+            <h1 class="pt-1">Erro 403 - Acesso Negado</h1>
+            <h3 class="pt-1">Você não está autorizado a acessar esta página.</h3>
+            <img style="max-width: 90vw;" class="pt-2" id="error-dog"
+                src="{{ url_for('static', filename='images/403.jpg') }}" alt="Imagem do erro 403">
+        </div>
+    </div>
+</div>
+{% endblock %}

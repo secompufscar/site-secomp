@@ -1,46 +1,191 @@
-{% extends "base.html" %}
+{% extends "users/sidebar.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block content %}
-<script>
-  function continuar2() {
-    $(location).attr('href', '/participante/dashboard');
-  }
-</script>
-<div class="container">
-  <div class="row justify-content-center pt-1">
-    <div class="col-md-8">
-      <h2 class="text-center">Deseja comprar o kit da SECOMP UFSCar?</h2>
+{% block sidebar_content %}
+
+<style>
+    :root {
+        --card-color: #fff;
+        --border-color: #ced2d6;
+    }
+
+    [data-theme=dark] {
+        --card-color: #191e1f;
+        --border-color: #646A70;
+    }
+
+    .modal-content {
+        background-color: var(--card-color);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid var(--border-color) !important;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-color) !important;
+    }
+
+    .help-block {
+        color: red;
+    }
+
+    @media(orientation: landscape) {
+        #img_kit {
+            max-width: 50vw;
+        }
+    }
+
+    @media(orientation: portrait) {
+        #img_kit {
+            max-width: 90vw;
+        }
+    }
+
+    .radio {
+        display: block;
+        float: left;
+        padding-right: 1rem;
+    }
+
+    .form-group {
+        margin: 14px 0 0 0;
+    }
+
+    #forma_pagamento {
+        margin-top: 14px;
+    }
+
+    label[for=camiseta],
+    label[for=restricao_coffee],
+    label[for=cupom_desconto],
+    label[for=comprovante],
+    #forma_pagamento,
+    .checkbox>label {
+        font-weight: bold;
+    }
+
+    .titulo {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    #info_paypal,
+    #info_conta {
+        padding-top: 0px;
+    }
+</style>
+
+<div class="container pt-4 pb-4">
+
+    <div class="col-md-12 text-center pb-1">
+        <h2 id="pergunta"><i class="fa fa-lg fa-cart-plus"></i>
+            Deseja comprar o kit da SECOMP UFSCar?</h2>
+        <h5>A compra pode ser efetuada a qualquer momento</h5>
     </div>
-    <div class="col-md-8">
-      <form method="POST" action="{{ url_for('users.comprar_kit') }}">
+
+    <div class="row justify-content-center pb-3 mt-4">
+        <img id="img_kit" src="{{ url_for('static', filename='images/kit_secomp.jpeg') }}" />
+    </div>
+
+    <form method="POST" action="{{url_for('users.comprar_kit')}}" enctype="multipart/form-data">
 
         {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.comprar) }}
+        <div class="row justify-content-around no-gutters">
+            <div class="col-md-8 mb-4">
+                <div id="escolha_compra">
+                    <div class="row justify-content-between no-gutters">
+                        <div class="col-4">
+                            <div class="row">
+                                {{ wtf.form_field(form.comprar) }}
+                            </div>
+                            <button type='button' id='continuar' class="btn btn-primary"
+                                onclick='continuar2()'>Dashboard</button>
+                        </div>
 
-        <div id="info_kit">
-
-          {{ wtf.form_field(form.camiseta) }}
-          {{ wtf.form_field(form.restricao_coffee) }}
-
-          <h4>Escolha a forma de pagamento</h4>
-
-          {{ wtf.form_field(form.forma_pagamento) }}
-
-          <div id="info_conta p-3">
-            <h5>Conta: 1189071-1</h5>
-            <h5>Agência: 4779</h5>
-            <h5>Banco: Banco do Brasil</h5>
-            <h5>Cidade: São Carlos-SP</h5>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
-          
+                        <div class="col-6">
+                            <h4 class="text-right">
+                                <b>Valor:</b> R$ {{ valor }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button type="button" id="continuar" class="btn btn-primary" onclick="continuar2()">Continuar</button>
-      </form>
+
+        <a name="pagamento"></a>
+        <div id='info_kit' class="mt-4">
+            <div class="row justify-content-around noheader-gutters">
+                <div class="col-md-4">
+                    {{ wtf.form_field(form.camiseta) }}
+                    <a href="#" class="m-0 p-0" data-toggle="modal" data-target="#modalCamisetas"
+                        onclick="$('#modalCamisetas').appendTo('body')">Dúvidas com o tamanho?</a>
+                    {{ wtf.form_field(form.restricao_coffee) }}
+                    <p id="forma_pagamento">Escolha a forma de pagamento</p>
+                    {{ wtf.form_field(form.forma_pagamento) }}<br>
+                    <div class="pt-4">
+                        {{ wtf.form_field(form.uso_cupom_desconto) }}
+                    </div>
+                    <div id="desconto">
+                        {{ wtf.form_field(form.cupom_desconto) }}
+                    </div>
+                </div>
+
+                <div class="col-md-4" id="info_conta">
+                    <div class="titulo pb-4">Dados para transferência</div>
+                    <p><b>Agência:</b> 1888-0
+                        <br><b>Conta:</b> 35716-2
+                        <br><b>CPNJ:</b> 30800496/0001-49
+                        <br><b>Banco:</b> Banco do Brasil</p>
+                    {{ wtf.form_field(form.comprovante) }}
+                    <button type="submit" class="btn btn-primary mt-2">Confirmar Pagamento</button>
+                </div>
+                <div class="col-md-4" id="info_paypal">
+                    <div class="titulo pb-4">Informações PayPal</div>
+                    <div class="pb-3">Após pressionar "confirmar pagamento", você será redirecionado ao PayPal para
+                        finalizar e confirmar seu pagamento.
+                        Caso você possua algum pagamento pendente, você será redirecionado novamente para o PayPay
+                        para
+                        finalizá-lo. Se quiser alterar as
+                        informações do KIT você precisará <a href="{{ url_for('users.pagamentos') }}"> cancelar seu
+                            pagamento pendente</a></div>
+                    <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-around no-gutters">
+            <div class="col-md-4">
+                <div id="recaptcha">
+                    {{ wtf.form_field(form.recaptcha) }}
+                </div>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="modalCamisetas" tabindex=header"-1" role="dialog" aria-labelledby="Tabela de tamanhos"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content" style="width: auto; margin: auto;">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">
+                    <b>Relação de tamanhos de camiseta</b>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="img_kit" src="{{ url_for('static', filename='images/tamanho_camisetas.jpg') }}" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 {% endblock %}
@@ -50,40 +195,89 @@
 {{ super() }}
 
 <script>
-  $('#info_kit').hide();
-  $('#info_conta').hide();
-  $('#comprar-0').change(function () {
-    if ($('#comprar-0').is(':checked')) {
-      $('#info_kit').show();
-      $('#continuar').hide();
+    function continuar2() {
+        $(location).attr('href', '/participante/dashboard');
     }
-  });
-
-  $('#comprar-1').change(function () {
-    if ($('#comprar-1').is(':checked')) {
-      $('#info_kit').hide();
-      $('#continuar').show();
-    }
-  });
-
-  $('#forma_pagamento-0').change(function () {
-    if ($('#forma_pagamento-0').is(':checked')) {
-      $('#info_conta').show();
-    }
-  });
-  $('#forma_pagamento-1').change(function () {
-    if ($('#forma_pagamento-1').is(':checked')) {
-      $('#info_conta').hide();
-    }
-  });
-
 </script>
 
 <script>
-  $(document).ready(function () {
-    $('#content').css("padding-top", $('#navTop').height() * 1.2);
-  });
-</script>
-{% endblock %}
 
-{% block footer %}{% endblock %}
+    $(document).ready(function () {
+        if ($('#comprar-0').is(':checked')) {
+            $('#info_kit').show();
+            $('#recaptcha').show();
+            $('#continuar').hide();
+            location.href = "#pagamento";
+        }
+
+
+        if ($('#comprar-1').is(':checked')) {
+            $('#info_kit').hide();
+            $('#continuar').show();
+            $('#recaptcha').hide();
+        }
+
+        if ($('#forma_pagamento-0').is(':checked')) {
+            $('#info_conta').show();
+            $('#info_paypal').hide();
+        }
+
+        if ($('#forma_pagamento-1').is(':checked')) {
+            $('#info_conta').hide();
+            $('#info_paypal').show();
+        }
+
+        if ($('#uso_cupom_desconto').is(':checked')) {
+            $('#desconto').show();
+        }
+        else {
+            $('#desconto').hide();
+        }
+    });
+    $('#info_kit').hide();
+    $('#info_conta').hide();
+    $('#desconto').hide();
+    $('#comprar-0').change(function () {
+        if ($('#comprar-0').is(':checked')) {
+            location.href = "#pagamento";
+            $('#info_kit').show();
+            $('#recaptcha').show();
+            $('#continuar').hide();
+        }
+    });
+
+    $('#comprar-1').change(function () {
+        if ($('#comprar-1').is(':checked')) {
+            $('#info_kit').hide();
+            $('#recaptcha').hide();
+            $('#continuar').show();
+        }
+    });
+
+    $('#forma_pagamento-0').change(function () {
+        if ($('#forma_pagamento-0').is(':checked')) {
+            $('#info_conta').show();
+            $('#info_paypal').hide();
+        }
+    });
+    $('#forma_pagamento-1').change(function () {
+        if ($('#forma_pagamento-1').is(':checked')) {
+            $('#info_conta').hide();
+            $('#info_paypal').show();
+        }
+    });
+
+    $('#uso_cupom_desconto').change(function () {
+        if ($('#uso_cupom_desconto').is(':checked')) {
+            $('#desconto').show();
+        }
+        else {
+            $('#desconto').hide();
+        }
+    });
+
+    $('#comprovante').prop('required', false);
+
+</script>
+
+{% endblock %}

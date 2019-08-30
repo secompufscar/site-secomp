@@ -7,33 +7,39 @@ opcoes_restricao = [
     (4, "Diabético")
 ]
 
-opcoes_transporte_ida_volta = [
-    (1, 'Carro próprio (combustível + pedágios, calculados pelo Jurídico Financeiro)'),
-    (2, 'Passagem de Ônibus (compra a ser realizada pelo Jurídico Financeiro)'),
-    (3, 'Carro alugado (apenas o valor do aluguel do carro)')
-]
-
-opcoes_transporte_sanca = [
-    (1, 'Carro próprio (combustível calculado pelo JF)'),
-    (2, 'Uber/99 (valor gasto na viagem “local de partida → UFSCar”)'),
-    (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')
+opcoes_falha = [
+    (0, "Injeção"),
+    (1, "Quebra de Autenticação"),
+    (2, "Exposição de Dados Sensíveis"),
+    (3, "Quebra de Controle de Acesso"),
+    (4, "Configurações de Segurança Incorretas"),
+    (5, "Cross-Site Scripting (XSS)"),
+    (6, "Desserialização Insegura"),
+    (7, "Utilização de Componentes Vulneráveis"),
+    (8, "Outros")
 ]
 
 opcoes_como_conheceu = [
-        (0, "Pelo Departamento de Computação da UFSCar"),
-        (1, "Através de amigos"),
-        (2, "Pela nossa página do facebook"),
-        (3, "Por cartazes espalhados em São Carlos"),
-        (4, "Outro")
+    (0, "Pelo Departamento de Computação da UFSCar"),
+    (1, "Através de amigos"),
+    (2, "Pela nossa página do facebook"),
+    (3, "Por cartazes espalhados em São Carlos"),
+    (4, "Outro")
 ]
 
 def get_opcoes_cidades():
     try:
-        cidades = db.session.query(Cidade).all()
+        cidades = db.session.query(Cidade).order_by("nome").all()
         info_cidades = []
+        objeto_outro = False
         for cidade in cidades:
-            info = (cidade.id, cidade.nome)
-            info_cidades.append(info)
+            if cidade.nome != 'Outra':
+                info = (cidade.id, cidade.nome)
+                info_cidades.append(info)
+            else:
+                objeto_outro = True
+        if objeto_outro is False:
+            info_cidades.append((0, "Outra"))
         return info_cidades
     except Exception as e:
         print(e)
@@ -42,11 +48,17 @@ def get_opcoes_cidades():
 
 def get_opcoes_instituicoes():
     try:
-        instituicoes = db.session.query(Instituicao).all()
+        instituicoes = db.session.query(Instituicao).order_by("nome").all()
         info_instituicoes = []
+        objeto_outro = False
         for instituicao in instituicoes:
-            info = (instituicao.id, instituicao.nome)
-            info_instituicoes.append(info)
+            if instituicao.nome != 'Outra':
+                info = (instituicao.id, instituicao.nome)
+                info_instituicoes.append(info)
+            else:
+                objeto_outro = True
+        if objeto_outro is False:
+            info_instituicoes.append((0, "Outra"))
         return info_instituicoes
     except Exception as e:
         print(e)
@@ -55,11 +67,17 @@ def get_opcoes_instituicoes():
 
 def get_opcoes_cursos():
     try:
-        cursos = db.session.query(Curso).all()
+        cursos = db.session.query(Curso).order_by("nome").all()
         info_cursos = []
+        objeto_outro = False
         for curso in cursos:
-            info = (curso.id, curso.nome)
-            info_cursos.append(info)
+            if curso.nome != 'Outro':
+                info = (curso.id, curso.nome)
+                info_cursos.append(info)
+            else:
+                objeto_outro = True
+        if objeto_outro is False:
+            info_cursos.append((0, "Outro"))
         return info_cursos
     except Exception as e:
         print(e)
@@ -75,7 +93,6 @@ def get_opcoes_camisetas():
             if camiseta.quantidade_restante > 0:
                 info = (camiseta.id, camiseta.tamanho)
                 info_camisetas.append(info)
-
         return info_camisetas
     except Exception as e:
         print(e)
@@ -126,10 +143,29 @@ def get_opcoes_area_atividade():
     except Exception as e:
         return None
 
+# Opções de complemento do envio customizado de emails
+def get_opcoes_ecustom_complemento():
+    return [(0, 'Mesmo arquivo para todos'), (1, 'Nome do usuário, CamelCase'), (2, 'ID do usuário')]
+
+# Opções de extensão do envio customizado de emails
+def get_opcoes_ecustom_extensao():
+    return [(0, 'Sem extensão'), (1, '.pdf')]
+
+def get_opcoes_ecustom_atividade():
+    # Cria uma lista de atividades para ser usado na página
+    atividades = None
+    try:
+        query = db.session.query(Atividade)
+
+        atividades = [(a.id, a.titulo) for a in query]
+        atividades.append((-1, 'Todas'))
+    except:
+        pass
+    return atividades
 
 def get_opcoes_tipo_atividade():
     try:
-        tipos = db.session.query(TipoAtividade).all()
+        tipos = db.session.query(TipoAtividade).order_by("nome").all()
         tipos_atividade = []
         for tipo in tipos:
             info_tipo = (tipo.id, tipo.nome)
@@ -149,4 +185,3 @@ def get_opcoes_transporte_sanca():
             (1, 'Carro próprio (combustível calculado pelo JF)'),
             (2, 'Uber/99 (valor gasto na viagem “local de partida → UFSCar”)'),
             (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')]
-

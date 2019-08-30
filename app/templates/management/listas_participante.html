@@ -3,10 +3,10 @@
 
 {% block sidebar_content %}
 
-<div class="container">
-    <div class="row justify-content-center pt-1">
+<div class="container pt-3">
+    <div class="row justify-content-center">
         <div class="col-md-8">
-            <h3 class="text-center">Gerar listas de participantes</h3>
+            <h3 class="text-center pb-2">Gerar listas de participantes</h3>
             <form method="POST" action="{{ form.action }}">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.atividades) }}
@@ -17,18 +17,18 @@
             </form>
         </div>
         {% if lista != None and tipo == 'inscritos'%}
-        <div class="col-md-8">
-            <h3 class="text-center">Lista de inscritos em {{atividade}}</h3>
+        <div class="col-md-8 pt-2">
+            <h3 class="text-center pb-2">Lista de participantes inscritos em <b>{{atividade}}</b></h3>
             {% for x in lista %}
-                <p>#{{x.id}} - {{x.usuario.nome}}</p>
+                <p>#{{x.id}} - {{x.participante.usuario.primeiro_nome}} {{x.participante.usuario.sobrenome}} - {{x.participante.usuario.email}}</p>
             {% endfor %}
         </div>
         {% endif %}
         {% if lista != None and tipo == 'presentes'%}
-        <div class="col-md-8">
-            <h3 class="text-center">Lista de inscritos presentes em {{atividade}}</h3>
+        <div class="col-md-8 pt-2">
+            <h3 class="text-center pb-2">Lista de participantes presentes em <b>{{atividade}}</b></h3>
             {% for x in lista %}
-                <p>#{{x.id}} - {{x.usuario.nome}}</p>
+                <p>#{{x.id}} - {{x.participante.usuario.primeiro_nome}} {{x.participante.usuario.sobrenome}} - {{x.participante.usuario.email}}</p>
             {% endfor %}
         </div>
         {% endif %}
