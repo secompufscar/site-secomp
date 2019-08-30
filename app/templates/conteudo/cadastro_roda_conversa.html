@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+<style>
+  .tooltip1 {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tooltip1 .tooltiptext1 {
+    visibility: hidden;
+    width:500px;
+    background-color: black;
+    color: #fff;
+    text-align: justify;
+    border-radius: 6px;
+    padding: 5px 9px 5px 9px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  @media (max-width:550px){
+    .tooltip1 .tooltiptext1 {
+      visibility: hidden;
+      width:250px;
+      background-color: black;
+      color: #fff;
+      text-align: justify;
+      border-radius: 6px;
+      padding: 5px 9px 5px 9px;
+
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+    }
+  }
+
+  .tooltip1:hover .tooltiptext1 {
+    visibility: visible;
+  }
+
+  .help-block {
+    color: red;
+  }
+</style>
+<div class="container pt-4 pb-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      {% if atividade.titulo is none %}
+        <h2 class="text-center">Cadastro de Career Talks</h2>
+      {% else %}
+        <h2 class="text-center">Editar Career Talks: {{ atividade.titulo }}</h2>
+      {% endif %}
+
+      <form method="POST" action="{{url_for('conteudo.cadastro_roda_conversa', codigo=codigo)}}">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.titulo) }}
+        {{ wtf.form_field(form.descricao) }}
+        {{ wtf.form_field(form.observacoes) }}
+        <div>
+            <p>Termo e Condições de Inscrição</p>
+            <p>ATENÇÃO! Este termo refere-se aos direitos e deveres tanto do contato convidado, quanto por parte da SECOMP UFSCar; tornando a leitura deste fundamental! Quaisquer dúvidas devem ser questionadas ao membro que lhe forneceu acesso a este formulário.</p>
+            <embed src="{{ url_for('views.protected', filename='juridic/termo_condicoes_inscricao.pdf') }}" type="application/pdf" width="100%" height="600px"></embed>
+        </div>
+        {{ wtf.form_field(form.confirmacao) }}
+        <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  {% if atividade.titulo is not none %}
+  $('#titulo').val('{{atividade.titulo}}');
+  {% endif %}
+  {% if atividade.descricao is not none %}
+  $('#descricao').val('{{atividade.descricao}}');
+  {% endif %}
+  {% if atividade.observacoes is not none %}
+  $('#observacoes').val('{{atividade.observacoes}}');
+  {% endif %}
+</script>
+
+{% endblock %}

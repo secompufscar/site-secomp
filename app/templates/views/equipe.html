@@ -1,34 +1,34 @@
 {% extends "base.html" %}
 
-{% block styles %}
-
-{{ super() }}
-<link href="{{ url_for('static', filename='css/equipe.css') }}" rel="stylesheet" type="text/css"/>
-
-{% endblock %}
 
 {% block content %}
 
+<link href="{{ url_for('static', filename='css/equipe.css') }}" rel="stylesheet" type="text/css" />
+
 <div class="container">
-    {% for diretoria in data %}
-        <h2 class="section-title text-center pt-4">{{ diretoria[0] }}</h2>
-        <div class="row justify-content-center pb-3 pt-3">
-            {% for membro in diretoria[1] %}
-                    <div class="pb-3 pl-2 pr-2">
-                        {% if diretoria[0] == 'Coordenação Geral' or membro[3].nome == 'Diretor' or membro[3].nome == 'Diretora' %}
-                        <div onmouseover="showBackside(id)" onmouseout="showFrontside(id)" class="card diretor text-center" style="width: 18rem; height: 17rem;">
+    {% for diretoria in info_equipe %}
+        <h2 class="section-title text-center pt-1">{{ diretoria }}</h2>
+        <div class="row justify-content-center pb-3">
+            {% for membro in info_equipe[diretoria] %}
+                <div class="pb-3 pl-2 pr-2">
+                    <div class="card text-center" style="width: 18rem; height: 17rem;">
+                        {% if info_equipe[diretoria][membro]['bio'] is not sameas "" %}
+                            <i class="fas fa-info-circle fa-lg card-info"></i>
+                            <div class="card-body card-dual">
                         {% else %}
-                        <div onmouseover="showBackside(id)" onmouseout="showFrontside(id)" class="card text-center" style="width: 18rem; height: 17rem;">
-                        {% endif %}
                             <div class="card-body">
-                                <img class="rounded-circle img-equipe mb-3" src="{{ url_for('static', filename='images/equipe/'+membro[0].foto) }}" alt="Foto do participante">
+                        {% endif %}
+                            <img class="rounded-circle img-equipe mb-3"
+                                src="{{ url_for('static', filename='images/equipe/%s' % info_equipe[diretoria][membro]['img']) }}"
+                                alt="Foto de {{ membro }}">
 
-                                <h5 class="card-title">{{ membro[1].primeiro_nome +  " " + membro[1].sobrenome }}</h5>
+                            <h5 class="card-title">{{ membro }}</h5>
 
-                                <p class="desc-membro">{{ membro[0].descricao }}</p>
-                            </div>
+                            <p class="desc-membro">{{ info_equipe[diretoria][membro]['bio'] }}</p>
+
                         </div>
                     </div>
+                </div>
             {% endfor %}
         </div>
     {% endfor %}

@@ -1,0 +1,499 @@
+{% extends "users/sidebar.html" %}
+
+{% block sidebar_content %}
+<style>
+	#div_anexo {
+		display: none;
+	}
+
+	input.cbox {
+		width: 20px;
+		height: 20px;
+	}
+</style>
+
+<div class="container pt-3 pb-3">
+
+	<div class="row justify-content-center">
+
+		<div class="col-md-12 text-center pb-4">
+			<h2>Envio de e-mails</h2>
+		</div>
+
+		<div class="col-md-10">
+			{{ form.hidden_tag() }}
+			{{ wtf.form_field(form.assunto) }}
+			{{ wtf.form_field(form.titulo) }}
+			{{ wtf.form_field(form.template) }}
+
+			{{ wtf.form_field(form.anexo) }}
+			<div id="div_anexo">
+				{{ wtf.form_field(form.pastaAnexo) }}
+				{{ wtf.form_field(form.baseAnexo) }}
+				{{ wtf.form_field(form.complemento) }}
+				{{ wtf.form_field(form.extencao) }}
+			</div>
+
+			<button class="btn btn-primary" id="btn_enviar">Enviar</button>
+
+
+			<p>Pesquisar Usuários</p>
+			{{ wtf.form_field(form.atividades) }}
+
+			<button class="btn btn-primary" id="btn_pesquisar">Pesquisar</button>
+
+
+			<p>Resultado</p>
+
+			{{ wtf.form_field(form.pesquisaResultado) }}
+			{{ wtf.form_field(form.todosresultado) }}
+
+			<div>
+				<table class="table table-stripped table-borderless" id="tbl_resultado">
+					<tr>
+						<th></th>
+						<th id="base_column_nome_r">Nome</th>
+						<th id="base_column_id_r">Id</th>
+						<th id="base_column_email_r">Email</th>
+					</tr>
+				</table>
+			</div>
+
+
+
+			<p>Selecionados</p>
+			{{ wtf.form_field(form.pesquisaSelecionados) }}
+			<button class="btn btn-primary" id="btn_remove_todos_os_relecionados">Remover Todos</button>
+			<div>
+				<table id="tbl_selecionados">
+					<tr>
+						<th id="base_column_nome_s">Nome</th>
+						<th id="base_column_id_s">Id</th>
+						<th id="base_column_email_s">Email</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	(function (code) {
+		code(window.jQuery, window, document);
+	}(function ($, window, document) {
+		// Dicts e lists
+		// [id] = {'id' : id, 'nome' : nome, 'email' : email, 'trResultado' : DOM, 'trSelecionado' : DOM}
+		var usuarios = {};
+		// [nome] = {id};
+		var atividades = {{ form.dictAtividades| safe
+	}};
+	//Array do resultado
+	var resultado = [];
+	//Array dos selecionados
+	var selecionados = [];
+	// Dicionário das modificações ao nome do anexo
+	var complementoAnexo = {{ form.dictComplemento| safe}};
+	// Dicionário das modificações ao nome do anexo
+	var extencaoAnexo = {{ form.dictExtencao| safe}};
+	//
+
+	// Insere um elemento de uma lista
+	function arrayInsert(lista, elemento) {
+		var index = lista.indexOf(elemento);
+
+		// Remove da lista de selecionados
+		if (index == -1) {
+			lista.push(elemento);
+		}
+	}
+
+	// Remove um elemento de uma lista
+	function arrayRemove(lista, elemento) {
+		var index = lista.indexOf(elemento);
+
+		// Remove da lista de selecionados
+		if (index > -1) {
+			lista.splice(index, 1);
+		}
+	}
+
+	// Requisita ao servidor os usuários que participaram de uma atividade
+	function pesquisarUsuarios(nomeAtiv) {
+		return $.ajax({
+			data: {
+				id: nomeAtiv,
+			},
+			type: 'POST',
+			url: '/api/pesquisa-usuario-por-atividade'
+		});
+	}
+
+	// Cria as variáveis locais referentes aos dados de um usuário
+	// Cria elementos do DOM apenas 1 vez
+	// Recebe as tabelas de resultado e selecionados, e a checkbox "Todos"
+	function criaUsuarios(tableR, tableS, data, cbxTUsuarios) {
+		// Elementos que serão adicionados nas tabelas
+		var toAppendTableR = "";
+		var toAppendTableS = "";
+
+		resultado = [];
+
+		// Cria a entrada de um usuário e adiciona suas rows nas variáveis temporárias
+		data.forEach(function (usuario) {
+			if (usuarios[usuario.id] == undefined) {
+				var id = usuario['id'];
+				var nome = usuario['nome'];
+				var email = usuario['email'];
+				// Verifica se aquele usuário já foi selecionado em outra pesquisa
+				var check = (() => {
+					return ((selecionados.indexOf(id) != -1) ? "checked" : "")
+				})();
+
+				arrayInsert(resultado, id);
+
+				usuarios[usuario.id] = {};
+				usuarios[usuario.id]['nome'] = nome;
+				usuarios[usuario.id]['id'] = id;
+				usuarios[usuario.id]['email'] = email;
+				usuarios[usuario.id]['pesq'] = nome.toLowerCase().trim();
+				usuarios[usuario.id]['trResultado'] = undefined;
+				usuarios[usuario.id]['trSelecionado'] = undefined;
+				usuarios[usuario.id]['checkbox'] = undefined;
+				usuarios[usuario.id]['remove'] = undefined;
+
+				// HTML que será adicionado de uma vez posteriormente
+				toAppendTableR += "<tr id=resultado" + id + " class=resultado><td><input id=cbox" + id + " class='cbox cboxUsuario' type=checkbox value=" + id + " " + check + "></td><td>" + nome + "</td><td>" + id + "</td><td>" + email + "</td></tr>";
+				toAppendTableS += "<tr id=selecionado" + id + "><td>" + nome + "</td><td>" + id + "</td><td>" + email + "</td><td><button class="btn btn-primary" id=remove" + id + ">Remover</button></td></tr>";
+			}
+		});
+
+		// Cria os elementos
+		tableR.append(toAppendTableR);
+		tableS.append(toAppendTableS);
+
+		// Esconde todas as outras rows de resultado
+		$(".resultado").hide();
+
+		// Identifica e atribui a cada usuário
+		data.forEach(function (u) {
+			var id = u.id;
+			var usuario = usuarios[u.id];
+
+			// Row de resultado
+			if (usuario['trResultado'] == undefined) {
+				var elemento = $("#resultado" + id);
+				(usuario['trResultado']) = elemento;
+			}
+
+			// Mostra os usuários que foram pesquisados agora
+			usuarios[usuario.id]['trResultado'].show();
+
+			// Row de selecinado
+			if (usuario['trSelecionado'] == undefined) {
+				var elemento = $("#selecionado" + id);
+				elemento.hide();
+				(usuario['trSelecionado']) = elemento;
+			}
+
+			// Checkbox de seleção
+			if (usuario['checkbox'] == undefined) {
+				var elemento = $("#cbox" + id);
+				elemento.change(function () {
+					if (this.checked) {
+						arrayInsert(selecionados, id);
+						usuario['trSelecionado'].show();
+					} else {
+						arrayRemove(selecionados, id);
+						usuario['trSelecionado'].hide();
+					}
+				});
+				(usuario['checkbox']) = elemento;
+			}
+
+			// Botão de remoção
+			if (usuario['remove'] == undefined) {
+				var elemento = $("#remove" + id);
+				elemento.click(function () {
+					arrayRemove(selecionados, id);
+					usuario['trSelecionado'].hide();
+					usuario['checkbox'].prop('checked', false);
+					cbxTUsuarios.prop('checked', false);
+				});
+				(usuario['remove']) = elemento;
+			}
+		});
+	}
+
+	// Função que envia os emails
+	function enviarEmails(data) {
+		return $.ajax({
+			data: data,
+			type: 'POST',
+			url: '/api/executa-email-custon'
+		});
+	}
+
+	$(function () {
+		// Elementos DOM
+		// Input assunto
+		var iptAssunto = $("#text_assunto");
+		// Input título
+		var iptTitulo = $("#text_titulo");
+		// Input Template do email, nome do arquivo
+		var iptTEmail = $("#text_template_email");
+		// Lista de atividades
+		var lstAtividades = $("#list_atividades");
+		// Botão de pesquisa
+		var btnPesquisar = $("#btn_pesquisar");
+		// Input para pesquisa no resultado
+		var iptPResultados = $("#text_pesquisa_em_resultado");
+		// Checkbox todos os usuários
+		var cbxTUsuarios = $("#cbox_todos_os_usuarios");
+		// Tabela resultados
+		var tblResultados = $("#tbl_resultado");
+		// Base da coluna nome dos resultados
+		var thColNomeR = $("#base_column_nome_r");
+		// Base da coluna id dos resultados
+		var thColIdR = $("#base_column_id_r");
+		// Base da coluna email dos resultados
+		var thColEmailR = $("#base_column_email_r");
+		// Input para pesquisa em selecionados		
+		var iptPSelecionados = $("#text_pesquisa_em_selecionados");
+		// Botão para remover todos os selecionados
+		var btnRTSelecionados = $("#btn_remove_todos_os_relecionados");
+		// Tabela selecionados
+		var tblSelecionados = $("#tbl_selecionados");
+		// Base da coluna nome dos resultados
+		var thColNomeS = $("#base_column_nome_s");
+		// Base da coluna id dos resultados
+		var thColIdS = $("#base_column_id_s");
+		// Base da coluna email dos resultados
+		var thColEmailS = $("#base_column_email_s");
+		// Checkbox do anexo
+		var cbxTemAnexo = $("#cbox_tem_anexo");
+		// Bloco do anexo
+		var divAnexo = $("#div_anexo");
+		// Input da path da pasta dos anexos
+		var iptPathAnexo = $("#text_path_anexo");
+		// Input do nome base dos arquivos
+		var iptBaseAnexo = $("#text_base_anexo");
+		// Lista complemento (modificação) do nome dos arquivos
+		var lstCompAnexo = $("#list_complemento_anexo");
+		// Lista das extenções dos arquivos
+		var lstExtencaoAnexo = $("#list_extencao_anexo");
+		// Boão de envio
+		var btnEnviar = $("#btn_enviar");
+		//
+
+		// Botão pesquisar
+		btnPesquisar.click(function () {
+			var nomeAtiv = lstAtividades.val();
+			if (nomeAtiv != "") {
+				pesquisarUsuarios(nomeAtiv).done(function (data) {
+					criaUsuarios(tblResultados, tblSelecionados, data, cbxTUsuarios);
+				});
+			}
+		});
+
+		// Pesquisa Resultados
+		iptPResultados.keyup(function () {
+			var input = $(this).val();
+			var listInput = input.trim().toLowerCase().split(",");
+
+			// Pesquisa usando o nome dos usuários
+			for (i in resultado) {
+				var id = resultado[i];
+				var usuario = usuarios[id];
+				var nome = usuario.pesq;
+				var target = usuario.trResultado;
+
+				var flag = false;
+
+				for (j in listInput) {
+					if (nome.indexOf(listInput[j]) != -1) {
+						flag = true;
+						break;
+					}
+				}
+
+				if (flag) {
+					target.show();
+				} else {
+					target.hide();
+				}
+			}
+		});
+
+		// Pesquisa Selecionados
+		iptPSelecionados.keyup(function () {
+			var input = $(this).val();
+			var listInput = input.trim().toLowerCase().split(",");
+
+			// Pesquisa usando o nome dos usuários
+			for (i in selecionados) {
+				var id = selecionados[i];
+				var usuario = usuarios[id];
+				var nome = usuario.pesq;
+				var target = usuario.trSelecionado;
+
+				var flag = false;
+
+				for (j in listInput) {
+					if (nome.indexOf(listInput[j]) != -1) {
+						flag = true;
+						break;
+					}
+				}
+
+				if (flag) {
+					target.show();
+				} else {
+					target.hide();
+				}
+			}
+		});
+
+
+		// Marcar todos os usuários
+		cbxTUsuarios.change(function () {
+			for (i in resultado) {
+				var iid = resultado[i];
+				var usuario = usuarios[iid];
+				var id = usuario.id;
+				var cbox = usuario.checkbox;
+				var trSelecionado = usuario.trSelecionado;
+
+				if (this.checked) {
+					arrayInsert(selecionados, id);
+
+					// Marca a checkbox relativa à esse usuário
+					cbox.prop("checked", true);
+
+					trSelecionado.show();
+				} else {
+					arrayRemove(selecionados, id);
+
+					// Desmarca a checkbox relativa à esse usuário
+					cbox.prop("checked", false);
+
+					trSelecionado.hide();
+				}
+			}
+		});
+
+		// Botão remover todos os usuários
+		btnRTSelecionados.click(function () {
+			// Reseta selecionados
+			selecionados = [];
+
+			// Desmarca todas as checkbox de usuário
+			$(".cboxUsuario").prop("checked", false);
+			cbxTUsuarios.prop("checked", false);
+
+			for (i in resultado) {
+				var iid = resultado[i];
+				var usuario = usuarios[iid];
+				var trSelecionado = usuario.trSelecionado;
+
+				trSelecionado.hide();
+			}
+		});
+
+		// Enviar emails
+		btnEnviar.click(function () {
+			var assunto = iptAssunto.val().trim();
+			var titulo = iptTitulo.val().trim();
+			var template = iptTEmail.val().trim();
+			var temAnexo = cbxTemAnexo.prop('checked');
+			var anexoBase = iptBaseAnexo.val();
+			var anexoPasta = iptPathAnexo.val();
+			var complemento = lstCompAnexo.val();
+			var extencao = lstExtencaoAnexo.val();
+
+			// Testes de validade
+			if (assunto == "") {
+				alert("Assunto vazio!");
+			} else if (titulo == "") {
+				alert("Título vazio!");
+			} else if (template == "") {
+				alert("Template vazio!");
+			} else if (temAnexo && anexoBase == "") {
+				alert("Base do nome do anexo vazio!");
+			} else if (temAnexo && complemento == undefined) {
+				alert("Complemento não escolhido!");
+			} else if (temAnexo && extencao == undefined) {
+				alert("Extenção não escolhida!");
+			} else if (selecionados.length == 0) {
+				alert("Ninguém foi selecionado!");
+			} else {
+				if (confirm("Deseja realmente enviar?")) {
+					// Monta o pacote
+					var data = {};
+					data.assunto = assunto;
+					data.titulo = titulo;
+					data.template = template;
+					data.temAnexo = temAnexo;
+					data.anexoBase = anexoBase;
+					data.anexoPasta = anexoPasta;
+					data.complemento = complemento;
+					data.extencao = extencao;
+					data.selecionados = function () {
+						a = [];
+
+						selecionados.forEach(function (s) {
+							a.push(s);
+						});
+
+						return a;
+					};
+
+					console.log(data);
+
+
+					// Chama o envio dos emails e retorna o resultado
+					enviarEmails(data).done(function (data) {
+						alert(data);
+					});
+				}
+			}
+		});
+
+		// Checkbox do anexo
+		cbxTemAnexo.change(function () {
+			if (this.checked) {
+				divAnexo.show();
+			} else {
+				divAnexo.hide();
+			}
+		});
+
+		// Sorting das tables
+		thColNomeR.click(function () {
+			console.log("Sort Nome");
+		});
+
+		thColIdR.click(function () {
+			console.log("Sort ID");
+		});
+
+		thColEmailR.click(function () {
+			console.log("Sort Email");
+		});
+
+		thColNomeS.click(function () {
+			console.log("Sort Nome");
+		});
+
+		thColIdS.click(function () {
+			console.log("Sort ID");
+		});
+
+		thColEmailS.click(function () {
+			console.log("Sort Email");
+		});
+	});
+	})); // <- Se houser erro aqui, é por conta das tags do jinja
+</script>
+
+{% endblock %}

@@ -3,9 +3,12 @@
 @import "variables";
 @import "mixins";
 
-#content {
+body {
   background-color: var(--bg-color);
   color: var(--font-color);
+}
+
+#content {
   min-height: 75vh;
   padding-top: 53px;
 }
@@ -137,13 +140,14 @@ header {
 
 footer {
   background-color: var(--footer-color);
+  color: #ddd;
   ul li {
     padding: 1%;
     a {
-      color: $white;
+      color: #ddd;
       transition: 0.2s;
       &:hover {
-        color: $secomp2;
+        color: var(--secondary-color);
         transition: 0.2s;
       }
     }

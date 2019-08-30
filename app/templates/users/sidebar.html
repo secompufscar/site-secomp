@@ -9,7 +9,6 @@
 
 {% endblock %}
 
-
 {% block content %}
 
 <div class="d-flex" id="wrapper">
@@ -18,55 +17,70 @@
         <div class="sidebar-heading">
             {{ usuario.primeiro_nome }}
         </div>
-
         <div class="list-group list-group-flush">
             <a href="{{ url_for('users.dashboard') }}" class="list-group-item list-group-item-action">Dashboard</a>
 
-            <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action">Dados</a>
-            <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action">Editar
-                dados</a>
-            <a href="{{ url_for('users.submeter_flag') }}" class="list-group-item list-group-item-action"> Cadastrar
-                flags</a>
-
-            {% if participante: %}
-
-            <a href="{{ url_for('users.kit') }}" class="list-group-item list-group-item-action">Kit</a>
-
-            <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Inscrições
+            <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Dados
                 <i class="fa fa-caret-down"></i>
             </button>
+
             <div class="dropdown-container">
-                <a href="{{ url_for('users.inscricao_atividades') }}"
-                    class="list-group-item list-group-item-action">Atividades</a>
-                <a href="#" class="list-group-item list-group-item-action">Desafio de Programadores</a>
-                <a href="#" class="list-group-item list-group-item-action">Hackaton</a>
+
+                <a href="{{ url_for('users.dados') }}" class="list-group-item list-group-item-action">Dados Pessoais</a>
+                <a href="{{ url_for('users.alterar_usuario') }}" class="list-group-item list-group-item-action">Editar Dados Pessoais</a>
+                
+                {% if participante %}
+                <a href="{{ url_for('users.dados_participante') }}" class="list-group-item list-group-item-action">Dados de Participante</a>
+                {% endif %}
+
             </div>
 
-            {% else: %}
+            {% if participante %}
+
+            <a href="{{ url_for('users.comprar_kit') }}" class="list-group-item list-group-item-action">Compra de Kit</a>
+            <a href="{{ url_for('users.pagamentos') }}" class="list-group-item list-group-item-action">Pagamentos</a>
+
+            <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Atividades
+                <i class="fa fa-caret-down"></i>
+            </button>
+
+            <div class="dropdown-container">
+
+                <a href="{{ url_for('users.presencas') }}" class="list-group-item list-group-item-action">Presenças</a>
+                <a href="{{ url_for('users.inscricao_minicursos') }}"
+                    class="list-group-item list-group-item-action">Minicursos</a>
+                <a href="{{ url_for('users.inscricao_workshops') }}"
+                    class="list-group-item list-group-item-action">Workshops</a>
+
+            </div>
+
+            {% else %}
             <a href="{{ url_for('users.cadastro_participante') }}"
                 class="list-group-item list-group-item-action">Inscrever-se</a>
 
             {% endif %}
 
-            <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Gerenciamento
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-                <a href="{{ url_for('management.gerenciar') }}"
-                    class="list-group-item list-group-item-action">Homepage</a>
-                <a href="{{ url_for('management.vender_kits') }}" class="list-group-item list-group-item-action">Venda
-                    de kits</a>
-                <a href="{{ url_for('management.listas') }}" class="list-group-item list-group-item-action">Listagem de
-                    participantes</a>
-                <a href="{{ url_for('management.sortear') }}" class="list-group-item list-group-item-action">Sorteio de
-                    usuário</a>
-                <a href="{{ url_for('management.gerar_url_conteudo') }}"
-                    class="list-group-item list-group-item-action">URL ministrante</a>
-                <a href="{{ url_for('management.cadastro_flags') }}" class="list-group-item list-group-item-action">
-                    Gerenciar Flags </a>
-            </div>
+            {% if "ADMIN" in current_user.getPermissoes() or
+            "CONTEUDO" in current_user.getPermissoes() or
+            "PATROCINIO" in current_user.getPermissoes() or
+            "NOTIFICACOES_APP" in current_user.getPermissoes() or
+            "VENDA_PRESENCIAL" in current_user.getPermissoes() or
+            "APROVAR_COMPROVANTES" in current_user.getPermissoes() or
+            "GERAR_CRACHAS" in current_user.getPermissoes() or
+            "GERAR_LISTAS" in current_user.getPermissoes() or
+            "SORTEAR" in current_user.getPermissoes() %}
+
+            <a href="{{ url_for('management.gerenciar') }}"
+                class="list-group-item list-group-item-action">Gerenciamento</a>
+
+            {% endif %}
+
+            {% if "ADMIN" in current_user.getPermissoes() %}
 
             <a href="/admin" class="list-group-item list-group-item-action">Administração</a>
+
+            {% endif %}
+
             <a href="{{url_for('views.logout')}}" class="list-group-item list-group-item-action">Logout</a>
         </div>
     </div>
@@ -81,41 +95,36 @@
     <div id="sidebar-content" class="container-fluid">
         {% block sidebar_content %}{% endblock %}
     </div>
-
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+
+{{ super() }}
+
 <script>
-
     function openNav() {
-
         $("#sidebar-wrapper").fadeIn(200);
-
         setTimeout(function () {
             document.getElementById("sidebar-wrapper").style.display = "inline-block";
             document.getElementById("btn-close").style.display = "inline-block";
         }, 200);
-
         document.getElementById("sidebar-wrapper").style.marginLeft = "0";
         document.getElementById("btn-open").style.display = "none";
-
         $('#wrapper').attr('style', 'min-height:' + $("#sidebar-wrapper").height() + "px" + ';other-styles');
     }
-
     function closeNav() {
         document.getElementById("sidebar-wrapper").style.marginLeft = "-15rem";
         document.getElementById("btn-close").style.display = "none";
-
         setTimeout(function () {
             document.getElementById("sidebar-wrapper").style.display = "none";
             document.getElementById("btn-open").style.display = "inline-block";
         }, 200);
-
         $(".dropdown-container").css("display", "none");
-
         if ($("#sidebar-wrapper").height() > $(window).height()) {
             $('#wrapper').attr('style', 'min-height:100vh;other-styles');
         }
-
     }
 </script>
 
@@ -132,11 +141,11 @@
             } else {
                 dropdownContent.style.display = "block";
             }
-            $('#wrapper').attr('style', 'min-height:' + $("#sidebar-wrapper").height() + "px" + ';other-styles');
         });
     }
 
 </script>
+
 {% endblock %}
 
 {% block footer %}{% endblock %}
