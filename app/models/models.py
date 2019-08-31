@@ -224,6 +224,11 @@ class Atividade(db.Model):
                 ministrantes_confirmados.append(m)
         return ministrantes_confirmados
 
+    @property
+    def admin(self):
+        r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_atividade=self.id, confirmado=True, admin_atividade=True).first()
+        return db.session.query(Ministrante).get(r.id_ministrante)
+
 class InfoMinicurso(db.Model):
     __tablename__ = 'info_minicurso'
     id = Column(Integer, primary_key=True)
