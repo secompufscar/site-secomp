@@ -90,7 +90,7 @@
                   <div class="col-md-4 mb-2">
 
                      {% if atividade.ministrantes_confirmados_atividade | length > 1 %}
-                     {% for ministrante in atividade.ministrantes %}
+                     {% for ministrante in atividade.ministrantes_confirmados_atividade %}
                      <div class="row align-items-center mb-3">
                         <div class="col-4 text-center">
                            {% if ministrante.foto is not sameas none %}
@@ -120,9 +120,10 @@
 
                      <div class="row justify-content-center align-items-center text-center mb-3">
                         <div class="col-md-12 mb-2">
-                           {% if atividade.ministrantes[0].foto is not sameas none %}
+                           {% if atividade.ministrantes_confirmados_atividade[0].foto is not sameas none %}
 
-                           <img src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
+                           <img
+                              src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+atividade.ministrantes_confirmados_atividade[0].foto) }}"
                               class="w-50" alt="">
 
                            {% else %}
@@ -134,10 +135,10 @@
                         </div>
                         <div class="col-md-12">
                            <div class="text-gray">
-                              <b>{{atividade.ministrantes[0].usuario.primeiro_nome}}
-                                 {{atividade.ministrantes[0].usuario.sobrenome}}</b>
-                              {% if atividade.ministrantes[0].profissao is not sameas none %}
-                              <br>{{ atividade.ministrantes[0].profissao }}
+                              <b>{{atividade.ministrantes_confirmados_atividade[0].usuario.primeiro_nome}}
+                                 {{atividade.ministrantes_confirmados_atividade[0].usuario.sobrenome}}</b>
+                              {% if atividade.ministrantes_confirmados_atividade[0].profissao is not sameas none %}
+                              <br>{{ atividade.ministrantes_confirmados_atividade[0].profissao }}
                               {% endif %}
                            </div>
                         </div>
@@ -267,10 +268,14 @@
                                        {% endif %}
                                     </h5>
                                     <p class="text-gray">
-                                       {%if ministrante.profissao is sameas none %}
+                                       {% if ministrante.profissao is sameas none %}
                                        Sem informações
                                        {% else %}
                                        {{ ministrante.profissao }}
+                                       {% endif %}
+                                       <br>
+                                       {% if ministrante.empresa_universidade is not sameas none %}
+                                       {{ ministrante.empresa_universidade }}
                                        {% endif %}
                                     </p>
                                  </div>
