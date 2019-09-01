@@ -108,6 +108,11 @@ def sobre():
     form_login = LoginForm(request.form)
     return render_template('views/sobre.html', title='Sobre a Secomp', form_login=form_login)
 
+@views.route('/descontos', methods=["GET", "POST"])
+def descontos():
+    form_login = LoginForm(request.form)
+    return render_template('views/descontos.html', title='Descontos', form_login=form_login)
+
 
 @views.route('/cronograma', methods=["GET", "POST"])
 def cronograma():
