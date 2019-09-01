@@ -4,64 +4,101 @@
 
 <style>
         .li {
-           font-size: 19px;
-           font-family: Helvética;
+           font-size: 22px;
+           
         }
         .ul {
-           font-size: 17px;
-           padding-bottom: 18px;
+           font-size: 18px;
+           padding-bottom: 20px;
            
         }
         .img {
-            height: 80px;
-            width:80px;
+            height: 120px;
+            width:130px;
         }
     </style>
 
 <div class="container text-center  pt-3 pb-3 mt-3 mb-3">
-        <h2 style="font-family: Arial Narrow">Descontos para os participantes da SECOMP X</h2>
+        <h2>Descontos para os participantes da SECOMP X</h2>
     </div>
     
-<div class="container">
+<div class="container" style=" width: 100%">
     <div class="row">
-        <div class="col-md-12 ">
-                <ul>
-                        <li class="li">Yo Konno Temakeria</li>
-                          <ul class="ul">
-                            <li>Consumo acima de 30,00 ganha uma sobremesa ou hossomakis de salmão. (com apresentação do crachá)</li>
-                          </ul>
-                          <li class="li">Japa Açaí</li>
-                          <ul class="ul">
-                            <li>10% de desconto para os participantes nos dias do evento. (com apresentação do crachá)</li>
-                          </ul>
-                          <li class="li">DoGrego Foodtruck</li>
-                          <ul class="ul">
-                            <li>10% nos produtos para os participantes nos dias do evento . (com apresentação do crachá)</li>
-                          </ul>
-                          <li class="li">Jamaica Foodtruck</li>
-                          <ul class="ul">
-                            <li>X SECOMP em 3 tipos de hambúrgueres artesanais (carne, frango e vegano). <br>
-                                Preço padrão: R$ 24,90 <br>
-                                Apresentando Cracha do kit: 15,00 sem batata  ou 19,90 com uma porção pequena de batata</li>
-                          </ul>
-                          <li class="li"> <img class="img"
-                            src="{{url_for('static', filename='images/testeseuburguer.png')}}">Seu burguer</li>
-                          <ul class="ul">
-                            <li>5% de desconto para os participantes nos dias do evento. (com apresentação do crachá)</li>
-                          </ul>
-                          <li class="li">Subway</li>
-                          <ul class="ul">
-                            <li>Subway em dobro. <br>Válido para as unidades: Avenida São Carlos, Shopping Iguatemi e Havan. (com apresentação do crachá)</li>
-                          </ul>
-                          <li class="li">Nerdstickers</li>
-                          <ul class="ul">
-                            <li>Cupom de 10% de desconto para os participantes: Secomp10%.</li>
-                          </ul>
-                        
-                </ul> 
+        <div class="col-md-2 text-center">
+                <img class="img"src="{{url_for('static', filename='images/testeseuburguer.png')}}">
+        </div>
+        <div class="col-md-8">
+                <p class="li">Yo Konno Temakeria</p>
+                <ul class="ul">
+                  Consumo acima de 30,00 ganha uma sobremesa ou hossomakis de salmão. (com apresentação do crachá)
+                </ul>
         </div>
     </div>
+    <div class="row">
+            <div class="col-md-2 text-center">
+                    <img class="img"src="{{url_for('static', filename='images/testeseuburguer.png')}}">
+            </div>
+            <div class="col-md-8">
+                    <p class="li">Japa Açaí</p>
+                    <ul class="ul">
+                            10% de desconto para os participantes nos dias do evento. (com apresentação do crachá)
+                    </ul>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-md-2 text-center">
+                        <img class="img"src="{{url_for('static', filename='images/testeseuburguer.png')}}">
+                </div>
+                <div class="col-md-8">
+                        <p class="li">DoGrego Foodtruck</p>
+                        <ul class="ul">
+                                10% nos produtos para os participantes nos dias do evento . (com apresentação do crachá)                        </ul>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-2 text-center">
+                        <img class="img"src="{{url_for('static', filename='images/testeseuburguer.png')}}">
+                </div>
+                <div class="col-md-8">
+                        <p class="li">Jamaica Foodtruck</p>
+                        <ul class="ul">
+                                X SECOMP em 3 tipos de hambúrgueres artesanais (carne, frango e vegano). <br>
+                                Preço padrão: R$ 24,90 <br>
+                                Apresentando Cracha do kit: 15,00 sem batata  ou 19,90 com uma porção pequena de batata
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-2 text-center">
+                        <img class="img"src="{{url_for('static', filename='images/testeseuburguer.png')}}">
+                </div>
+                <div class="col-md-8">
+                        <p class="li">Seu burguer</p>
+                        <ul class="ul">
+                            5% de desconto para os participantes nos dias do evento. (com apresentação do crachá)
 
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-2 text-center">
+                        <img class="img"src="{{url_for('static', filename='images/testeseuburguer.png')}}">
+                </div>
+                <div class="col-md-8">
+                        <p class="li">Subway</p>
+                        <ul class="ul">
+                            Subway em dobro. <br>Válido para as unidades: Avenida São Carlos, Shopping Iguatemi e Havan. (com apresentação do crachá)
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-2 text-center">
+                        <img class="img"src="{{url_for('static', filename='images/testeseuburguer.png')}}">
+                </div>
+                <div class="col-md-8">
+                        <p class="li">Nerdstickers</p>
+                        <ul class="ul">
+                            Cupom de 10% de desconto para os participantes: Secomp10%.
+                </div>
+        </div>
+     
 </div>
 
 
