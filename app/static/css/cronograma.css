@@ -1,5 +1,5 @@
 :root {
-    --font-gray: #555555;
+    --font-gray: #444444;
     --card-color: #fff;
     --nav-color: #fff;
     --selected-color: #00cfa1;
@@ -20,6 +20,10 @@
 
 .card-body {
     background-color: var(--card-color);
+}
+
+.card-title {
+    border-bottom: 1px solid var(--border-color);
 }
 
 .modal-content {
@@ -66,6 +70,14 @@
 
 .setaEsquerda, .setaDireita {
     cursor: pointer;
+}
+
+.seta, .close {
+    color: var(--font-color) !important;
+}
+
+.seta:hover, .close:hover {
+    color: var(--secondary-color) !important;
 }
 
 @media (max-width: 991px) {

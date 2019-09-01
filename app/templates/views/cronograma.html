@@ -78,33 +78,77 @@
       <div class="col-md-12">
          {% for atividade in lista_atividades %}
          <div class="card mb-4">
-            <div class="row no-gutters align-items-center">
-               <div class="col-md-2">
-                  <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid p-1" alt="">
-               </div>
-               <div class="col-md-4">
-                  <div class="card-body">
-                     <h4 class="card-title">
-                        {% if atividade.titulo is not sameas none and atividade.tipo.nome %}
-                        <b>{{ atividade.tipo.nome }}</b> - {{ atividade.titulo }}
-                        {% else %}
-                        -
-                        {% endif %}
-                     </h4>
-                     <p class="card-subtitle text-gray">
-                        {% for ministrante in atividade.ministrantes %}
-                        {{ministrante.usuario.primeiro_nome}} {{ministrante.usuario.sobrenome}}
-                        {% if ministrante.profissao is not sameas none %}
-                        - {{ ministrante.profissao }}
-                        {% endif %}
-                        <br>
-                        {% endfor %}
-                     </p>
+            <h4 class="card-title p-3">
+               {% if atividade.titulo is not sameas none and atividade.tipo.nome %}
+               <b>{{ atividade.tipo.nome }}</b> - {{ atividade.titulo }}
+               {% else %}
+               -
+               {% endif %}
+            </h4>
+            <div class="card-body">
+               <div class="row no-gutters align-items-center">
+                  <div class="col-md-4 mb-2">
+
+                     {% if atividade.ministrantes_confirmados_atividade | length > 1 %}
+                     {% for ministrante in atividade.ministrantes %}
+                     <div class="row align-items-center mb-3">
+                        <div class="col-4 text-center">
+                           {% if ministrante.foto is not sameas none %}
+
+                           <img src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
+                              class="w-50" alt="">
+
+                           {% else %}
+
+                           <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-50" alt="">
+
+                           {% endif %}
+
+                        </div>
+                        <div class="col-8">
+                           <div class="text-gray">
+                              <b>{{ministrante.usuario.primeiro_nome}} {{ministrante.usuario.sobrenome}}</b>
+                              {% if ministrante.profissao is not sameas none %}
+                              <br>{{ ministrante.profissao }}
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                     {% endfor %}
+
+                     {% else %}
+
+                     <div class="row justify-content-center align-items-center text-center mb-3">
+                        <div class="col-md-12 mb-2">
+                           {% if atividade.ministrantes[0].foto is not sameas none %}
+
+                           <img src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
+                              class="w-50" alt="">
+
+                           {% else %}
+
+                           <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-50" alt="">
+
+                           {% endif %}
+
+                        </div>
+                        <div class="col-md-12">
+                           <div class="text-gray">
+                              <b>{{atividade.ministrantes[0].usuario.primeiro_nome}}
+                                 {{atividade.ministrantes[0].usuario.sobrenome}}</b>
+                              {% if atividade.ministrantes[0].profissao is not sameas none %}
+                              <br>{{ atividade.ministrantes[0].profissao }}
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+
+                     {% endif %}
+
                   </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="card-body">
-                     <p class="card-subtitle text-gray">
+                  <div class="col-md-8">
+
+                     <p class="card-subtitle text-gray text-justify">
                         {% if atividade.descricao is not sameas none %}
                         {{ atividade.descricao }}
                         {% else %}
@@ -177,7 +221,7 @@
                      <div class="modal-header">
 
                         <h5 class="modal-title text-center">
-                           <b>{{ atividade.titulo }}</b>
+                           <b>{{ atividade.tipo.nome }}</b> - {{ atividade.titulo }}
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                            <span aria-hidden="true">&times;</span>
@@ -187,7 +231,7 @@
                         <div class="row pl-2 pr-2 align-items-center">
                            <div class="col ml-2 mr-2">
 
-                              {% if atividade.ministrantes_confirmados_atividade|length > 0 %}
+                              {% if atividade.ministrantes_confirmados_atividade|length > 1 %}
                               {% set aux = atividade.id %}
                               <div class="row justify-content-between align-items-center">
 
@@ -202,14 +246,20 @@
                                     onclick="mRightArrow('modalcontent{{ aux }}', {{atividade.ministrantes_confirmados_atividade|length}} )">
                                     <i class="fas fa-2x fa-chevron-right"></i>
                                  </button>
-                                 
+
                               </div>
+
+                              {% else %}
+
+                              <div class="row justify-content-center">
+                                 <h4>Ministrante</h4>
+                              </div>
+
                               {% endif %}
 
-                              <div class="row no-gutters align-items-center mt-2">
-                                 <div class="col-md-10">
+                              <div class="row no-gutters align-items-center mt-3">
+                                 <div class="col-8 col-sm-10">
                                     <h5>
-                                       <b>Nome: </b>
                                        {% if ministrante.usuario.primeiro_nome is sameas none and  ministrante.usuario.sobrenome is sameas none%}
                                        Sem informações
                                        {% else %}
@@ -224,7 +274,7 @@
                                        {% endif %}
                                     </p>
                                  </div>
-                                 <div class="col-md-2">
+                                 <div class="col-4 col-sm-2">
                                     {% if ministrante.foto is not sameas none %}
                                     <img
                                        src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
@@ -237,7 +287,7 @@
                               </div>
 
                               <h5 class="pt-2"><b>Biografia</b></h5>
-                              <p>
+                              <p class="text-justify">
                                  {% if ministrante.biografia is not sameas none %}
                                  {{ ministrante.biografia }}
                                  {% else %}
