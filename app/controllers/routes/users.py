@@ -273,7 +273,7 @@ def inscricao_minicursos():
                                participante=participante, usuario=current_user, inscricao_liberada=0)
 
 
-@users.route('/inscricao-workshops')
+#@users.route('/inscricao-workshops')
 @login_required
 @email_verificado_required
 def inscricao_workshops():
@@ -307,7 +307,7 @@ def inscricao_minicursos_com_filtro(filtro):
                                inscricao_liberada=0)
 
 
-@users.route('/inscricao-workshops/<filtro>')
+#@users.route('/inscricao-workshops/<filtro>')
 @login_required
 @email_verificado_required
 def inscricao_workshops_com_filtro(filtro):
@@ -388,7 +388,7 @@ def inscrever_minicurso(id):
                                inscricao_liberada=1)
 
 
-@users.route('/inscrever-workshop/<id>')
+#@users.route('/inscrever-workshop/<id>')
 @login_required
 @email_verificado_required
 def inscrever_workshop(id):
@@ -444,7 +444,7 @@ def desinscrever_minicurso(id):
                                inscricao_liberada=1)
 
 
-@users.route('/desinscrever-workshop/<id>')
+#@users.route('/desinscrever-workshop/<id>')
 @login_required
 @email_verificado_required
 def desinscrever_workshop(id):
