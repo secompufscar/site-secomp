@@ -87,7 +87,7 @@
             </h4>
             <div class="card-body">
                <div class="row no-gutters align-items-center">
-                  <div class="col-md-4 mb-2">
+                  <div class="col-md-4 p-1">
 
                      {% if atividade.ministrantes_confirmados_atividade | length > 1 %}
                      {% for ministrante in atividade.ministrantes_confirmados_atividade %}
@@ -147,7 +147,7 @@
                      {% endif %}
 
                   </div>
-                  <div class="col-md-8">
+                  <div class="col-md-8 p-1">
 
                      <p class="card-subtitle text-gray text-justify">
                         {% if atividade.descricao is not sameas none %}
