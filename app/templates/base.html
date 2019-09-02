@@ -58,20 +58,20 @@
         <ul class="ml-3 navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.index') }}">
-              <i class="mr-1 fas fa-home"></i> HOME</a>
+              <i class="mr-2 fas fa-home"></i>HOME</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="secomp">
-              <i class="mr-1 fas fa-heart"></i> SECOMP</a>
+              <i class="mr-2 fas fa-heart"></i>SECOMP</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{{ url_for('views.sobre') }}">
-                <i class="mr-1 fas fa-book"></i> SOBRE O EVENTO</a>
-              <a class="dropdown-item" href="{{ url_for('views.descontos') }}">
-                <i class="mr-1 fas fa-shopping-cart"></i> DESCONTOS</a>
+                <i class="mr-2 fas fa-book"></i>SOBRE O EVENTO</a>
               <a class="dropdown-item" href="{{ url_for('views.equipe') }}">
-                <i class="mr-1 fas fa-users"></i> EQUIPE</a>
+                <i class="mr-2 fas fa-users"></i>EQUIPE</a>
+              <a class="dropdown-item" href="{{ url_for('views.descontos') }}">
+                <i class="mr-2 fas fa-shopping-cart"></i>DESCONTOS</a>
               <a class="dropdown-item" href="{{ url_for('views.contato_dm') }}">
-                <i class="mr-1 fas fa-comments"></i> CONTATO</a>
+                <i class="mr-2 fas fa-comments"></i>CONTATO</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -90,7 +90,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.faq') }}">
-              <i class="mr-1 fas fa-question-circle"></i> FAQ</a>
+              <i class="mr-2 fas fa-question-circle"></i>FAQ</a>
           </li>
         </ul>
 
@@ -109,7 +109,7 @@
               </div>
 
               <a class="dropdown-item" href="{{ url_for('views.bug_report') }}">
-                <i class="mr-1 fas fa-bug"></i> BUG REPORT</a>
+                <i class="mr-2 fas fa-bug"></i>BUG REPORT</a>
 
               {% if current_user.is_authenticated %}
               {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
