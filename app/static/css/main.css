@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
-
 :root {
   --primary-color: #008cb5;
   --secondary-color: #00cfa1;
@@ -229,37 +228,37 @@ footer ul li a:hover {
   height: 80vh;
 }
 
-/*# sourceMappingURL=main.css.map */
-@media (max-width: 700px){
-  .img-card-patrocinio{
+@media (max-width: 700px) {
+  .img-card-patrocinio {
     width: 25%;
     position: absolute;
     top: 15% !important;
     right: 5%;
   }
-  .diamante{
+  .diamante {
     height: auto !important;
     width: auto !important;
   }
-  .card-diamante{
+  .card-diamante {
     margin-bottom: 1rem !important;
     display: block !important;
   }
 }
-.img-card-patrocinio{
+
+.img-card-patrocinio {
   width: 25%;
   position: absolute;
   top: 13%;
   right: 5%;
 }
 
-.card-diamante{
+.card-diamante {
   display: flex;
   justify-content: center;
   flex-direction: row;
 }
 
-.diamante{
+.diamante {
   height: 150%;
   width: 50%;
 }

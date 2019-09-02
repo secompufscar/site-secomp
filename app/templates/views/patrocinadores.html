@@ -9,10 +9,14 @@
 		</div>
 	</div>
 	<div class="row">
+		<div class="col-md-12 pt-4">
+			<h3 class="text-center">Diamante</h1>
+		</div>
 		{% for p in patrocinadores %}
 		{% if p.ativo_site %}
 		{% if p.id_cota == 1 %}
-		<div class="col-md-12 justify-content-center pt-3 card-center card-diamante" style="margin-bottom: 5rem; float: right;">
+		<div class="col-md-12 justify-content-center pt-3 card-center card-diamante"
+			style="margin-bottom: 5rem; float: right;">
 			<div class="card diamante">
 				<div class="card-body">
 					<h5 class="card-title">{{p.nome_empresa}}</h5>
@@ -22,7 +26,56 @@
 				</div>
 			</div>
 		</div>
-		{% else %}
+		{% endif %}
+		{% endif %}
+		{% endfor %}
+
+		<div id="title_ouro" class="col-md-12 pt-4" style="display: block">
+			<h3 class="text-center">Ouro</h1>
+		</div>
+		{% for p in patrocinadores %}
+		{% if p.ativo_site %}
+		{% if p.id_cota == 2 %}
+		<div class="col-md-4 justify-content-center pt-3 card-center" style="margin-bottom: 1rem;">
+			<div class="card" style="width: auto;">
+				<div class="card-body">
+					<h5 class="card-title">{{p.nome_empresa}}</h5>
+					<h6 class="card-subtitle mb-2 text-muted">{{p.cota.nome}}</h6>
+					<a href="{{p.link_website}}" class="card-link">Site</a>
+					<img src="{{p.logo}}" style="width: 25%; position: absolute; top: 15%; right: 5%;">
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		{% endif %}
+		{% endfor %}
+
+		<div class="col-md-12 pt-4" style="display: block">
+			<h3 class="text-center">Prata</h1>
+		</div>
+		{% for p in patrocinadores %}
+		{% if p.ativo_site %}
+		{% if p.id_cota == 3 %}
+		<div class="col-md-4 justify-content-center pt-3 card-center" style="margin-bottom: 1rem;">
+			<div class="card" style="width: auto;">
+				<div class="card-body">
+					<h5 class="card-title">{{p.nome_empresa}}</h5>
+					<h6 class="card-subtitle mb-2 text-muted">{{p.cota.nome}}</h6>
+					<a href="{{p.link_website}}" class="card-link">Site</a>
+					<img src="{{p.logo}}" style="width: 25%; position: absolute; top: 15%; right: 5%;">
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		{% endif %}
+		{% endfor %}
+
+		<div class="col-md-12 pt-4" style="display: block">
+			<h3 class="text-center">Apoio</h1>
+		</div>
+		{% for p in patrocinadores %}
+		{% if p.ativo_site %}
+		{% if p.id_cota == 4 %}
 		<div class="col-md-4 justify-content-center pt-3 card-center" style="margin-bottom: 1rem;">
 			<div class="card" style="width: auto;">
 				<div class="card-body">
@@ -39,9 +92,4 @@
 	</div>
 </div>
 
-<script>
-function patrocionio(){
-	
-}
-</script>
 {% endblock %}
