@@ -170,7 +170,7 @@ def get_url_tipo(tipo):
 
 def get_urls_conteudo(url_root):
     try:
-        atividades = db.session.query(Atividade).filter_by(id_evento=get_id_evento_atual()).all()
+        atividades = db.session.query(Atividade).join(TipoAtividade).filter(Atividade.id_evento==get_id_evento_atual(), TipoAtividade.nome != "Outro").all()
         info_urls = []
         for atividade in atividades:
             titulo = atividade.titulo
