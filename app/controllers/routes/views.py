@@ -132,11 +132,10 @@ def faq():
 
 @views.route('/ctf', methods=["GET", "POST"])
 def ctf():
-    '''
+
     form_login = LoginForm(request.form)
     return render_template('views/ctf.html', title='CTF', form_login=form_login)
-    '''
-    return redirect(url_for('views.index'))
+
 
 @views.route('/gamejam', methods=["GET", "POST"])
 def gamejam():
