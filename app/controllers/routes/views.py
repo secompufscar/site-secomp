@@ -205,12 +205,10 @@ def patrocinadores():
     '''
     Renderiza página referente aos patrocinadores da edição atual
     '''
-    '''
+    
     form = LoginForm(request.form)
     patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True).order_by(Patrocinador.id_cota)
     return render_template('views/patrocinadores.html', patrocinadores=patrocinadores, form_login=form, edicao=EDICAO_ATUAL)
-    '''
-    return redirect(url_for('views.index'))
 
 @views.route("/pontuacao", methods=["GET"])
 def pontuacao_compcases():
