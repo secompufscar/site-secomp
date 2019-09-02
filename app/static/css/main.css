@@ -96,7 +96,7 @@ header a {
   font-weight: 600;
   color: #fff;
   font-size: 14.5px;
-  font-family: "Lato", "Clear Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-family: "Clear Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 header a:hover {
@@ -222,43 +222,4 @@ footer ul li a:hover {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
-}
-
-#video {
-  height: 80vh;
-}
-
-@media (max-width: 700px) {
-  .img-card-patrocinio {
-    width: 25%;
-    position: absolute;
-    top: 15% !important;
-    right: 5%;
-  }
-  .diamante {
-    height: auto !important;
-    width: auto !important;
-  }
-  .card-diamante {
-    margin-bottom: 1rem !important;
-    display: block !important;
-  }
-}
-
-.img-card-patrocinio {
-  width: 25%;
-  position: absolute;
-  top: 13%;
-  right: 5%;
-}
-
-.card-diamante {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-}
-
-.diamante {
-  height: 150%;
-  width: 50%;
 }
