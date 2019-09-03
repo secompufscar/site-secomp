@@ -45,6 +45,8 @@ def get_atividades():
         print(e)
         return None
 
+from datetime import datetime
+
 def get_atividades_api():
     try:
         query = db.session.query(Atividade).all()
@@ -52,12 +54,25 @@ def get_atividades_api():
         for a in query:
             ministrantes = []
             for m in a.ministrantes:
-                ministrantes.append(m.usuario.primeiro_nome)
+                ministrantes.append({
+                    "id": m.id,
+                    "id_usuario": m.id_usuario,
+                    "cargo": m.profissao,
+                    "instituicao": m.empresa_universidade,
+                    "nome": m.usuario.primeiro_nome + " " + m.usuario.sobrenome,
+                    "foto": m.foto,
+                    "facebook": m.facebook,
+                    "twitter": m.twitter,
+                    "linkedin": m.linkedin,
+                    "github": m.github,
+                })
             info = {
                 "id": a.id,
                 "tipo": a.tipo.nome,
                 "titulo": a.titulo,
                 "local": a.local,
+                "inicio": datetime.timestamp(a.data_hora_inicio),
+                "fim": datetime.timestamp(a.data_hora_fim),
                 "descricao": a.descricao,
                 "ministrantes": ministrantes
             }
