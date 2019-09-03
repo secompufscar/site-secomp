@@ -45,6 +45,7 @@
 		<div class="col-md-8 text-center p-2">
 			<h5><b>Atenção: </b>Para participar dos minicursos, é necessário levar 1kg de alimento não-perecível.</h5>
 			<h6>O alimento pode ser entregue no início do minicurso ou durante o credenciamento (:</h6>
+			<h6>Para mais informações, consulte o <a href="{{ url_for('views.faq') }}">FAQ</a>!</h6>
 		</div>
 
 		{% if inscricao_liberada == 1 %}
@@ -80,7 +81,7 @@
 					<tr>
 						<td class="align-middle">{{atividade.titulo}}</td>
 						<td class="align-middle">{{atividade.ministrantes.nome}}</td>
-						<td class="align-middle">{{atividade.vagas_disponiveis}}/{{atividade.vagas_totais}}</td>
+						<td class="align-middle">{{atividade.vagas_disponiveis}}</td>
 						<td class="align-middle">
 							{% if participante in atividade.participantes %}
 							<a href="{{ url_for('.desinscrever_minicurso', id=atividade.id) }}">
