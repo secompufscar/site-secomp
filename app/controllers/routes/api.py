@@ -12,7 +12,7 @@ from app.models.models import *
 api = Blueprint('api', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/api')
 
-@api.route('/')
+#@api.route('/')
 def index():
     return "Welcome to SECOMP: API"
 
@@ -29,7 +29,7 @@ def patrocinadores(edicao):
 
 @api.route('/atividades/<edicao>')
 def atividades(edicao):
-    return jsonify(get_atividades_api())
+    return jsonify(get_atividades(edicao))
 
 #@api.route('/img/<url>')
 def retornaImg(url):
@@ -40,39 +40,70 @@ def retornaImg(url):
 @api.route('/ler-presenca', methods=['POST'])
 def ler_presenca():
     '''
-    Essa rota vai receber via POST o id de participante, o id da atividade e registrar a presença caso a key do aplicativo bata com a
+    Essa rota vai receber via POST o uuid do participante, o id da atividade e registrar a presença caso a key do aplicativo bata com a
     key do arquivo config/development.py, chamada de KEY_API_PRESENCA.
     '''
     data = request.get_json(force=True)
-    id_participante = int(data['id_participante'])
+    uuid = int(data['uuid_participante'])
+    id_atividade = int(data['id_atividade'])
+    force = int(data['force_presenca'])
+    key = data['key']
+    if(key == current_app.config['KEY_API_PRESENCA']):
+        try:
+            participante = db.session.query(Participante).filter_by(uuid=uuid).first()
+            inscrito = participante in db.session.query(Atividade).filter_by(id=id_atividade).first().participantes
+            if(inscrito or force):
+                if (db.session.query(Presenca).filter_by(id_atividade=id_atividade,
+                                                             id_participante=participante.id).first() == None):
+                    presenca = Presenca(data_hora_registro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                        id_atividade=id_atividade,
+                                        id_participante=participante.id,
+                                        id_evento=get_id_evento_atual(),
+                                        inscrito=inscrito)
+                    db.session.add(presenca)
+                    db.session.flush()
+                    db.session.commit()
+                    info = {
+                        "Participante" : participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
+                        "Status" : "SUCCESS"
+                    }
+                    return jsonify(info)
+                else:
+                    info = {
+                        "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
+                        "Status": "JA_LIDO"
+                    }
+                    return jsonify(info)
+            else:
+                info = {
+                    "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
+                    "Status": "NÃO_INSCRITO"
+                }
+                return jsonify(info)
+        except Exception as e:
+            print(e)
+            return jsonify("ERROR")
+    else:
+        return jsonify("INVALID KEY")
+
+@api.route('/verifica-inscricao', methods=['POST'])
+def ler_presenca():
+    '''
+    Essa rota vai receber via POST o uuid do participante, o id da atividade e verificar se o participante está inscrito na mesma
+    '''
+    data = request.get_json(force=True)
+    uuid = int(data['uuid_participante'])
     id_atividade = int(data['id_atividade'])
     key = data['key']
     if(key == current_app.config['KEY_API_PRESENCA']):
         try:
-            participante = db.session.query(Participante).filter_by(id=id_participante).first()
-
-            if (db.session.query(Presenca).filter_by(id_atividade=id_atividade,
-                                                         id_participante=id_participante).first() != None):
-                inscrito =  participante in db.session.query(Atividade).filter_by(id=id_atividade).participantes
-                presenca = Presenca(data_hora_registro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                    id_atividade=id_atividade,
-                                    id_participante=id_participante,
-                                    id_evento=get_id_evento_atual(),
-                                    inscrito=inscrito)
-                db.session.add(presenca)
-                db.session.flush()
-                db.session.commit()
-                info = {
-                    "Participante" : participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
-                    "Status" : "SUCCESS"
-                }
-                return jsonify(info)
-            else:
-                info = {
-                    "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
-                    "Status": "JA_LIDO"
-                }
-                return jsonify(info)
+            participante = db.session.query(Participante).filter_by(uuid=uuid).first()
+            inscrito = participante in db.session.query(Atividade).filter_by(id=id_atividade).first().participantes
+            info = {
+                "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
+                "Inscrito": inscrito
+            }
+            return jsonify(info)
         except Exception as e:
             print(e)
             return jsonify("ERROR")
