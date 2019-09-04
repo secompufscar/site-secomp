@@ -38,6 +38,7 @@ def cadastro():
     """
     Renderiza a página de cadastro do projeto
     """
+    '''
     form_login = LoginForm(request.form)
     form = CadastroForm(request.form)
     form.curso.choices = get_opcoes_cursos()
@@ -67,6 +68,8 @@ def cadastro():
         return redirect(url_for('.verificar_email'))
 
     return render_template('users/cadastro.html', form=form, form_login=form_login)
+    '''
+    return redirect(url_for('views.index'))
 
 @users.route('/verificar-email')
 @login_required
@@ -115,6 +118,7 @@ def reenviar_email():
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
+    '''
     try:
         id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
         if current_user.email_verificado:
@@ -139,7 +143,8 @@ def cadastro_participante():
     except SQLAlchemyError:
         db.session.rollback()
         return redirect(url_for('.dashboard'))
-
+    '''
+    return redirect(url_for('.dashboard'))
 
 @users.route('/alterar-dados-usuario', methods=['POST', 'GET'])
 @login_required
