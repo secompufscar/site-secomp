@@ -42,9 +42,9 @@ def ler_presenca():
     key do arquivo config/development.py, chamada de KEY_API_PRESENCA.
     '''
     data = request.get_json(force=True)
-    uuid = int(data['uuid_participante'])
+    uuid = str(data['uuid_participante'])
     id_atividade = int(data['id_atividade'])
-    force = int(data['force_presenca'])
+    force = bool(data['force_presenca'])
     key = data['key']
     if(key == current_app.config['KEY_API_PRESENCA']):
         try:
@@ -90,7 +90,7 @@ def verifica_insc():
     Essa rota vai receber via POST o uuid do participante, o id da atividade e verificar se o participante está inscrito na mesma
     '''
     data = request.get_json(force=True)
-    uuid = int(data['uuid_participante'])
+    uuid = str(data['uuid_participante'])
     id_atividade = int(data['id_atividade'])
     key = data['key']
     if(key == current_app.config['KEY_API_PRESENCA']):
@@ -214,7 +214,7 @@ def verifica_kit():
     Essa rota vai receber via POST o uuid do participante, verificar se o participante está comprou o kit.
     '''
     data = request.get_json(force=True)
-    uuid = int(data['uuid_participante'])
+    uuid = str(data['uuid_participante'])
     key = data['key']
     if(key == current_app.config['KEY_API_PRESENCA']):
         try:
