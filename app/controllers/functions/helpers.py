@@ -227,7 +227,7 @@ def get_permissao_comprovante(participante, arquivo):
      return False
 
 def diretorio_publico(diretorio):
-    return diretorio == "fotos_ministrantes"
+    return diretorio == "fotos_ministrantes" or diretorio == "logo_patrocinadores"
 
 def get_nome_restricao(id_restricao):
     if id_restricao == 1:
