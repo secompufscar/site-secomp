@@ -1,0 +1,20 @@
+{% extends "email/base.html" %}
+{% block titulo %}
+  {{ info.titulo }}
+{% endblock %}
+
+{% block saudacao %}
+  Olá, {{ info.nome }}!
+{% endblock%}
+
+{% block conteudo %}
+  <span style="color:black;">Percebemos que você se cadastrou em nosso site, porém não se inscreveu na X SECOMP UFSCar.
+     Acesse o menu do participante em nosso site para realizar a inscrição no evento. Caso tenha enfrentado problemas ao confirmar o
+seu email, faça login e solicite o reenvio do email de confirmação acessando a opção "Não recebeu seu email?"
+     Depois disso, poderá comprar o Kit e se inscrever em minicursos. Te esperamos na X SECOMP UFSCar, até lá! (;
+     </span><br>
+{% endblock %}
+
+{% block footer %}
+  {{ info.footer }}
+{% endblock %}
