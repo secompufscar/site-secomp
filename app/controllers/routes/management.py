@@ -160,11 +160,11 @@ def alterar_camiseta():
                 db.session.add(participante)
                 db.session.commit()
                 return render_template('management/alterar_camisetas.html', participante=participante, camiseta=camiseta,
-                                       sucesso='s', form=form, form_login=form_login)
+                                       sucesso='s', form=form, form_login=form_login, usuario=current_user)
             else:
                 return render_template('management/alterar_camisetas.html', participante=participante, camiseta=camiseta,
-                                       sucesso='n', form=form, form_login=form_login)
-        return render_template('management/alterar_camisetas.html', form=form, form_login=form_login)
+                                       sucesso='n', form=form, form_login=form_login, usuario=current_user)
+        return render_template('management/alterar_camisetas.html', form=form, form_login=form_login, usuario=current_user)
     else:
         abort(403)
 

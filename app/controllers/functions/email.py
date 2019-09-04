@@ -209,3 +209,16 @@ def enviar_email_aviso_sucesso_confirmacao_pagamento_paypal(usuario, pagamento):
             "footer": 'TI X SECOMP UFSCar'
             }
     enviar_email_generico(info)
+
+def enviar_email_aviso_inscricao(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Complete sua inscrição em nosso site',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'AVISO DE INSCRIÇÃO',
+            "email": usuario.email,
+            "template": 'email/email_aviso_inscricao.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
