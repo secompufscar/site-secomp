@@ -27,8 +27,8 @@ def patrocinadores(edicao):
     return jsonify(get_patrocinadores(edicao))
 
 
-@api.route('/atividades/<edicao>')
-def atividades(edicao):
+@api.route('/atividades', methods=['POST', 'GET'])
+def atividades():
     return jsonify(get_atividades_api())
 
 #@api.route('/img/<url>')
