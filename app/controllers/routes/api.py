@@ -35,8 +35,6 @@ def atividades(edicao):
 def retornaImg(url):
     return url #TODO (quando estiver no servidor) hospedagem de imagens
 
-
-
 @api.route('/ler-presenca', methods=['POST'])
 def ler_presenca():
     '''
@@ -210,3 +208,25 @@ def pesquisa_usuario_por_atividade():
         participantes = get_participantes_da_atividade_json(int(atividadeID))
         return jsonify(participantes)
 
+@api.route('/verifica-kit', methods=['POST'])
+def verifica_kit():
+    '''
+    Essa rota vai receber via POST o uuid do participante, verificar se o participante está comprou o kit.
+    '''
+    data = request.get_json(force=True)
+    uuid = int(data['uuid_participante'])
+    key = data['key']
+    if(key == current_app.config['KEY_API_PRESENCA']):
+        try:
+            participante = db.session.query(Participante).filter_by(uuid=uuid).first()
+            pagamentos = db.session.query(Pagamento).filter_by(id_participante=participante.id, efetuado=True, rejeitado=False, cancelado=False).first()
+            info = {
+                "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
+                "Kit": pagamentos != None
+            }
+            return jsonify(info)
+        except Exception as e:
+            print(e)
+            return jsonify("ERROR")
+    else:
+        return jsonify("INVALID KEY")
