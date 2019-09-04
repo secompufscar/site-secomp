@@ -96,9 +96,15 @@ def get_participantes_sem_kit():
 
 
 def cadastra_objeto_generico(objeto):
-    db.session.add(objeto)
-    db.session.commit()
-    return objeto
+    try:
+        db.session.add(objeto)
+        db.session.flush()
+        db.session.commit()
+        return objeto
+
+    except Exception as e:
+        print(e)
+        return None
 
 
 def verifica_outro_escolhido(campo, objeto):
@@ -135,14 +141,13 @@ def valida_url_codigo(usuario, codigo):
     if(usuario is None):
         if (atividade is not None):
             return True, atividade, emails
-    else:
-        if(ministrante is not None):
-            if(atividade is not None and ministrante.usuario.email in emails):
-                return True, atividade, emails
         else:
-            if(atividade is not None and "CONTEUDO" in usuario.getPermissoes()):
-                return True, atividade, emails
-    return False, atividade, emails
+            return False, atividade, emails
+    else:
+        if(atividade is not None and ministrante.usuario.email in emails):
+            return True, atividade, emails
+        else:
+            return False, atividade, emails
 
 
 def get_id_evento_atual():
@@ -153,11 +158,9 @@ def confirmacao_atividade_ministrante(usuario):
     atividade = None
     if usuario.ministrante is not None:
         r = db.session.query(RelacaoAtividadeMinistrante).filter(RelacaoAtividadeMinistrante.id_ministrante == usuario.ministrante.id,
-                                                                                                RelacaoAtividadeMinistrante.confirmado == None).all()
-        for relacao in r:
-            a = db.session.query(Atividade).get(relacao.id_atividade)
-            if a is not None:
-                atividade = a
+                                                                                                RelacaoAtividadeMinistrante.confirmado == None).first()
+        if r is not None:
+            atividade = db.session.query(Atividade).get(r.id_atividade)
     if atividade is not None:
         if atividade.tipo.nome == "Palestra":
             view = 'cadastro_palestra'
@@ -207,7 +210,7 @@ def get_preco_kit():
 def get_info_usuarios_envio_comprovante():
      pagamentos = db.session.query(Pagamento).join(Participante)\
      .filter(Participante.id_evento == get_id_evento_atual(), Pagamento.comprovante_enviado == True,
-             Pagamento.metodo_pagamento == 'Comprovante', Pagamento.descricao == 'Kit', Pagamento.cancelado == False).all()
+             Pagamento.metodo_pagamento == 'Comprovante', Pagamento.descricao == 'Kit')
      return pagamentos
 
 def esta_preenchido(data):
@@ -225,27 +228,3 @@ def get_permissao_comprovante(participante, arquivo):
          if pagamento.arquivo_comprovante == arquivo:
              return True
      return False
-
-def diretorio_publico(diretorio):
-    return diretorio == "fotos_ministrantes"
-
-def get_nome_restricao(id_restricao):
-    if id_restricao == 1:
-        return "Nenhuma"
-    elif id_restricao == 2:
-        return "Vegetariano"
-    elif id_restricao == 3:
-        return "Vegano"
-    elif id_restricao == 4:
-        return "Diabético"
-    else:
-        return "";
-
-def possui_permissao(usuario):
-    permissoes = usuario.getPermissoes()
-    if "ALTERAR_CAMISETAS" in permissoes or "CADASTRAR_PATROCINADOR" in permissoes or "VENDA_PRESENCIAL" in permissoes \
-        or "SORTEAR" in permissoes or "SORTEAR" in permissoes or "GERAR_LISTAS" in permissoes \
-        or "ENVIAR_EMAIL" in permissoes or "CONTEUDO" in permissoes or "GERENCIAR_COMPROVANTES" in permissoes:
-        return True
-    else:
-        return False
