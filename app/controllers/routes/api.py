@@ -87,7 +87,7 @@ def ler_presenca():
         return jsonify("INVALID KEY")
 
 @api.route('/verifica-inscricao', methods=['POST'])
-def ler_presenca():
+def verifica_insc():
     '''
     Essa rota vai receber via POST o uuid do participante, o id da atividade e verificar se o participante está inscrito na mesma
     '''
