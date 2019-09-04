@@ -29,7 +29,7 @@ def patrocinadores(edicao):
 
 @api.route('/atividades/<edicao>')
 def atividades(edicao):
-    return jsonify(get_atividades(edicao))
+    return jsonify(get_atividades_api())
 
 #@api.route('/img/<url>')
 def retornaImg(url):
