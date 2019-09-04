@@ -77,7 +77,7 @@ def get_atividades_api():
                 "ministrantes": ministrantes
             }
             ativ.append(info)
-        return {"count": len(ativ), "results": ativ}
+        return ativ
     except Exception as e:
         print(e)
         return None
