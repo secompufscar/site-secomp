@@ -2,11 +2,6 @@
 {% import "wtf.html" as wtf %}
 
 {% block sidebar_content%}
-<style>
-    .help-block {
-        color: red;
-    }
-</style>
 
 <div class="container">
     <div class="row justify-content-center">
@@ -14,12 +9,12 @@
             <h2>Cadastro no WIFI-VISITANTE</h2>
         </div>
     
-        <div class="col-md-6 text-center pt-4">
+        <div class="col-md-8 text-center pt-4">
         {% if cadastrado %}
             <h3>Você já está cadastrado na rede WIFI-VISITANTE!</h3>
         {% else %}
             <h3>Insira suas informações aqui para fazer o cadastro na rede WIFI-VISITANTE!</h3>
-            <h4>Obs: Seu CPF será utilizado apenas para realizar o cadastro, e não será armazenado em nosso banco de dados.</h4>
+            <h5>Obs: Seu CPF será utilizado apenas para realizar o cadastro, e não será armazenado em nosso banco de dados.</h5>
             <form method="POST" action="/wifi-visitante">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.cpf) }}
@@ -27,10 +22,14 @@
                 {{ wtf.form_field(form.email) }}
         {% endif %}
         </div>
+    </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+
+{{ super() }}
+
 <script>
     $('#cpf').mask('000.000.000-00');
 </script>
