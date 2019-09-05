@@ -12,7 +12,8 @@ from app.controllers.forms.validators import *
 
 from secrets import token_urlsafe
 
-from app.controllers.forms.options import get_opcoes_ecustom_atividade, get_opcoes_ecustom_extensao, get_opcoes_ecustom_complemento
+from app.controllers.forms.options import *
+import uuid
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
@@ -340,3 +341,25 @@ def gerenciar_comprovantes():
         return render_template('management/gerenciar_comprovantes.html', form=form, participante=participante, usuario=current_user, form_login=form_login, pagamentos=get_info_usuarios_envio_comprovante())
     else:
         abort(403)
+
+@management.route('/cadastro-presencial-participante', methods=['POST', 'GET'])
+@login_required
+def cadastro_presencial_participante():
+    if "CREDENCIAMENTO" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes() or current_user.is_admin():
+        form_login = LoginForm(request.form)
+        form = CadastroPresencialParticipanteForm(request.form)
+        meu_participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
+        form.usuario.choices = get_usuarios_inscricao_pendente()
+        if form.validate_on_submit():
+            agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            participante = Participante(id_usuario=form.usuario.data, id_evento=get_id_evento_atual(), data_inscricao=agora, credenciado=False, opcao_coffee=0,
+                            uuid=str(uuid.uuid1()))
+            db.session.add(participante)
+            db.session.commit()
+            alerta = "Participante " + str(participante.usuario.primeiro_nome) + ' ' + str(participante.usuario.sobrenome) + ' <' + str(participante.usuario.email) + '> inscrito com sucesso!'
+            form.usuario.choices = get_usuarios_inscricao_pendente()
+            return render_template('management/cadastro_participante_presencial.html', alerta=alerta,
+                                   form=form, form_login=form_login, usuario=current_user, participante=meu_participante)
+        return render_template('management/cadastro_participante_presencial.html', form=form, form_login=form_login,
+                               usuario=current_user, participante=meu_participante, alerta=None)
+    abort(403)

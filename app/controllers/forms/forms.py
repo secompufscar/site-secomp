@@ -311,10 +311,11 @@ class GerenciarComprovantesForm(FlaskForm):
 
 class CancelarPagamentoForm(FlaskForm):
     cancelar = IntegerField()
-
-
+    
 class WifiForm(BaseRecaptchaForm):
     cpf = StringField('CPF:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=0,max=14)])
     nome = StringField('Nome Completo:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1,max=128)])
     email = StringField('Email:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=128)])
- 
+
+class CadastroPresencialParticipanteForm(FlaskForm):
+    usuario = SelectField("Selecione um usuário para o cadastro presencial", choices=get_usuarios_inscricao_pendente(), id="usuario", coerce=int)
