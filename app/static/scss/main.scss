@@ -96,14 +96,19 @@ header {
 }
 
 .btn-primary {
+  background: none;
   background-color: $secomp1;
 }
 
-.btn-primary:hover,
-.btn-primary:focus,
 .btn-primary:active,
 .btn-primary.active {
   background-color: $secomp2 !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: none;
+  background-color: #007092 !important;
 }
 
 .btn-link:hover,
