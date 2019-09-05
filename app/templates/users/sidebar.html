@@ -78,7 +78,10 @@
 
             {% endif %}
 
+            {% if participante %}
             <a href="{{ url_for('users.cadastro_wifi') }}" class="list-group-item list-group-item-action">WIFI-VISITANTE</a>
+            {% endif %}
+
             <a href="{{url_for('views.logout')}}" class="list-group-item list-group-item-action">Logout</a>
         </div>
     </div>
