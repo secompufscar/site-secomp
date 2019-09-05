@@ -79,7 +79,7 @@ def get_atividades_api():
                 "ministrantes": ministrantes
             }
             ativ.append(info)
-        return {"count": len(ativ), "results": ativ}
+        return ativ
     except Exception as e:
         print(e)
         return None
@@ -229,7 +229,7 @@ def get_permissao_comprovante(participante, arquivo):
      return False
 
 def diretorio_publico(diretorio):
-    return diretorio == "fotos_ministrantes"
+    return diretorio == "fotos_ministrantes" or diretorio == "logo_patrocinadores"
 
 def get_nome_restricao(id_restricao):
     if id_restricao == 1:
@@ -285,3 +285,6 @@ def cadastro_wifi_visitante(data):
         print(e)
         return False
 
+def get_ranking_pontuacao():
+    participantes = db.session.query(Participante).filter_by(id_evento=get_id_evento_atual()).order_by(Participante.pontuacao.desc()).limit(10).all()
+    return participantes
