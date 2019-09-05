@@ -186,7 +186,8 @@ def dashboard():
 @login_required
 @email_verificado_required
 def cadastro_wifi():
-    if current_user.participante:
+    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    if participante:
         form = WifiForm(request.form)
         if form.validate_on_submit():
             data = { 'cpf': form.cpf.data,
@@ -195,10 +196,12 @@ def cadastro_wifi():
             res = cadastrar_wifi_visitante(data)
             if res:
                 flash("Usuário cadastrado com sucesso na rede WIFI-VISITANTE!")
-                current_user.wifi = True
+                participante.wifi = True
+                db.session.add(participante)
+                db.session.commit()
                 return redirect(url_for('.dashboard'))
             flash("Um ou mais campos não foram preenchidos corretamente.")
-        return render_template('users/wifi_visitante.html', title='Cadastrar no WIFI-VISITANTE', form=form, cadastrado=current_user.participante.wifi)
+        return render_template('users/wifi_visitante.html', title='Cadastrar no WIFI-VISITANTE', form=form, cadastrado=participante.wifi)
     else:
         flash("Faça sua inscrição na SECOMP para poder se cadastrar no WIFI-VISITANTE!")
         return redirect(url_for('.cadastro_participante'))
