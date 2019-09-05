@@ -250,10 +250,15 @@ def dados_usuario():
                 ativ = db.session.query(Atividade).filter_by(id=p.id_atividade).all()
                 for a in ativ:
                     ativs.append(a.titulo)
-            camiseta = db.session.query(Pagamento).filter_by(id_participante=participante.id).first().camiseta.tamanho
+            camiseta = db.session.query(Pagamento).filter_by(id_participante=participante.id).all()
+            camisetas = []
+            for p in camiseta:
+                camisetas.append(p.camiseta.tamanho)
             info = {
                 "id_participante": participante.id,
-                "camiseta": camiseta,
+                "primeiro_nome": participante.usuario.primeiro_nome,
+                "sobrenome": participante.usuario.sobrenome,
+                "camiseta": camisetas,
                 "pontuacao": participante.pontuacao,
                 "presencas": ativs,
                 "uuid": participante.uuid
