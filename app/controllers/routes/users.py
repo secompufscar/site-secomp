@@ -38,7 +38,7 @@ def cadastro():
     """
     Renderiza a página de cadastro do projeto
     """
-    '''
+    
     form_login = LoginForm(request.form)
     form = CadastroForm(request.form)
     form.curso.choices = get_opcoes_cursos()
@@ -68,8 +68,8 @@ def cadastro():
         return redirect(url_for('.verificar_email'))
 
     return render_template('users/cadastro.html', form=form, form_login=form_login)
-    '''
-    return redirect(url_for('views.index'))
+    
+    #return redirect(url_for('views.index'))
 
 @users.route('/verificar-email')
 @login_required
