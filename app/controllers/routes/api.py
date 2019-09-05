@@ -256,6 +256,7 @@ def dados_usuario():
                 "camiseta": camiseta,
                 "pontuacao": participante.pontuacao,
                 "presencas": ativs,
+                "uuid": participante.uuid
             }
             return jsonify(info)
         else:
