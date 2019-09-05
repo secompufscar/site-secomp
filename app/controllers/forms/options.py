@@ -1,4 +1,5 @@
 from app.models.models import *
+from app.controllers.functions.helpers import *
 
 opcoes_restricao = [
     (1, "Nenhuma"),
@@ -185,3 +186,12 @@ def get_opcoes_transporte_sanca():
             (1, 'Carro próprio (combustível calculado pelo JF)'),
             (2, 'Uber/99 (valor gasto na viagem “local de partida → UFSCar”)'),
             (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')]
+
+def get_usuarios_inscricao_pendente():
+    usuarios = db.session.query(Usuario).filter(Usuario.email_verificado == True).all()
+    usuarios_inscricao_pendente = []
+    for usuario in usuarios:
+        participante = db.session.query(Participante).filter(Participante.usuario == usuario, Participante.id_evento == get_id_evento_atual()).first()
+        if participante is None and "MINISTRANTE" not in usuario.getPermissoes() and usuario.primeiro_nome is not None and usuario.sobrenome is not None:
+            usuarios_inscricao_pendente.append((usuario.id, str(usuario.primeiro_nome) + ' ' + str(usuario.sobrenome) + ' <' + str(usuario.email) + '>'))
+    return usuarios_inscricao_pendente
