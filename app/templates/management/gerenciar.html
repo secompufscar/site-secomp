@@ -79,6 +79,13 @@
             <a href="{{ url_for('management.cadastro_flags') }}" class="btn btn-primary">Gerenciar Flags</a>
         </div>
         {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CREDENCIAMENTO'].usuarios or usuario in permissoes['ADMIN'].usuarios or usuario.is_admin() is sameas true %}
+        <div class="col-md-6 p-3">
+            <h4>Cadastro presencial de participante</h4>
+            <a href="{{ url_for('management.cadastro_presencial_participante') }}" class="btn btn-primary">Inscrever usuários</a>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
