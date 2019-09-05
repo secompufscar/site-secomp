@@ -115,6 +115,8 @@ def reenviar_email():
         return render_template('users/reenviar_email.html', form_login=form_login, usuario=usuario, form=form)
     else:
         return redirect(url_for('users.verificar_email'))
+
+
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
@@ -170,6 +172,7 @@ def alterar_usuario():
         form.data_nasc.data = usuario.data_nascimento
         return render_template('users/alterar_usuario.html', usuario=current_user, form=form)
 
+
 @users.route('/dashboard', methods=['POST', 'GET'])
 @login_required
 @email_verificado_required
@@ -183,6 +186,32 @@ def dashboard():
         db.session.commit()
         return redirect(url_for('.verificar_email'))
 
+
+@users.route('/wifi-visitante', methods=['POST', 'GET'])
+@login_required
+@email_verificado_required
+def cadastro_wifi():
+    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    if participante:
+        form = WifiForm(request.form)
+        if form.validate_on_submit():
+            data = { 'cpf': form.cpf.data,
+                     'nome': form.nome.data,
+                     'email': form.email.data }
+            res = cadastrar_wifi_visitante(data)
+            if res:
+                flash("Usuário cadastrado com sucesso na rede WIFI-VISITANTE!")
+                participante.wifi = True
+                db.session.add(participante)
+                db.session.commit()
+                return redirect(url_for('.dashboard'))
+            flash("Um ou mais campos não foram preenchidos corretamente.")
+        return render_template('users/wifi_visitante.html', title='Cadastrar no WIFI-VISITANTE', form=form, cadastrado=participante.wifi, usuario=current_user)
+    else:
+        flash("Faça sua inscrição na SECOMP para poder se cadastrar no WIFI-VISITANTE!")
+        return redirect(url_for('.cadastro_participante'))
+
+
 @users.route('/dados', methods=['POST', 'GET'])
 @login_required
 def dados():
@@ -190,6 +219,7 @@ def dados():
         id=current_user.id).first()
     return render_template('users/dados.html', title='Dados Pessoais', usuario=usuario,
                             participante = db.session.query(Participante).filter_by(usuario=current_user).first())
+
 
 @users.route('/dados-participante', methods=['POST', 'GET'])
 @login_required
