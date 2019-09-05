@@ -21,7 +21,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-50">
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-50">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-75">
 						{% endif %}
@@ -51,7 +51,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-50">
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-50">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-50">
 						{% endif %}
@@ -81,7 +81,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-50">
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-50">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-50">
 						{% endif %}
@@ -111,7 +111,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-50">
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-50">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-50">
 						{% endif %}
