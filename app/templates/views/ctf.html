@@ -5,7 +5,7 @@
 <style>
 	.bg {
 		background-image: url("{{ url_for('static', filename='images/ctf.jpg') }}");
-		height: 80vh;
+		height: 85vh;
 		filter: blur(3px);
 		-webkit-filter: blur(3px);
 		background-position: center;
@@ -27,8 +27,8 @@
 
 	.t1 {
 		font-family: hacker;
-		font-weight: 600;
-		font-size: 400%;
+		font-weight: 800;
+		font-size: 350%;
 		text-shadow: 2px 2px #a0a0a044;
 	}
 
@@ -55,8 +55,8 @@
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-calendar-alt"></i>
 					<h5 class="t2 pt-2">DATA</h5>
-					<h5>Início: Segunda (09/09) às 20h00</h5>
-					<h5>Fim: Quinta (12/09) às 19h59</h5>
+					<h6>Início: Segunda (09/09) às 20h00</h6>
+					<h6>Fim: Quinta (12/09) às 19h59</h6>
 				</ul>
 			</div>
 
@@ -64,26 +64,26 @@
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-users"></i>
 					<h5 class="t2 pt-2">EQUIPES</h5>
-					<h5>Até 4 participantes*</h5>
+					<h6>Até 4 participantes*</h6>
 				</ul>
 			</div>
 			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-clipboard-check"></i>
 					<h5 class="t2 pt-2">INSCRIÇÕES</h5>
-					<h5>Através do <a href="https://pombodemandsyour.faith/" target="_blank">link</a></h5>
+					<h6>Através do <a href="https://pombodemandsyour.faith/" target="_blank">link</a></h6>
 				</ul>
 			</div>
 			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-trophy"></i>
 					<h5 class="t2 pt-2">PREMIAÇÃO</h5>
-					<h5>Ingressos para o evento <a href="https://www.h2hc.com.br" target="_blank">H2HC</a></h5>
+					<h6>Ingressos para o evento <a href="https://www.h2hc.com.br" target="_blank">H2HC</a></h6>
 				</ul>
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row mt-4">
 			<div class="col-md-12 text-center pb-2">
 				<h4 class="t2 pb-2">Descrição:</h4>
 
@@ -111,9 +111,9 @@
 
 		<div class="text-center">
 			<a href="{{ url_for('static', filename='juridic/edital_ctf.pdf') }}" target="_blank"
-				class="btn btn-primary m-3">
+				class="btn btn-secondary m-3">
 				<i class="mr-2 fas fa-sign-in-alt"></i>Acesse o edital</a>
-			<a href="https://pombodemandsyour.faith/" target="_blank" class="btn btn-primary m-3">
+			<a href="https://pombodemandsyour.faith/" target="_blank" class="btn btn-secondary m-3">
 				<i class="mr-2 fas fa-sign-in-alt"></i>Inscreva-se!</a>
 		</div>
 	</div>

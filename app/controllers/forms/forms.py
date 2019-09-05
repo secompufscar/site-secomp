@@ -10,6 +10,7 @@ from app.controllers.functions.helpers import get_participantes, get_atividades
 class BaseRecaptchaForm(FlaskForm):
     recaptcha = RecaptchaField(validators=[Recaptcha(message="Você deve completar a checagem de validação do recaptcha.")])
 
+
 class LoginForm(BaseRecaptchaForm):
     email = StringField('Email', validators=[InputRequired(
         message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=254)])
@@ -300,11 +301,20 @@ class CadastrarFlagForm(FlaskForm):
 class SubmeterFlagForm(FlaskForm):
     flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
 
+
 class GerenciarComprovantesForm(FlaskForm):
     aprovar = IntegerField()
     desaprovar = IntegerField()
     rejeitar = IntegerField()
     autorizar = IntegerField()
 
+
 class CancelarPagamentoForm(FlaskForm):
     cancelar = IntegerField()
+
+
+class WifiForm(BaseRecaptchaForm):
+    cpf = StringField('CPF:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=0,max=14)])
+    nome = StringField('Nome Completo:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1,max=128)])
+    email = StringField('Email:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=128)])
+ 
