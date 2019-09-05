@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+{% block styles %}
+{{ super() }}
+<link href="{{ url_for('static', filename='css/sobre.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
 
 {% block content %}
 <div class="container text-center bg-light text-dark pt-3 pb-3 mt-3 mb-3" style="border-radius: 10px;">
@@ -19,10 +23,6 @@
 				minicursos, workshops, palestras técnicas, empresariais, mesas redondas, feira de
 				recrutamento e muitos outros conteúdos que foram pensados ao longo do tempo em busca de
 				um evento cada vez melhor.</p>
-			<p>
-				Em prol disso, os estudos são constantes para que o modelo de evento sempre melhore e se
-				torne referência, trazendo cada vez mais experiências únicas a quem nos acompanha e
-				encurtando as relações para que todos os segmentos de público sejam beneficiados.</p>
 		</div>
 		<div class="col-md-6">
 			<br>
