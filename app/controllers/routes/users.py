@@ -117,6 +117,7 @@ def reenviar_email():
 @users.route('/cadastro-participante', methods=['POST', 'GET'])
 @login_required
 def cadastro_participante():
+    '''
     try:
         id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
         if current_user.email_verificado:
@@ -140,7 +141,8 @@ def cadastro_participante():
             return redirect(url_for('.verificar_email'))
     except SQLAlchemyError:
         db.session.rollback()
-        return redirect(url_for('.dashboard'))
+        '''
+    return redirect(url_for('.dashboard'))
 
 
 @users.route('/alterar-dados-usuario', methods=['POST', 'GET'])
