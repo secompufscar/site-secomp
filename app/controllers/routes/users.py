@@ -201,7 +201,7 @@ def cadastro_wifi():
                 db.session.commit()
                 return redirect(url_for('.dashboard'))
             flash("Um ou mais campos não foram preenchidos corretamente.")
-        return render_template('users/wifi_visitante.html', title='Cadastrar no WIFI-VISITANTE', form=form, cadastrado=participante.wifi)
+        return render_template('users/wifi_visitante.html', title='Cadastrar no WIFI-VISITANTE', form=form, cadastrado=participante.wifi, usuario=current_user)
     else:
         flash("Faça sua inscrição na SECOMP para poder se cadastrar no WIFI-VISITANTE!")
         return redirect(url_for('.cadastro_participante'))
