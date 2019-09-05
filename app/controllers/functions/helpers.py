@@ -1,3 +1,5 @@
+import requests
+
 from app.models.models import *
 from app.controllers.constants import EDICAO_ATUAL
 
@@ -248,6 +250,39 @@ def possui_permissao(usuario):
         or "ENVIAR_EMAIL" in permissoes or "CONTEUDO" in permissoes or "GERENCIAR_COMPROVANTES" in permissoes:
         return True
     else:
+        return False
+
+def cadastro_wifi_visitante(data):
+    username = current_app.config['SAGUI_USER']
+    password = current_app.config['SAGUI_PASS']
+
+    inicio_validade = '2019-09-09T00:00:00.000Z'
+    fim_validade = '2019-09-13T23:59:59.999Z'
+    justificativa = 'SECOMP'
+
+    try:
+        r = requests.post('https://sistemas.ufscar.br/sagui-api/api/login', json={'username': username, 'password': password})
+        login_data = r.json()
+
+        assert 'ROLE_VISITANTE_CADASTRAR_VISITANTE' in login_data['roles'], 'Usuário não tem as permissões necessárias!'
+
+        headers = {'Authorization': f"{login_data['token_type']} {login_data['access_token']}"}
+        r = requests.post('https://sistemas.ufscar.br/sagui-api/visitante', json=data, headers=headers)
+        cadastro = r.json()
+
+        id_visitante = cadastro['id']
+        r = requests.post('https://sistemas.ufscar.br/sagui-api/visitante/%d/autorizar' % id_visitante,
+                          json={'visitante': id_visitante,
+                                'inicioValidade': inicio_validade,
+                                'fimValidade': fim_validade,
+                                'justificativa': justificativa},
+                          headers=headers)
+        autorizacao = r.json()
+
+        requests.post('https://sistemas.ufscar.br/sagui-api/api/logout', headers=headers)
+        return True
+    except Exception as e:
+        print(e)
         return False
 
 def get_ranking_pontuacao():

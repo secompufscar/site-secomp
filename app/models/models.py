@@ -102,6 +102,7 @@ class Participante(db.Model):
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
     pontuacao = Column(Integer, nullable=True, default=0)
+    wifi = Column(Boolean, default=False)
     minicurso_etapa_1 = Column(Integer, db.ForeignKey('atividade.id'))
     minicurso_etapa_2 = Column(Integer, db.ForeignKey('atividade.id'))
     usuario = db.relationship('Usuario', back_populates='participantes_associados', lazy=True)
