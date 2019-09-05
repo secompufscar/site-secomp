@@ -2,32 +2,41 @@
 
 {% block content %}
 
+<style>
+    tr {
+        color: var(--font-color);
+    }
+</style>
 
-<div class="container" style="padding-top:50px">
-	<h1 class="text-center" style="padding:50px">Pontuação COMPCases - X SECOMP</h1>
-    {% if participante_logado != None %}
-       <center><h5 style="padding-bottom:50px">A sua pontuação é de {{ participante_logado.pontuacao }} pontos</h5></center>
-    {% endif %}
-    <table id="example" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Nome</th>
-                <th>Pontuação</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for participante in participantes %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ participante.usuario.primeiro_nome }} {{ participante.usuario.sobrenome }} </td>
-                <td>{{ participante.pontuacao }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="container">
+    <div class="row justify-content-center text-center pt-4 pb-4">
+        <div class="col-md-12 pb-4">
+            <h2>Pontuação COMPCases</h2>
+        </div>
+        {% if participante_logado != None %}
+        <div class="col-md-12 pb-4">
+            <h4><b>{{ participante_logado.usuario.primeiro_nome }} {{ participante_logado.usuario.sobrenome }}:</b> {{ participante_logado.pontuacao }} pontos</h4>
+        </div>
+        {% endif %}
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Posição</th>
+                    <th>Nome</th>
+                    <th>Pontuação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for participante in participantes %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ participante.usuario.primeiro_nome }} {{ participante.usuario.sobrenome }}</td>
+                    <td>{{ participante.pontuacao }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
-
 {% endblock %}
-
