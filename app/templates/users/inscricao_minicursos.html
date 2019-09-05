@@ -6,7 +6,34 @@
 
 {{ super() }}
 
-<link href="{{ url_for('static', filename='css/cronograma.css') }}" rel="stylesheet" type="text/css" />
+<style>
+
+	:root {
+		--font-gray: #444444;
+		--card-color: #fff;
+		--border-color: #ced2d6;
+	}
+
+	[data-theme=dark] {
+		--font-gray: #c0c0c0;
+		--card-color: #191e1f;
+		--border-color: #646A70;
+	}
+
+	.modal-content {
+		color: var(--font-gray);
+		background-color: var(--card-color);
+	}
+
+	.modal-header {
+		border-bottom: 1px solid var(--border-color) !important;
+	}
+
+	.modal-footer {
+		border-top: 1px solid var(--border-color) !important;
+	}
+
+</style>
 
 {% endblock %}
 
@@ -65,40 +92,50 @@
 
 	<div id="list" class="row justify-content-center pt-3">
 
-		<div class="table-responsive col-md-12">
+		<div class="table-responsive col-md-12 text-center">
 			<table class="table table-striped" cellspacing="0" cellpadding="0">
 				<thead>
 					<tr>
 						<th>Título</th>
-						<th>Ministrante</th>
 						<th>Vagas disponíveis</th>
-						<th>Opções</th>
+						<th>Opções*</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for atividade in minicursos %}
 					{% if atividade.ativo and atividade.vagas_totais %}
 					<tr>
-						<td class="align-middle">{{atividade.titulo}}</td>
-						<td class="align-middle">{{atividade.ministrantes.nome}}</td>
-						<td class="align-middle">{{atividade.vagas_disponiveis}}</td>
 						<td class="align-middle">
+							<b>{{atividade.titulo}}</b>
+							{% if atividade.info_minicurso is not sameas none %}
+							{% if atividade.info_minicurso.pre_requisitos is not sameas none %}
+							<div class="pt-2">
+								<b>Pré-requisitos: </b>{{atividade.info_minicurso.pre_requisitos}}
+							</div>
+							{% endif %}
+							{% endif %}
+						</td>
+						<td class="align-middle">{{atividade.vagas_disponiveis}}</td>
+						<td class="align-middle w-25">
 							{% if participante in atividade.participantes %}
+
 							<a href="{{ url_for('.desinscrever_minicurso', id=atividade.id) }}">
-								<button type="button" class="btn btn-danger">Desinscrever-se</button>
+								<button type="button" class="btn btn-danger m-1 w-100"><b>Desinscrever</b></button>
 							</a>
 							{% else %}
 							<a href="{{ url_for('.inscrever_minicurso', id=atividade.id)}}">
 								{% if atividade.vagas_disponiveis > 0 %}
-								<button type="button" class="btn btn-primary">
+								<button type="button" class="btn btn-primary m-1 w-100">
 									{% else %}
-									<button type="button" class="btn btn-secondary" disabled>
+									<button type="button" class="btn btn-secondary m-1 w-100" disabled>
 										{% endif %}
-										Inscrever-se
+										Inscrever
 									</button>
 							</a>
+
 							{% endif %}
-							<button type="button" class="btn btn-success" data-toggle="modal"
+
+							<button type="button" class="btn btn-success m-1 w-100" data-toggle="modal"
 								data-target="#modal{{ atividade.id }}"
 								onclick="$('#modal{{ atividade.id }}').appendTo('body')">
 								Visualizar
@@ -112,10 +149,16 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="col-md-8 text-center p-2">
+			<h4><b>*Observação: </b>Caso haja a desinscrição de um minicurso inscrito na primeira etapa,
+			<b>não haverá</b> a possibilidade de inscrição em dois minicursos.</h4>
+		</div>
 	</div>
 
 	{% elif inscricao_liberada == 0 %}
-	Inscrição em minicursos está fechada neste momento!
+	<div class="col-md-12 text-center pt-4">
+		<h3>Inscrição em minicursos está fechada neste momento!</h3>
+	</div>
 	{% endif %}
 
 </div>
@@ -136,18 +179,66 @@
 			</div>
 			<div class="modal-body">
 				<div class="row no-gutters">
-					<div class="col-md-10">
-						<h5>{{atividade.ministrantes.nome}}</h5>
-						<p class="text-muted">{{atividade.ministrantes.nome}}</p>
-					</div>
-					<div class="col-md-2">
-						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid"
-							alt="">
-					</div>
+						{% if atividade.ministrantes_confirmados_atividade | length > 1 %}
+						{% for ministrante in atividade.ministrantes_confirmados_atividade %}
+						<div class="row align-items-center mb-3">
+						   <div class="col-4 text-center">
+							  {% if ministrante.foto is not sameas none %}
+   
+							  <img src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
+								 class="w-50" alt="">
+   
+							  {% else %}
+   
+							  <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-50" alt="">
+   
+							  {% endif %}
+   
+						   </div>
+						   <div class="col-8">
+							  <div class="text-gray">
+								 <b>{{ministrante.usuario.primeiro_nome}} {{ministrante.usuario.sobrenome}}</b>
+								 {% if ministrante.profissao is not sameas none %}
+								 <br>{{ ministrante.profissao }}
+								 {% endif %}
+							  </div>
+						   </div>
+						</div>
+						{% endfor %}
+   
+						{% else %}
+   
+						<div class="row justify-content-center align-items-center text-center mb-3">
+						   <div class="col-md-12 mb-2">
+							  {% if atividade.ministrantes_confirmados_atividade[0].foto is not sameas none %}
+   
+							  <img
+								 src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+atividade.ministrantes_confirmados_atividade[0].foto) }}"
+								 class="w-25" alt="">
+   
+							  {% else %}
+   
+							  <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-25" alt="">
+   
+							  {% endif %}
+   
+						   </div>
+						   <div class="col-md-12">
+							  <div class="text-gray">
+								 <b>{{atividade.ministrantes_confirmados_atividade[0].usuario.primeiro_nome}}
+									{{atividade.ministrantes_confirmados_atividade[0].usuario.sobrenome}}</b>
+								 {% if atividade.ministrantes_confirmados_atividade[0].profissao is not sameas none %}
+								 <br>{{ atividade.ministrantes_confirmados_atividade[0].profissao }}
+								 {% endif %}
+							  </div>
+						   </div>
+						</div>
+   
+						{% endif %}
 				</div>
 
-				<div class="col-md-12 text-gray">
-					<h5>Descrição</h5>
+				<div class="col-md-12 text-gray m-2">
+					<h5><b>Descrição</b></h5>
 					<p>{{atividade.descricao}}</p>
 				</div>
 			</div>
