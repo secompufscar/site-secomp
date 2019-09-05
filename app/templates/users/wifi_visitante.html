@@ -16,7 +16,6 @@
 	</div>
         {% else %}
             <h3>Insira suas informações aqui para fazer o cadastro na rede WIFI-VISITANTE!</h3>
-            <h5>Obs: Seu CPF será utilizado apenas para realizar o cadastro, e não será armazenado em nosso banco de dados.</h5>
             <form method="POST" action="/wifi-visitante">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.cpf) }}
