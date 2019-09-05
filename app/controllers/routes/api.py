@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, abort, url_for, Blueprint
 from flask import jsonify, current_app
 from app.controllers.functions.dictionaries import *
+from passlib.hash import pbkdf2_sha256
 
 from app.controllers.functions.helpers import get_participantes_da_atividade_json, get_atividades_api
 from app.controllers.functions.email import enviar_email_custon
@@ -230,3 +231,33 @@ def verifica_kit():
             return jsonify("ERROR")
     else:
         return jsonify("INVALID KEY")
+
+@api.route('/dados-usuario', methods=['POST'])
+def dados_usuario():
+    '''
+    Essa rota vai receber via POST o email do participante, a hash da senha, e retornar os dados do usuário para o aplicativo.
+    '''
+    data = request.get_json(force=True)
+    email = str(data['email'])
+    senha = str(data['password'])
+    user = db.session.query(Usuario).filter_by(email=email).first()
+    participante = db.session.query(Participante).filter_by(
+        usuario=user)
+    if user:
+        if user.senha is not None and pbkdf2_sha256.verify(senha, user.senha):
+            ativs = []
+            for p in participante.presencas:
+                ativ = db.session.query(Atividade).filter_by(id=p.id_atividade).all()
+                for a in ativ:
+                    ativs.append(a.titulo)
+            camiseta = db.session.query(Pagamento).filter_by(id_participante=participante.id).first().camiseta.tamanho
+            info = {
+                "id_participante": participante.id,
+                "camiseta": camiseta,
+                "pontuacao": participante.pontuacao,
+                "presencas": ativs,
+            }
+            return jsonify(info)
+        else:
+            return jsonify("Erro: senha inválida.")
+    return jsonify("Usuário inexistente.")
