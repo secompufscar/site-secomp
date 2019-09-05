@@ -244,7 +244,7 @@ def dados_usuario():
     participante = db.session.query(Participante).filter_by(
         usuario=user)
     if user:
-        if user.senha is not None and pbkdf2_sha256.verify(senha, user.senha):
+        if user.senha is not None and senha == user.senha:
             ativs = []
             for p in participante.presencas:
                 ativ = db.session.query(Atividade).filter_by(id=p.id_atividade).all()
@@ -256,8 +256,21 @@ def dados_usuario():
                 "camiseta": camiseta,
                 "pontuacao": participante.pontuacao,
                 "presencas": ativs,
+                "uuid": participante.uuid
             }
             return jsonify(info)
         else:
             return jsonify("Erro: senha inválida.")
     return jsonify("Usuário inexistente.")
+
+@api.route('/hash-func', methods=['POST'])
+def dados_usuario():
+    '''
+    Essa rota vai receber via POST a senha do usuário e retornar a HASH para o aplicativo.
+    '''
+    data = request.get_json(force=True)
+    senha = str(data['password'])
+    if senha:
+        return jsonify(pbkdf2_sha256.encrypt(senha, rounds=10000, salt_size=15))
+    else:
+        return jsonify("NULL")

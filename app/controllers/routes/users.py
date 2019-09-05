@@ -144,9 +144,9 @@ def cadastro_participante():
             return redirect(url_for('.verificar_email'))
     except SQLAlchemyError:
         db.session.rollback()
-        return redirect(url_for('.dashboard'))
-    '''
+        '''
     return redirect(url_for('.dashboard'))
+
 
 @users.route('/alterar-dados-usuario', methods=['POST', 'GET'])
 @login_required
