@@ -105,7 +105,7 @@ def get_dicionario_info_evento(edicao):
 def get_patrocinadores():
     try:
         info = []
-        pats = db.session.query(Patrocinador).filter_by(ativo=True)
+        pats = db.session.query(Patrocinador).filter_by(ativo_site=True)
         for p in pats:
             aux = {
                 "nome": p.nome_empresa,
