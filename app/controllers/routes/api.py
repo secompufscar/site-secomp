@@ -242,7 +242,7 @@ def dados_usuario():
     senha = str(data['password'])
     user = db.session.query(Usuario).filter_by(email=email).first()
     participante = db.session.query(Participante).filter_by(
-        usuario=user)
+        usuario=user).first()
     if user:
         if user.senha is not None and pbkdf2_sha256.verify(senha, user.senha):
             ativs = []
