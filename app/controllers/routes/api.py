@@ -286,7 +286,7 @@ def patroc_api():
     Devolve um JSON com os patrocinadores
     '''
     try:
-        return jsonify(get_patrocinadores())
+        return jsonify(get_patrocinadores_ativos())
     except Exception as e:
         print(e)
         return None
