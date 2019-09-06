@@ -194,7 +194,8 @@ def get_urls_conteudo(url_root):
                         "url": str(url_root) + 'area-conteudo/cadastro-atividade/' + str(get_url_tipo(atividade.tipo.nome)) + '/' + str(atividade.url_codigo),
                         "emails": emails
                 }
-            info_urls.append(info)
+            if info not in info_urls:
+                info_urls.append(info)
         return info_urls
     except SQLAlchemyError:
         db.session.rollback()
