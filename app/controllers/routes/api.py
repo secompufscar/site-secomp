@@ -244,7 +244,7 @@ def dados_usuario():
     participante = db.session.query(Participante).filter_by(
         usuario=user)
     if user:
-        if user.senha is not None and senha == user.senha:
+        if user.senha is not None and pbkdf2_sha256.verify(senha, user.senha):
             ativs = []
             for p in participante.presencas:
                 ativ = db.session.query(Atividade).filter_by(id=p.id_atividade).all()
@@ -267,7 +267,8 @@ def dados_usuario():
         else:
             return jsonify("Erro: senha inválida.")
     return jsonify("Usuário inexistente.")
-
+  
+'''
 @api.route('/hash-func', methods=['POST'])
 def hash_func():
     '''
@@ -279,7 +280,8 @@ def hash_func():
         return jsonify(pbkdf2_sha256.encrypt(senha, rounds=10000, salt_size=15))
     else:
         return jsonify("NULL")
-
+'''
+    
 @api.route('/patrocinadores', methods=['GET'])
 def patroc_api():
     '''
