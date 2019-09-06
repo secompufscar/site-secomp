@@ -102,7 +102,7 @@ def get_dicionario_info_evento(edicao):
         return None
 
 
-def get_patrocinadores():
+def get_patrocinadores_ativos():
     try:
         info = []
         pats = db.session.query(Patrocinador).filter_by(ativo_site=True)
