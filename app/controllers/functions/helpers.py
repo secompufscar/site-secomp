@@ -61,7 +61,8 @@ def get_atividades_api():
                     "id_usuario": m.id_usuario,
                     "cargo": m.profissao,
                     "instituicao": m.empresa_universidade,
-                    "nome": m.usuario.primeiro_nome + " " + m.usuario.sobrenome,
+                    "primeiro_nome": m.usuario.primeiro_nome,
+                    "sobrenome": m.usuario.sobrenome,
                     "foto": m.foto,
                     "facebook": m.facebook,
                     "twitter": m.twitter,
@@ -73,8 +74,8 @@ def get_atividades_api():
                 "tipo": a.tipo.nome,
                 "titulo": a.titulo,
                 "local": a.local,
-                "inicio": datetime.timestamp(a.data_hora_inicio),
-                "fim": datetime.timestamp(a.data_hora_fim),
+                "inicio": a.data_hora_inicio,
+                "fim": a.data_hora_fim,
                 "descricao": a.descricao,
                 "ministrantes": ministrantes
             }
