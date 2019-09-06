@@ -288,22 +288,3 @@ def cadastro_wifi_visitante(data):
 def get_ranking_pontuacao():
     participantes = db.session.query(Participante).filter_by(id_evento=get_id_evento_atual()).order_by(Participante.pontuacao.desc()).limit(10).all()
     return participantes
-
-def get_patrocinadores():
-    try:
-        info = []
-        pats = db.session.query(Patrocinador)
-        for p in pats:
-            aux = {
-                "nome": p.nome_empresa,
-                "cota": p.cota.nome,
-                "site": p.link_website,
-                "ordem_site": p.ordem_site,
-                "ativo": p.ativo_site,
-                "logo": p.logo
-            }
-            info.append(aux)
-        return info
-    except Exception as e:
-        print(e)
-        return None
