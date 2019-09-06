@@ -269,7 +269,7 @@ def dados_usuario():
     return jsonify("Usuário inexistente.")
 
 @api.route('/hash-func', methods=['POST'])
-def dados_usuario():
+def hash_func():
     '''
     Essa rota vai receber via POST a senha do usuário e retornar a HASH para o aplicativo.
     '''
