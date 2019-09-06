@@ -172,6 +172,7 @@ def get_urls_conteudo(url_root):
     try:
         atividades = db.session.query(Atividade).join(TipoAtividade).filter(Atividade.id_evento==get_id_evento_atual(), TipoAtividade.nome != "Outro").all()
         info_urls = []
+        emails = []
         for atividade in atividades:
             titulo = atividade.titulo
 
@@ -190,7 +191,7 @@ def get_urls_conteudo(url_root):
                         "tipo" : atividade.tipo.nome,
                         "titulo_atividade": titulo,
                         "codigo_url" : atividade.url_codigo,
-                        "url": url_root + 'area-conteudo/cadastro-atividade/' + get_url_tipo(atividade.tipo.nome) + '/' + atividade.url_codigo,
+                        "url": str(url_root) + 'area-conteudo/cadastro-atividade/' + str(get_url_tipo(atividade.tipo.nome)) + '/' + str(atividade.url_codigo),
                         "emails": emails
                 }
             info_urls.append(info)
