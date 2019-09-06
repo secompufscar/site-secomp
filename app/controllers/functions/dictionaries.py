@@ -177,7 +177,7 @@ def get_urls_conteudo(url_root):
 
             if atividade.titulo is None or atividade.titulo == '':
                 titulo = "-"
-            emails = []
+                emails = []
             for ministrante in atividade.ministrantes:
                 relacao = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
                 if relacao.confirmado == True:
@@ -185,14 +185,14 @@ def get_urls_conteudo(url_root):
                 else:
                     confirmado = False
                 emails.append({"email": ministrante.usuario.email, "confirmado": confirmado })
-            info = {
-                    "id" : atividade.id,
-                    "tipo" : atividade.tipo.nome,
-                    "titulo_atividade": titulo,
-                    "codigo_url" : atividade.url_codigo,
-                    "url": url_root + 'area-conteudo/cadastro-atividade/' + get_url_tipo(atividade.tipo.nome) + '/' + atividade.url_codigo,
-                    "emails": emails
-            }
+                info = {
+                        "id" : atividade.id,
+                        "tipo" : atividade.tipo.nome,
+                        "titulo_atividade": titulo,
+                        "codigo_url" : atividade.url_codigo,
+                        "url": url_root + 'area-conteudo/cadastro-atividade/' + get_url_tipo(atividade.tipo.nome) + '/' + atividade.url_codigo,
+                        "emails": emails
+                }
             info_urls.append(info)
         return info_urls
     except SQLAlchemyError:
