@@ -102,23 +102,24 @@ def get_dicionario_info_evento(edicao):
         return None
 
 
-def get_patrocinadores(edicao):
+def get_patrocinadores():
     try:
-        patrocinadores = db.session.query(Evento).filter_by(edicao=edicao).patrocinadores
-        pat_json = []
-        for p in patrocinadores:
-            info = {
+        info = []
+        pats = db.session.query(Patrocinador).filter_by(edicao=EDICAO_ATUAL)
+        for p in pats:
+            aux = {
                 "nome": p.nome_empresa,
-                "logo": "/img/"+p.logo,
                 "cota": p.cota.nome,
+                "site": p.link_website,
                 "ordem_site": p.ordem_site,
-                "link": p.link_website
+                "ativo": p.ativo_site,
+                "logo": p.logo
             }
-            pat_json.append({p.id:info})
-        return pat_json
-    except SQLAlchemyError:
-        db.session.rollback()
-        return "Erro"
+            info.append(aux)
+        return info
+    except Exception as e:
+        print(e)
+        return None
 
 
 def get_atividades(edicao):
