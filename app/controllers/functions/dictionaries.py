@@ -172,13 +172,13 @@ def get_urls_conteudo(url_root):
     try:
         atividades = db.session.query(Atividade).join(TipoAtividade).filter(Atividade.id_evento==get_id_evento_atual(), TipoAtividade.nome != "Outro").all()
         info_urls = []
-        emails = []
+        
         for atividade in atividades:
             titulo = atividade.titulo
-
+            emails = []
             if atividade.titulo is None or atividade.titulo == '':
                 titulo = "-"
-                emails = []
+                #emails = []
             for ministrante in atividade.ministrantes:
                 relacao = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
                 if relacao.confirmado == True:
