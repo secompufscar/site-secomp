@@ -279,3 +279,14 @@ def dados_usuario():
         return jsonify(pbkdf2_sha256.encrypt(senha, rounds=10000, salt_size=15))
     else:
         return jsonify("NULL")
+
+@api.route('/patrocinadores', methods=['GET'])
+def patroc_api():
+    '''
+    Devolve um JSON com os patrocinadores
+    '''
+    try:
+        return jsonify(get_patrocinadores())
+    except Exception as e:
+        print(e)
+        return None
