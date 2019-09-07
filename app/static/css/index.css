@@ -78,9 +78,9 @@
 
 @media (orientation: portrait) {
     .logoP {
-        margin-top: 60px;
         display: inline-block;
-        max-width: 70vw;
+        max-width: 60vw;
+        margin: 3%;
     }
     .logoL {
         display: none;
@@ -89,7 +89,6 @@
 
 @media (orientation: landscape) {
     .logoL {
-        margin-top: 60px;
         display: inline-block;
         max-width: 70vw;
         max-height: 30vh;
@@ -137,9 +136,12 @@
     }
 }
 
-@media (max-height: 310px) {
+@media (max-height: 320px) {
     .top-left, .bottom-right {
         width: 45%;
+    }
+    .logoL {
+        display: none;
     }
 }
 
