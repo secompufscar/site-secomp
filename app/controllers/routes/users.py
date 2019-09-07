@@ -560,10 +560,10 @@ def esqueci_senha():
         flash('Este e-mail não está cadastrado no site.')
     return render_template("users/esqueci_senha.html", status_envio_email=False, form=form, form_login=form_login)
 
-@limiter.limit("500/year")
-@limiter.limit("50/month")
-@limiter.limit("20/day")
-@limiter.limit("20/hour")
+@limiter.limit("40/year")
+@limiter.limit("20/month")
+@limiter.limit("15/day")
+@limiter.limit("10/hour")
 @limiter.limit("1/minute")
 @users.route('/confirmar-alteracao-senha/<token>', methods=["POST", "GET"])
 def confirmar_alteracao_senha(token):

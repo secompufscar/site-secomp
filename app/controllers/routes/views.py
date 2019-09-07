@@ -242,7 +242,6 @@ def protected(filename):
     abort(403)
 
 @views.route("/uploads/<path:filename>", methods=["GET"])
-@login_required
 def uploads(filename):
     dir, filename = filename.rsplit('/', 1)
     dir = dir.replace(' ', '')
