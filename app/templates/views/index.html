@@ -26,10 +26,11 @@
 						<img class="logoL" src="{{ url_for('static', filename='images/logo-branca.png') }}">
 						<img class="logoP" src="{{ url_for('static', filename='images/logo-colorida.png') }}">
 					</div>
-					<div class="col-md-12 pb-2">
+					<div class="col-md-12 pb-2 pt-2">
 						<h4 id="texto1">Para saber o que vai rolar na SECOMP
-							<br><small>arraste para o lado ou acesse nosso <a
-									href="{{ url_for('views.cronograma') }}"><b>cronograma</b></a></small></h4>
+							<br>acesse nosso
+							<a href="{{ url_for('views.cronograma') }}"><b>cronograma</b></a></h4>
+						<h5 id="texto2" class="d-none">O evento começou há</h5>
 					</div>
 					<div class="col">
 						<h2 id="contador-dias">00</h2>
@@ -61,7 +62,8 @@
 							style="font-size: 4vh; padding: 2vh; text-decoration: none; background-color: #008cb5ee; color: #fff; border-radius: 1rem;">
 							Faça seu cadastro!</a>
 						<h5 style="padding-top: 5vh; padding-bottom: 3vh;">Infelizmente, as inscrições estão encerradas.
-							<br>Porém, é possível realizar o cadastro no site e inscrever-se presencialmente, durante o credenciamento do evento
+							<br>Porém, é possível realizar o cadastro no site e inscrever-se presencialmente, durante o
+							credenciamento do evento
 							(:</h5>
 						<h5 style="padding-top: 3vh; padding-bottom: 3vh;">O evento é gratuito e aberto para toda a
 							comunidade!</h5>
@@ -73,163 +75,15 @@
 		<div class="swiper-slide">
 
 			<div class="container-fluid text-center">
-				<div class="top-left">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Palestras</h2>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-microphone-alt"></i>
-						</div>
-					</div>
-				</div>
+				<div class="row justify-content-center align-items-center text-white bg-fade m-1">
+					<div class="col-md-12">
+						<h1 class="mt-5 mb-5">Conheça nossas parcerias!</h1>
 
-				<div class="bottom-right">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Minicursos</h2>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-laptop-code"></i>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+						<a href="{{ url_for('views.patrocinadores') }}"
+							style="font-size: 4vh; padding: 2vh; text-decoration: none; background-color: #008cb5ee; color: #fff; border-radius: 1rem;">
+							Patrocinadores</a>
 
-		<div class="swiper-slide">
-
-			<div class="container-fluid text-center">
-				<div class="top-left">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Workshops</h2>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-code-branch"></i>
-						</div>
-					</div>
-				</div>
-
-				<div class="bottom-right">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Palestras</h2>
-							<h3>Empresariais</h3>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-briefcase"></i>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="swiper-slide">
-
-			<div class="container-fluid text-center">
-				<div class="top-left">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Mesas Redondas</h2>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-users"></i>
-						</div>
-					</div>
-				</div>
-
-				<div class="bottom-right">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Feira Empresarial</h2>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-building"></i>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="swiper-slide">
-
-			<div class="container-fluid text-center">
-				<div class="top-left">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Game Night</h2>
-							<h5>By: Caenc</h5>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-ghost"></i>
-						</div>
-					</div>
-				</div>
-
-				<div class="bottom-right">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h3>CTF</h3>
-							<h4>Desafio de Programadores</h4>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-trophy"></i>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="swiper-slide">
-
-			<div class="container-fluid text-center">
-				<div class="top-left">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Career Talks</h2>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-comments"></i>
-						</div>
-					</div>
-				</div>
-
-				<div class="bottom-right">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Game Jam</h2>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-gamepad"></i>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="swiper-slide">
-
-			<div class="container-fluid text-center">
-				<div class="top-left">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Feira de Projetos</h2>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-graduation-cap"></i>
-						</div>
-					</div>
-				</div>
-
-				<div class="bottom-right">
-					<div class="larger row align-items-center text-white bg-fade">
-						<div class="col-8">
-							<h2>Processos Seletivos</h2>
-						</div>
-						<div class="col-4">
-							<i class="fas fa-clipboard"></i>
-						</div>
+						<h5 class="mt-5 mb-5">Sem elas, nosso evento não seria o mesmo.</h5>
 					</div>
 				</div>
 			</div>
@@ -258,19 +112,18 @@
 		// Find the distance between now and the count down date
 		var distance = countDownDate - now;
 		// Time calculations for days, hours, minutes and seconds
-		var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+		var days = Math.abs(Math.round(distance / (1000 * 60 * 60 * 24)));
+		var hours = Math.abs(Math.round((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+		var minutes = Math.abs(Math.round((distance % (1000 * 60 * 60)) / (1000 * 60)));
+		var seconds = Math.abs(Math.round((distance % (1000 * 60)) / 1000));
 		// Display the result in the element with id="demo"
 		document.getElementById("contador-dias").innerHTML = days;
 		document.getElementById("contador-horas").innerHTML = hours;
 		document.getElementById("contador-min").innerHTML = minutes;
 		document.getElementById("contador-seg").innerHTML = seconds;
-		// If the count down is finished, write some text 
+
 		if (distance < 0) {
-			clearInterval(x);
-			document.getElementById("contador").innerHTML = "Evento já realizado :P";
+			$("#texto2").removeClass("d-none");
 		}
 	}, 1000);
 </script>
