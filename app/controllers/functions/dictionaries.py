@@ -102,23 +102,23 @@ def get_dicionario_info_evento(edicao):
         return None
 
 
-def get_patrocinadores(edicao):
+def get_patrocinadores_ativos():
     try:
-        patrocinadores = db.session.query(Evento).filter_by(edicao=edicao).patrocinadores
-        pat_json = []
-        for p in patrocinadores:
-            info = {
+        info = []
+        pats = db.session.query(Patrocinador).filter_by(ativo_site=True)
+        for p in pats:
+            aux = {
                 "nome": p.nome_empresa,
-                "logo": "/img/"+p.logo,
                 "cota": p.cota.nome,
+                "site": p.link_website,
                 "ordem_site": p.ordem_site,
-                "link": p.link_website
+                "logo": p.logo
             }
-            pat_json.append({p.id:info})
-        return pat_json
-    except SQLAlchemyError:
-        db.session.rollback()
-        return "Erro"
+            info.append(aux)
+        return info
+    except Exception as e:
+        print(e)
+        return None
 
 
 def get_atividades(edicao):
@@ -172,12 +172,13 @@ def get_urls_conteudo(url_root):
     try:
         atividades = db.session.query(Atividade).join(TipoAtividade).filter(Atividade.id_evento==get_id_evento_atual(), TipoAtividade.nome != "Outro").all()
         info_urls = []
+        
         for atividade in atividades:
             titulo = atividade.titulo
-
+            emails = []
             if atividade.titulo is None or atividade.titulo == '':
                 titulo = "-"
-                emails = []
+                #emails = []
             for ministrante in atividade.ministrantes:
                 relacao = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
                 if relacao.confirmado == True:
@@ -190,10 +191,11 @@ def get_urls_conteudo(url_root):
                         "tipo" : atividade.tipo.nome,
                         "titulo_atividade": titulo,
                         "codigo_url" : atividade.url_codigo,
-                        "url": url_root + 'area-conteudo/cadastro-atividade/' + get_url_tipo(atividade.tipo.nome) + '/' + atividade.url_codigo,
+                        "url": str(url_root) + 'area-conteudo/cadastro-atividade/' + str(get_url_tipo(atividade.tipo.nome)) + '/' + str(atividade.url_codigo),
                         "emails": emails
                 }
-            info_urls.append(info)
+            if info not in info_urls:
+                info_urls.append(info)
         return info_urls
     except SQLAlchemyError:
         db.session.rollback()

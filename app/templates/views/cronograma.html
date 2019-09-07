@@ -95,7 +95,7 @@
                         <div class="col-4 text-center">
                            {% if ministrante.foto is not sameas none %}
 
-                           <img src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
+                           <img src="{{ url_for('static', filename='images/ministrantes/'+ministrante.foto) }}"
                               class="w-50" alt="">
 
                            {% else %}
@@ -123,7 +123,7 @@
                            {% if atividade.ministrantes_confirmados_atividade[0].foto is not sameas none %}
 
                            <img
-                              src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+atividade.ministrantes_confirmados_atividade[0].foto) }}"
+                              src="{{ url_for('views.uploads', filename='images/ministrantes/'+atividade.ministrantes_confirmados_atividade[0].foto) }}"
                               class="w-50" alt="">
 
                            {% else %}

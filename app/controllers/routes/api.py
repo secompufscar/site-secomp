@@ -242,9 +242,9 @@ def dados_usuario():
     senha = str(data['password'])
     user = db.session.query(Usuario).filter_by(email=email).first()
     participante = db.session.query(Participante).filter_by(
-        usuario=user)
+        usuario=user).first()
     if user:
-        if user.senha is not None and senha == user.senha:
+        if user.senha is not None and pbkdf2_sha256.verify(senha, user.senha):
             ativs = []
             for p in participante.presencas:
                 ativ = db.session.query(Atividade).filter_by(id=p.id_atividade).all()
@@ -267,26 +267,28 @@ def dados_usuario():
         else:
             return jsonify("Erro: senha inválida.")
     return jsonify("Usuário inexistente.")
-
+  
+'''
 @api.route('/hash-func', methods=['POST'])
 def hash_func():
-    '''
+    
     Essa rota vai receber via POST a senha do usuário e retornar a HASH para o aplicativo.
-    '''
+    
     data = request.get_json(force=True)
     senha = str(data['password'])
     if senha:
         return jsonify(pbkdf2_sha256.encrypt(senha, rounds=10000, salt_size=15))
     else:
         return jsonify("NULL")
-
+'''
+    
 @api.route('/patrocinadores', methods=['GET'])
 def patroc_api():
     '''
     Devolve um JSON com os patrocinadores
     '''
     try:
-        return jsonify(get_patrocinadores())
+        return jsonify(get_patrocinadores_ativos())
     except Exception as e:
         print(e)
         return None
