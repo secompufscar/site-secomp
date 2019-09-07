@@ -68,6 +68,7 @@ def get_atividades_api():
                     "twitter": m.twitter,
                     "linkedin": m.linkedin,
                     "github": m.github,
+                    "biografia": m.biografia,
                 })
             info = {
                 "id": a.id,
