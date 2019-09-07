@@ -271,9 +271,9 @@ def dados_usuario():
 '''
 @api.route('/hash-func', methods=['POST'])
 def hash_func():
-    '''
+    
     Essa rota vai receber via POST a senha do usuário e retornar a HASH para o aplicativo.
-    '''
+    
     data = request.get_json(force=True)
     senha = str(data['password'])
     if senha:
