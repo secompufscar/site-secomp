@@ -242,7 +242,6 @@ def protected(filename):
     abort(403)
 
 @views.route("/uploads/<path:filename>", methods=["GET"])
-@login_required
 def uploads(filename):
     dir, filename = filename.rsplit('/', 1)
     dir = dir.replace(' ', '')
@@ -250,7 +249,7 @@ def uploads(filename):
     caminho = os.path.join(current_app.config['UPLOAD_FOLDER'], dir)
     if current_user.is_authenticated:
         participante = db.session.query(Participante).filter(Participante.id_usuario == current_user.id, Participante.id_evento == get_id_evento_atual()).first()
-        if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes() or "GERENCIAR_COMPROVANTES" in current_user.getPermissoes() or get_permissao_comprovante(participante, filename):
+        if "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() or "ADMIN" in current_user.getPermissoes() or "GERENCIAR_COMPROVANTES" in current_user.getPermissoes() or get_permissao_comprovante(participante, filename) or diretorio_publico(dir):
             if os.path.exists(caminho):
                 return send_from_directory(caminho, filename)
             abort(404)

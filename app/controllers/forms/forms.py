@@ -298,7 +298,7 @@ class CadastrarFlagForm(FlaskForm):
     pontos = IntegerField('Pontos', validators=[InputRequired()])
 
 
-class SubmeterFlagForm(FlaskForm):
+class SubmeterFlagForm(BaseRecaptchaForm):
     flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
 
 
