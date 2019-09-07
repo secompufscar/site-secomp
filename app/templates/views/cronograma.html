@@ -95,7 +95,7 @@
                         <div class="col-4 text-center">
                            {% if ministrante.foto is not sameas none %}
 
-                           <img src="{{ url_for('static', filename='images/ministrantes/'+ministrante.foto) }}"
+                           <img src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
                               class="w-50" alt="">
 
                            {% else %}
