@@ -33,19 +33,19 @@
 						<h5 id="texto2" class="d-none">O evento começou há</h5>
 					</div>
 					<div class="col">
-						<h2 id="contador-dias">00</h2>
+						<h2 class="contador-dias">00</h2>
 						<h4>dias</h4>
 					</div>
 					<div class="col">
-						<h2 id="contador-horas">00</h2>
+						<h2 class="contador-horas">00</h2>
 						<h4>horas</h4>
 					</div>
 					<div class="col">
-						<h2 id="contador-min">00</h2>
+						<h2 class="contador-min">00</h2>
 						<h4>min</h4>
 					</div>
 					<div class="col">
-						<h2 id="contador-seg">00</h2>
+						<h2 class="contador-seg">00</h2>
 						<h4>seg</h4>
 					</div>
 				</div>
@@ -117,10 +117,10 @@
 		var minutes = Math.abs(Math.round((distance % (1000 * 60 * 60)) / (1000 * 60)));
 		var seconds = Math.abs(Math.round((distance % (1000 * 60)) / 1000));
 		// Display the result in the element with id="demo"
-		document.getElementById("contador-dias").innerHTML = days;
-		document.getElementById("contador-horas").innerHTML = hours;
-		document.getElementById("contador-min").innerHTML = minutes;
-		document.getElementById("contador-seg").innerHTML = seconds;
+		$(".contador-dias").each(function () { $(this).html(days) });
+		$(".contador-horas").each(function () { $(this).html(hours) });
+		$(".contador-min").each(function () { $(this).html(minutes) });
+		$(".contador-seg").each(function () { $(this).html(seconds) });
 
 		if (distance < 0) {
 			$("#texto2").removeClass("d-none");
