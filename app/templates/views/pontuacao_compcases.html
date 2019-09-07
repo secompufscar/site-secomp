@@ -28,11 +28,13 @@
             </thead>
             <tbody>
                 {% for participante in participantes %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ participante.usuario.primeiro_nome }} {{ participante.usuario.sobrenome }}</td>
-                    <td>{{ participante.pontuacao }}</td>
-                </tr>
+                    {% if participante.pontuacao != 0 %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ participante.usuario.primeiro_nome }} {{ participante.usuario.sobrenome }}</td>
+                            <td>{{ participante.pontuacao }}</td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
