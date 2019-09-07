@@ -6,6 +6,10 @@
 	.card-title {
 		color: #333333;
 	}
+
+	a {
+		text-decoration: none;
+	}
 </style>
 
 <div class="container">
@@ -27,8 +31,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}"
-							class="w-100">
+						<img src="{{ url_for('static', filename='images/patrocinadores/' + p.logo) }}" class="w-100">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-100">
 						{% endif %}
@@ -37,7 +40,7 @@
 						<h4 class="card-title">{{ p.nome_empresa }}</h4>
 						<h5 class="card-subtitle mb-2 text-muted">{{ p.cota.nome }}</h5>
 						{% if p.link_website is not sameas none %}
-						<a href="{{ p.link_website }}" style="text-decoration: none;">Acesse o site</a>
+						<a href="{{ p.link_website }}">Acesse o site</a>
 						{% endif %}
 					</div>
 				</div>
@@ -60,8 +63,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}"
-							class="w-75">
+						<img src="{{ url_for('static', filename='images/patrocinadores/' + p.logo) }}" class="w-75">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-75">
 						{% endif %}
@@ -70,7 +72,7 @@
 						<h5 class="card-title">{{ p.nome_empresa }}</h5>
 						<h6 class="card-subtitle mb-2 text-muted">{{ p.cota.nome }}</h6>
 						{% if p.link_website is not sameas none %}
-						<a href="{{ p.link_website }}" style="text-decoration: none;">Acesse o site</a>
+						<a href="{{ p.link_website }}">Acesse o site</a>
 						{% endif %}
 					</div>
 				</div>
@@ -93,8 +95,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}"
-							class="w-75">
+						<img src="{{ url_for('static', filename='images/patrocinadores/' + p.logo) }}" class="w-75">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-75">
 						{% endif %}
@@ -103,7 +104,7 @@
 						<h5 class="card-title">{{ p.nome_empresa }}</h5>
 						<h6 class="card-subtitle mb-2 text-muted">{{ p.cota.nome }}</h6>
 						{% if p.link_website is not sameas none %}
-						<a href="{{ p.link_website }}" style="text-decoration: none;">Acesse o site</a>
+						<a href="{{ p.link_website }}">Acesse o site</a>
 						{% endif %}
 					</div>
 				</div>
@@ -112,6 +113,65 @@
 		{% endif %}
 		{% endif %}
 		{% endfor %}
+	</div>
+
+	<div class="row justify-content-center pt-2 pb-2">
+		<div class="col-md-12 pt-1">
+			<h3 class="text-center">Desafio de Programadores</h1>
+		</div>
+
+		<div class="col-md-4 justify-content-center pt-3 mb-1">
+			<div class="card">
+				<div class="row no-gutters justify-content-center align-items-center card-body">
+					<div class="col-md-4 text-center">
+						<img src="{{ url_for('static', filename='images/patrocinadores/b2w_colorida.png') }}"
+							class="w-75">
+					</div>
+					<div class="col-md-8 text-center">
+						<h5 class="card-title">B2W Digital</h5>
+						<h6 class="card-subtitle mb-2 text-muted">Desafio de Programadores</h6>
+						<a href="https://ri.b2w.digital/">Acesse o site</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row justify-content-center pt-2 pb-2">
+		<div class="col-md-12 pt-1">
+			<h3 class="text-center">SECOMP XP</h1>
+		</div>
+
+		<div class="col-md-4 justify-content-center pt-3 mb-1">
+			<div class="card">
+				<div class="row no-gutters justify-content-center align-items-center card-body">
+					<div class="col-md-4 text-center">
+						<img src="{{ url_for('static', filename='images/patrocinadores/padtec_colorida.png') }}"
+							class="w-75">
+					</div>
+					<div class="col-md-8 text-center">
+						<h5 class="card-title">Padtec</h5>
+						<h6 class="card-subtitle mb-2 text-muted">SECOMP XP</h6>
+						<a href="https://www.padtec.com.br/">Acesse o site</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4 justify-content-center pt-3 mb-1">
+			<div class="card">
+				<div class="row no-gutters justify-content-center align-items-center card-body">
+					<div class="col-md-4 text-center">
+						<img src="{{ url_for('static', filename='images/patrocinadores/deloitte_colorida.png') }}"
+							class="w-75">
+					</div>
+					<div class="col-md-8 text-center">
+						<h5 class="card-title">Deloitte</h5>
+						<h6 class="card-subtitle mb-2 text-muted">SECOMP XP</h6>
+						<a href="https://www2.deloitte.com/br/pt.html">Acesse o site</a>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="row justify-content-center pt-2 pb-4">
@@ -126,8 +186,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}"
-							class="w-75">
+						<img src="{{ url_for('static', filename='images/patrocinadores/' + p.logo) }}" class="w-75">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-75">
 						{% endif %}
@@ -136,7 +195,7 @@
 						<h5 class="card-title">{{ p.nome_empresa }}</h5>
 						<h6 class="card-subtitle mb-2 text-muted">{{ p.cota.nome }}</h6>
 						{% if p.link_website is not sameas none %}
-						<a href="{{ p.link_website }}" style="text-decoration: none;">Acesse o site</a>
+						<a href="{{ p.link_website }}">Acesse o site</a>
 						{% endif %}
 					</div>
 				</div>
