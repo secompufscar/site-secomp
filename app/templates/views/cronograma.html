@@ -282,7 +282,7 @@
                                  <div class="col-4 col-sm-2">
                                     {% if ministrante.foto is not sameas none %}
                                     <img
-                                       src="{{ url_for('static', filename='images/ministrantes/'+ministrante.foto) }}"
+                                       src="{{ url_for('uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
                                        class="img-fluid" alt="">
                                     {% else %}
                                     <img src="{{ url_for('static', filename='images/logo-colorida.png') }}"
