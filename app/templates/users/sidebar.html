@@ -39,6 +39,7 @@
 
             <a href="{{ url_for('users.comprar_kit') }}" class="list-group-item list-group-item-action">Compra de Kit</a>
             <a href="{{ url_for('users.pagamentos') }}" class="list-group-item list-group-item-action">Pagamentos</a>
+
             <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">Atividades
                 <i class="fa fa-caret-down"></i>
             </button>
@@ -48,6 +49,14 @@
                 <a href="{{ url_for('users.inscricao_minicursos') }}"
                     class="list-group-item list-group-item-action">Minicursos</a>
                 <a href="{{ url_for('users.presencas') }}" class="list-group-item list-group-item-action">Presenças</a>
+            </div>
+                <button style="outline: none;" class="list-group-item list-group-item-action dropdown-btn">COMPCases
+                <i class="fa fa-caret-down"></i>
+            </button>
+
+            <div class="dropdown-container">
+                <a href="{{ url_for('users.submeter_flag') }}" class="list-group-item list-group-item-action">Flags</a>
+                <a href="{{ url_for('views.pontuacao_compcases') }}" class="list-group-item list-group-item-action">Ranking</a>
 
             </div>
 
