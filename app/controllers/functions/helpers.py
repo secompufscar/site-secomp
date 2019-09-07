@@ -51,7 +51,7 @@ from datetime import datetime
 
 def get_atividades_api():
     try:
-        query = db.session.query(Atividade).all()
+        query = db.session.query(Atividade).filter(Atividade.titulo != None).all()
         ativ = []
         for a in query:
             ministrantes = []
