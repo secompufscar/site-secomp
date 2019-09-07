@@ -16,6 +16,7 @@
             <form action="{{url_for('users.submeter_flag')}}" method="POST">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.flag) }}
+                {{ wtf.form_field(form.recaptcha) }}
 
                 {% if status != None %}
                 <h5 style="font-family: Hacker; color: red;">Flag {{ status }}! </h5>

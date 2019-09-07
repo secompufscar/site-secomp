@@ -775,3 +775,28 @@ def presencas():
         return render_template('users/presencas.html', usuario=current_user, participante=participante, presencas=presencas, limites=limites)
     else:
         return redirect(url_for('.cadastro_participante'))
+
+@users.route('/submeter-flag', methods=["GET", "POST"])
+@login_required
+def submeter_flag():
+    form_login = LoginForm(request.form)
+    form = SubmeterFlagForm(request.form)
+    participante = db.session.query(Participante).filter_by(
+        usuario=current_user).first()
+    if form.validate_on_submit():
+        flag = db.session.query(Flag).filter_by(codigo=form.flag.data).first()
+        print(participante.flags_encontradas)
+        if(flag != None and flag not in participante.flags_encontradas and flag.ativa):
+            flag.quantidade_utilizada += 1
+            participante.pontuacao += flag.pontos
+            participante.flags_encontradas.append(flag)
+            db.session.flush()
+            db.session.commit()
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="aceita")
+        elif flag in participante.flags_encontradas:
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="já utilizada, safadinho")
+        else:
+            return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status="inválida")
+
+    else:
+        return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status=None)
