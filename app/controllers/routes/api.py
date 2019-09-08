@@ -50,33 +50,40 @@ def ler_presenca():
     if(key == current_app.config['KEY_API_PRESENCA']):
         try:
             participante = db.session.query(Participante).filter_by(uuid=uuid).first()
-            inscrito = participante in db.session.query(Atividade).filter_by(id=id_atividade).first().participantes
-            if(inscrito or force):
-                if (db.session.query(Presenca).filter_by(id_atividade=id_atividade,
-                                                             id_participante=participante.id).first() == None):
-                    presenca = Presenca(data_hora_registro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                        id_atividade=id_atividade,
-                                        id_participante=participante.id,
-                                        id_evento=get_id_evento_atual(),
-                                        inscrito=inscrito)
-                    db.session.add(presenca)
-                    db.session.flush()
-                    db.session.commit()
-                    info = {
-                        "Participante" : participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
-                        "Status" : "SUCCESS"
-                    }
-                    return jsonify(info)
+            if(db.session.query(Presenca).filter_by(id_participante=participante.id, id_atividade=164).first() != None): #Verifica se está credenciado
+                inscrito = participante in db.session.query(Atividade).filter_by(id=id_atividade).first().participantes
+                if(inscrito or force):
+                    if (db.session.query(Presenca).filter_by(id_atividade=id_atividade,
+                                                                 id_participante=participante.id).first() == None):
+                        presenca = Presenca(data_hora_registro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                            id_atividade=id_atividade,
+                                            id_participante=participante.id,
+                                            id_evento=get_id_evento_atual(),
+                                            inscrito=inscrito)
+                        db.session.add(presenca)
+                        db.session.flush()
+                        db.session.commit()
+                        info = {
+                            "Participante" : participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
+                            "Status" : "SUCCESS"
+                        }
+                        return jsonify(info)
+                    else:
+                        info = {
+                            "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
+                            "Status": "JA_LIDO"
+                        }
+                        return jsonify(info)
                 else:
                     info = {
                         "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
-                        "Status": "JA_LIDO"
+                        "Status": "NÃO_INSCRITO"
                     }
                     return jsonify(info)
             else:
                 info = {
                     "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
-                    "Status": "NÃO_INSCRITO"
+                    "Status": "NÃO_CREDENCIADO"
                 }
                 return jsonify(info)
         except Exception as e:
@@ -209,7 +216,7 @@ def pesquisa_usuario_por_atividade():
         participantes = get_participantes_da_atividade_json(int(atividadeID))
         return jsonify(participantes)
 
-@api.route('/verifica-kit', methods=['POST'])
+@api.route('/verifica-kit', methods=['POST']) #Mudar nome da rota para consulta-dados-usuario
 def verifica_kit():
     '''
     Essa rota vai receber via POST o uuid do participante, verificar se o participante está comprou o kit.
@@ -220,10 +227,14 @@ def verifica_kit():
     if(key == current_app.config['KEY_API_PRESENCA']):
         try:
             participante = db.session.query(Participante).filter_by(uuid=uuid).first()
-            pagamentos = db.session.query(Pagamento).filter_by(id_participante=participante.id, efetuado=True, rejeitado=False, cancelado=False).first()
+            pagamentos = db.session.query(Pagamento).filter_by(id_participante=participante.id, efetuado=True, rejeitado=False, cancelado=False).all()
+            camisetas = []
+            for p in pagamentos:
+                camisetas.append(p.camiseta.tamanho)
             info = {
                 "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
-                "Kit": pagamentos != None
+                "Kit": pagamentos != None,
+                "Camiseta": camisetas
             }
             return jsonify(info)
         except Exception as e:
