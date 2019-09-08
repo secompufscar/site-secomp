@@ -301,6 +301,7 @@ class Presenca(db.Model):
     id_participante = Column(Integer, db.ForeignKey('participante.id'), nullable=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     inscrito = Column(Boolean, nullable=False)
+    id_feedback = Column(Integer, db.ForeignKey('feedback.id'), nullable=True)
 
 
 class MembroDeEquipe(db.Model):
@@ -491,3 +492,12 @@ class CupomDesconto(db.Model):
     valor = Column(Float(precision=2), nullable=False)
     usado = Column(Boolean, default=False)
     pagamento = db.relationship('Pagamento', back_populates='cupom_desconto', lazy=True, uselist=False)
+
+class Feedback(db.Model):
+    id = Column(Integer, primary_key=True)
+    id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
+    id_participante = Column(Integer, db.ForeignKey('participante.id'))
+    aspectos_gerais = Column(Integer, nullable=False)
+    conteudo = Column(Integer, nullable=False)
+    conhecimentos_ministrante = Column(Integer, nullable=False)
+    observacoes = Column(String(500), nullable=True)
