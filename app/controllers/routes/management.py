@@ -275,6 +275,32 @@ def cadastro_flags():
     else:
         abort(403)
 
+@management.route('/add-pontuacao', methods=["GET", "POST"])
+@login_required
+def add_pontuacao():
+    permissoes = current_user.getPermissoes()
+    if("CONTEUDO" in permissoes or current_user.is_admin()):
+        form_login = LoginForm(request.form)
+        form = PontuacaoNaMaoForm(request.form)
+        if form.validate_on_submit():
+            nome_flag = "pontuacao_add_na_mao_" + str(len(db.session.query(Flag).all()))
+            flag = Flag(codigo=nome_flag, pontos=form.pontuacao.data, ativa=False)
+            db.session.add(flag)
+            db.session.flush()
+            db.session.commit()
+            part = db.session.query(Participante).filter_by(id=int(form.participante.data)).first()
+            part.pontuacao += flag.pontos
+            part.flags_encontradas.append(flag)
+            db.session.add(part)
+            db.session.flush()
+            db.session.commit()
+            return render_template("management/add_pont.html", ult_day=True, form_login=form_login, form=form, sucesso=True, usuario=current_user)
+        else:
+            return render_template("management/add_pont.html", ult_day=True, form_login=form_login, form=form, usuario=current_user)
+    else:
+        abort(403)
+
+
 @management.route('/crd-flag/desativar/<id>', methods=["GET", "POST"])
 @login_required
 def desativar_flag(id):
@@ -366,3 +392,4 @@ def cadastro_presencial_participante():
         return render_template('management/cadastro_participante_presencial.html', form=form, form_login=form_login,
                                usuario=current_user, participante=meu_participante, alerta=None)
     abort(403)
+

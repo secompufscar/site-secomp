@@ -33,12 +33,6 @@ relacao_atividade_patrocinador = db.Table('relacao_atividade_patrocinador',
                                        Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
                                        Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')))
 
-relacao_participante_flags = db.Table('relacao_participante_flags',
-                                    Column('id', Integer, primary_key=True),
-                                    Column('id_flag', Integer, db.ForeignKey('flag.id')),
-                                    Column('id_participante', Integer, db.ForeignKey('participante.id')),
-                                      Column('data_hora', DateTime(timezone=True), default=func.now()))
-
 class Usuario(db.Model):
     __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True)
@@ -112,7 +106,7 @@ class Participante(db.Model):
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
     uuid = Column(String(512), nullable=True)
-    flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
+    flags_encontradas = db.relationship('Flag', secondary='relacao_participante_flags', backref="flag")
 
 
     def __repr__(self):
@@ -431,6 +425,12 @@ class RelacaoAtividadeMinistrante(db.Model):
     confirmado = Column('confirmado', Boolean, nullable=True)
     admin_atividade = Column('admin_atividade', Boolean, nullable=True)
 
+class RelacaoParticipanteFlags(db.Model):
+    __tablename__ = 'relacao_participante_flags'
+    id = Column('id', Integer, primary_key=True)
+    id_flag = Column('id_flag', Integer, db.ForeignKey('flag.id'))
+    id_participante = Column('id_participante', Integer, db.ForeignKey('participante.id'))
+    data_hora = Column('data_hora', DateTime, default=func.now())
 
 class Pagamento(db.Model):
     __tablename__ = 'pagamento'
@@ -503,3 +503,8 @@ class Feedback(db.Model):
     conteudo = Column(Integer, nullable=False)
     conhecimentos_ministrante = Column(Integer, nullable=False)
     observacoes = Column(String(500), nullable=True)
+
+class Pont:
+  def __init__(self, id, pont):
+    self.id = id
+    self.pont = pont
