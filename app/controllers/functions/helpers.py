@@ -289,3 +289,15 @@ def cadastro_wifi_visitante(data):
 def get_ranking_pontuacao():
     participantes = db.session.query(Participante).filter_by(id_evento=get_id_evento_atual()).order_by(Participante.pontuacao.desc()).limit(10).all()
     return participantes
+
+def presenca_valida(id_atividade, id_participante):
+    presenca = db.session.query(Presenca).filter_by(id_atividade=id_atividade, id_participante=id_participante).first()
+    return presenca
+
+def atividade_aconteceu(id_atividade):
+    atividade = db.session.query(Atividade).filter_by(id=id_atividade).first()
+    agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if agora >= str(atividade.data_hora_fim):
+        return True
+    else:
+        return False
