@@ -31,7 +31,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('static', filename='images/patrocinadores/' + p.logo) }}" class="w-100">
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-100">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-100">
 						{% endif %}
@@ -63,7 +63,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('static', filename='images/patrocinadores/' + p.logo) }}" class="w-75">
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-75">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-75">
 						{% endif %}
@@ -95,7 +95,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('static', filename='images/patrocinadores/' + p.logo) }}" class="w-75">
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-75">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-75">
 						{% endif %}
@@ -124,7 +124,7 @@
 			<div class="card">
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
-						<img src="{{ url_for('static', filename='images/patrocinadores/b2w_colorida.png') }}"
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/b2w_colorida.png') }}"
 							class="w-75">
 					</div>
 					<div class="col-md-8 text-center">
@@ -146,7 +146,7 @@
 			<div class="card">
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
-						<img src="{{ url_for('static', filename='images/patrocinadores/padtec_colorida.png') }}"
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/padtec_colorida.png') }}"
 							class="w-75">
 					</div>
 					<div class="col-md-8 text-center">
@@ -161,7 +161,7 @@
 			<div class="card">
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
-						<img src="{{ url_for('static', filename='images/patrocinadores/deloitte_colorida.png') }}"
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/deloitte_colorida.png') }}"
 							class="w-75">
 					</div>
 					<div class="col-md-8 text-center">
@@ -186,7 +186,7 @@
 				<div class="row no-gutters justify-content-center align-items-center card-body">
 					<div class="col-md-4 text-center">
 						{% if p.logo is not sameas none %}
-						<img src="{{ url_for('static', filename='images/patrocinadores/' + p.logo) }}" class="w-75">
+						<img src="{{ url_for('views.uploads', filename='logo_patrocinadores/' + p.logo) }}" class="w-75">
 						{% else %}
 						<img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-75">
 						{% endif %}
