@@ -319,3 +319,11 @@ class WifiForm(BaseRecaptchaForm):
 
 class CadastroPresencialParticipanteForm(FlaskForm):
     usuario = SelectField("Selecione um usuário para o cadastro presencial", choices=get_usuarios_inscricao_pendente(), id="usuario", coerce=int)
+
+class FeedbackForm(BaseRecaptchaForm):
+    aspectos_gerais = SelectField('Aspectos Gerais', id='aspectos_gerais', choices=get_opcoes_avaliacao(), coerce=int,
+                                  validators=[InputRequired(message=ERRO_INPUT_REQUIRED)])
+    conteudo = SelectField('Conteúdo', id='conteudo', choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
+    conhecimentos_ministrante = SelectField('Ministrante', id='conhecimentos_ministrante',
+                                            choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
+    observacoes = StringField('Observações', id='observacoes', validators=[Length(max=500)])

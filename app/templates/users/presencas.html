@@ -24,6 +24,7 @@
         <th scope="col">Dia da Semana</th>
         <th scope="col">Atividade</th>
         <th scope="col">Tipo</th>
+        <th scope="col">Feedback</th>
       </tr>
     </thead>
     <tbody>
@@ -50,6 +51,13 @@
         </td>
         <td>
           {{ presenca.atividade.tipo.nome }}
+        </td>
+        <td>
+          {% if presenca.id_feedback is sameas none %}
+          <a href="{{ url_for('.submeter_feedback', id_atividade = presenca.atividade.id) }}">
+            <button type="button" class="btn btn-primary m-1 w-100"><b>Avaliar atividade</b></button>
+          </a>
+          {% endif %}
         </td>
       </tr>
       {% endfor %}
