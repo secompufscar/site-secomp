@@ -323,10 +323,11 @@ class WifiForm(BaseRecaptchaForm):
 class CadastroPresencialParticipanteForm(FlaskForm):
     usuario = SelectField("Selecione um usuário para o cadastro presencial", choices=get_usuarios_inscricao_pendente(), id="usuario", coerce=int)
     confirmar_email = RadioField('Deseja comprar o kit da SECOMP UFSCar?', id='comprar', choices=[(1,'Sim'),(2,'Não')], coerce=int, default=2)
+
 class FeedbackForm(BaseRecaptchaForm):
-    aspectos_gerais = SelectField('Aspectos Gerais', id='aspectos_gerais', choices=get_opcoes_avaliacao(), coerce=int,
+    aspectos_gerais = SelectField('Avalie a atividade em aspectos gerais', id='aspectos_gerais', choices=get_opcoes_avaliacao(), coerce=int,
                                   validators=[InputRequired(message=ERRO_INPUT_REQUIRED)])
     conteudo = SelectField('Conteúdo', id='conteudo', choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
-    conhecimentos_ministrante = SelectField('Ministrante', id='conhecimentos_ministrante',
+    conhecimentos_ministrante = SelectField('Avalie quanto ao nível de preparo e conhecimentos do ministrante', id='conhecimentos_ministrante',
                                             choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
-    observacoes = StringField('Observações', id='observacoes', validators=[Length(max=500)])
+    observacoes = StringField('Deixe comentários, se desejar', id='observacoes', validators=[Length(max=500)])
