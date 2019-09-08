@@ -800,3 +800,36 @@ def submeter_flag():
 
     else:
         return render_template("users/submeter_flag.html", usuario=current_user, form=form, form_login=form_login, participante=participante, status=None)
+
+@users.route('/submeter-feedback/<id_atividade>', methods=["GET", "POST"])
+@login_required
+@email_verificado_required
+def submeter_feedback(id_atividade):
+    form_login = LoginForm(request.form)
+    form = FeedbackForm()
+    participante = db.session.query(
+        Participante).filter_by(usuario=current_user).first()
+    presenca = presenca_valida(id_atividade, participante.id)
+    if presenca is not None:
+        if presenca.id_feedback is None and atividade_aconteceu(id_atividade):
+            if form.validate_on_submit():
+                feedback = Feedback()
+                feedback.id_atividade = id_atividade
+                feedback.id_participante = participante.id
+                feedback.aspectos_gerais = form.aspectos_gerais.data
+                feedback.conteudo = form.conteudo.data
+                feedback.conhecimentos_ministrante = form.conhecimentos_ministrante.data
+                feedback.observacoes = form.observacoes.data
+                db.session.add(feedback)
+                db.session.add(feedback)
+                db.session.flush()
+                db.session.commit()
+                presenca.id_feedback=feedback.id
+                db.session.flush()
+                db.session.commit()
+                return redirect(url_for('.presencas'))
+            else:
+                return render_template('users/feedback.html', usuario=current_user, form_login=form_login, form=form, participante = db.session.query(
+                                                Participante).filter_by(usuario=current_user).first(), id_atividade=id_atividade)
+        return redirect(url_for('.presencas'))
+    return redirect(url_for('.presencas'))
