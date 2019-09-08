@@ -3,6 +3,7 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, Float
+from sqlalchemy.sql import func
 
 db = SQLAlchemy()
 
@@ -35,7 +36,8 @@ relacao_atividade_patrocinador = db.Table('relacao_atividade_patrocinador',
 relacao_participante_flags = db.Table('relacao_participante_flags',
                                     Column('id', Integer, primary_key=True),
                                     Column('id_flag', Integer, db.ForeignKey('flag.id')),
-                                    Column('id_participante', Integer, db.ForeignKey('participante.id')))
+                                    Column('id_participante', Integer, db.ForeignKey('participante.id')),
+                                      Column('data_hora', DateTime(timezone=True), default=func.now()))
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
