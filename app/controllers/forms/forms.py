@@ -327,7 +327,7 @@ class CadastroPresencialParticipanteForm(FlaskForm):
 class FeedbackForm(BaseRecaptchaForm):
     aspectos_gerais = SelectField('Avalie a atividade em aspectos gerais', id='aspectos_gerais', choices=get_opcoes_avaliacao(), coerce=int,
                                   validators=[InputRequired(message=ERRO_INPUT_REQUIRED)])
-    conteudo = SelectField('Conteúdo', id='conteudo', choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
+    conteudo = SelectField('Avalie quanto a conteúdo da atividade', id='conteudo', choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
     conhecimentos_ministrante = SelectField('Avalie quanto ao nível de preparo e conhecimentos do ministrante', id='conhecimentos_ministrante',
                                             choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
     observacoes = StringField('Deixe comentários, se desejar', id='observacoes', validators=[Length(max=500)])
