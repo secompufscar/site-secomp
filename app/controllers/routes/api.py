@@ -50,7 +50,7 @@ def ler_presenca():
     if(key == current_app.config['KEY_API_PRESENCA']):
         try:
             participante = db.session.query(Participante).filter_by(uuid=uuid).first()
-            if(db.session.query(Presenca).filter_by(id_participante=participante.id, id_atividade=164).first() != None): #Verifica se está credenciado
+            if(db.session.query(Presenca).filter_by(id_participante=participante.id, id_atividade=164).first() != None or id_atividade == 164): #Verifica se está credenciado
                 inscrito = participante in db.session.query(Atividade).filter_by(id=id_atividade).first().participantes
                 if(inscrito or force):
                     if (db.session.query(Presenca).filter_by(id_atividade=id_atividade,
