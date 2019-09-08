@@ -233,7 +233,7 @@ def verifica_kit():
                 camisetas.append(p.camiseta.tamanho)
             info = {
                 "Participante": participante.usuario.primeiro_nome + " " + participante.usuario.sobrenome,
-                "Kit": pagamentos != None,
+                "Kit": len(pagamentos) > 0,
                 "Camiseta": camisetas
             }
             return jsonify(info)
