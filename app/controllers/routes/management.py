@@ -356,6 +356,9 @@ def cadastro_presencial_participante():
                             uuid=str(uuid.uuid1()))
             db.session.add(participante)
             db.session.commit()
+            if form.confirmar_email.data == 1:
+                participante.usuario.email_verificado = True
+                db.session.commit()
             alerta = "Participante " + str(participante.usuario.primeiro_nome) + ' ' + str(participante.usuario.sobrenome) + ' <' + str(participante.usuario.email) + '> inscrito com sucesso!'
             form.usuario.choices = get_usuarios_inscricao_pendente()
             return render_template('management/cadastro_participante_presencial.html', alerta=alerta,

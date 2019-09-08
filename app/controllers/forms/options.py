@@ -198,3 +198,11 @@ def get_usuarios_inscricao_pendente():
         return usuarios_inscricao_pendente
     except Exception as e:
         return None
+
+def get_opcoes_avaliacao():
+    return[(0, 'Selecione uma opção'),
+           (1, 'Péssimo'),
+           (2, 'Ruim'),
+           (3, 'Regular'),
+           (4, 'Bom'),
+           (5, 'Ótimo')]
