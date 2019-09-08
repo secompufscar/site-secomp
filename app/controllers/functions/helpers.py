@@ -3,6 +3,7 @@ import requests
 from app.models.models import *
 from app.controllers.constants import EDICAO_ATUAL
 
+
 def get_usuarios_query():
     '''
     Retorna o objeto da query de usuários para ser usado em outra função
@@ -20,7 +21,7 @@ def get_score_evento(edicao):
 
 def get_participantes():
     try:
-        query = db.session.query(Participante)
+        query = db.session.query(Participante).all()
         participantes = []
         for p in query:
             info = (p.id, p.usuario.primeiro_nome + " " + p.usuario.sobrenome + " <" + p.usuario.email + ">")
@@ -289,6 +290,34 @@ def cadastro_wifi_visitante(data):
 def get_ranking_pontuacao():
     participantes = db.session.query(Participante).filter_by(id_evento=get_id_evento_atual()).order_by(Participante.pontuacao.desc()).limit(10).all()
     return participantes
+
+import datetime
+
+def get_ranking_pontuacao_by_day():
+    current_time = datetime.datetime.utcnow()
+    ultimo_dia = datetime.datetime.combine(datetime.date.today(), datetime.time())
+    flags = db.session.query(RelacaoParticipanteFlags).filter(RelacaoParticipanteFlags.data_hora > ultimo_dia).all()
+    participantes = []
+    for f in flags:
+        participantes.append(Pont(f.id_participante, 0))
+    for f in flags:
+        cont = 0
+        for p in participantes:
+            if(p.id == f.id_participante):
+                participantes[cont].pont = participantes[cont].pont + int(db.session.query(Flag).filter_by(id=f.id_flag).first().pontos)
+            cont = cont + 1
+    top_10 = []
+    for i in range(10):
+        maior = 0
+        if(len(participantes) > 0):
+            maior_part = participantes[0]
+            for p in participantes:
+                if(p.pont > maior and p not in top_10):
+                    maior = p.pont
+                    maior_part = p
+            if maior_part not in top_10:
+                top_10.append(maior_part)
+    return top_10
 
 def presenca_valida(id_atividade, id_participante):
     presenca = db.session.query(Presenca).filter_by(id_atividade=id_atividade, id_participante=id_participante).first()

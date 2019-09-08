@@ -78,6 +78,11 @@
             <h4>Flags</h4>
             <a href="{{ url_for('management.cadastro_flags') }}" class="btn btn-primary">Gerenciar Flags</a>
         </div>
+            <div class="col-md-6 p-3">
+            <h4>Flags</h4>
+            <a href="{{ url_for('management.add_pontuacao') }}" class="btn btn-primary">Flags - Adicionar pontuação p/ usuário</a>
+        </div>
+
         {% endif %}
 
         {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CREDENCIAMENTO'].usuarios or usuario in permissoes['ADMIN'].usuarios or usuario.is_admin() is sameas true %}

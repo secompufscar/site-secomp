@@ -11,9 +11,15 @@
 <div class="container">
     <div class="row justify-content-center text-center pt-4 pb-4">
         <div class="col-md-12 pb-4">
-            <h2>Pontuação COMPCases</h2>
+            {% if not ult_day %}
+                <h2>Pontuação COMPCases</h2>
+                <br>
+                <a href="{{ url_for('views.pontuacao_compcases_day') }}"><h4>Clique aqui para ver a pontuação diária!</h4></a>
+            {% else %}
+                <h2>Pontuação diária - COMPCases</h2>
+            {% endif %}
         </div>
-        {% if participante_logado != None %}
+        {% if participante_logado != None and ult_day == False%}
         <div class="col-md-12 pb-4">
             <h4><b>{{ participante_logado.usuario.primeiro_nome }} {{ participante_logado.usuario.sobrenome }}:</b> {{ participante_logado.pontuacao }} pontos</h4>
         </div>

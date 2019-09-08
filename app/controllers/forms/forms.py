@@ -124,6 +124,9 @@ class AlteraCamisetaForm(FlaskForm):
     participante = SelectField("Selecione o usuário", choices=get_participantes(), id="participante", coerce=int)
     camiseta = SelectField("Modelos", choices=get_opcoes_camisetas(), default="P Feminino", id="camiseta", coerce=int)
 
+class PontuacaoNaMaoForm(FlaskForm):
+    participante = SelectField("Selecione o usuário", choices=get_participantes(), id="participante", coerce=int)
+    pontuacao = IntegerField()
 
 class VendaKitForm(FlaskForm):
     participante = SelectField("Inscrições na SECOMP 2019", choices=get_participantes(), id="participante", coerce=int)
