@@ -333,4 +333,4 @@ class FeedbackForm(BaseRecaptchaForm):
     observacoes = StringField('Deixe comentários, se desejar', id='observacoes', validators=[Length(max=500)])
 
 class SorteioForm(FlaskForm):
-    atividades = SelectField("Atividades", choices=get_atividades(), id="atividade", coerce=int)
+    atividades = SelectField(choices=get_atividades(), id="atividade", coerce=int)
