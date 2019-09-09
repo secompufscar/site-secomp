@@ -15,7 +15,7 @@
         </div>
         {% else %}
             <h3 class="text-center">Insira suas informações aqui para fazer o cadastro na rede WIFI-VISITANTE!</h3>
-            <form method="POST" action="/wifi-visitante">
+            <form method="POST" action="{{ form.action }}">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.cpf) }}
                 {{ wtf.form_field(form.nome) }}
