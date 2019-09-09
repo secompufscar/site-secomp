@@ -124,7 +124,8 @@ def sorteia_usuario():
     if("SORTEAR" in permissoes or current_user.is_admin()):
         participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
-        return render_template('management/sortear_usuario.html', usuario=current_user, participante=participante, sorteando=False, form_login=form_login)
+        form = SorteioForm(request.form)
+        return render_template('management/sortear_usuario.html', form=form, usuario=current_user, participante=participante, sorteando=False, form_login=form_login)
     else:
         abort(403)
 
@@ -133,15 +134,15 @@ def sorteia_usuario():
 def sortear():
     permissoes = current_user.getPermissoes()
     if("SORTEAR" in permissoes or current_user.is_admin()):
-       # participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
-        presencas = db.session.query(Atividade).filter_by(id=212).first().presencas
+        form = SorteioForm(request.form)
+        presencas = db.session.query(Atividade).filter_by(id=int(form.atividades.data)).first().presencas
         participante = []
         for p in presencas:
             participante.append(p.participante)
         sorteado = participante
         sorteado = sorteado[SystemRandom().randint(1, len(sorteado)) - 1]
-        return render_template('management/sortear_usuario.html', usuario=current_user, participante=participante, sorteado=sorteado, sorteando=True, form_login=form_login)
+        return render_template('management/sortear_usuario.html', usuario=current_user, form=form, participante=participante, sorteado=sorteado, sorteando=True, form_login=form_login)
     else:
         abort(403)
 
