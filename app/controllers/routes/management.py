@@ -147,7 +147,7 @@ def alterar_camiseta():
     permissoes = current_user.getPermissoes()
     if("ALTERAR_CAMISETAS" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
-        foPagamentorm = AlteraCamisetaForm(request.form)
+        form = AlteraCamisetaForm(request.form)
         if form.validate_on_submit() and form.participante.data is not None:
             participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
             camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
