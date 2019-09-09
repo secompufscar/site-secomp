@@ -4,6 +4,7 @@ from flask_admin.contrib.fileadmin import FileAdmin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form import SecureForm
 from flask_login import current_user
+
 import locale
 from datetime import datetime
 locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
@@ -24,6 +25,7 @@ class AppModelView(ModelView):
     form_base_class = SecureForm
     can_view_details = True
     column_exclude_list = ['senha', 'token_email', 'token_alteracao_senha', 'salt_alteracao_senha', 'salt']
+    column_searchable_list = ['primeiro_nome', 'sobrenome', 'email', 'empresa_universidade', 'cidade_origem', 'local', 'titulo', 'tipo', 'tamanho', 'acao']
 
     def after_model_change(self, form, model, is_created):
         if is_created is not True:
