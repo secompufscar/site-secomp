@@ -147,12 +147,13 @@ def alterar_camiseta():
     permissoes = current_user.getPermissoes()
     if("ALTERAR_CAMISETAS" in permissoes or current_user.is_admin()):
         form_login = LoginForm(request.form)
-        form = AlteraCamisetaForm(request.form)
+        foPagamentorm = AlteraCamisetaForm(request.form)
         if form.validate_on_submit() and form.participante.data is not None:
             participante = db.session.query(Participante).filter_by(id=form.participante.data).first()
             camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
             if camiseta.quantidade_restante > 0:
-                camiseta_antiga = db.session.query(Camiseta).filter_by(id=participante.id_camiseta).first()
+                antiga = db.session.query(Pagamento).filter_by(efetuado=True, cancelado=False, rejeitado=False, id_participante=participante.id).first()
+                camiseta_antiga = db.session.query(Camiseta).filter_by(antiga.id_camiseta).first()
                 camiseta_antiga.quantidade_restante = camiseta_antiga.quantidade_restante + 1
                 camiseta.quantidade_restante = camiseta.quantidade_restante - 1
                 participante.id_camiseta = camiseta.id
