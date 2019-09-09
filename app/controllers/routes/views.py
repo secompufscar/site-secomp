@@ -242,12 +242,6 @@ def pontuacao_compcases_day():
     '''
     Gambiarra de última hora: bubble sort para ordenar os participantes por pontuação
     '''
-    for i in range(len(participantes)):
-        for j in range(len(participantes)):
-            if(participantes[i].pontuacao > participantes[j].pontuacao):
-                aux = participantes[i]
-                participantes[i] = participantes[j]
-                participantes[j] = aux
     participante_logado = None
     try:
         participante_logado = participante = db.session.query(Participante).filter_by(
