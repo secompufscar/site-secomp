@@ -14,7 +14,10 @@
             {% if not ult_day %}
                 <h2>Pontuação COMPCases</h2>
                 <br>
-                <a href="{{ url_for('views.pontuacao_compcases_day') }}"><h4>Clique aqui para ver a pontuação diária!</h4></a>
+                <a href="{{ url_for('views.pontuacao_compcases_day') }}"><h4>Clique aqui para ver a pontuação diária!</h4>
+                </a><h6>Confira o <a href="{{ url_for('static', filename='juridic/compcases.pdf') }}"
+                                target="_blank">
+                                edital</a>
             {% else %}
                 <h2>Pontuação diária - COMPCases</h2>
             {% endif %}
@@ -44,6 +47,7 @@
                 {% endfor %}
             </tbody>
         </table>
+
     </div>
 </div>
 
