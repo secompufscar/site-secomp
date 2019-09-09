@@ -331,3 +331,6 @@ class FeedbackForm(BaseRecaptchaForm):
     conhecimentos_ministrante = SelectField('Avalie quanto ao nível de preparo e conhecimentos do ministrante', id='conhecimentos_ministrante',
                                             choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
     observacoes = StringField('Deixe comentários, se desejar', id='observacoes', validators=[Length(max=500)])
+
+class SorteioForm(FlaskForm):
+    atividades = SelectField("Atividades", choices=get_atividades(), id="atividade", coerce=int)
