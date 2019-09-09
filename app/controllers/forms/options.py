@@ -189,7 +189,7 @@ def get_opcoes_transporte_sanca():
 
 def get_usuarios_inscricao_pendente():
     try:
-        usuarios = db.session.query(Usuario).filter(Usuario.email_verificado == True).all()
+        usuarios = db.session.query(Usuario).all()
         usuarios_inscricao_pendente = []
         for usuario in usuarios:
             participante = db.session.query(Participante).filter(Participante.usuario == usuario, Participante.id_evento == get_id_evento_atual()).first()
