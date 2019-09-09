@@ -25,7 +25,7 @@ class AppModelView(ModelView):
     form_base_class = SecureForm
     can_view_details = True
     column_exclude_list = ['senha', 'token_email', 'token_alteracao_senha', 'salt_alteracao_senha', 'salt']
-    column_searchable_list = ['primeiro_nome', 'sobrenome', 'email', 'empresa_universidade', 'cidade_origem', 'local', 'titulo', 'tipo', 'tamanho', 'acao']
+#    column_searchable_list = ['primeiro_nome', 'sobrenome', 'email', 'empresa_universidade', 'cidade_origem', 'local', 'titulo', 'tipo', 'tamanho', 'acao']
 
     def after_model_change(self, form, model, is_created):
         if is_created is not True:
