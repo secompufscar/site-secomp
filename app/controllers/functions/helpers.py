@@ -41,8 +41,9 @@ def get_atividades():
         query = db.session.query(Atividade).all()
         ativ = []
         for a in query:
-            info = (a.id, a.tipo.nome + ' - ' + a.titulo)
-            ativ.append(info)
+            if a.titulo is not None:
+                info = (a.id, a.tipo.nome + ' - ' + str(a.titulo))
+                ativ.append(info)
         return ativ
     except Exception as e:
         print(e)
