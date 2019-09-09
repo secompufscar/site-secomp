@@ -377,7 +377,7 @@ def cadastro_presencial_participante():
         meu_participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form.usuario.choices = get_usuarios_inscricao_pendente()
         if form.validate_on_submit():
-            agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             participante = Participante(id_usuario=form.usuario.data, id_evento=get_id_evento_atual(), data_inscricao=agora, credenciado=False, opcao_coffee=0,
                             uuid=str(uuid.uuid1()))
             db.session.add(participante)
