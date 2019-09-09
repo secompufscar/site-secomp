@@ -153,7 +153,7 @@ def alterar_camiseta():
             camiseta = db.session.query(Camiseta).filter_by(id=form.camiseta.data).first()
             if camiseta.quantidade_restante > 0:
                 antiga = db.session.query(Pagamento).filter_by(efetuado=True, cancelado=False, rejeitado=False, id_participante=participante.id).first()
-                camiseta_antiga = db.session.query(Camiseta).filter_by(antiga.id_camiseta).first()
+                camiseta_antiga = db.session.query(Camiseta).filter_by(id=antiga.id_camiseta).first()
                 camiseta_antiga.quantidade_restante = camiseta_antiga.quantidade_restante + 1
                 camiseta.quantidade_restante = camiseta.quantidade_restante - 1
                 participante.id_camiseta = camiseta.id
