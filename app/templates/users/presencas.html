@@ -53,7 +53,7 @@
             {{ presenca.atividade.tipo.nome }}
           </td>
           <td>
-            {% if presenca.id_feedback is sameas none %}
+            {% if presenca.id_feedback is sameas none and presenca.atividade.aconteceu() is sameas true %}
             <a href="{{ url_for('.submeter_feedback', id_atividade = presenca.atividade.id) }}"
               style="text-decoration: none;">
               Avaliar atividade
