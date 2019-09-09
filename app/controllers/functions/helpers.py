@@ -41,8 +41,9 @@ def get_atividades():
         query = db.session.query(Atividade).all()
         ativ = []
         for a in query:
-            info = (a.id, a.tipo.nome + ' - ' + a.titulo)
-            ativ.append(info)
+            if a.titulo is not None:
+                info = (a.id, a.tipo.nome + ' - ' + str(a.titulo))
+                ativ.append(info)
         return ativ
     except Exception as e:
         print(e)
@@ -325,7 +326,7 @@ def presenca_valida(id_atividade, id_participante):
 
 def atividade_aconteceu(id_atividade):
     atividade = db.session.query(Atividade).filter_by(id=id_atividade).first()
-    agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    agora = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     if agora >= str(atividade.data_hora_fim):
         return True
     else:
