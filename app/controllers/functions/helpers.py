@@ -294,6 +294,13 @@ def get_ranking_pontuacao():
 
 import datetime
 
+def aux_ranking(lista):
+    maior = lista[0]
+    for p in lista:
+        if p.pont > maior.pont:
+            maior = p
+    return maior
+
 def get_ranking_pontuacao_by_day():
     current_time = datetime.datetime.utcnow()
     ultimo_dia = datetime.datetime.combine(datetime.date.today(), datetime.time())
@@ -308,16 +315,16 @@ def get_ranking_pontuacao_by_day():
                 participantes[cont].pont = participantes[cont].pont + int(db.session.query(Flag).filter_by(id=f.id_flag).first().pontos)
             cont = cont + 1
     top_10 = []
-    for i in range(10):
-        maior = 0
+    while(len(top_10) < 10):
         if(len(participantes) > 0):
-            maior_part = participantes[0]
-            for p in participantes:
-                if(p.pont > maior and p not in top_10):
-                    maior = p.pont
-                    maior_part = p
-            if maior_part not in top_10:
-                top_10.append(maior_part)
+            maior = aux_ranking(participantes)
+            participantes.remove(maior)
+            dentro = 0
+            for i in top_10:
+                if i.id == maior.id:
+                    dentro = 1
+            if not dentro:
+                top_10.append(maior)
     return top_10
 
 def presenca_valida(id_atividade, id_participante):
