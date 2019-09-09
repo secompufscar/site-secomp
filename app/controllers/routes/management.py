@@ -133,10 +133,14 @@ def sorteia_usuario():
 def sortear():
     permissoes = current_user.getPermissoes()
     if("SORTEAR" in permissoes or current_user.is_admin()):
-        participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
+       # participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
-        sorteado = db.session.query(Participante)
-        sorteado = sorteado[SystemRandom().randint(1, sorteado.count()) - 1]
+        presencas = db.session.query(Atividade).filter_by(id=212).first().presencas
+        participante = []
+        for p in presencas:
+            participante.append(p.participante)
+        sorteado = participante
+        sorteado = sorteado[SystemRandom().randint(1, len(sorteado)) - 1]
         return render_template('management/sortear_usuario.html', usuario=current_user, participante=participante, sorteado=sorteado, sorteando=True, form_login=form_login)
     else:
         abort(403)
