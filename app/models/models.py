@@ -226,6 +226,16 @@ class Atividade(db.Model):
         r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_atividade=self.id, confirmado=True, admin_atividade=True).first()
         return db.session.query(Ministrante).get(r.id_ministrante)
 
+    def aconteceu(self):
+        agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        fim = str(self.data_hora_fim)
+        print("fim: " + fim)
+        if agora >= fim:
+            return True
+        else:
+            return False
+
+
 class InfoMinicurso(db.Model):
     __tablename__ = 'info_minicurso'
     id = Column(Integer, primary_key=True)
