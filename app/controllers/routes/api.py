@@ -261,7 +261,7 @@ def dados_usuario():
                 ativ = db.session.query(Atividade).filter_by(id=p.id_atividade).all()
                 for a in ativ:
                     ativs.append(a.titulo)
-            camiseta = db.session.query(Pagamento).filter_by(id_participante=participante.id).all()
+            camiseta = db.session.query(Pagamento).filter_by(id_participante=participante.id, efetuado=True, rejeitado=False, cancelado=False).all()
             camisetas = []
             for p in camiseta:
                 camisetas.append(p.camiseta.tamanho)

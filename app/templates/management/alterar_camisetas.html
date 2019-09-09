@@ -18,6 +18,7 @@
                     Erro! Sem unidades de {{camiseta.tamanho}} disponíveis.
                 </div>
                 {% endif %}
+                <h4 class="text-center">Obs: só funciona para participantes que compraram 1 único kit</h4>
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.participante) }}
                 {{ wtf.form_field(form.camiseta) }}
