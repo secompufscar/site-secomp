@@ -16,8 +16,11 @@
                 {% else: %}
                     <center><h4>Clique no botão abaixo para sortear um participante!</h4></center>
                 {% endif %}
-                    {{ form.hidden_tag() }}
-                    {{ form.atividades }}
+                    <div class="text-center">
+                        {{ form.hidden_tag() }}
+                        {{ form.atividades }}
+                    </div>
+                <br/>
                 <div class="text-center">
                     {% if sorteando %}
                     <button type="submit" class="btn btn-primary">Sortear outro participante</button>
