@@ -809,7 +809,7 @@ def submeter_flag():
 @email_verificado_required
 def submeter_feedback(id_atividade):
     form_login = LoginForm(request.form)
-    form = FeedbackForm()
+    form = FeedbackForm(request.form)
     participante = db.session.query(
         Participante).filter_by(usuario=current_user).first()
     presenca = presenca_valida(id_atividade, participante.id)
