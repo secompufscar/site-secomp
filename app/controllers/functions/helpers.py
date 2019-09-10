@@ -301,10 +301,11 @@ def aux_ranking(lista):
         if p.pont > maior.pont:
             maior = p
     return maior
-
+from datetime import date
 def get_ranking_pontuacao_by_day():
     current_time = datetime.datetime.utcnow()
-    ultimo_dia = datetime.datetime.combine(datetime.date.today(), datetime.time())
+    today = date.today()
+    ultimo_dia = datetime.datetime.combine(today, datetime.datetime.min.time())
     flags = db.session.query(RelacaoParticipanteFlags).filter(RelacaoParticipanteFlags.data_hora > ultimo_dia).all()
     participantes = []
     for f in flags:
