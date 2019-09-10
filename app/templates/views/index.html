@@ -26,27 +26,10 @@
 						<img class="logoL" src="{{ url_for('static', filename='images/logo-branca.png') }}">
 						<img class="logoP" src="{{ url_for('static', filename='images/logo-colorida.png') }}">
 					</div>
-					<div class="col-md-12 pb-2 pt-2">
+					<div class="col-md-12 pb-5 pt-2">
 						<h4 id="texto1">Para saber o que vai rolar na SECOMP
-							<br>acesse nosso
-							<a href="{{ url_for('views.cronograma') }}"><b>cronograma</b></a></h4>
-						<h5 id="texto2" class="d-none">O evento começou há</h5>
-					</div>
-					<div class="col">
-						<h2 class="contador-dias">00</h2>
-						<h4>dias</h4>
-					</div>
-					<div class="col">
-						<h2 class="contador-horas">00</h2>
-						<h4>horas</h4>
-					</div>
-					<div class="col">
-						<h2 class="contador-min">00</h2>
-						<h4>min</h4>
-					</div>
-					<div class="col">
-						<h2 class="contador-seg">00</h2>
-						<h4>seg</h4>
+						<br>acesse nosso
+						<a href="{{ url_for('views.cronograma') }}"><b>cronograma</b></a></h4>
 					</div>
 				</div>
 			</div>
@@ -136,31 +119,6 @@
 {{ super() }}
 
 <script src="{{ url_for('static', filename='swiper/swiper.min.js') }}"></script>
-
-<script>
-	var countDownDate = new Date("Sep 09, 2019 08:00:00").getTime();
-	// Update the count down every 1 second
-	var x = setInterval(function () {
-		// Get todays date and time
-		var now = new Date().getTime();
-		// Find the distance between now and the count down date
-		var distance = countDownDate - now;
-		// Time calculations for days, hours, minutes and seconds
-		var days = Math.abs(Math.round(distance / (1000 * 60 * 60 * 24)));
-		var hours = Math.abs(Math.round((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-		var minutes = Math.abs(Math.round((distance % (1000 * 60 * 60)) / (1000 * 60)));
-		var seconds = Math.abs(Math.round((distance % (1000 * 60)) / 1000));
-		// Display the result in the element with id="demo"
-		$(".contador-dias").each(function () { $(this).html(days) });
-		$(".contador-horas").each(function () { $(this).html(hours) });
-		$(".contador-min").each(function () { $(this).html(minutes) });
-		$(".contador-seg").each(function () { $(this).html(seconds) });
-
-		if (distance < 0) {
-			$("#texto2").removeClass("d-none");
-		}
-	}, 1000);
-</script>
 
 <script>
 
