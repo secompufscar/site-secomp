@@ -315,7 +315,7 @@ def get_ranking_pontuacao_by_day():
                 participantes[cont].pont = participantes[cont].pont + int(db.session.query(Flag).filter_by(id=f.id_flag).first().pontos)
             cont = cont + 1
     top_10 = []
-    while(len(top_10) < 10):
+    while(len(top_10) < 10 and len(top_10) > 0):
         if(len(participantes) > 0):
             maior = aux_ranking(participantes)
             participantes.remove(maior)
