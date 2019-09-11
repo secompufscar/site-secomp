@@ -515,6 +515,8 @@ class Feedback(db.Model):
     observacoes = Column(String(500), nullable=True)
 
 class Pont:
-  def __init__(self, id, pont):
+  def __init__(self, id, pont, primeiro_nome, sobrenome):
     self.id = id
     self.pont = pont
+    self.primeiro_nome = primeiro_nome
+    self.sobrenome = sobrenome
