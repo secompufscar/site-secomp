@@ -137,12 +137,15 @@ def sortear():
         form_login = LoginForm(request.form)
         form = SorteioForm(request.form)
         presencas = db.session.query(Atividade).filter_by(id=int(form.atividades.data)).first().presencas
-        participante = []
-        for p in presencas:
-            participante.append(p.participante)
-        sorteado = participante
-        sorteado = sorteado[SystemRandom().randint(1, len(sorteado)) - 1]
-        return render_template('management/sortear_usuario.html', usuario=current_user, form=form, participante=participante, sorteado=sorteado, sorteando=True, form_login=form_login)
+        if len(presencas) > 0:
+            participante = []
+            for p in presencas:
+                participante.append(p.participante)
+            sorteado = participante
+            sorteado = sorteado[SystemRandom().randint(1, len(sorteado)) - 1]
+            return render_template('management/sortear_usuario.html', usuario=current_user, form=form, participante=participante, sorteado=sorteado, sorteando=True, form_login=form_login)
+        else:
+            return render_template('management/sortear_usuario.html', usuario=current_user, form=form, vazio=True, sorteando=False, form_login=form_login)
     else:
         abort(403)
 

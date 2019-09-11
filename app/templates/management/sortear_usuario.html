@@ -9,6 +9,11 @@
             <h2 class="text-center">Sorteio de participante</h2>
 
             <form action="{{url_for('.sortear')}}" method="POST">
+                {% if vazio %}
+                    <div class="alert alert-success" role="alert">
+                        Não existem presenças registradas para essa atividade.
+                    </div>
+                {% endif %}
                 {% if sorteando %}
                     <div class="alert alert-success" role="alert">
                         O participante sorteado foi: {{sorteado.usuario.primeiro_nome}} {{sorteado.usuario.sobrenome}}
@@ -16,10 +21,8 @@
                 {% else: %}
                     <center><h4>Clique no botão abaixo para sortear um participante!</h4></center>
                 {% endif %}
-                    <div class="text-center">
                         {{ form.hidden_tag() }}
-                        {{ form.atividades }}
-                    </div>
+                        {{ wtf.form_field(form.atividades) }}
                 <br/>
                 <div class="text-center">
                     {% if sorteando %}
