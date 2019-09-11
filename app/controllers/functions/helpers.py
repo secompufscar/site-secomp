@@ -308,10 +308,12 @@ def get_ranking_pontuacao_by_day():
     current_time = datetime.datetime.utcnow()
     today = date.today()
     ultimo_dia = datetime.datetime.combine(today, datetime.datetime.min.time())
+    print(ultimo_dia)
     flags = db.session.query(RelacaoParticipanteFlags).filter(RelacaoParticipanteFlags.data_hora > ultimo_dia).all()
     participantes = []
     for f in flags:
-        participantes.append(Pont(f.id_participante, 0))
+        part = db.session.query(Participante).filter_by(id=f.id_participante).first()
+        participantes.append(Pont(f.id_participante, 0, part.usuario.primeiro_nome, part.usuario.sobrenome))
     for f in flags:
         cont = 0
         for p in participantes:
@@ -328,6 +330,7 @@ def get_ranking_pontuacao_by_day():
                 dentro = 1
         if not dentro:
             top_10.append(maior)
+    print(top_10)
     return top_10
 
 def presenca_valida(id_atividade, id_participante):
