@@ -1,5 +1,7 @@
 import requests
 
+from flask import current_app
+
 from app.models.models import *
 from app.controllers.constants import EDICAO_ATUAL
 
@@ -256,7 +258,7 @@ def possui_permissao(usuario):
     else:
         return False
 
-def cadastro_wifi_visitante(data):
+def cadastrar_wifi_visitante(data):
     username = current_app.config['SAGUI_USER']
     password = current_app.config['SAGUI_PASS']
 
