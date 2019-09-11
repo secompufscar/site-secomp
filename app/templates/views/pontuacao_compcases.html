@@ -39,9 +39,15 @@
                 {% for participante in participantes %}
                     {% if participante.pontuacao != 0 %}
                         <tr>
-                            <td>{{ loop.index }}</td>
-                            <td>{{ participante.usuario.primeiro_nome }} {{ participante.usuario.sobrenome }}</td>
-                            <td>{{ participante.pontuacao }}</td>
+                            {% if ult_day %}
+                                <td>{{ loop.index }}</td>
+                                <td>{{ participante.primeiro_nome }} {{ participante.sobrenome }}</td>
+                                <td>{{ participante.pont }}</td>
+                            {% else %}
+                                <td>{{ loop.index }}</td>
+                                <td>{{ participante.usuario.primeiro_nome }} {{ participante.usuario.sobrenome }}</td>
+                                <td>{{ participante.pontuacao }}</td>
+                            {% endif %}
                         </tr>
                     {% endif %}
                 {% endfor %}
