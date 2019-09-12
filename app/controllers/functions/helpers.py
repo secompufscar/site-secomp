@@ -318,7 +318,6 @@ def get_ranking_pontuacao_by_day():
         for p in participantes:
             if(p.id == f.id_participante):
                 participantes[cont].pont = participantes[cont].pont + int(db.session.query(Flag).filter_by(id=f.id_flag).first().pontos)
-                a = db.session.query(RelacaoParticipanteFlags).filter_by(id_participante=p.id, id_flag=f.id_flag).all()
             cont = cont + 1
     top_10 = []
     while(len(top_10) < 10 and len(participantes) > 0):
