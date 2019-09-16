@@ -829,6 +829,7 @@ def submeter_feedback(id_atividade):
                 presenca.id_feedback=feedback.id
                 db.session.flush()
                 db.session.commit()
+                flash("Atividade avaliada com sucesso!")
                 return redirect(url_for('.presencas'))
             else:
                 return render_template('users/feedback.html', usuario=current_user, form_login=form_login, form=form, participante = db.session.query(
