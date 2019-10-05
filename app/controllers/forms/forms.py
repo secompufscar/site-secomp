@@ -1,11 +1,12 @@
 from flask_wtf import FlaskForm, RecaptchaField, Recaptcha
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, HiddenField, IntegerField, FieldList, SelectMultipleField, RadioField, SubmitField
-from wtforms.validators import InputRequired, Email, Length, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SelectField, DateField, TextAreaField, IntegerField, RadioField
+from wtforms.validators import InputRequired, Email, Length, EqualTo, Optional
 
 from app.controllers.forms.options import *
 from app.controllers.forms.validators import *
 from app.controllers.functions.helpers import get_participantes, get_atividades
+
 
 class BaseRecaptchaForm(FlaskForm):
     recaptcha = RecaptchaField(validators=[Recaptcha(message="Você deve completar a checagem de validação do recaptcha.")])
@@ -247,12 +248,12 @@ class CadastroInformacoesLocomocaoEstadia(FlaskForm):
         validators=[InputRequired()])
     transporte_ida_volta = BooleanField('Requer que a SECOMP UFSCar pague por seu transporte de ida e volta',
         id='transporte_ida_volta')
-    opcoes_transporte_ida_volta = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte_ida_volta(),
-        id='opcoes_transporte_ida_volta', coerce=int, validators=[RequiredIf(transporte_ida_volta=True)])
+    opcoes_transporte_ida_volta = SelectField('De qual modo este ocorrerá?', choices=opcoes_transporte_ida_volta,
+                                              id='opcoes_transporte_ida_volta', coerce=int, validators=[RequiredIf(transporte_ida_volta=True)])
     transporte_sanca = BooleanField('Requer que a SECOMP UFSCar se encarregue do seu transporte dentro de São Carlos?',
         id='transporte_sanca')
-    opcoes_transporte_sanca = SelectField('De qual modo este ocorrerá?', choices=get_opcoes_transporte_sanca(),
-        id='opcoes_transporte_sanca', coerce=int, validators=[RequiredIf(transporte_sanca=True)])
+    opcoes_transporte_sanca = SelectField('De qual modo este ocorrerá?', choices=opcoes_transporte_sanca,
+                                          id='opcoes_transporte_sanca', coerce=int, validators=[RequiredIf(transporte_sanca=True)])
     hospedagem = BooleanField('Requer que a SECOMP UFSCar arque com os custos de sua hospedagem?',
         id='hospedagem')
     necessidades_hospedagem = TextAreaField('Quais são as necessidades básicas a serem atendidas pela estadia?',
@@ -277,19 +278,19 @@ class BugReportForm(BaseRecaptchaForm):
         FileAllowed(['pdf', 'webm', 'mkv', 'gif', 'mp4', 'png', 'jpg', 'jpeg'], message=ERRO_EXTENSAO_INVALIDA)], id='anexo')
 
 
-class EmailCuston(BaseRecaptchaForm):
-    assunto = StringField('Assunto', id='text_assunto');
-    titulo = StringField('Título', id='text_titulo');
-    template = StringField('Template do Email', id='text_template_email');
-    anexo = BooleanField('Anexo', id='cbox_tem_anexo');
-    pastaAnexo = StringField('Nome da pasta', id='text_path_anexo');
-    baseAnexo = StringField('Base do nome do anexo', id='text_base_anexo');
-    complemento = SelectField('Complemento', id='list_complemento_anexo', choices=get_opcoes_ecustom_complemento());
-    extencao = SelectField('Extenção', id='list_extencao_anexo', choices=get_opcoes_ecustom_extensao());
-    atividades = SelectField('Atividades', id='list_atividades', choices= get_opcoes_ecustom_atividade());
-    pesquisaResultado = StringField('Nome: ', id='text_pesquisa_em_resultado');
-    todosresultado = BooleanField('Todos', id='cbox_todos_os_usuarios');
-    pesquisaSelecionados = StringField('Nome: ', id='text_pesquisa_em_selecionados');
+class EmailCustom(BaseRecaptchaForm):
+    assunto = StringField('Assunto', id='text_assunto')
+    titulo = StringField('Título', id='text_titulo')
+    template = StringField('Template do Email', id='text_template_email')
+    anexo = BooleanField('Anexo', id='cbox_tem_anexo')
+    pastaAnexo = StringField('Nome da pasta', id='text_path_anexo')
+    baseAnexo = StringField('Base do nome do anexo', id='text_base_anexo')
+    complemento = SelectField('Complemento', id='list_complemento_anexo', choices=get_opcoes_ecustom_complemento())
+    extencao = SelectField('Extenção', id='list_extencao_anexo', choices=get_opcoes_ecustom_extensao())
+    atividades = SelectField('Atividades', id='list_atividades', choices= get_opcoes_ecustom_atividade())
+    pesquisaResultado = StringField('Nome: ', id='text_pesquisa_em_resultado')
+    todosresultado = BooleanField('Todos', id='cbox_todos_os_usuarios')
+    pesquisaSelecionados = StringField('Nome: ', id='text_pesquisa_em_selecionados')
 
 
 class GerarUrlConteudoForm(FlaskForm):
@@ -297,12 +298,12 @@ class GerarUrlConteudoForm(FlaskForm):
 
 
 class CadastrarFlagForm(FlaskForm):
-    flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
+    flag = StringField('Flag', validators=[InputRequired(), Length(min=1, max=64)])
     pontos = IntegerField('Pontos', validators=[InputRequired()])
 
 
 class SubmeterFlagForm(BaseRecaptchaForm):
-    flag = StringField('Flag', validators=[InputRequired(), Length(min=1,max=64)])
+    flag = StringField('Flag', validators=[InputRequired(), Length(min=1, max=64)])
 
 
 class GerenciarComprovantesForm(FlaskForm):
@@ -314,23 +315,27 @@ class GerenciarComprovantesForm(FlaskForm):
 
 class CancelarPagamentoForm(FlaskForm):
     cancelar = IntegerField()
-    
+
+
 class WifiForm(BaseRecaptchaForm):
     cpf = StringField('CPF:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=0,max=14)])
     nome = StringField('Nome Completo:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Length(min=1,max=128)])
     email = StringField('Email:', validators=[InputRequired(message=ERRO_INPUT_REQUIRED), Email(message=ERRO_EMAIL), Length(min=1, max=128)])
 
+
 class CadastroPresencialParticipanteForm(FlaskForm):
     usuario = SelectField("Selecione um usuário para o cadastro presencial", choices=get_usuarios_inscricao_pendente(), id="usuario", coerce=int)
     confirmar_email = RadioField('Deseja comprar o kit da SECOMP UFSCar?', id='comprar', choices=[(1,'Sim'),(2,'Não')], coerce=int, default=2)
 
+
 class FeedbackForm(BaseRecaptchaForm):
-    aspectos_gerais = SelectField('Avalie a atividade em aspectos gerais', id='aspectos_gerais', choices=get_opcoes_avaliacao(), coerce=int,
+    aspectos_gerais = SelectField('Avalie a atividade em aspectos gerais', id='aspectos_gerais', choices=opcoes_avaliacao, coerce=int,
                                   validators=[InputRequired(message=ERRO_INPUT_REQUIRED)])
-    conteudo = SelectField('Avalie quanto a conteúdo da atividade', id='conteudo', choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
+    conteudo = SelectField('Avalie quanto a conteúdo da atividade', id='conteudo', choices=opcoes_avaliacao, validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
     conhecimentos_ministrante = SelectField('Avalie quanto ao nível de preparo e conhecimentos do ministrante', id='conhecimentos_ministrante',
-                                            choices=get_opcoes_avaliacao(), validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
+                                            choices=opcoes_avaliacao, validators=[InputRequired(message=ERRO_INPUT_REQUIRED)], coerce=int)
     observacoes = StringField('Deixe comentários, se desejar', id='observacoes', validators=[Length(max=500)])
+
 
 class SorteioForm(FlaskForm):
     atividades = SelectField(choices=get_atividades(), id="atividade", coerce=int)

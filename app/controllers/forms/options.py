@@ -28,6 +28,32 @@ opcoes_como_conheceu = [
     (4, "Outro")
 ]
 
+
+opcoes_transporte_ida_volta = [
+    (0, 'Selecione uma opção'),
+    (1, 'Carro próprio (combustível + pedágios, calculados pelo Jurídico Financeiro)'),
+    (2, 'Passagem de Ônibus (compra a ser realizada pelo Jurídico Financeiro)'),
+    (3, 'Carro alugado (apenas o valor do aluguel do carro)')
+]
+
+
+opcoes_transporte_sanca = [
+    (0, 'Selecione uma opção'),
+    (1, 'Carro próprio (combustível calculado pelo JF)'),
+    (2, 'Uber/99 (valor gasto na viagem “local de partida → UFSCar”)'),
+    (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')
+]
+
+
+opcoes_avaliacao = [
+    (1, 'Péssimo'),
+    (2, 'Ruim'),
+    (3, 'Regular'),
+    (4, 'Bom'),
+    (5, 'Ótimo')
+]
+
+
 def get_opcoes_cidades():
     try:
         cidades = db.session.query(Cidade).order_by("nome").all()
@@ -175,18 +201,6 @@ def get_opcoes_tipo_atividade():
     except Exception as e:
         return None
 
-def get_opcoes_transporte_ida_volta():
-    return [(0, 'Selecione uma opção'),
-            (1, 'Carro próprio (combustível + pedágios, calculados pelo Jurídico Financeiro)'),
-            (2, 'Passagem de Ônibus (compra a ser realizada pelo Jurídico Financeiro)'),
-            (3, 'Carro alugado (apenas o valor do aluguel do carro)')]
-
-def get_opcoes_transporte_sanca():
-    return [(0, 'Selecione uma opção'),
-            (1, 'Carro próprio (combustível calculado pelo JF)'),
-            (2, 'Uber/99 (valor gasto na viagem “local de partida → UFSCar”)'),
-            (3, 'Membro da SECOMP UFSCar encarrega-se de buscar o convidado')]
-
 def get_usuarios_inscricao_pendente():
     try:
         usuarios = db.session.query(Usuario).all()
@@ -199,9 +213,4 @@ def get_usuarios_inscricao_pendente():
     except Exception as e:
         return None
 
-def get_opcoes_avaliacao():
-    return[(1, 'Péssimo'),
-           (2, 'Ruim'),
-           (3, 'Regular'),
-           (4, 'Bom'),
-           (5, 'Ótimo')]
+

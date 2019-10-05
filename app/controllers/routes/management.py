@@ -1,19 +1,17 @@
-from random import SystemRandom
+import uuid
 
 from flask import render_template, request, redirect, abort, url_for, Blueprint
 from flask_login import login_required, current_user
+from random import SystemRandom
+from secrets import token_urlsafe
 
-from app.controllers.forms.forms import *
 from app.models.models import *
+from app.controllers.forms.forms import *
+from app.controllers.forms.options import *
 from app.controllers.functions.dictionaries import *
 from app.controllers.functions.helpers import *
 from app.controllers.functions.email import *
 from app.controllers.forms.validators import *
-
-from secrets import token_urlsafe
-
-from app.controllers.forms.options import *
-import uuid
 
 management = Blueprint('management', __name__, static_folder='static',
                        template_folder='templates', url_prefix='/gerenciar')
@@ -48,7 +46,7 @@ def estoque_camisetas():
 @login_required
 def estoque_camisetas_por_tamanho(tamanho):
     permissoes = current_user.getPermissoes()
-    if("ALTERAR_CAMISETAS" in permissoes or current_user.is_admin()):
+    if "ALTERAR_CAMISETAS" in permissoes or current_user.is_admin():
         participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         camisetas = db.session.query(Camiseta).filter_by(tamanho=tamanho)
@@ -61,7 +59,7 @@ def estoque_camisetas_por_tamanho(tamanho):
 @login_required
 def cadastro_patrocinador():
     permissoes = current_user.getPermissoes()
-    if("CADASTRAR_PATROCINADOR" in permissoes or current_user.is_admin()):
+    if "CADASTRAR_PATROCINADOR" in permissoes or current_user.is_admin():
         participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         form = PatrocinadorForm(request.form)
@@ -84,7 +82,7 @@ def cadastro_patrocinador():
 def vender_kits():
     permissoes = current_user.getPermissoes()
     meu_participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
-    if("VENDA_PRESENCIAL" in permissoes or current_user.is_admin()):
+    if "VENDA_PRESENCIAL" in permissoes or current_user.is_admin():
         form_login = LoginForm(request.form)
         form = VendaKitForm(request.form)
         form.participante.choices = get_participantes()
@@ -121,7 +119,7 @@ def vender_kits():
 @login_required
 def sorteia_usuario():
     permissoes = current_user.getPermissoes()
-    if("SORTEAR" in permissoes or current_user.is_admin()):
+    if "SORTEAR" in permissoes or current_user.is_admin():
         participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         form = SorteioForm(request.form)
@@ -133,7 +131,7 @@ def sorteia_usuario():
 @login_required
 def sortear():
     permissoes = current_user.getPermissoes()
-    if("SORTEAR" in permissoes or current_user.is_admin()):
+    if "SORTEAR" in permissoes or current_user.is_admin():
         form_login = LoginForm(request.form)
         form = SorteioForm(request.form)
         presencas = db.session.query(Atividade).filter_by(id=int(form.atividades.data)).first().presencas
@@ -153,7 +151,7 @@ def sortear():
 @login_required
 def alterar_camiseta():
     permissoes = current_user.getPermissoes()
-    if("ALTERAR_CAMISETAS" in permissoes or current_user.is_admin()):
+    if "ALTERAR_CAMISETAS" in permissoes or current_user.is_admin():
         form_login = LoginForm(request.form)
         form = AlteraCamisetaForm(request.form)
         if form.validate_on_submit() and form.participante.data is not None:
@@ -182,7 +180,7 @@ def alterar_camiseta():
 @login_required
 def listas():
     permissoes = current_user.getPermissoes()
-    if("GERAR_LISTAS" in permissoes or current_user.is_admin()):
+    if "GERAR_LISTAS" in permissoes or current_user.is_admin():
         participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         form = ListasParticipantes(request.form)
@@ -208,13 +206,13 @@ def listas():
 @management.route("/email-custom", methods=["GET"])
 @login_required
 def email_custom():
-    '''
+    """
     Página para envio de email
-    '''
+    """
     permissoes = current_user.getPermissoes()
-    if("ENVIAR_EMAIL" in permissoes or current_user.is_admin()):
+    if "ENVIAR_EMAIL" in permissoes or current_user.is_admin():
         form_login = LoginForm(request.form)
-        form = EmailCuston(request.form)
+        form = EmailCustom(request.form)
 
         return render_template('management/email_custom.html', form=form, form_login=form_login)
     else:
@@ -224,7 +222,7 @@ def email_custom():
 @login_required
 def gerar_url_conteudo():
     permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin()):
+    if "CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin():
         form_login = LoginForm(request.form)
         form = GerarUrlConteudoForm(request.form)
         emails = request.form.getlist('emails[]')
@@ -268,7 +266,7 @@ def gerar_url_conteudo():
 @login_required
 def cadastro_flags():
     permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or current_user.is_admin()):
+    if "CONTEUDO" in permissoes or current_user.is_admin():
         form_login = LoginForm(request.form)
         form = CadastrarFlagForm(request.form)
         if form.validate_on_submit():
@@ -288,7 +286,7 @@ def cadastro_flags():
 @login_required
 def add_pontuacao():
     permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or current_user.is_admin()):
+    if "CONTEUDO" in permissoes or current_user.is_admin():
         form_login = LoginForm(request.form)
         form = PontuacaoNaMaoForm(request.form)
         if form.validate_on_submit():
@@ -314,7 +312,7 @@ def add_pontuacao():
 @login_required
 def desativar_flag(id):
     permissoes = current_user.getPermissoes()
-    if("CONTEUDO" in permissoes or current_user.is_admin()):
+    if "CONTEUDO" in permissoes or current_user.is_admin():
         form_login = LoginForm(request.form)
         form = CadastrarFlagForm(request.form)
         flag = db.session.query(Flag).filter_by(id=id).first()
@@ -331,7 +329,7 @@ def desativar_flag(id):
 @login_required
 def gerenciar_comprovantes():
     permissoes = current_user.getPermissoes()
-    if("GERENCIAR_COMPROVANTES" in permissoes or current_user.is_admin()):
+    if "GERENCIAR_COMPROVANTES" in permissoes or current_user.is_admin():
         participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
         form_login = LoginForm(request.form)
         form = GerenciarComprovantesForm(request.form)
