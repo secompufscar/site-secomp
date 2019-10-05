@@ -1,16 +1,9 @@
 import re
-from flask_login import current_user
 
-from wtforms.validators import ValidationError, DataRequired, Optional
+from wtforms.validators import ValidationError, DataRequired, Optional, StopValidation
+from werkzeug.datastructures import FileStorage
 
 from app.models.models import *
-
-import warnings
-from collections import Iterable
-
-from wtforms import FileField as _FileField
-from werkzeug.datastructures import FileStorage
-from wtforms.validators import DataRequired, StopValidation
 
 # Mensagens de erro possíveis nos formulários
 ERRO_INPUT_REQUIRED = "Preencha esse campo."
@@ -75,6 +68,7 @@ def tem_valor():
             raise ValidationError("Preencha com algum valor")
     return _tem_valor
 
+
 def valida_email_ministrante():
     def _valida_email_ministrante(form, field):
         atividade = db.session.query(Atividade).filter_by(url_codigo=form.codigo_url).first()
@@ -89,9 +83,11 @@ def valida_email_ministrante():
                 raise ValidationError("Este email já está cadastrado!")
     return _valida_email_ministrante
 
+
 def is_valid_email(email):
     if len(email) > 7:
         return bool(re.match("^.+@(\[?)[a-zA-Z0-9-.]+.([a-zA-Z]{2,3}|[0-9]{1,3})(]?)$", email))
+
 
 def verifica_lista_emails(emails):
     if len(emails) == 0:
@@ -122,6 +118,7 @@ class RequiredIf(DataRequired):
                 DataRequired.__call__(self, form, field)
             Optional()(form, field)
 
+
 def valida_cupom_desconto():
     def _valida_cupom_desconto(form, field):
         cupom_desconto = db.session.query(CupomDesconto).filter_by(nome=form.cupom_desconto.data, usado=False).first()
@@ -129,8 +126,8 @@ def valida_cupom_desconto():
             raise ValidationError("Este cupom não é valido")
     return _valida_cupom_desconto
 
-class ComprovanteRequired(DataRequired):
 
+class ComprovanteRequired(DataRequired):
      def __call__(self, form, field):
         if form.forma_pagamento.data == 1:
             if not (isinstance(field.data, FileStorage) and field.data):
@@ -138,5 +135,4 @@ class ComprovanteRequired(DataRequired):
                     message = field.gettext('This field is required.')
                 else:
                     message = self.message
-
                 raise StopValidation(message)
