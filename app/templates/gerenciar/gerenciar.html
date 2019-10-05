@@ -1,0 +1,96 @@
+{% extends "participante/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block sidebar_content %}
+<div class="container">
+    <div class="row justify-content-center pt-1">
+        <div class="col-md-12 text-center">
+            <h1>Área Administrativa - {{ usuario.primeiro_nome }}</h1>
+        </div>
+    </div>
+    <div class="row pt-3">
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CONTEUDO'].usuarios or usuario in permissoes['PATROCINIO'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Gerar URL para o cadastro de atividades e ministrantes</h4>
+            <a href="{{url_for('.gerar_url_conteudo')}}" class="btn btn-primary">Gerar URL</a>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Envio de emails</h4>
+            <a href="#" class="btn btn-primary">Enviar email</a>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['NOTIFICACOES_APP'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Notificações</h4>
+            <a href="#" class="btn btn-primary">Enviar notificações</a>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['VENDA_PRESENCIAL'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Venda de Kits</h4>
+            <a href="{{url_for('.vender_kits')}}" class="btn btn-primary">Vender kit</a>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERENCIAR_COMPROVANTES'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Pagamentos</h4>
+            <a href="{{url_for('.gerenciar_comprovantes')}}" class="btn btn-primary">Gerenciar comprovantes</a>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['ALTERAR_CAMISETAS'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Camisetas</h4>
+            <a href="{{ url_for('.alterar_camiseta') }}" class="btn btn-primary">Alterar reservas de camisetas</a>
+            <a href="{{ url_for('.estoque_camisetas') }}" class="btn btn-primary">Controle de camisetas</a>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_CRACHAS'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Geração de crachás</h4>
+            <a href="{{ url_for('views.constr') }}" class="btn btn-primary">Gerar crachás</a>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['GERAR_LISTAS'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Geração de listas</h4>
+            <a href="{{url_for('.listas')}}" class="btn btn-primary">Gerar Listas</a>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['SORTEAR'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Sortear participante presente</h4>
+            <a href="{{url_for('.sorteia_usuario')}}" class="btn btn-primary">Sortear participante</a>
+        </div>
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CONTEUDO'].usuarios %}
+        <div class="col-md-6 p-3">
+            <h4>Flags</h4>
+            <a href="{{ url_for('gerenciar.cadastro_flags') }}" class="btn btn-primary">Gerenciar Flags</a>
+        </div>
+            <div class="col-md-6 p-3">
+            <h4>Flags</h4>
+            <a href="{{ url_for('gerenciar.add_pontuacao') }}" class="btn btn-primary">Flags - Adicionar pontuação p/ usuário</a>
+        </div>
+
+        {% endif %}
+
+        {% if usuario in permissoes['ADMIN'].usuarios or usuario in permissoes['CREDENCIAMENTO'].usuarios or usuario in permissoes['ADMIN'].usuarios or usuario.is_admin() is sameas true %}
+        <div class="col-md-6 p-3">
+            <h4>Cadastro presencial de participante</h4>
+            <a href="{{ url_for('gerenciar.cadastro_presencial_participante') }}" class="btn btn-primary">Inscrever usuários</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

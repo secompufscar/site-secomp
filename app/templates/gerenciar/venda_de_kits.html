@@ -1,0 +1,52 @@
+{% extends "participante/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block sidebar_content %}
+
+<style>
+
+  .select2-selection__rendered {
+    line-height: 31px !important;
+  }
+
+  .select2-container .select2-selection--single {
+    height: 35px !important;
+  }
+
+  .select2-selection__arrow {
+    height: 34px !important;
+  }
+</style>
+
+<div class="container">
+
+    <div class="row justify-content-center pt-1">
+        <div class="col-md-8">
+            <h3 class="text-center">Venda de KITs</h3>
+            <form method="POST" action="venda-kits">
+                <div class="form-group">
+                    <div class="alert alert-info" role="alert">
+                        {{ alerta }}
+                    </div>
+                    {{ form.hidden_tag() }}
+                    {{ wtf.form_field(form.participante) }}
+                    {{ wtf.form_field(form.camiseta) }}
+                    {{ wtf.form_field(form.restricao_coffee) }}
+                    {{ wtf.form_field(form.valor) }}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-block">Confirmar venda</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+$("#participante").select2({
+  language: "pt-BR"
+});
+
+</script>
+
+{% endblock %}
