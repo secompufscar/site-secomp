@@ -1,0 +1,58 @@
+{% extends "participante/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block sidebar_content %}
+
+<style>
+
+  .select2-selection__rendered {
+    line-height: 31px !important;
+  }
+
+  .select2-container .select2-selection--single {
+    height: 35px !important;
+  }
+
+  .select2-selection__arrow {
+    height: 34px !important;
+  }
+</style>
+
+<div class="container">
+
+    <div class="row justify-content-center pt-1">
+        <div class="col-md-8">
+            <h3 class="text-center" style="margin-bottom: 30px">Cadastro presencial de participante</h3>
+            <form method="POST" action="cadastro-presencial-participante">
+                <div class="form-group">
+                  {% if alerta is not sameas none %}
+                    <div class="alert alert-info" role="alert">
+                        {{ alerta }}
+                    </div>
+                  {% endif %}
+                    {{ form.hidden_tag() }}
+                    {{ wtf.form_field(form.usuario) }}
+                    <label>Deseja confirmar manualmente o email do usuário?</label>
+                    {{ wtf.form_field(form.confirmar_email) }}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-block">Inscrever usuário</button>
+                    </div>
+                    <p class="text-center mt-2">
+                        Com a ocorrência do fechamento das inscrições convencionais, o usuário cadastrado através dessa página <b>NÃO</b>
+                        possuirá um crachá gerado a partir de nosso banco de dados. A <b>leitura de presenças em atividades</b> do participante
+                        durante todo o evento deverá ser feita a partir do <b>QR CODE</b> que se encontra em nosso site, na <b>dashboard</b> do participante.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+$("#usuario").select2({
+  language: "pt-BR"
+});
+
+</script>
+
+{% endblock %}

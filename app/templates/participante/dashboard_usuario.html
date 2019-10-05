@@ -1,0 +1,39 @@
+{% extends "participante/sidebar.html" %}
+
+{% block sidebar_content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+
+        <div class="col-lg-12 text-center pt-4">
+            <h2>Área do participante</h2>
+        </div>
+
+        {% if participante %}
+
+        <div class="col-lg-12 text-center p-2">
+
+            <h1>{{ usuario.primeiro_nome }} {{ usuario.sobrenome }}</h1>
+
+            <h5>QR Code</h5>
+            <img style="max-width: 100vw;" src="{{ qrcode(participante.uuid, box_size=12, border=5) }}">
+
+        </div>
+
+        {% else %}
+
+        <div class="col-md-6 text-center pt-4">
+
+            <h3>Sua inscrição ainda não está completa!</h3>
+            <h4>Você se cadastrou no site, mas ainda deve se inscrever na X SECOMP!</h4>
+            <h5>
+                Infelizmente, o período de inscrições está encerrado. Porém, ainda é possível inscrever-se
+                presencialmente durante o credenciamento do evento!
+            </h5>
+
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

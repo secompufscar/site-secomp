@@ -165,7 +165,7 @@ def login():
                 login_user(user, remember=True)
                 if atividade_confirmada == False:
                     return redirect(url_for('conteudo.dados_hospedagem_transporte'))
-                return redirect(url_for('users.dashboard'))
+                return redirect(url_for('participante.dashboard'))
         return render_template('views/login.html', form_login=form, form=form, erro=True)
     return render_template('views/login.html', form_login=form, form=form)
 
@@ -183,7 +183,7 @@ def relogin():
                 db.session.add(user)
                 db.session.commit()
                 confirm_login()
-                return redirect(url_for('users.dashboard'))
+                return redirect(url_for('participante.dashboard'))
         return render_template('views/login.html', form_login=form, form=form, erro=True)
     return render_template('views/login.html', form_login=form, form=form)
 
@@ -216,9 +216,9 @@ def patrocinadores():
 
 @views.route("/pontuacao", methods=["GET"])
 def pontuacao_compcases():
-    '''
+    """
     Renderiza página referente a pontuação geral do COMPCases
-    '''
+    """
     form = LoginForm(request.form)
     participantes = get_ranking_pontuacao()
     participante_logado = None
@@ -231,9 +231,9 @@ def pontuacao_compcases():
 
 @views.route("/pontuacao-diaria", methods=["GET"])
 def pontuacao_compcases_day():
-    '''
+    """
     Renderiza página referente a pontuação do dia atual do COMPCases
-    '''
+    """
     form = LoginForm(request.form)
     participantes = []
     aux = get_ranking_pontuacao_by_day()
