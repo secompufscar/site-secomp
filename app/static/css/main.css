@@ -1,21 +1,33 @@
 :root {
   --primary-color: #008cb5;
   --secondary-color: #00cfa1;
+  --nav-color: #fff;
+  --card-color: #fff;
   --font-color: #424242;
+  --font-gray: #444444;
   --bg-color: #fff;
   --bg-dark: #001014;
+  --bg-sobre: #001014;
   --hover-color: #ddd;
   --footer-color: #001014;
+  --selected-color: #00cfa1;
+  --border-color: #ced2d6;
 }
 
-[data-theme=dark] {
+[data-theme="dark"] {
   --primary-color: #00465c;
   --secondary-color: #ff305d;
+  --nav-color: #ffffff11;
+  --card-color: #191e1f;
   --font-color: #e1e1ff;
+  --font-gray: #c0c0c0;
   --bg-color: #0d1314;
   --bg-dark: #152125;
+  --bg-sobre: #00000066;
   --hover-color: #333;
   --footer-color: #00080a;
+  --selected-color: #ff205b;
+  --border-color: #646a70;
 }
 
 body {
@@ -71,11 +83,11 @@ body {
   transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #212121;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(15px);
 }
 
@@ -90,12 +102,14 @@ input:checked + .slider:before {
 header {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
 }
+
 header a {
   font-weight: 600;
   color: #fff;
   font-size: 14.5px;
-  font-family: "Clear Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
+
 header a:hover {
   color: rgba(255, 255, 255, 0.7);
 }
@@ -113,19 +127,16 @@ header a:hover {
   background-color: #008cb5;
 }
 
-.btn-primary:active,
-.btn-primary.active {
+.btn-primary:active, .btn-primary.active {
   background-color: #00cfa1 !important;
 }
 
-.btn-primary:hover,
-.btn-primary:focus {
+.btn-primary:hover, .btn-primary:focus {
   background: none;
   background-color: #007092 !important;
 }
 
-.btn-link:hover,
-.btn-link:focus {
+.btn-link:hover, .btn-link:focus {
   text-decoration: none;
 }
 
@@ -139,14 +150,17 @@ header a:hover {
 .dropdown-menu {
   background-color: var(--bg-color);
 }
+
 .dropdown-menu a {
   font-size: 12px;
   color: var(--font-color);
 }
+
 .dropdown-item:hover {
   color: var(--font-color);
   background: var(--hover-color);
 }
+
 .dropdown-toggle:active {
   /*Without this, clicking will make it sticky*/
   pointer-events: visible;
@@ -156,25 +170,23 @@ footer {
   background-color: var(--footer-color);
   color: #ddd;
 }
+
 footer ul li {
   padding: 1%;
 }
+
 footer ul li a {
   color: #ddd;
   transition: 0.2s;
 }
+
 footer ul li a:hover {
   color: var(--secondary-color);
   transition: 0.2s;
 }
 
-.sobre-img {
-  object-fit: cover;
-  max-height: 70vh;
-  width: 100vh;
-}
-
 /* Imagens com texto em cima */
+
 .overlay {
   background-color: #000000;
   position: relative;
@@ -193,6 +205,7 @@ footer ul li a:hover {
 }
 
 /* fim-imagens */
+
 #barrinha {
   background-image: linear-gradient(to right, #008cb5, #00cfa1);
   padding: 0.5%;
@@ -213,3 +226,9 @@ footer ul li a:hover {
     transform: rotate(360deg);
   }
 }
+
+#video {
+  height: 80vh;
+}
+
+/*# sourceMappingURL=main.css.map */
