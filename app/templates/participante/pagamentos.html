@@ -13,10 +13,6 @@
 
   <div class="row justify-content-center">
     <h2 class="text-center pb-2">Meus pagamentos</h2>
-
-    <p class="pb-1 small">* O cancelamento de pagamentos realizados através de <b>transferência bancária</b> deve ser
-      efetuado caso haja
-      envio de comprovante errado. O valor transferido não será, em nenhuma hipótese, estornado.</p>
   </div>
 
   <form method="POST" id='form' action="{{url_for('participante.pagamentos')}}">
@@ -83,6 +79,13 @@
       </tbody>
     </table>
   </form>
+
+  <div class="col-md-12">
+    <p class="pb-1 small">* O cancelamento de pagamentos realizados através de <b>transferência bancária</b> deve ser
+      efetuado caso haja erro no
+      envio de comprovante. O valor transferido não será, em nenhuma hipótese, estornado.</p>
+  </div>
+
 </div>
 
 <script>

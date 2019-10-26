@@ -100,6 +100,21 @@
 
         <!-- Lado direito da Navbar -->
         <div class="ml-3 navbar-nav">
+          {% if current_user.is_authenticated %}
+          {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
+
+          <a class="nav-item nav-link" href="{{ url_for('gerenciar.gerenciar') }}">
+            <i class="mr-2 fas fa-user-secret"></i>GERENCIAR</a>
+          {% endif %}
+          <a class="nav-item nav-link" href="{{ url_for('participante.dashboard') }}">
+            <i class="mr-2 fas fa-user"></i>PARTICIPANTE</a>
+          {% else %}
+
+          <a class="nav-item nav-link" href=" " data-toggle="modal" data-target="#modal-login">
+            <i class="mr-2 fas fa-user"></i>ENTRAR</a>
+          <a class="nav-item nav-link" href="{{ url_for('participante.cadastro') }}">
+            <i class="mr-2 fas fa-address-card"></i>CADASTRAR</a>
+          {% endif %}
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="config">
               <i class="mr-2 fas fa-cog"></i></a>
@@ -118,23 +133,10 @@
                 <i class="mr-2 fas fa-bug"></i>BUG REPORT</a>
 
               {% if current_user.is_authenticated %}
-              {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
-
-              <a class="dropdown-item" href="{{ url_for('gerenciar.gerenciar') }}">
-                <i class="mr-2 fas fa-user-secret"></i>GERENCIAR</a>
-              {% endif %}
-              <a class="dropdown-item" href="{{ url_for('participante.dashboard') }}">
-                <i class="mr-2 fas fa-user"></i>PARTICIPANTE</a>
               <a class="dropdown-item" href="{{ url_for('views.logout') }}">
                 <i class="mr-2 fas fa-sign-out-alt"></i>SAIR</a>
+              {% endif %}
             </div>
-            {% else %}
-            
-            <a class="dropdown-item" href=" " data-toggle="modal" data-target="#modal-login">
-              <i class="mr-2 fas fa-user"></i>ENTRAR</a>
-            <a class="dropdown-item" href="{{ url_for('participante.cadastro') }}">
-              <i class="mr-2 fas fa-address-card"></i>CADASTRAR</a>
-            {% endif %}
           </div>
         </div>
       </div>
@@ -179,16 +181,16 @@
 
 <!-- ALERT BOXES PARA MENSAGENS DE FLASH() -->
 {% block flashes %}
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-        <script>
-          var msg = "{{ message }}";
-          alert(msg)
-	      </script>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<script>
+  var msg = "{{ message }}";
+  alert(msg)
+</script>
+{% endfor %}
+{% endif %}
+{% endwith %}
 {% endblock %}
 
 <main>

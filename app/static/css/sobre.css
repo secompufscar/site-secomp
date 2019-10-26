@@ -1,0 +1,13 @@
+.sobre-img {
+    object-fit: cover;
+    max-height: 70vh;
+    width: 100vh;
+}
+
+.sobre-title {
+    color: #fff;
+    background-color: var(--bg-sobre);
+    border-radius: 1rem;
+    padding: 1.3rem 0 1.3rem 0;
+    margin: 1rem 0 1rem 0;
+}

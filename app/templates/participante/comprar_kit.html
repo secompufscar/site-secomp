@@ -80,8 +80,7 @@
 
     <div class="col-md-12 text-center pb-1">
         <h2 id="pergunta"><i class="fa fa-lg fa-cart-plus"></i>
-            Deseja comprar o kit da SECOMP UFSCar?</h2>
-        <h5>A compra pode ser efetuada a qualquer momento</h5>
+            Deseja comprar o kit da SECOMP UFSCar?<small>*</small></h2>
     </div>
 
     <div class="row justify-content-center pb-3 mt-4">
@@ -95,6 +94,9 @@
             <div class="col-md-8 mb-4">
                 <div id="escolha_compra">
                     <div class="row justify-content-between no-gutters">
+                        <div class="col-md-12">
+                            <h6>*A compra pode ser efetuada a qualquer momento</h6>
+                        </div>
                         <div class="col-4">
                             <div class="row">
                                 {{ wtf.form_field(form.comprar) }}
@@ -147,7 +149,8 @@
                         Caso você possua algum pagamento pendente, você será redirecionado novamente para o PayPay
                         para
                         finalizá-lo. Se quiser alterar as
-                        informações do KIT você precisará <a href="{{ url_for('participante.pagamentos') }}"> cancelar seu
+                        informações do KIT você precisará <a href="{{ url_for('participante.pagamentos') }}"> cancelar
+                            seu
                             pagamento pendente</a></div>
                     <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
                 </div>
