@@ -3,6 +3,9 @@
   --secondary-color: #00cfa1;
   --nav-color: #fff;
   --card-color: #fff;
+  --sidebar-color: #f5f5f5;
+  --sidebar-border: #d4d4d4;
+  --sidebar-hover-color: #dfdfdf;
   --font-color: #424242;
   --font-gray: #444444;
   --bg-color: #fff;
@@ -12,6 +15,7 @@
   --footer-color: #001014;
   --selected-color: #00cfa1;
   --border-color: #ced2d6;
+  --border-equipe: #00000020;
 }
 
 [data-theme="dark"] {
@@ -19,6 +23,9 @@
   --secondary-color: #ff305d;
   --nav-color: #ffffff11;
   --card-color: #191e1f;
+  --sidebar-color: #090c0e;
+  --sidebar-border: #00465c;
+  --sidebar-hover-color: #202020;
   --font-color: #e1e1ff;
   --font-gray: #c0c0c0;
   --bg-color: #0d1314;
@@ -28,6 +35,7 @@
   --footer-color: #00080a;
   --selected-color: #ff205b;
   --border-color: #646a70;
+  --border-equipe: #ffffff44;
 }
 
 body {
@@ -38,6 +46,10 @@ body {
 #content {
   min-height: 75vh;
   padding-top: 53px;
+}
+
+a {
+  text-decoration: none !important;
 }
 
 .theme-switch-wrapper {
@@ -145,6 +157,10 @@ header a:hover {
   width: 100vw;
   object-fit: fill;
   text-shadow: 1px 1px 5px black;
+}
+
+.modal-content {
+  background-color: var(--bg-color);
 }
 
 .dropdown-menu {

@@ -171,7 +171,7 @@ def alterar_usuario():
         form.instituicao.data = usuario.id_instituicao
         form.cidade.data = usuario.id_cidade
         form.data_nasc.data = usuario.data_nascimento
-        return render_template('participante/alterar_usuario.html', usuario=current_user, form=form)
+        return render_template('participante/alterar_usuario.html', usuario=current_user, form=form, participante = db.session.query(Participante).filter_by(usuario=current_user).first())
 
 
 @participante.route('/dashboard', methods=['POST', 'GET'])

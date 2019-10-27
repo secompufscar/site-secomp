@@ -1,103 +1,91 @@
 {% extends "base.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block content %}
+{% block styles %}
+
+{{ super() }}
 
 <link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css" />
 
 <style>
-  .tab-form {
-    overflow: auto;
+  .border-cadastro {
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1rem 2rem 1rem 2rem;
+    margin: 1rem;
   }
 
-  .tabmenu {
-    width: 50%;
-    height: 1.5vh;
-    transition: background-color 0.2s;
+  #content {
+    border-left: 1rem solid var(--primary-color);
+    border-right: 1rem solid var(--secondary-color);
   }
 
-  #secao1 {
-    display: inline;
-    transition: opacity 0.1s, transform 0.5s, 0.5s;
-  }
+  @media (max-width: 500px) {
+    .border-cadastro {
+      padding: 1rem;
+    }
 
-  #secao2 {
-    display: none;
-    transition: opacity 0.1s, transform 0.5s, 0.5s;
-  }
-
-  .slide-left {
-    transform: translateX(-100%);
-  }
-
-  .slide-right {
-    transform: translateX(0%);
-  }
-
-  #firsttab {
-    float: left;
-    background-color: #1f7a7a;
-    width: 55%;
-  }
-
-  #secondtab {
-    float: right;
-    width: 45%;
-    background-color: #bfbfbf;
+    #content {
+      border-left: 0.5rem solid var(--primary-color);
+      border-right: 0.5rem solid var(--secondary-color);
+    }
   }
 </style>
 
-<div class="container pb-2">
-  <div class="row justify-content-center">
-    <div class="col-8">
-      <div class="tab-form">
-        <div class="tabmenu" id="firsttab"></div>
-        <div class="tabmenu" id="secondtab"></div>
-      </div>
-    </div>
-  </div>
+{% endblock %}
 
-  <div class="col-sm-12 text-center p-2">
+
+{% block content %}
+
+<div class="container pb-2">
+
+  <div class="col-md-12 text-center p-2">
     <h2>Cadastro de Usuário</h2>
   </div>
 
   <form method="POST" action="{{ url_for('participante.cadastro') }}" novalidate>
-    <div id="secao1">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          {{ form.hidden_tag() }}
-          {{ wtf.form_field(form.primeiro_nome) }}
-          {{ wtf.form_field(form.sobrenome) }}
-          {{ wtf.form_field(form.email) }}
-          {{ wtf.form_field(form.senha) }}
-          {{ wtf.form_field(form.confirmacao) }}
-          <button id="continuar" class="btn btn-primary btn-block mt-3 mb-3" type="button">Continuar</button>
-        </div>
+    {{ form.hidden_tag() }}
+
+    <div class="row justify-content-center">
+      <div class="col-md-8 border-cadastro">
+        <h4>Acesso</h4>
+        <h6><small>Informe corretamente seu email, ele será utilizado para confirmação do cadastro e
+            envio de certificados.</small></h6>
+        {{ wtf.form_field(form.email) }}
+        {{ wtf.form_field(form.senha) }}
+        {{ wtf.form_field(form.confirmacao) }}
       </div>
     </div>
-    <div id="secao2">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          {{ wtf.form_field(form.curso) }}
-          {{ wtf.form_field(form.outro_curso) }}
-          {{ wtf.form_field(form.instituicao) }}
-          {{ wtf.form_field(form.outra_instituicao) }}
-          {{ wtf.form_field(form.cidade) }}
-          {{ wtf.form_field(form.outra_cidade) }}
-          {{ wtf.form_field(form.data_nasc) }}
-          {{ wtf.form_field(form.como_conheceu) }}
-          {{ wtf.form_field(form.outro_como_conheceu) }}
-          {{ wtf.form_field(form.recaptcha) }}
 
-          <div class="row justify-content-center">
-            <div class="col-md-6">
-              <button type="button" id="voltar" class="btn text-white btn-secondary btn-block pb-1">Voltar</button>
-            </div>
-            <div class="col-md-6">
-              <button type="submit" class="btn btn-primary text-white btn-block pb-1">Cadastrar</button>
-            </div>
-          </div>
-        </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8 border-cadastro">
+        <h4>Usuário</h4>
+        {{ wtf.form_field(form.primeiro_nome) }}
+        {{ wtf.form_field(form.sobrenome) }}
+        {{ wtf.form_field(form.data_nasc) }}
+        {{ wtf.form_field(form.cidade) }}
+        {{ wtf.form_field(form.outra_cidade) }}
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8 border-cadastro">
+        <h4>Acadêmico</h4>
+        {{ wtf.form_field(form.curso) }}
+        {{ wtf.form_field(form.outro_curso) }}
+        {{ wtf.form_field(form.instituicao) }}
+        {{ wtf.form_field(form.outra_instituicao) }}
+        {{ wtf.form_field(form.como_conheceu) }}
+        {{ wtf.form_field(form.outro_como_conheceu) }}
+      </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+      <div class="col-md-8 text-center">
+        {{ wtf.form_field(form.recaptcha) }}
+        <button type="submit" class="btn btn-primary text-white w-75 pb-1">Cadastrar</button>
+      </div>
+    </div>
   </form>
 </div>
 {% endblock %}
@@ -108,48 +96,7 @@
 
 <script src="{{ url_for('static', filename='jquery/jquery.maskedinput.min.js') }}"></script>
 
-<script>
-  $("#continuar").on("click", function () {
-    $("#secao1").css("display", "none");
-    $("#secao2").css("display", "inline");
-    $("#secao1").removeClass("slide-right").addClass("slide-left");
-    $("#secao2").removeClass("slide-right").addClass("slide-left");
-    $("#secondtab").css("background-color", "#1f7a7a");
-    $("#secondtab").css("width", "55%");
-    $("#firsttab").css("background-color", "#bfbfbf");
-    $("#firsttab").css("width", "45%");
-  });
-  $("#secondtab").on("click", function () {
-    $("#secao1").css("display", "none");
-    $("#secao2").css("display", "inline");
-    $("#secao1").removeClass("slide-right").addClass("slide-left");
-    $("#secao2").removeClass("slide-right").addClass("slide-left");
-    $("#secondtab").css("background-color", "#1f7a7a");
-    $("#secondtab").css("width", "55%");
-    $("#firsttab").css("background-color", "#bfbfbf");
-    $("#firsttab").css("width", "45%");
-  });
-  $("#voltar").on("click", function () {
-    $("#secao1").css("display", "inline");
-    $("#secao2").css("display", "none");
-    $("#secao1").removeClass("slide-left").addClass("slide-right");
-    $("#secao2").removeClass("slide-left").addClass("slide-right");
-    $("#firsttab").css("background-color", "#1f7a7a");
-    $("#firsttab").css("width", "55%");
-    $("#secondtab").css("background-color", "#bfbfbf");
-    $("#secondtab").css("width", "45%");
-  });
-  $("#firsttab").on("click", function () {
-    $("#secao1").css("display", "inline");
-    $("#secao2").css("display", "none");
-    $("#secao1").removeClass("slide-left").addClass("slide-right");
-    $("#secao2").removeClass("slide-left").addClass("slide-right");
-    $("#firsttab").css("background-color", "#1f7a7a");
-    $("#firsttab").css("width", "55%");
-    $("#secondtab").css("background-color", "#bfbfbf");
-    $("#secondtab").css("width", "45%");
-  });
-</script>
+
 <script>
   $(document).ready(function ($) {
     $("#data_nasc").mask("99/99/9999");
