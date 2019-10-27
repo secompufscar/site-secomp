@@ -1,19 +1,11 @@
-:root {
-    --card-color1: #fff;
-}
-
-[data-theme=dark] {
-    --card-color1: #191e1f;
-}
-
 h5 {
     color:#008cb5;
 }
 
 .card {
-    background-color: var(--card-color1);
+    background-color: var(--card-color);
 }
 
 .card-body {
-    background-color: var(--card-color1);
+    background-color: var(--card-color);
 }
