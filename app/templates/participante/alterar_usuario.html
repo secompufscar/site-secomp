@@ -1,107 +1,73 @@
 {% extends "participante/sidebar.html" %}
 {% import "wtf.html" as wtf %}
 
-{% block sidebar_content %}
+{% block styles %}
+
+{{ super() }}
 
 <link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css" />
 
 <style>
-  .tab-form {
-    overflow: auto;
+  .border-cadastro {
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1rem 2rem 1rem 2rem;
+    margin: 1rem;
   }
 
-  .tabmenu {
-    width: 50%;
-    height: 1.5vh;
-    transition: background-color 0.2s;
-  }
-
-  #secao1 {
-    display: inline;
-    transition: opacity 0.1s, transform 0.5s, 0.5s;
-  }
-
-  #secao2 {
-    display: none;
-    transition: opacity 0.1s, transform 0.5s, 0.5s;
-  }
-
-  .slide-left {
-    transform: translateX(-100%);
-  }
-
-  .slide-right {
-    transform: translateX(0%);
-  }
-
-  #firsttab {
-    float: left;
-    background-color: #1f7a7a;
-    width: 55%;
-  }
-
-  #secondtab {
-    float: right;
-    width: 45%;
-    background-color: #bfbfbf;
+  @media (max-width: 500px) {
+    .border-cadastro {
+      padding: 1rem;
+    }
   }
 </style>
 
+{% endblock %}
+
+{% block sidebar_content %}
+
 <div class="container pb-2">
-    <div class="row justify-content-center">
-      <div class="col-8">
-          <div class="tab-form">
-            <div class="tabmenu" id="firsttab"></div>
-            <div class="tabmenu" id="secondtab"></div>
-          </div>
-      </div>
-    </div>
   
-    <div class="col-sm-12 text-center p-2">
-      <h2>Edição de dados</h2>
-    </div>
+  <div class="col-sm-12 text-center p-2">
+    <h2>Edição de dados</h2>
+  </div>
 
   <form method="POST" action="{{ url_for('participante.alterar_usuario') }}" novalidate>
-    <div id="secao1">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          {{ form.hidden_tag() }}
-          {{ wtf.form_field(form.primeiro_nome) }}
-          {{ wtf.form_field(form.sobrenome) }}
-          {{ wtf.form_field(form.curso) }}
-          {{ wtf.form_field(form.outro_curso) }}
-          <button id="continuar" class="btn btn-primary btn-block mt-3 mb-3" type="button">Continuar</button>
-        </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8 border-cadastro">
+        <h4>Usuário</h4>
+        {{ wtf.form_field(form.primeiro_nome) }}
+        {{ wtf.form_field(form.sobrenome) }}
+        {{ wtf.form_field(form.data_nasc) }}
+        {{ wtf.form_field(form.cidade) }}
+        {{ wtf.form_field(form.outra_cidade) }}
       </div>
     </div>
-    <div id="secao2">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          {{ wtf.form_field(form.instituicao) }}
-          {{ wtf.form_field(form.outra_instituicao) }}
-          {{ wtf.form_field(form.cidade) }}
-          {{ wtf.form_field(form.outra_cidade) }}
-          {{ wtf.form_field(form.data_nasc) }}
-          <div class="recaptcha-responsive">
-            {{ wtf.form_field(form.recaptcha) }}
-          </div>
 
-          {% for error in form.recaptcha.errors %}
-          <span class="help-block">{{ error }}</span>
-          {% endfor %}
-
-          <div class="row justify-content-center">
-            <div class="col-md-6">
-              <button type="button" id="voltar" class="btn text-white btn-secondary pb-1">Voltar</button>
-            </div>
-            <div class="col-md-6">
-              <button type="submit" class="btn btn-primary text-white pb-1">Confirmar</button>
-            </div>
-          </div>
-
-        </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8 border-cadastro">
+        <h4>Acadêmico</h4>
+        {{ wtf.form_field(form.curso) }}
+        {{ wtf.form_field(form.outro_curso) }}
+        {{ wtf.form_field(form.instituicao) }}
+        {{ wtf.form_field(form.outra_instituicao) }}
       </div>
     </div>
+
+
+    {% for error in form.recaptcha.errors %}
+    <span class="help-block">{{ error }}</span>
+    {% endfor %}
+
+    <div class="row justify-content-center mb-2">
+      <div class="col-md-8 text-center">
+        {{ wtf.form_field(form.recaptcha) }}
+        <button type="submit" class="btn btn-primary text-white w-75 pb-1">Confirmar</button>
+      </div>
+    </div>
+
+
   </form>
 </div>
 {% endblock %}
