@@ -13,6 +13,10 @@ body {
   padding-top: 53px;
 }
 
+a {
+  text-decoration: none !important;
+}
+
 // Style switch
 .theme-switch-wrapper {
   display: flex;

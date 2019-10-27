@@ -48,6 +48,10 @@ body {
   padding-top: 53px;
 }
 
+a {
+  text-decoration: none !important;
+}
+
 .theme-switch-wrapper {
   display: flex;
   align-items: center;
@@ -153,6 +157,10 @@ header a:hover {
   width: 100vw;
   object-fit: fill;
   text-shadow: 1px 1px 5px black;
+}
+
+.modal-content {
+  background-color: var(--bg-color);
 }
 
 .dropdown-menu {

@@ -11,7 +11,7 @@
 }
 
 .modal-content {
-    background-color: var(--card-color);
+    background-color: var(--card-color) !important;
 }
 
 .modal-header {
