@@ -13,6 +13,10 @@ body {
   padding-top: 53px;
 }
 
+a {
+  text-decoration: none !important;
+}
+
 // Style switch
 .theme-switch-wrapper {
   display: flex;
@@ -158,12 +162,6 @@ footer {
       }
     }
   }
-}
-
-.sobre-img {
-  object-fit: cover;
-  max-height: 70vh;
-  width: 100vh;
 }
 
 /* Imagens com texto em cima */

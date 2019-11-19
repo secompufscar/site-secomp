@@ -14,20 +14,21 @@
   background-color: var(--bg-color) !important;
 }
 
-a {
-  color: #008cb5;
-}
-
-a:hover {
-  color: #00cfa1;
-  text-decoration: none;
-}
-
 .btn {
   font-weight: bold;
   border: none;
 }
 
-.btn:hover {
-  background-color: #00cfa1;
+.g-recaptcha>div {
+  width: unset !important;
+  height: unset !important;
+}
+
+@media (max-width: 359px) {
+  iframe {
+    transform: scale(0.9);
+    -webkit-transform: scale(0.9);
+    transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+  }
 }
