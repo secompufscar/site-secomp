@@ -1,0 +1,25 @@
+{% extends "participante/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+{% block sidebar_content %}
+
+<div class="container">
+    <div class="row justify-content-center pt-1">
+        <div class="col-md-6">
+            <h3 class="text-center">Cadastro de patrocinadores</h3>
+            <form method="POST" action="{{ url_for('gerenciar.cadastro_patrocinador') }}"  enctype="multipart/form-data">
+                {% if cadastrado %}
+                <h3>Cadastrado!</h3>
+                {% endif %}
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.nome_empresa) }}
+                {{ wtf.form_field(form.id_cota) }}
+                {{ wtf.form_field(form.link_website) }}
+                {{ wtf.form_field(form.ativo_site) }}
+                {{ wtf.form_field(form.logo) }}
+                <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

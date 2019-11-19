@@ -165,7 +165,7 @@ def login():
                 login_user(user, remember=True)
                 if atividade_confirmada == False:
                     return redirect(url_for('conteudo.dados_hospedagem_transporte'))
-                return redirect(url_for('users.dashboard'))
+                return redirect(url_for('participante.dashboard'))
         return render_template('views/login.html', form_login=form, form=form, erro=True)
     return render_template('views/login.html', form_login=form, form=form)
 
@@ -183,7 +183,7 @@ def relogin():
                 db.session.add(user)
                 db.session.commit()
                 confirm_login()
-                return redirect(url_for('users.dashboard'))
+                return redirect(url_for('participante.dashboard'))
         return render_template('views/login.html', form_login=form, form=form, erro=True)
     return render_template('views/login.html', form_login=form, form=form)
 
@@ -206,9 +206,9 @@ def senhas():
 
 @views.route("/patrocinadores", methods=["GET"])
 def patrocinadores():
-    '''
+    """
     Renderiza página referente aos patrocinadores da edição atual
-    '''
+    """
     
     form = LoginForm(request.form)
     patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True).order_by(Patrocinador.id_cota)
@@ -216,9 +216,9 @@ def patrocinadores():
 
 @views.route("/pontuacao", methods=["GET"])
 def pontuacao_compcases():
-    '''
+    """
     Renderiza página referente a pontuação geral do COMPCases
-    '''
+    """
     '''
     form = LoginForm(request.form)
     participantes = get_ranking_pontuacao()
@@ -234,20 +234,23 @@ def pontuacao_compcases():
 
 @views.route("/pontuacao-diaria", methods=["GET"])
 def pontuacao_compcases_day():
-    '''
-    #Renderiza página referente a pontuação do dia atual do COMPCases
+    """
+    Renderiza página referente a pontuação do dia atual do COMPCases
+    """
     form = LoginForm(request.form)
     participantes = []
     aux = get_ranking_pontuacao_by_day()
     #for x in aux:
     #   participantes.append(db.session.query(Participante).filter_by(id=x.id).first())
-    #Gambiarra de última hora: bubble sort para ordenar os participantes por pontuação
-    #for i in range(len(participantes)):
+    '''
+    Gambiarra de última hora: bubble sort para ordenar os participantes por pontuação
+    '''
+    '''for i in range(len(participantes)):
         for j in range(len(participantes)):
             if (participantes[i].pontuacao > participantes[j].pontuacao):
                 aux = participantes[i]
                 participantes[i] = participantes[j]
-                participantes[j] = aux
+                participantes[j] = aux'''
     participante_logado = None
     try:
         participante_logado = db.session.query(Participante).filter_by(
@@ -255,8 +258,6 @@ def pontuacao_compcases_day():
     except:
         pass
     return render_template('views/pontuacao_compcases.html', ult_day = True, participantes=aux, participante_logado=participante_logado, form_login=form)
-    '''    
-    return redirect(url_for('.index'))
 
 @views.route("/protected/<path:filename>", methods=["GET"])
 @login_required

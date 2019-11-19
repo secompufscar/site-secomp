@@ -86,10 +86,10 @@ def create_app(config=None):
 
     mail.init_app(app)
 
-    from app.controllers.routes import admin, management, users, views, conteudo, api
+    from app.controllers.routes import admin, gerenciar, participante, views, conteudo, api
 
-    app.register_blueprint(management.management)
-    app.register_blueprint(users.users)
+    app.register_blueprint(gerenciar.gerenciar)
+    app.register_blueprint(participante.participante)
     app.register_blueprint(views.views)
     app.register_blueprint(conteudo.conteudo)
     app.register_blueprint(api.api)

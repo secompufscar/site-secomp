@@ -1,11 +1,3 @@
-:root {
-    --border-color: #00000020;
-}
-
-[data-theme=dark] {
-    --border-color: #ffffff44;
-}
-
 .frontside {
     position: relative;
     margin-bottom: 30px;
@@ -28,7 +20,7 @@
 .card {
     transition: 0.7s;
     background-color: var(--bg-color);
-    border: solid 1px var(--border-color);
+    border: solid 1px var(--border-equipe);
 }
 
 .card-info {

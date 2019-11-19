@@ -26,4 +26,3 @@ flask-babelex>=0.9.3
 flask-limiter>=1.0.1
 flask-qrcode>=2.0.0
 sentry-sdk[flask]>=0.10.2
-

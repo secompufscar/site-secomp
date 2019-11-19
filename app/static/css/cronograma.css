@@ -1,19 +1,3 @@
-:root {
-    --font-gray: #444444;
-    --card-color: #fff;
-    --nav-color: #fff;
-    --selected-color: #00cfa1;
-    --border-color: #ced2d6;
-}
-
-[data-theme=dark] {
-    --font-gray: #c0c0c0;
-    --card-color: #191e1f;
-    --nav-color: #ffffff11;
-    --selected-color: #ff205b;
-    --border-color: #646A70;
-}
-
 .card {
     background-color: var(--card-color);
 }
@@ -27,7 +11,7 @@
 }
 
 .modal-content {
-    background-color: var(--card-color);
+    background-color: var(--card-color) !important;
 }
 
 .modal-header {

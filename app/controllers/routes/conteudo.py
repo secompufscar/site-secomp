@@ -84,7 +84,7 @@ def cadastro_ministrante(codigo):
                 foto.save(path.join(upload_path, filename))
             enviar_email_confirmacao(usuario, token)
             login_user(usuario, remember=True)
-            return redirect(url_for('users.verificar_email'))
+            return redirect(url_for('participante.verificar_email'))
         return render_template("conteudo/cadastro_ministrante.html", form=form, codigo=codigo, form_login=form_login)
     else:
         abort(404)

@@ -1,0 +1,38 @@
+{% extends "participante/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block sidebar_content %}
+
+<div class="container pt-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h3 class="text-center pb-2">Gerar listas de participantes</h3>
+            <form method="POST" action="{{ form.action }}">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.atividades) }}
+                {{ wtf.form_field(form.tipo) }}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary p-3">Gerar lista</button>
+                </div>
+            </form>
+        </div>
+        {% if lista != None and tipo == 'inscritos'%}
+        <div class="col-md-8 pt-2">
+            <h3 class="text-center pb-2">Lista de participantes inscritos em <b>{{atividade}}</b></h3>
+            {% for x in lista %}
+                <p>#{{x.id}} - {{x.usuario.primeiro_nome}} {{x.usuario.sobrenome}} - {{x.usuario.email}}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if lista != None and tipo == 'presentes'%}
+        <div class="col-md-8 pt-2">
+            <h3 class="text-center pb-2">Lista de participantes presentes em <b>{{atividade}}</b></h3>
+            {% for x in lista %}
+                <p>#{{x.id}} - {{x.usuario.primeiro_nome}} {{x.usuario.sobrenome}} - {{x.usuario.email}}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

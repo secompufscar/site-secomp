@@ -1,0 +1,40 @@
+{% extends "participante/sidebar.html" %}
+
+{% block sidebar_content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+
+        <div class="col-lg-12 text-center pt-4">
+            <h2>Área do participante</h2>
+        </div>
+
+        {% if participante %}
+
+        <div class="col-lg-12 text-center p-2">
+
+            <h1>{{ usuario.primeiro_nome }} {{ usuario.sobrenome }}</h1>
+
+            <h5>QR Code</h5>
+            <img style="max-width: 80vw;" src="{{ qrcode(participante.uuid, box_size=12, border=2) }}">
+
+        </div>
+
+        {% else %}
+
+        <div class="col-md-6 text-center pt-4">
+
+            <h4>A X SECOMP já aconteceu :/
+                <br> Fique atento ao período de inscrições para o próximo evento!
+            </h4>
+
+            <h5>
+                Seu cadastro neste site será utilizado para as edições futuras (;
+            </h5>
+
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
