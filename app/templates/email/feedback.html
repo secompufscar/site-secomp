@@ -1,0 +1,21 @@
+{% extends "email/base.html" %}
+{% block titulo %}
+  {{ info.titulo }}
+{% endblock %}
+
+{% block saudacao %}
+  Olá, {{ info.nome }}!
+{% endblock%}
+
+{% block conteudo %}
+  <span style="color:black;">Gostaríamos de agradecer por sua presença em nosso evento e esperamos
+     por sua presença na edição do ano que vem. Para que possamos a cada ano melhorar,
+      precisamos saber o que o público achou das atividades que trouxemos para a X SECOMP UFSCar.
+       Para isso, pedimos sua colaboração. É só entrar em nosso site, efetuar o login e entrar na seção
+        de “Presenças” e avaliar as atividades. Ou também pelo link
+         <a href="https://secompufscar.com.br/participante/presencas">https://secompufscar.com.br/participante/presencas</a> .</span><br>
+{% endblock %}
+
+{% block footer %}
+  {{ info.footer }}
+{% endblock %}
