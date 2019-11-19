@@ -222,3 +222,30 @@ def enviar_email_aviso_inscricao(usuario):
             "footer": 'TI X SECOMP UFSCar'
             }
     enviar_email_generico(info)
+
+def enviar_email_aviso_tolerancia(usuario):
+    """
+    Envia email de aviso de tolerância
+    """
+    info = {"assunto": 'Aviso de tolerância de atraso',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'AVISO DE TOLERÂNCIA DE ATRASO',
+            "email": usuario.email,
+            "template": 'email/aviso_tolerancia.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+
+def enviar_email_feedback(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Feedback X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'FEEDBACK X SECOMP UFSCar',
+            "email": usuario.email,
+            "template": 'email/feedback.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)

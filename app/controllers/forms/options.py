@@ -200,7 +200,7 @@ def get_usuarios_inscricao_pendente():
         return None
 
 def get_opcoes_avaliacao():
-    return[(0, 'Selecione uma opção'),
+    return[
            (1, 'Péssimo'),
            (2, 'Ruim'),
            (3, 'Regular'),
