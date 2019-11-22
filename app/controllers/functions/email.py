@@ -72,7 +72,7 @@ def enviar_email_confirmacao(usuario, token):
     Envia email para validação do email
     """
     # Cria a msg, Assunto, De, Para
-    link = url_for('participante.verificacao', token=token, _external=True)
+    link = url_for('participantes.verificacao', token=token, _external=True)
     info = {"assunto": 'Confirmação de Email',
             "nome": usuario.primeiro_nome,
             "titulo": 'CONFIRMAÇÃO DE EMAIL',
@@ -106,7 +106,7 @@ def enviar_email_senha(usuario, token):
     Envia email para alteração de senha
     """
     # Cria a Msg, Assunto, De, Para
-    link = url_for('participante.confirmar_alteracao_senha', token=token, _external=True)
+    link = url_for('participantes.confirmar_alteracao_senha', token=token, _external=True)
     info = {
         "assunto": 'Alteração de Senha',
         "nome": usuario.primeiro_nome,

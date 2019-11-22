@@ -103,16 +103,16 @@
           {% if current_user.is_authenticated %}
           {% if "ADMIN" in current_user.getPermissoes() or "CONTEUDO" in current_user.getPermissoes() or "PATROCINIO" in current_user.getPermissoes() %}
 
-          <a class="nav-item nav-link" href="{{ url_for('gerenciar.gerenciar') }}">
+          <a class="nav-item nav-link" href="{{ url_for('gerenciar.index') }}">
             <i class="mr-2 fas fa-user-secret"></i>GERENCIAR</a>
           {% endif %}
-          <a class="nav-item nav-link" href="{{ url_for('participante.dashboard') }}">
+          <a class="nav-item nav-link" href="{{ url_for('participantes.dashboard') }}">
             <i class="mr-2 fas fa-user"></i>PARTICIPANTE</a>
           {% else %}
 
           <a class="nav-item nav-link" href=" " data-toggle="modal" data-target="#modal-login">
             <i class="mr-2 fas fa-user"></i>ENTRAR</a>
-          <a class="nav-item nav-link" href="{{ url_for('participante.cadastro') }}">
+          <a class="nav-item nav-link" href="{{ url_for('participantes.cadastro') }}">
             <i class="mr-2 fas fa-address-card"></i>CADASTRAR</a>
           {% endif %}
           <div class="nav-item dropdown">
@@ -169,7 +169,7 @@
           {{ wtf.form_field(form_login.recaptcha) }}
         </div>
         <div class="modal-footer">
-          <a href="{{url_for('participante.esqueci_senha')}}">Esqueci minha senha</a>
+          <a href="{{url_for('participantes.esqueci_senha')}}">Esqueci minha senha</a>
           <button name="submit" type="submit" class="btn btn-primary">
             <i class="mr-2 fas fa-sign-in-alt"></i>Entrar</button>
         </div>

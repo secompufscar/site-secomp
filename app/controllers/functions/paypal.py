@@ -12,8 +12,8 @@ def criar_pagamento(item, descricao, valor, base_url):
     "payer": {
         "payment_method": "paypal"},
     "redirect_urls": {
-        "return_url": base_url + "participante/executar-pagamento-kit",
-        "cancel_url": base_url + "participante/cancelar-pagamento-kit"},
+        "return_url": base_url + "participantes/executar-pagamento-kit",
+        "cancel_url": base_url + "participantes/cancelar-pagamento-kit"},
     "transactions": [{
         "item_list": {
             "items": [{

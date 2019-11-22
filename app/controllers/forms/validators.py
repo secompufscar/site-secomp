@@ -64,7 +64,7 @@ def erro_cidade_existe():
 
 def tem_valor():
     def _tem_valor(form, field):
-        if field.data is '' and field.data is not '1':
+        if field.data == '' and field.data != '1':
             raise ValidationError("Preencha com algum valor")
     return _tem_valor
 
