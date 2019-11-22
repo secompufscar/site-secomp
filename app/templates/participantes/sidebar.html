@@ -76,7 +76,7 @@
             "GERAR_LISTAS" in current_user.getPermissoes() or
             "SORTEAR" in current_user.getPermissoes() %}
 
-            <a href="{{ url_for('gerenciar.gerenciar') }}"
+            <a href="{{ url_for('gerenciar.index') }}"
                 class="list-group-item list-group-item-action">Gerenciamento</a>
 
             {% endif %}
