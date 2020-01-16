@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+<style>
+td {
+white-space: normal !important;
+word-wrap: break-word;
+}
+table {
+table-layout: fixed;
+}
+</style>
+<div class="container pt-4 pb-4">
+      <h2 class="text-center">Informações do Ministrante</h2>
+      <div class='table-responsive-md'>
+      <table style='margin-top:30px;' class="table">
+        <tbody>
+          <tr>
+            <th scope="col">ID</th>
+            <td scope="col">
+              {% if ministrante.id is none %}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.id }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Nome</th>
+            <td scope="col">
+              {% if ministrante.usuario.primeiro_nome is none or ministrante.usuario.sobrenome is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.usuario.primeiro_nome }} {{ ministrante.usuario.sobrenome}}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Email</th>
+            <td scope="col">
+              {% if ministrante.usuario.email is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.usuario.email }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Telefone</th>
+            <td scope="col">
+              {% if ministrante.telefone is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.telefone }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Profissao</th>
+            <td scope="col">
+              {% if ministrante.profissao is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.profissao }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Empresa/Universidade</th>
+            <td scope="col">
+              {% if ministrante.empresa_universidade is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.empresa_universidade }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Biografia</th>
+            <td scope="col">
+              {% if ministrante.biografia is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.biografia }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Tamanho da Camiseta</th>
+            <td scope="col">
+              {% if ministrante.tamanho_camiseta is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ camiseta.tamanho }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Facebook</th>
+            <td scope="col">
+              {% if ministrante.facebook is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.facebook }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Twitter</th>
+            <td scope="col">
+              {% if ministrante.twitter is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.twitter }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Linkedin</th>
+            <td scope="col">
+              {% if ministrante.linkedin is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.linkedin }}
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="col">Github</th>
+            <td scope="col">
+              {% if ministrante.github is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.github }}
+              {% endif %}
+            </td><tr>
+            <th scope="col">Linkedin</th>
+            <td scope="col">
+              {% if ministrante.linkedin is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ ministrante.linkedin }}
+              {% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="text-center">Atividades do Ministrante</h2>
+    <table style='margin-top:30px;' class="table">
+      <tbody>
+        {% for atividade in atividades %}
+        {% if atividade.titulo is not none %}
+        <tr>
+          <th scope="col">{{ atividade.tipo.nome }}</th>
+          <td scope="col">
+            {{ atividade.titulo }}
+          </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2 class="text-center">Informações de Locomoção e Estadia</h2>
+    <table style='margin-top:30px;' class="table">
+      <tbody>
+        <tr>
+          <th scope="col">Cidade de Origem</th>
+          <td scope="col">
+            {% if dados_hospedagem_transporte.cidade_origem is none%}
+              Informação não fornecida no banco de dados
+            {% else %}
+              {{ dados_hospedagem_transporte.cidade_origem }}
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th scope="col">Data de chegada em São Carlos</th>
+          <td scope="col">
+            {% if dados_hospedagem_transporte.data_chegada_origem is none%}
+              Informação não fornecida no banco de dados
+            {% else %}
+              {{ dados_hospedagem_transporte.data_chegada_origem }}
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th scope="col">Data de partida em São Carlos</th>
+          <td scope="col">
+            {% if dados_hospedagem_transporte.data_chegada_partida is none%}
+              Informação não fornecida no banco de dados
+            {% else %}
+              {{ dados_hospedagem_transporte.data_chegada_partida }}
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th scope="col">Requer que a SECOMP UFSCar pague por seu transporte de ida e volta</th>
+          <td scope="col">
+            {% if dados_hospedagem_transporte.transporte_ida_volta is none%}
+              Informação não fornecida no banco de dados
+            {% elif dados_hospedagem_transporte.transporte_ida_volta is sameas true %}
+              Sim
+            {% else %}
+              Não
+            {% endif %}
+          </td>
+        </tr>
+        {% if dados_hospedagem_transporte.transporte_ida_volta is sameas true %}
+          <tr>
+            <th scope="col">Data de partida em São Carlos</th>
+            <td scope="col">
+              {% if dados_hospedagem_transporte.opcoes_data_chegada_partida is none%}
+                Informação não fornecida no banco de dados
+              {% else %}
+                {{ dados_hospedagem_transporte.opcoes_data_chegada_partida }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+</div>
+{% endblock %}

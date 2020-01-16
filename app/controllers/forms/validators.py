@@ -1,7 +1,7 @@
 import re
-from flask_login import current_user
 
-from wtforms.validators import ValidationError, DataRequired, Optional
+from wtforms.validators import ValidationError, DataRequired, Optional, StopValidation
+from werkzeug.datastructures import FileStorage
 
 from app.models.models import *
 
@@ -64,9 +64,10 @@ def erro_cidade_existe():
 
 def tem_valor():
     def _tem_valor(form, field):
-        if field.data is '' and field.data is not '1':
+        if field.data == '' and field.data != '1':
             raise ValidationError("Preencha com algum valor")
     return _tem_valor
+
 
 def valida_email_ministrante():
     def _valida_email_ministrante(form, field):
@@ -82,9 +83,11 @@ def valida_email_ministrante():
                 raise ValidationError("Este email já está cadastrado!")
     return _valida_email_ministrante
 
+
 def is_valid_email(email):
     if len(email) > 7:
         return bool(re.match("^.+@(\[?)[a-zA-Z0-9-.]+.([a-zA-Z]{2,3}|[0-9]{1,3})(]?)$", email))
+
 
 def verifica_lista_emails(emails):
     if len(emails) == 0:
@@ -114,3 +117,22 @@ class RequiredIf(DataRequired):
             if other_field.data == data and not field.data:
                 DataRequired.__call__(self, form, field)
             Optional()(form, field)
+
+
+def valida_cupom_desconto():
+    def _valida_cupom_desconto(form, field):
+        cupom_desconto = db.session.query(CupomDesconto).filter_by(nome=form.cupom_desconto.data, usado=False).first()
+        if not(cupom_desconto is not None and cupom_desconto.usado is False):
+            raise ValidationError("Este cupom não é valido")
+    return _valida_cupom_desconto
+
+
+class ComprovanteRequired(DataRequired):
+     def __call__(self, form, field):
+        if form.forma_pagamento.data == 1:
+            if not (isinstance(field.data, FileStorage) and field.data):
+                if self.message is None:
+                    message = field.gettext('This field is required.')
+                else:
+                    message = self.message
+                raise StopValidation(message)

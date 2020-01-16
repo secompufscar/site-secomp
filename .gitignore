@@ -130,5 +130,9 @@ app.db
 
 app/config/development.py
 app/config/production.py
+development.py.*
+production.py.*
+*.save
+*.save.*
 uploads/
 

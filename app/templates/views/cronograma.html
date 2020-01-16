@@ -1,354 +1,432 @@
 {% extends "base.html" %}
-
 {% block styles %}
-<link href="{{ url_for('static', filename='bs/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" type="text/css" />
+
+{{ super() }}
+
 <link href="{{ url_for('static', filename='css/cronograma.css') }}" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block content %}
 
-
-<div class="container">
-
-    <div class="row justify-content-center pt-1">
-        <div class="col-md-12 text-center">
-            <h2>Cronograma</h2>
-        </div>
-    </div>
-    <div class="text-center">
-        <div class="row align-items-center cronograma">
-            <div class="text-center setaEsquerda" onclick="left_arrow()">
-                <i class="fas fa-2x fa-chevron-left"></i>
+<div class="container pb-2">
+   <div class="row justify-content-center pt-1">
+      <div class="col-md-12 text-center">
+         <h2>Cronograma</h2>
+      </div>
+   </div>
+   <div class="text-center">
+      <div class="row align-items-center cronograma">
+         <button class="btn btn-default text-center seta setaEsquerda" onclick="left_arrow()">
+            <i class="fas fa-2x fa-chevron-left"></i>
+         </button>
+         <div class="col-md-8 center">
+            <div class="col-md-12 text-center">
+               <nav class="navbar nav-crono navbar-light navbar-expand-lg">
+                  <table class="table table-bordered">
+                     <thead>
+                        <tr>
+                           <div class="collapse navbar-collapse" id="navbarContent">
+                              <th scope="col-md-2" id="th_seg" class="nav_on" onclick="toggle_visibility('seg');">
+                                 <a>
+                                    <h5>09/09/2019</h5>
+                                    <h4><span id="nav-seg">Seg</span></h4>
+                                    <div id="div_seg" class="day selected"></div>
+                                 </a>
+                              </th>
+                              <th scope="col-md-2" id="th_ter" class="nav_off" onclick="toggle_visibility('ter');">
+                                 <a onclick="toggle_visibility('ter');">
+                                    <h5>10/09/2019</h5>
+                                    <h4><span id="nav-ter">Ter</span></h4>
+                                    <div id="div_ter" class="day"></div>
+                                 </a>
+                              </th>
+                              <th scope="col-md-2" id="th_qua" class="nav_off" onclick="toggle_visibility('qua');">
+                                 <a onclick="toggle_visibility('qua');">
+                                    <h5>11/09/2019</h5>
+                                    <h4><span id="nav-qua">Qua</span></h4>
+                                    <div id="div_qua" class="day"></div>
+                                 </a>
+                              </th>
+                              <th scope="col-md-2" id="th_qui" class="nav_off" onclick="toggle_visibility('qui');">
+                                 <a>
+                                    <h5>12/09/2019</h5>
+                                    <h4><span id="nav-qui">Qui</span></h4>
+                                    <div id="div_qui" class="day"></div>
+                                 </a>
+                              </th>
+                              <th scope="col-md-2" id="th_sex" class="nav_off" onclick="toggle_visibility('sex');">
+                                 <a>
+                                    <h5>13/09/2019</h5>
+                                    <h4><span id="nav-sex">Sex</span></h4>
+                                    <div id="div_sex" class="day"></div>
+                                 </a>
+                              </th>
+                           </div>
+                        </tr>
+                     </thead>
+                  </table>
+               </nav>
             </div>
-            <div class="col-md-8 center">
-                <div class="col-md-12 text-center">
-                    <nav class="navbar nav-crono navbar-light navbar-expand-lg">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <div class="collapse navbar-collapse" id="navbarContent">
-                                        <th scope="col-md-2" id="th_seg" class="nav_on">
-                                            <a onclick="toggle_visibility('seg');">
+         </div>
+         <button class="btn btn-default text-center seta setaDireita" onclick="right_arrow()">
+            <i class="fas fa-2x fa-chevron-right"></i>
+         </button>
+      </div>
+   </div>
+   {% macro atividades_do_dia(lista_atividades, id_div, dia_semana) -%}
+   <div id="{{ id_div }}" style="display: block;">
+      <div class="col-md-12">
+         {% for atividade in lista_atividades %}
+         <div class="card mb-4">
+            <h4 class="card-title p-3">
+               {% if atividade.titulo is not sameas none and atividade.tipo.nome %}
+               <b>{{ atividade.tipo.nome }}</b> - {{ atividade.titulo }}
+               {% else %}
+               -
+               {% endif %}
+            </h4>
+            <div class="card-body">
+               <div class="row no-gutters align-items-center">
+                  <div class="col-md-4 p-1">
 
-                                                <h5>09.09.2019</h5>
-                                                <h4><span id="nav-seg">Seg</span></h4>
-                                                <div id="div_seg" class="day selected"></div>
+                     {% if atividade.ministrantes_confirmados_atividade | length > 1 %}
+                     {% for ministrante in atividade.ministrantes_confirmados_atividade %}
+                     <div class="row align-items-center mb-3">
+                        <div class="col-4 text-center">
+                           {% if ministrante.foto is not sameas none %}
 
-                                            </a>
-                                        </th>
-                                        <th scope="col-md-2" id="th_ter" class="nav_off">
-                                            <a onclick="toggle_visibility('ter');">
+                           <img src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
+                              class="w-50" alt="">
 
-                                                <h5>10.09.2019</h5>
-                                                <h4><span id="nav-ter">Ter</span></h4>
-                                                <div id="div_ter" class="day"></div>
+                           {% else %}
 
-                                            </a>
-                                        </th>
-                                        <th scope="col-md-2" id="th_qua" class="nav_off">
-                                            <a onclick="toggle_visibility('qua');">
+                           <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-50" alt="">
 
-                                                <h5>11.09.2019</h5>
-                                                <h4><span id="nav-qua">Qua</span></h4>
-                                                <div id="div_qua" class="day"></div>
+                           {% endif %}
 
-                                            </a>
-                                        </th>
-                                        <th scope="col-md-2" id="th_qui" class="nav_off">
-                                            <a onclick="toggle_visibility('qui');">
+                        </div>
+                        <div class="col-8">
+                           <div class="text-gray">
+                              <b>{{ministrante.usuario.primeiro_nome}} {{ministrante.usuario.sobrenome}}</b>
+                              {% if ministrante.profissao is not sameas none %}
+                              <br>{{ ministrante.profissao }}
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                     {% endfor %}
 
-                                                <h5>12.09.2019</h5>
-                                                <h4><span id="nav-qui">Qui</span></h4>
-                                                <div id="div_qui" class="day"></div>
+                     {% else %}
 
-                                            </a>
-                                        </th>
-                                        <th scope="col-md-2" id="th_sex" class="nav_off">
-                                            <a onclick="toggle_visibility('sex');">
+                     <div class="row justify-content-center align-items-center text-center mb-3">
+                        <div class="col-md-12 mb-2">
+                           {% if atividade.ministrantes_confirmados_atividade[0].foto is not sameas none %}
 
-                                                <h5>13.09.2019</h5>
-                                                <h4><span id="nav-sex">Sex</span></h4>
-                                                <div id="div_sex" class="day"></div>
+                           <img
+                              src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+atividade.ministrantes_confirmados_atividade[0].foto) }}"
+                              class="w-50" alt="">
 
-                                            </a>
-                                        </th>
-                                    </div>
-                                </tr>
-                                <thead>
-                        </table>
-                    </nav>
-                </div>
+                           {% else %}
+
+                           <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="w-50" alt="">
+
+                           {% endif %}
+
+                        </div>
+                        <div class="col-md-12">
+                           <div class="text-gray">
+                              <b>{{atividade.ministrantes_confirmados_atividade[0].usuario.primeiro_nome}}
+                                 {{atividade.ministrantes_confirmados_atividade[0].usuario.sobrenome}}</b>
+                              {% if atividade.ministrantes_confirmados_atividade[0].profissao is not sameas none %}
+                              <br>{{ atividade.ministrantes_confirmados_atividade[0].profissao }}
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+
+                     {% endif %}
+
+                  </div>
+                  <div class="col-md-8 p-1">
+
+                     <p class="card-subtitle text-gray text-justify">
+                        {% if atividade.descricao is not sameas none %}
+                        {{ atividade.descricao }}
+                        {% else %}
+                        Informações ainda não disponíveis
+                        {% endif %}
+                     </p>
+                  </div>
+               </div>
             </div>
-            <div class="text-center setaDireita" onclick="right_arrow()">
-                <i class="fas fa-2x fa-chevron-right"></i>
+            <div class="card-footer text-gray">
+               <div class="row no-gutters align-items-center">
+                  <div class="col-md-3 mt-1 mb-1">
+                     <i class="fas fa-map-marker-alt mr-1"></i>
+                     <span>
+                        {% if atividade.local is not sameas none %}
+                        {{ atividade.local }}
+                        {% else %}
+                        Local ainda não disponível
+                        {% endif %}
+                     </span>
+                  </div>
+                  <div class="col-md-3 mt-1 mb-1">
+                     <i class="fas fa-calendar-alt mr-1"></i>
+                     <span>
+                        {% if atividade.data_hora_inicio is not sameas none %}
+                        {{ dia_semana }}
+                        {{ atividade.data_hora_inicio.strftime('%d/%m/%Y') }}
+                        {% else %}
+                        Horário ainda não disponível
+                        {% endif %}
+                     </span>
+                  </div>
+                  <div class="col-md-3 mt-1 mb-1">
+                     <i class="fas fa-clock mr-1"></i>
+                     <span>
+                        {% if atividade.data_hora_inicio is not sameas none and atividade.data_hora_fim is not sameas none %}
+                        {{ atividade.data_hora_inicio.strftime('%H:%M') }} -
+                        {{ atividade.data_hora_fim.strftime('%H:%M') }}
+                        {% else %}
+                        Horário ainda não disponível
+                        {% endif %}
+                     </span>
+                  </div>
+                  <div class="col-md-3">
+                     {% if atividade.ministrantes_confirmados_atividade | length > 0 %}
+                     <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                        data-target="#modal{{atividade.id}}">
+                        Detalhes
+                     </button>
+                     {% else %}
+
+                     <button type="button" disabled class="btn btn-secondary float-right">
+                        Sem detalhes
+                     </button>
+                     {% endif %}
+                  </div>
+               </div>
             </div>
-        </div>
-    </div>
-
-
-    <div id="seg" style="display: block;">
-        <div class="col-md-12">
-            <div class="card">
-
-                <div class="row no-gutters align-items-center">
-
-                    <div class="col-md-2">
-                        <img src="{{ url_for('static', filename='images/logo-colorida.png') }}" class="img-fluid"
-                            alt="">
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card-body">
-                            <h4 class="card-title">Titulo da palestra que a gente sabe que pode ser muito longo de
-                                acordo
-                                com as edições anteriores</h4>
-                            <p class="card-subtitle text-muted">
-                                Ministrante Fulano de Tal
-                                <br>Cargo na Instituição
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card-body">
-                            <p class="card-subtitle text-muted">
-                                Mussum Ipsum, cacilds vidis litro abertis. Sapien in monti palavris qui num significa
-                                nadis
-                                i pareci latim. Quem num gosta di mim que vai caçá sua turmis! Atirei o pau no gatis,
-                                per
-                                gatis num morreus. Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis!
-                                Suco de
-                                cevadiss, é um
-                                leite divinis, qui tem lupuliz, matis, aguis e fermentis. In elementis mé pra quem é
-                                amistosis quis leo.
-                                Cevadis im ampola pa arma uma pindureta. Casamentiss faiz malandris se pirulitá...
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="card-footer text-muted">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col-md-3">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Anfiteatro Bento Prado Jr.</span>
-                        </div>
-                        <div class="col-md-3">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Segunda-feira, 09/09</span>
-                        </div>
-
-                        <div class="col-md-3">
-                            <i class="fas fa-clock"></i>
-                            <span>08:00 - 10:00</span>
-                        </div>
-                        <div class="col-md-3">
-                            <button type="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
-                                data-target="#modal1">
-                                Detalhes
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
+         </div>
+         {% macro modal_ministrantes(atividade) -%}
+         <div class="modal fade" id="modal{{ atividade.id }}" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+               {% for ministrante in atividade.ministrantes_confirmados_atividade %}
+               {% if loop.index == 1 %}
+               <div id="modalcontent{{ atividade.id }}{{ loop.index }}" class="modal-content">
+                  {% else %}
+                  <div id="modalcontent{{ atividade.id }}{{ loop.index }}" class="modal-content d-none">
+                     {% endif %}
+                     <div class="modal-header">
+
                         <h5 class="modal-title text-center">
-                            Titulo da palestra que a gente sabe que pode ser muito longo de acordo com as edições
-                            anteriores
+                           <b>{{ atividade.tipo.nome }}</b> - {{ atividade.titulo }}
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                           <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row no-gutters">
-                            <div class="col-md-10">
-                                <h5>Ministrante Fulano de Tal</h5>
-                                <p class="text-muted">Cargo naquela instituição muito boa </p>
-                            </div>
-                            <div class="col-md-2">
-                                <img src="{{ url_for('static', filename='images/logo-colorida.png') }}"
-                                    class="img-fluid" alt="">
-                            </div>
-                        </div>
+                     </div>
+                     <div class="modal-body">
+                        <div class="row pl-2 pr-2 align-items-center">
+                           <div class="col ml-2 mr-2">
 
-                        <h5>Descrição</h5>
-                        <p>Mussum Ipsum, cacilds vidis litro abertis. Sapien in monti palavris qui num significa nadis i
-                            pareci
-                            latim. Quem num gosta di mim que vai caçá sua turmis! Atirei o pau no gatis, per gatis num
-                            morreus.
-                            Si u mundo tá muito paradis? Toma um mé que o mundo vai girarzis! Suco de cevadiss, é um
-                            leite
-                            divinis, qui tem lupuliz, matis, aguis e fermentis. In elementis mé pra quem é amistosis
-                            quis
-                            leo.
-                            Cevadis im ampola pa arma uma pindureta. Casamentiss faiz malandris se pirulitá.</p>
-                    </div>
-                    <div class="modal-footer">
+                              {% if atividade.ministrantes_confirmados_atividade|length > 1 %}
+                              {% set aux = atividade.id %}
+                              <div class="row justify-content-between align-items-center">
+
+                                 <button class="btn btn-default seta" type="button"
+                                    onclick="mLeftArrow('modalcontent{{ aux }}', {{ atividade.ministrantes_confirmados_atividade|length }} )">
+                                    <i class="fas fa-2x fa-chevron-left"></i>
+                                 </button>
+
+                                 <h4>Ministrantes</h4>
+
+                                 <button class="btn btn-default seta" type="button"
+                                    onclick="mRightArrow('modalcontent{{ aux }}', {{atividade.ministrantes_confirmados_atividade|length}} )">
+                                    <i class="fas fa-2x fa-chevron-right"></i>
+                                 </button>
+
+                              </div>
+
+                              {% else %}
+
+                              <div class="row justify-content-center">
+                                 <h4>Ministrante</h4>
+                              </div>
+
+                              {% endif %}
+
+                              <div class="row no-gutters align-items-center mt-3">
+                                 <div class="col-8 col-sm-10">
+                                    <h5>
+                                       {% if ministrante.usuario.primeiro_nome is sameas none and  ministrante.usuario.sobrenome is sameas none%}
+                                       Sem informações
+                                       {% else %}
+                                       {{ ministrante.usuario.primeiro_nome }} {{ ministrante.usuario.sobrenome }}
+                                       {% endif %}
+                                    </h5>
+                                    <p class="text-gray">
+                                       {% if ministrante.profissao is sameas none %}
+                                       Sem informações
+                                       {% else %}
+                                       {{ ministrante.profissao }}
+                                       {% endif %}
+                                       <br>
+                                       {% if ministrante.empresa_universidade is not sameas none %}
+                                       {{ ministrante.empresa_universidade }}
+                                       {% endif %}
+                                    </p>
+                                 </div>
+                                 <div class="col-4 col-sm-2">
+                                    {% if ministrante.foto is not sameas none %}
+                                    <img
+                                       src="{{ url_for('views.uploads', filename='fotos_ministrantes/'+ministrante.foto) }}"
+                                       class="img-fluid" alt="">
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='images/logo-colorida.png') }}"
+                                       class="img-fluid" alt="">
+                                    {% endif %}
+                                 </div>
+                              </div>
+
+                              <h5 class="pt-2"><b>Biografia</b></h5>
+                              <p class="text-justify">
+                                 {% if ministrante.biografia is not sameas none %}
+                                 {{ ministrante.biografia }}
+                                 {% else %}
+                                 Sem informações
+                                 {% endif %}
+                              </p>
+
+                              <p>
+                                 {% if ministrante.facebook %}
+                                 <i class="fab fa-facebook-square"></i> {{ ministrante.facebook }}
+                                 {% endif %}
+                                 {% if ministrante.twitter %}
+                                 <br><i class="fab fa-twitter-square"></i> {{ ministrante.twitter }}
+                                 {% endif %}
+                                 {% if ministrante.linkedin %}
+                                 <br><i class="fab fa-linkedin"></i> {{ ministrante.linkedin }}
+                                 {% endif %}
+                                 {% if ministrante.github %}
+                                 <br><i class="fab fa-github-square"></i> {{ ministrante.github }}
+                                 {% endif %}
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    </div>
-                </div>
+                     </div>
+                  </div>
+                  {% endfor %}
+               </div>
             </div>
-        </div>
-    </div>
-
-    <div id="ter" style="display: none;">
-        <div class="col-md-12">
-            <div class="card">
-
-                <div class="row no-gutters align-items-center">
-
-                    <div class="col-md-2">
-                        <img src="{{ url_for('static', filename='images/logo-ufscar.png') }}" class="img-fluid" alt="">
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card-body">
-                            <h4 class="card-title">Titulo da palestra de terça feira dessa vez</h4>
-                            <p class="card-subtitle text-muted">
-                                Ministrante Fulano de Tal
-                                <br>Cargo na Instituição
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card-body">
-                            <p class="card-subtitle text-muted">
-                                Descrição gigantesca daquela palestra de terça feira...
-                            </p>href="javascript:seta_direita
-                        </div>
-                    </div>
-
-                </div>
-                <div class="card-footer text-muted">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col-md-3">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Departamento de Computação</span>
-                        </div>
-                        <div class="col-md-3">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Terça-feira, 10/09</span>
-                        </div>
-
-                        <div class="col-md-3">
-                            <i class="fas fa-clock"></i>
-                            <span>08:00 - 10:00</span>
-                        </div>
-                        <div class="col-md-3">
-                            <button thref="javascript:seta_direitaype="button" id="btn-modal" class="btn btn-primary float-right" data-toggle="modal"
-                                data-target="#modal2">
-                                Detalhes
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-center">
-                            Titulo da palestra de terça feira só que agora no modal
-                        </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row no-gutters">
-                            <div class="col-md-10">
-                                <h5>Ministrante Fulano de Tal</h5>
-                                <p class="text-muted">Cargo naquela instituição muito boa </p>
-                            </div>
-                            <div class="col-md-2">
-                                <img src="{{ url_for('static', filename='images/logo-ufscar.png') }}" class="img-fluid"
-                                    alt="">
-                            </div>
-                        </div>
-
-                        <h5>Descrição</h5>
-                        <p>Palestra de terça com uma descrição gigante que pode ocupar 300vh brincando.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="qua"></div>
-    <div id="qui"></div>
-    <div id="sex"></div>
+            {%- endmacro %}
+            {{ modal_ministrantes(atividade) }}
+            {% endfor %}
+         </div>
+      </div>
+      {%- endmacro %}
+      {{ atividades_do_dia(info_cronograma.SEG, "seg", "Segunda") }}
+      {{ atividades_do_dia(info_cronograma.TER, "ter", "Terça") }}
+      {{ atividades_do_dia(info_cronograma.QUA, "qua", "Quarta") }}
+      {{ atividades_do_dia(info_cronograma.QUI, "qui", "Quinta") }}
+      {{ atividades_do_dia(info_cronograma.SEX, "sex", "Sexta") }}
+   </div>
 </div>
-
 <script>
-    function right_arrow() {
-        switch (document.querySelector('.selected').id) {
-            case "div_seg":
-                toggle_visibility('ter'); break;
-            case "div_ter":
-                toggle_visibility('qua'); break;
-            case "div_qua":
-                toggle_visibility('qui'); break;
-            case "div_qui":
-                toggle_visibility('sex'); break;
-            case "div_sex":
-                toggle_visibility('seg'); break;
-            default: break;
-        }
-    }
-    function left_arrow() {
-        switch (document.querySelector('.selected').id) {
-            case "div_seg":
-                toggle_visibility('sex'); break;
-            case "div_ter":
-                toggle_visibility('seg'); break;
-            case "div_qua":
-                toggle_visibility('ter'); break;
-            case "div_qui":
-                toggle_visibility('qua'); break;
-            case "div_sex":
-                toggle_visibility('qui'); break;
-            default: break;
-        }
-    }
-    function toggle_visibility(id) {
-        var listaDias = ['seg', 'ter', 'qua', 'qui', 'sex'];
-        var i;
-        var target = document.getElementById(id);
+   document.getElementById('ter').style.display = 'none'
+   document.getElementById('qua').style.display = 'none'
+   document.getElementById('qui').style.display = 'none'
+   document.getElementById('sex').style.display = 'none'
+   function right_arrow() {
+      switch (document.querySelector('.selected').id) {
+         case "div_seg":
+            toggle_visibility('ter'); break;
+         case "div_ter":
+            toggle_visibility('qua'); break;
+         case "div_qua":
+            toggle_visibility('qui'); break;
+         case "div_qui":
+            toggle_visibility('sex'); break;
+         case "div_sex":
+            toggle_visibility('seg'); break;
+         default: break;
+      }
+   }
+   function left_arrow() {
+      switch (document.querySelector('.selected').id) {
+         case "div_seg":
+            toggle_visibility('sex'); break;
+         case "div_ter":
+            toggle_visibility('seg'); break;
+         case "div_qua":
+            toggle_visibility('ter'); break;
+         case "div_qui":
+            toggle_visibility('qua'); break;
+         case "div_sex":
+            toggle_visibility('qui'); break;
+         default: break;
+      }
+   }
+   function toggle_visibility(id) {
+      var listaDias = ['seg', 'ter', 'qua', 'qui', 'sex'];
+      var i;
+      var target = document.getElementById(id);
 
-        for (i = 0; i < 5; i++) {
+      for (i = 0; i < 5; i++) {
 
-            var content = document.getElementById(listaDias[i]);
-            var th = document.getElementById('th_' + listaDias[i]);
-            var div = document.getElementById('div_' + listaDias[i]);
+         var content = document.getElementById(listaDias[i]);
+         var th = document.getElementById('th_' + listaDias[i]);
+         var div = document.getElementById('div_' + listaDias[i]);
 
-            if (content == target) {
-                content.style.display = 'block';
-                th.className = "nav_on";
-                div.className = "day selected";
-            }
-            else {
-                content.style.display = 'none';
-                th.className = "nav_off";
-                div.className = "day";
-            }
-        }
-    }
+         if (content == target) {
+            content.style.display = 'block';
+            th.className = "nav_on";
+            div.className = "day selected";
+         }
+         else {
+            content.style.display = 'none';
+            th.className = "nav_off";
+            div.className = "day";
+         }
+      }
+   }
+
+   selector_count = 1;
+
+   function mRightArrow(atividade, tamanho) {
+
+      var atual = atividade + selector_count.toString();
+      selector_count = (selector_count + 1);
+      if (selector_count > tamanho) {
+         selector_count = 1;
+      }
+      var proximo = atividade + selector_count.toString();
+      $('#' + atual).addClass('d-none');
+      $('#' + proximo).removeClass('d-none');
+
+   }
+   function mLeftArrow(atividade, tamanho) {
+
+      var atual = atividade + selector_count.toString();
+      selector_count = (selector_count - 1);
+      if (selector_count == 0) {
+         selector_count = tamanho;
+      }
+      var anterior = atividade + selector_count.toString();
+      $('#' + atual).addClass('d-none');
+      $('#' + anterior).removeClass('d-none');
+   }
 </script>
 
+<script>
+
+   // evita que ocorra seleção de texto ao clicar várias vezes nas setas
+   jQuery('.seta').mousedown(function (e) { e.preventDefault(); });
+
+</script>
 {% endblock %}

@@ -1,12 +1,10 @@
+from flask import current_app
 import paypalrestsdk
 
-from flask import current_app
-
 paypalrestsdk.configure({
-  "mode": "sandbox", # sandbox or live
+  "mode": "live", # sandbox or live
   "client_id": current_app.config['PAYPAL_CLIENT_ID'],
-  "client_secret": current_app.config['PAYPAL_CLIENT_SECRET']
-})
+  "client_secret": current_app.config['PAYPAL_CLIENT_SECRET'] })
 
 def criar_pagamento(item, descricao, valor, base_url):
     payment = paypalrestsdk.Payment({
@@ -14,8 +12,8 @@ def criar_pagamento(item, descricao, valor, base_url):
     "payer": {
         "payment_method": "paypal"},
     "redirect_urls": {
-        "return_url": base_url + "participante/executar-pagamento-kit",
-        "cancel_url": base_url + "participante/cancelar-pagamento-kit"},
+        "return_url": base_url + "participantes/executar-pagamento-kit",
+        "cancel_url": base_url + "participantes/cancelar-pagamento-kit"},
     "transactions": [{
         "item_list": {
             "items": [{

@@ -1,0 +1,145 @@
+#content {
+    padding-top: 0 !important;
+}
+
+.counter {
+    text-shadow: -1px 0 #424242, 0 1px #424242, 1px 0 #424242, 0 -1px #424242;
+}
+
+.swiper-slide a {
+    text-decoration: none;
+}
+
+.swiper-slide a:hover {
+    color: var(--secondary-color);
+}
+
+.swiper-container {
+    width: 100%;
+    height: 100vh;
+}
+
+.swiper-slide {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.bg-fade {
+    background-color: #000000aa;
+    position: relative;
+    border-radius: 1rem;
+}
+
+.background {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    filter: blur(3px);
+    position: absolute;
+    background-size: cover;
+    background-position: 62%;
+    background-repeat: no-repeat;
+}
+
+.swiper-pagination-bullet {
+    height: 2.5vh !important;
+    width: 2.5vh !important;
+    opacity: 1 !important;
+    background-color: #ffffff88 !important;
+}
+
+.swiper-pagination-bullet-active {
+    margin-bottom: 1vh !important;
+    background-color: var(--primary-color) !important;
+}
+
+@media (orientation: portrait) {
+    .logoP {
+        display: inline-block;
+        max-width: 60vw;
+        margin: 3%;
+    }
+    .logoL {
+        display: none;
+    }
+}
+
+@media (orientation: landscape) {
+    .logoL {
+        display: inline-block;
+        max-width: 70vw;
+        max-height: 30vh;
+        margin: 3%;
+    }
+    .logoP {
+        display: none;
+    }
+}
+
+@media (max-width: 370px) {
+    .top-left, .bottom-right {
+        width: 90%;
+    }
+}
+
+@media (min-width: 371px) and (max-width: 450px) {
+    .top-left, .bottom-right {
+        width: 80%;
+    }
+    .logoL {
+        max-width: 50vw;
+    }
+}
+
+@media (min-width: 451px) and (max-width: 700px) {
+    .top-left, .bottom-right {
+        width: 65%;
+    }
+    .logoL {
+        max-width: 55vw;
+    }
+}
+
+@media (min-width: 701px) and (max-width: 991px) {
+    .top-left, .bottom-right {
+        width: 50%;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 400px) {
+    .logoL {
+        max-height: 25vh;
+        max-width: 35vw;
+    }
+}
+
+@media (max-height: 320px) {
+    .top-left, .bottom-right {
+        width: 45%;
+    }
+    .logoL {
+        display: none;
+    }
+}
+
+@media (max-width: 699px) {
+    .icons .col {
+        flex: 0 0 50%;
+    }
+}
+
+@media (min-width: 700px) {
+    .icons .col {
+        flex: 0 0 25%;
+    }
+}

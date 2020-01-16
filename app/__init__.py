@@ -1,6 +1,6 @@
 from os import path, getenv
 
-from flask import Flask, redirect, request, render_template, session
+from flask import Flask, redirect, request, render_template, session, flash
 from flask_babelex import Babel
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -25,9 +25,7 @@ def create_app(config=None):
 
     app = Flask(__name__)
     app.config.from_object(config)
-
-    QRCode(app)
-
+ 
     import sentry_sdk
     from sentry_sdk.integrations.flask import FlaskIntegration
 
@@ -37,13 +35,13 @@ def create_app(config=None):
     )
     
     Bootstrap(app)
+    QRCode(app)
 
     from app.models.models import db, Usuario
     from app.models.commands import populate
 
     app.app_context().push()
     db.init_app(app)
-    Migrate(app, db)
 
     from app.controllers.forms.forms import LoginForm
 
@@ -62,6 +60,8 @@ def create_app(config=None):
         form_login = LoginForm(request.form)
         return render_template('500.html', form_login=form_login), 500
 
+    migrate = Migrate(app, db)
+
     @app.cli.command()
     def create():
         """
@@ -69,6 +69,7 @@ def create_app(config=None):
         """
         db.create_all()
         populate()
+        db.session.commit()
 
     @app.cli.command()
     def drop():
@@ -79,17 +80,18 @@ def create_app(config=None):
         if prompt == 'y':
             db.session.close_all()
             db.drop_all()
+            db.session.commit()
 
     from app.controllers.functions.email import mail
 
     mail.init_app(app)
 
-    from app.controllers.routes import admin, management, users, views, conteudo, api
+    from app.controllers.routes import admin, gerenciar, participantes, views, conteudo, api
 
-    app.register_blueprint(management.management)
-    app.register_blueprint(conteudo.conteudo)
-    app.register_blueprint(users.users)
+    app.register_blueprint(gerenciar.gerenciar)
+    app.register_blueprint(participantes.participantes)
     app.register_blueprint(views.views)
+    app.register_blueprint(conteudo.conteudo)
     app.register_blueprint(api.api)
 
     upload_path = path.join(path.dirname(__file__), 'static')
@@ -106,12 +108,17 @@ def create_app(config=None):
     def unauthorized_callback():
         return redirect('/login')
 
+    @login_manager.needs_refresh_handler
+    def refresh_callback():
+        flash(u'Para proteção da sua conta, faça login novamente para poder acessar esta página.')
+        return redirect('/confirm-login')
+
     babel = Babel(app)
 
     @babel.localeselector
     def get_locale():
         if request.args.get('lang'):
             session['lang'] = request.args.get('lang')
-        return "pt_BR"
+        return "pt"
 
     return app

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center pt-1">
+        <div class="col-md-8">
+            <br/>
+            <h2 class="text-center">Sorteio de participante</h2>
+
+            <form action="{{url_for('.sortear')}}" method="POST">
+                {% if vazio %}
+                    <div class="alert alert-success" role="alert">
+                        Não existem presenças registradas para essa atividade.
+                    </div>
+                {% endif %}
+                {% if sorteando %}
+                    <div class="alert alert-success" role="alert">
+                        O participante sorteado foi: {{sorteado.usuario.primeiro_nome}} {{sorteado.usuario.sobrenome}}
+                    </div>
+                {% else: %}
+                    <center><h4>Clique no botão abaixo para sortear um participante!</h4></center>
+                {% endif %}
+                        {{ form.hidden_tag() }}
+                        {{ wtf.form_field(form.atividades) }}
+                <br/>
+                <div class="text-center">
+                    {% if sorteando %}
+                    <button type="submit" class="btn btn-primary">Sortear outro participante</button>
+                    {% else: %}
+                    <button type="submit" class="btn btn-primary">Sortear</button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "email/base.html" %}
+{% block titulo %}
+  {{ info.titulo }}
+{% endblock %}
+
+{% block saudacao %}
+  Olá, {{ info.nome }}!
+{% endblock%}
+
+{% block conteudo %}
+<span style="color:black;">Temos um aviso importante para você:
+   </span><br>
+  <span style="color:black;">Os participantes que chegarem com mais de 15 minutos de atraso poderão comparecer nas atividades,
+     no entanto, a presença não será considerada na emissão do certificado. Os participantes inscritos em minicursos, além de perderem a presença,
+      também correm risco de perder a vaga do minicurso inscrito. Outras informações serão divulgadas na abertura do evento.
+     </span><br>
+ <span>Esperamos você amanhã em nosso evento e desejamos uma ótima SECOMP ;)</span>
+{% endblock %}
+
+{% block footer %}
+  {{ info.footer }}
+{% endblock %}

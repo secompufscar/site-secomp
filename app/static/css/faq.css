@@ -1,0 +1,11 @@
+h5 {
+    color:#008cb5;
+}
+
+.card {
+    background-color: var(--card-color);
+}
+
+.card-body {
+    background-color: var(--card-color);
+}

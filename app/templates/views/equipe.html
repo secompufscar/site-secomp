@@ -3,26 +3,32 @@
 
 {% block content %}
 
-<link href="{{ url_for('static', filename='css/equipe.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ url_for('static', filename='css/equipe.css') }}" rel="stylesheet" type="text/css" />
 
 <div class="container">
-    {% for diretoria in data %}
+    {% for diretoria in info_equipe %}
         <h2 class="section-title text-center pt-1">{{ diretoria }}</h2>
         <div class="row justify-content-center pb-3">
-            {% for membro in data[diretoria] %}
-                    <div class="pb-3 pl-2 pr-2">
-                        <div onmouseover="showBackside(id)" onmouseout="showFrontside(id)" class="card text-center" style="width: 18rem; height: 17rem;">
+            {% for membro in info_equipe[diretoria] %}
+                <div class="pb-3 pl-2 pr-2">
+                    <div class="card text-center" style="width: 18rem; height: 17rem;">
+                        {% if info_equipe[diretoria][membro]['bio'] is not sameas "" %}
+                            <i class="fas fa-info-circle fa-lg card-info"></i>
+                            <div class="card-body card-dual">
+                        {% else %}
                             <div class="card-body">
-                                <img class="rounded-circle img-equipe mb-3" src="{{ url_for('static', filename='images/equipe/%s' % data[diretoria][membro]['img']) }}" alt="Foto do participante">
+                        {% endif %}
+                            <img class="rounded-circle img-equipe mb-3"
+                                src="{{ url_for('static', filename='images/equipe/%s' % info_equipe[diretoria][membro]['img']) }}"
+                                alt="Foto de {{ membro }}">
 
-                                <h5 class="card-title">{{ membro }}</h5>
+                            <h5 class="card-title">{{ membro }}</h5>
 
-                                <p class="desc-membro">Mussum Ipsum, cacilds vidis litro abertis. Mais vale um bebadis
-                                        conhecidiss, que um alcoolatra anonimis. Copo furadis é disculpa de
-                                        bebadis, arcu quam euismod magna. Mussum Ipsum, cacilds vidis litro abertis.</p>
-                            </div>
+                            <p class="desc-membro">{{ info_equipe[diretoria][membro]['bio'] }}</p>
+
                         </div>
                     </div>
+                </div>
             {% endfor %}
         </div>
     {% endfor %}

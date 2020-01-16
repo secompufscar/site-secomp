@@ -1,0 +1,27 @@
+{% extends "participantes/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block sidebar_content %}
+<div class="container">
+
+    <div class="row justify-content-center pt-1">
+
+        <div class="col-md-6">
+            <h3 class="text-center">Cadastro de pontuação</h3>
+            {% if sucesso %}
+                <h5>Done!</h5>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('gerenciar.add_pontuacao') }}">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.participante) }}
+                {{ wtf.form_field(form.pontuacao) }}
+                <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+             </form>
+            <br>
+        </div>
+	</div>
+
+</div>
+
+{% endblock %}

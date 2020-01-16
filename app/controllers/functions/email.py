@@ -30,13 +30,11 @@ def enviar_email_generico(info=None, anexo=None):
     if info is None:
         global _teste
         info = _teste
-    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['MAIL_USERNAME'])),
+    msg = Message(info['assunto'], sender=('SECOMP UFSCar', str(current_app.config['DEFAULT_MAIL_SENDER'])),
                   recipients=[info['email']])
 
-    print(info['template'])
     try:
         msg.html = render_template(info['template'], info=info)
-        print(msg.html)
 
         # Parte que cuida dos anexos
         if not (anexo is None or anexo == []):
@@ -59,7 +57,6 @@ def enviar_email_generico(info=None, anexo=None):
 
     try:
         global mail
-        print(msg)
         mail.send(msg)
     except Exception as e:  # Erros mais prováveis são devido ao email_config, printa error em um arquivo
         try:
@@ -75,7 +72,7 @@ def enviar_email_confirmacao(usuario, token):
     Envia email para validação do email
     """
     # Cria a msg, Assunto, De, Para
-    link = url_for('users.verificacao', token=token, _external=True)
+    link = url_for('participantes.verificacao', token=token, _external=True)
     info = {"assunto": 'Confirmação de Email',
             "nome": usuario.primeiro_nome,
             "titulo": 'CONFIRMAÇÃO DE EMAIL',
@@ -109,7 +106,7 @@ def enviar_email_senha(usuario, token):
     Envia email para alteração de senha
     """
     # Cria a Msg, Assunto, De, Para
-    link = url_for('users.confirmar_alteracao_senha', token=token, _external=True)
+    link = url_for('participantes.confirmar_alteracao_senha', token=token, _external=True)
     info = {
         "assunto": 'Alteração de Senha',
         "nome": usuario.primeiro_nome,
@@ -172,3 +169,83 @@ def enviar_email_custon(assunto, titulo, template, temAnexo, anexoBase, anexoPas
                 naoEnviados.append(temp)
 
     return naoEnviados
+
+def enviar_email_aviso_pagamento_kit_aprovado(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'COMPROVANTE APROVADO',
+            "email": usuario.email,
+            "template": 'email/pagamento_kit_aprovado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+def enviar_email_aviso_pagamento_kit_rejeitado(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'COMPROVANTE NÃO APROVADO',
+            "email": usuario.email,
+            "template": 'email/pagamento_kit_rejeitado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+def enviar_email_aviso_sucesso_confirmacao_pagamento_paypal(usuario, pagamento):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Pagamento do KIT da X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'PAGAMENTO CONFIRMADO',
+            "email": usuario.email,
+            "valor": "{:2.2f}".format(pagamento.valor).replace('.', ','),
+            "template": 'email/pagamento_kit_confirmado.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+def enviar_email_aviso_inscricao(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Complete sua inscrição em nosso site',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'AVISO DE INSCRIÇÃO',
+            "email": usuario.email,
+            "template": 'email/email_aviso_inscricao.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+def enviar_email_aviso_tolerancia(usuario):
+    """
+    Envia email de aviso de tolerância
+    """
+    info = {"assunto": 'Aviso de tolerância de atraso',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'AVISO DE TOLERÂNCIA DE ATRASO',
+            "email": usuario.email,
+            "template": 'email/aviso_tolerancia.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)
+
+
+def enviar_email_feedback(usuario):
+    """
+    Envia email para validação do email
+    """
+    info = {"assunto": 'Feedback X SECOMP UFSCar',
+            "nome": usuario.primeiro_nome,
+            "titulo": 'FEEDBACK X SECOMP UFSCar',
+            "email": usuario.email,
+            "template": 'email/feedback.html',
+            "footer": 'TI X SECOMP UFSCar'
+            }
+    enviar_email_generico(info)

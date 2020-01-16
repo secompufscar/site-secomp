@@ -1,67 +1,31 @@
-body {
-  background-image: linear-gradient(to right, #008cb5, #00cfa1);
+.form-control {
+  border: 1px solid #ced4da88;
+  color: var(--font-color);
+  background-color: var(--sidebar-color);
 }
 
-.container {
-  background-color: #fff;
-  width: 50%;
+.form-control:disabled, .form-control[readonly] {
+  color: #777777;
+  background-color: var(--bg-color);
 }
 
-@media(max-width: 990px) {
-  .container {
-    background-color: #fff;
-    width: 80%;
-  }
-}
-
-@media(max-width: 990px) and (orientation: landscape) {
-  .container {
-    padding-top: 15vh;
-  }
-}
-
-a {
-  color: #008cb5;
-}
-
-a:hover {
-  color: #00cfa1;
+.select2-selection, .select2-container, .select2-results__option, #select2-tipo_atividade-container {
+  color: var(--font-color) !important;
+  background-color: var(--bg-color) !important;
 }
 
 .btn {
-  width: 100%;
   font-weight: bold;
   border: none;
 }
 
-.btn:hover {
-  background-color: #00cfa1;
+.g-recaptcha>div {
+  width: unset !important;
+  height: unset !important;
 }
 
-.help-block {
-  color: red;
-}
-
-@media(orientation: portrait) and (max-width: 339px) {
-  .recaptcha-responsive {
-    transform: scale(0.75);
-    -webkit-transform: scale(0.75);
-    transform-origin: 0 0;
-    -webkit-transform-origin: 0 0;
-  }
-}
-
-@media(orientation: portrait) and (min-width: 340px) and (max-width: 374px) {
-  .recaptcha-responsive {
-    transform: scale(0.8);
-    -webkit-transform: scale(0.8);
-    transform-origin: 0 0;
-    -webkit-transform-origin: 0 0;
-  }
-}
-
-@media(orientation: portrait) and (min-width: 375px) and (max-width: 450px) {
-  .recaptcha-responsive {
+@media (max-width: 359px) {
+  iframe {
     transform: scale(0.9);
     -webkit-transform: scale(0.9);
     transform-origin: 0 0;

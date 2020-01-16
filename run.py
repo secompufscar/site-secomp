@@ -2,7 +2,8 @@
 
 from app import create_app
 
+server = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
-    app.run('0.0.0.0')
+    server.run('0.0.0.0')
 

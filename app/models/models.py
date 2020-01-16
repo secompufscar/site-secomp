@@ -3,6 +3,7 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, Float
+from sqlalchemy.sql import func
 
 db = SQLAlchemy()
 
@@ -32,11 +33,6 @@ relacao_atividade_patrocinador = db.Table('relacao_atividade_patrocinador',
                                        Column('id_atividade', Integer, db.ForeignKey('atividade.id')),
                                        Column('id_patrocinador', Integer, db.ForeignKey('patrocinador.id')))
 
-relacao_participante_flags = db.Table('relacao_participante_flags',
-                                    Column('id', Integer, primary_key=True),
-                                    Column('id_flag', Integer, db.ForeignKey('flag.id')),
-                                    Column('id_participante', Integer, db.ForeignKey('participante.id')))
-
 class Usuario(db.Model):
     __tablename__ = 'usuario'
     id = Column(Integer, primary_key=True)
@@ -52,8 +48,8 @@ class Usuario(db.Model):
     admin = Column(Boolean, default=False)
     autenticado = Column(Boolean, default=False)
     email_verificado = Column(Boolean, default=False)
-    ultimo_login = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
-    data_cadastro = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    ultimo_login = Column(DateTime, default=datetime.now())
+    data_cadastro = Column(DateTime, default=datetime.now())
     participantes_associados = db.relationship('Participante', back_populates='usuario', lazy=True)
     salt = Column(String(30), nullable=True)
     token_alteracao_senha = Column(String(90), nullable=True)
@@ -63,6 +59,7 @@ class Usuario(db.Model):
     membros_de_equipe = db.relationship('MembroDeEquipe', backref='usuario', lazy=True)
     como_conheceu = db.relationship('ComoConheceu', lazy=True, back_populates='usuario')
     ministrante = db.relationship('Ministrante', back_populates='usuario', lazy=True, uselist=False)
+    is_anonymous = False
 
 
     @classmethod
@@ -75,10 +72,6 @@ class Usuario(db.Model):
     @property
     def is_authenticated(self):
         return self.autenticado == True
-
-    @classmethod
-    def is_anonymous(cls):
-        return False
 
     def is_admin(self):
         return self.admin == True
@@ -100,20 +93,24 @@ class Participante(db.Model):
     id = Column(Integer, primary_key=True)
     id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
-    pacote = Column(Boolean, nullable=False)
     pagamentos = db.relationship('Pagamento', back_populates='participante', lazy=True)
-    id_camiseta = Column(Integer, db.ForeignKey('camiseta.id'), primary_key=False)
-    data_inscricao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    data_inscricao = Column(DateTime, default=datetime.now())
     credenciado = Column(Boolean, nullable=False)
     opcao_coffee = Column(Integer, nullable=False)
     pontuacao = Column(Integer, nullable=True, default=0)
+    wifi = Column(Boolean, default=False)
+    minicurso_etapa_1 = Column(Integer, db.ForeignKey('atividade.id'))
+    minicurso_etapa_2 = Column(Integer, db.ForeignKey('atividade.id'))
     usuario = db.relationship('Usuario', back_populates='participantes_associados', lazy=True)
     presencas = db.relationship('Presenca', backref='participante')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_participante, lazy=True,
                                  back_populates='participantes')
-    flags_encontradas = db.relationship('Flag', secondary=relacao_participante_flags, backref="flag")
+    uuid = Column(String(512), nullable=True)
+    flags_encontradas = db.relationship('Flag', secondary='relacao_participante_flags', backref="flag")
+
+
     def __repr__(self):
-        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + ">"
+        return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + " <" + self.usuario.email + "><" + str(self.evento.edicao) + "ª edição>"
 
 
 class Ministrante(db.Model):
@@ -182,7 +179,8 @@ class Atividade(db.Model):
     vagas_totais = Column(Integer, nullable=True)
     vagas_disponiveis = Column(Integer, nullable=True)
     ativo = Column(Boolean, nullable=False, default=True)
-    data_hora = Column(DateTime, nullable=True)
+    data_hora_inicio = Column(DateTime, nullable=True)
+    data_hora_fim = Column(DateTime, nullable=True)
     local = Column(String(64), nullable=True)
     titulo = Column(String(256), nullable=True)
     descricao = Column(String(1024), nullable=True)
@@ -212,6 +210,31 @@ class Atividade(db.Model):
             return self.titulo
         else:
             return 'Atividade <' + str(self.id) + '>'
+
+    @property
+    def ministrantes_confirmados_atividade(self):
+        ministrantes_confirmados = []
+        ministrantes = self.ministrantes
+        for m in ministrantes:
+            r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=m.id, id_atividade=self.id, confirmado=True).first()
+            if r is not None:
+                ministrantes_confirmados.append(m)
+        return ministrantes_confirmados
+
+    @property
+    def admin(self):
+        r = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_atividade=self.id, confirmado=True, admin_atividade=True).first()
+        return db.session.query(Ministrante).get(r.id_ministrante)
+
+    def aconteceu(self):
+        agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        fim = str(self.data_hora_fim)
+        print("fim: " + fim)
+        if agora >= fim:
+            return True
+        else:
+            return False
+
 
 class InfoMinicurso(db.Model):
     __tablename__ = 'info_minicurso'
@@ -259,6 +282,11 @@ class Evento(db.Model):
     inicio_inscricoes_evento = Column(DateTime, nullable=False)
     fim_inscricoes_evento = Column(DateTime, nullable=False)
     ano = Column(Integer, default=datetime.now().year)
+    preco_kit = Column(Float(precision=2), nullable=True)
+    abertura_minicursos_1_etapa = Column(DateTime, nullable=False)
+    fechamento_minicursos_1_etapa = Column(DateTime, nullable=False)
+    abertura_minicursos_2_etapa = Column(DateTime, nullable=False)
+    fechamento_minicursos_2_etapa = Column(DateTime, nullable=False)
     participantes = db.relationship('Participante', backref='evento', lazy=True)
     presencas = db.relationship('Presenca', backref='evento', lazy=True)
     atividades = db.relationship('Atividade', backref='evento', lazy=True)
@@ -279,6 +307,7 @@ class Presenca(db.Model):
     id_participante = Column(Integer, db.ForeignKey('participante.id'), nullable=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
     inscrito = Column(Boolean, nullable=False)
+    id_feedback = Column(Integer, db.ForeignKey('feedback.id'), nullable=True)
 
 
 class MembroDeEquipe(db.Model):
@@ -290,6 +319,7 @@ class MembroDeEquipe(db.Model):
     id_cargo = Column(Integer, db.ForeignKey('cargo.id'), nullable=False)
     id_diretoria = Column(Integer, db.ForeignKey('diretoria.id'), nullable=False)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
+    descricao = Column(String(254), nullable=True)
 
     def __repr__(self):
         return self.usuario.primeiro_nome + " " + self.usuario.sobrenome + "<" + self.usuario.email + ">"
@@ -320,13 +350,13 @@ class Patrocinador(db.Model):
     __tablename__ = 'patrocinador'
     id = Column(Integer, primary_key=True)
     nome_empresa = Column(String(100), nullable=False)
-    logo = Column(String(100), nullable=False)
+    logo = Column(String(100), nullable=True)
     ativo_site = Column(Boolean, nullable=False)
     id_cota = Column(Integer, db.ForeignKey('cota_patrocinio.id'), nullable=False)
     cota = db.relationship('CotaPatrocinio', backref='cota_patrocinio', lazy=True)
-    ordem_site = Column(Integer, primary_key=True)
+    ordem_site = Column(Integer, nullable=True)
     link_website = Column(String(200), nullable=True)
-    ultima_atualizacao_em = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    ultima_atualizacao_em = Column(DateTime, default=datetime.now())
     eventos = db.relationship('Evento', secondary=relacao_patrocinador_evento, lazy=True,
                               back_populates='patrocinadores')
     atividades = db.relationship('Atividade', secondary=relacao_atividade_patrocinador, lazy=True,
@@ -377,7 +407,7 @@ class Camiseta(db.Model):
     __tablename__ = 'camiseta'
     id = Column(Integer, primary_key=True)
     id_evento = Column(Integer, db.ForeignKey('evento.id'), nullable=False)
-    participantes = db.relationship('Participante', backref='camiseta', lazy=True)
+    pagamento = db.relationship('Pagamento', back_populates  ='camiseta', lazy=True, uselist=False)
     tamanho = Column(String(30), nullable=False)
     quantidade = Column(Integer, nullable=False)
     ordem_site = Column(Integer, nullable=False)
@@ -405,17 +435,32 @@ class RelacaoAtividadeMinistrante(db.Model):
     confirmado = Column('confirmado', Boolean, nullable=True)
     admin_atividade = Column('admin_atividade', Boolean, nullable=True)
 
+class RelacaoParticipanteFlags(db.Model):
+    __tablename__ = 'relacao_participante_flags'
+    id = Column('id', Integer, primary_key=True)
+    id_flag = Column('id_flag', Integer, db.ForeignKey('flag.id'))
+    id_participante = Column('id_participante', Integer, db.ForeignKey('participante.id'))
+    data_hora = Column('data_hora', DateTime, default=func.now())
 
 class Pagamento(db.Model):
     __tablename__ = 'pagamento'
     id = Column(Integer, primary_key=True)
     id_participante = Column(Integer, db.ForeignKey('participante.id'), primary_key=False)
+    id_camiseta = Column(Integer, db.ForeignKey('camiseta.id'), primary_key=False)
     payment_id = Column(String(200), nullable=True)
     payer_id = Column(String(200), nullable=True)
     descricao = Column(String(200), nullable=False)
     valor = Column(Float(precision=2), nullable=False)
     efetuado = Column(Boolean, nullable=False)
+    rejeitado = Column(Boolean, nullable=False, default=False)
+    cancelado = Column(Boolean, nullable=False, default=False)
+    comprovante_enviado = Column(Boolean, nullable=False, default=False)
+    arquivo_comprovante = Column(String(100), nullable=True)
+    metodo_pagamento = Column(String(100), nullable=False)
+    data_hora_pagamento = Column(DateTime, default=datetime.now())
     participante = db.relationship('Participante', back_populates='pagamentos', lazy=True)
+    cupom_desconto = db.relationship('CupomDesconto', back_populates='pagamento', lazy=True, uselist=False)
+    camiseta = db.relationship('Camiseta', back_populates='pagamento', lazy=True, uselist=False)
 
 class URLConteudo(db.Model):
     __tablename__ = 'urlconteudo'
@@ -428,7 +473,8 @@ class URLConteudo(db.Model):
 
 class ComoConheceu(db.Model):
     __tablename__ = 'como_conheceu'
-    id_usuario = Column(Integer, db.ForeignKey('usuario.id'), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    id_usuario = Column(Integer, db.ForeignKey('usuario.id'))
     opcao = Column(Integer, nullable=False)
     outro = Column(String(200))
     usuario = db.relationship('Usuario', lazy=True, back_populates='como_conheceu')
@@ -448,5 +494,29 @@ class AdminModelHistory(db.Model):
     acao = Column(String(200), nullable=False)
     nome_modelo = Column(String(200), nullable=True)
     id_modelo = Column(Integer)
-    data_hora_acao = Column(DateTime, default=strftime("%Y-%m-%d %H:%M:%S", localtime(time())))
+    data_hora_acao = Column(DateTime, default=datetime.now())
     usuario = db.relationship('Usuario', backref='historico_admin', lazy=True)
+
+class CupomDesconto(db.Model):
+    id = Column(Integer, primary_key=True)
+    id_pagamento = Column(Integer, db.ForeignKey('pagamento.id'), primary_key=False)
+    nome = Column(String(200), nullable=False)
+    valor = Column(Float(precision=2), nullable=False)
+    usado = Column(Boolean, default=False)
+    pagamento = db.relationship('Pagamento', back_populates='cupom_desconto', lazy=True, uselist=False)
+
+class Feedback(db.Model):
+    id = Column(Integer, primary_key=True)
+    id_atividade = Column(Integer, db.ForeignKey('atividade.id'))
+    id_participante = Column(Integer, db.ForeignKey('participante.id'))
+    aspectos_gerais = Column(Integer, nullable=False)
+    conteudo = Column(Integer, nullable=False)
+    conhecimentos_ministrante = Column(Integer, nullable=False)
+    observacoes = Column(String(500), nullable=True)
+
+class Pont:
+  def __init__(self, id, pont, primeiro_nome, sobrenome):
+    self.id = id
+    self.pont = pont
+    self.primeiro_nome = primeiro_nome
+    self.sobrenome = sobrenome

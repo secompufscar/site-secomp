@@ -1,0 +1,168 @@
+{% extends "participantes/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block metas %}
+{{ super() }}
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+{% endblock %}
+
+{% block sidebar_content %}
+<div class="container pt-3">
+  <h2 class="text-center pb-2">Comprovantes de pagamento</h2>
+
+  <div class="row pt-2 pb-4">
+
+    <div class="col-md-12 text-center pb-2">
+      <h3>Filtros</h3>
+    </div>
+
+    <div class="col-4 text-center">
+      <input id='filtro_aprovados' type="checkbox" checked />
+      <label for="filtro_aprovados">
+        <h5>Aprovados</h5>
+      </label>
+    </div>
+    <div class="col-4 text-center">
+      <input id='filtro_pendentes' type="checkbox" checked />
+      <label for="filtro_aprovados">
+        <h5>Pendentes</h5>
+      </label>
+    </div>
+    <div class="col-4 text-center">
+      <input id='filtro_rejeitados' type="checkbox" checked />
+      <label for="filtro_aprovados">
+        <h5>Rejeitados</h5>
+      </label>
+    </div>
+  </div>
+
+  <form method="POST" id='form' action="{{url_for('gerenciar.gerenciar_comprovantes')}}">
+    {{ form.hidden_tag() }}
+    <table class="table text-center">
+      <thead>
+        <tr>
+          <th scope="col">Status</th>
+          <th scope="col">Ação</th>
+          <th scope="col">Rejeitar</th>
+          <th scope="col">Preço</th>
+          <th scope="col">Participante</th>
+          <th scope="col">Email</th>
+          <th scope="col">Comprovante</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pagamento in pagamentos %}
+        {% if pagamento.rejeitado is sameas true %}
+          {% set status = 'rejeitados' %}
+        {% elif pagamento.efetuado is sameas true %}
+          {% set status = 'aprovados' %}
+        {% else %}
+          {% set status = 'pendentes' %}
+        {% endif %}
+        <tr class='{{ status }}'>
+          <td scope='col'>
+            {% if pagamento.rejeitado is sameas true %}
+            <span style='color: #cc0000;'>Rejeitado</span>
+            {% elif pagamento.efetuado is sameas true %}
+              <span style='color: #008000;'>Aprovado</span>
+            {% else %}
+              <span style='color: #cca300;'>Pendente</span>
+            {% endif %}
+          </td>
+            <td scope='col'>
+              {% if pagamento.efetuado is sameas false %}
+              <button title="Aprovar Pagamento" alt="Aprovar Pagamento" type='submit' class="btn btn-default" name='aprovar' value='{{ pagamento.id }}'>
+                <i class="fas fa-check-circle fa-lg"></i></button>
+              {% else %}
+              <button title="Desaprovar Pagamento" alt="Desaprovar Pagamento" type='submit' class="btn btn-default" name='desaprovar' value='{{ pagamento.id }}'>
+                <i class="fas fa-times-circle fa-lg"></i></button>
+              {% endif %}
+            </td>
+            <td scope='col'>
+              {% if pagamento.rejeitado is sameas false %}
+              <button title="Rejeitar Pagamento" alt="Rejeitar Pagamento" type='submit' class="btn btn-default" name='rejeitar' value='{{ pagamento.id }}'>
+                <i class="fas fa-ban fa-lg"></i></button>
+              {% else %}
+              <button title="Autorizar Pagamento" alt="Autorizar Pagamento" type='submit' class="btn btn-default" name='autorizar' value='{{ pagamento.id }}'>
+                <i class="fas fa-chevron-circle-left fa-lg"></i></button>
+              {% endif %}
+            </td>
+            <td scope='col'>
+              R$ {{ pagamento.valor }}
+            </td>
+            <td scope='col'>
+              {{ pagamento.participante.usuario.primeiro_nome }} {{ pagamento.participante.usuario.sobrenome }}
+            </td>
+
+            <td scope='col'>
+              {{ pagamento.participante.usuario.email }}
+            </td>
+
+            <td scope='col'>
+              <button type='button' title="Visualizar Comprovante" alt="Visualizar Comprovante" class="btn btn-default" onclick= "abrir_comprovante('{{ pagamento.arquivo_comprovante }}')"><i class="fa fa-file-invoice-dollar fa-lg"></i></button>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
+</div>
+
+<script>
+  function abrir_comprovante(arquivo) {
+    url = '{{url_for("views.uploads", filename="")}}' + 'comprovantes/' + arquivo
+    window.open(url)
+  }
+
+  $(document).ready(function () {
+    if ($('#filtro_aprovados').is(':checked')) {
+        $('.aprovados').show();
+    }
+    else {
+        $('.aprovados').hide();
+    }
+    if ($('#filtro_pendentes').is(':checked')) {
+        $('.pendentes').show();
+    }
+    else {
+        $('.pendentes').hide();
+    }
+    if ($('#filtro_rejeitados').is(':checked')) {
+        $('.rejeitados').show();
+    }
+    else {
+        $('.rejeitados').hide();
+    }
+  });
+
+  $('#filtro_aprovados').change(function () {
+    if ($('#filtro_aprovados').is(':checked')) {
+          $('.aprovados').show();
+      }
+    else {
+          $('.aprovados').hide();
+      }
+  });
+
+  $('#filtro_pendentes').change(function () {
+    if ($('#filtro_pendentes').is(':checked')) {
+          $('.pendentes').show();
+      }
+    else {
+          $('.pendentes').hide();
+      }
+  });
+
+  $('#filtro_rejeitados').change(function () {
+    if ($('#filtro_rejeitados').is(':checked')) {
+          $('.rejeitados').show();
+      }
+    else {
+          $('.rejeitados').hide();
+      }
+  });
+</script>
+
+{% endblock %}

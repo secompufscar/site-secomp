@@ -1,185 +1,205 @@
 {
 	"Coordenação Geral": {
-		"Guilherme L. G. Lamonato": {
-			"img": "GuilhermeLGL.jpg",
-			"bio": "bio1",
+		"Guilherme Lorençato Guimarães Lamonato": {
+			"img": "GuilhermeLGL.jpeg",
+			"bio": "",
 			"email": "contato@secompufscar.com.br"
 		},
 		"Bianca Garcia Martins": {
-			"img": "BiancaGM.jpg",
-			"bio": "bio1",
+			"img": "Bianca.jpg",
+			"bio": "",
 			"email": "contato@secompufscar.com.br"
 		},
 		"Isadora Eliziário Gallerani": {
-			"img": "IsadoraEG.jpg",
-			"bio": "bio1",
+			"img": "Isadora.png",
+			"bio": "",
 			"email": "contato@secompufscar.com.br"
 		}
 	},
 	"Diretoria de TI": {
-		"Karina Mayumi": {
-			"img": "Karina.jpeg",
-			"bio": "bio1",
+		"Karina Mayumi Johansson": {
+			"img": "Mayumi.jpg",
+			"bio": "Diretora de TI, responsável pelo back-end do site da X SECOMP UFSCar",
 			"email": "ti@secompufscar.com.br"
 		},
-		"Alcides Mignoso": {
+		"Alcides Mignoso e Silva": {
 			"img": "Alcides.jpg",
-			"bio": "bio1"
+			"bio": "Líder do desenvolvimento do back-end da X SECOMP."
 		},	
-		"Daniel Moura" : {
+		"Daniel Lúcio Masselani de Moura" : {
 			"img": "Daniel.jpg",
-			"bio": "bio1"
+			"bio": "Líder do desenvolvimento do aplicativo e responsável pelo fron-end do site da X SECOMP"
 		},
-		"Gabriel Alves" : {
-			"img": "Gabriel.jpg",
-			"bio": "bio1"
+		"Gabriel de Souza Alves " : {
+			"img": "GabrielAlves.jpg",
+			"bio": ""
 		},
-		"Igor Lucio" : {
+		"Guilherme Villar Gonçalves" : {
+			"img": "GuilhermeV.jpg",
+			"bio": "Responsável pelo Front-end do site da X SECOMP."
+		},
+		"Igor Lúcio Manta Guedes" : {
 			"img": "Igor.jpg",
-			"bio": "bio1"
+			"bio": "Líder de desenvolvimento front-end. Jogador profissional de Uno da Federação. Graduando nas horas vagas. Faz bolos às 4 da manhã."
 		},
-		"Marcos Felipe" : {
-			"img": "Marcos.jpeg",
-			"bio": "bio1"
+		"Marcos Felipe Amaral Sena" : {
+			"img": "Marcos.jpg",
+			"bio": "Responsável pelo aplicativo da X SECOMP"
 		},
-		"Nathan Oliveira" : {
+		"Nathan Celestino de Oliveira" : {
 			"img": "Nathan.jpg",
-			"bio": "bio1"
+			"bio": ""
 		},
-		"Victória de Martini" : {
+		"Rafael Yoshio Yamawaki Murata" : {
+			"img": "RafaelM.jpg",
+			"bio": ""
+		},
+		"Victória de Martini de Souza" : {
 			"img": "Victoria.jpg",
-			"bio": "bio1"
+			"bio": ""
 		}
 	},
 	"Diretoria de Design & Marketing": {
 		"Esther Calderan Hoffmann": {
-			"img": "EstherCH.jpg",
-			"bio": "bio1",
+			"img": "Esther.jpg",
+			"bio": "",
 			"email": "marketing@secompufscar.com.br"
 		},
 		"Hemilyn Stephanye Aguiar Porfirio": {
-			"img": "HemilynSAP.jpg",
-			"bio": "bio1"
+			"img": "Hemilyn.jpg",
+			"bio": "Alivio cômico do design-marketing"
 		},
 		"Jhonata Querobim": {
-			"img": "JhonataQ.jpg",
-			"bio": "bio1"
+			"img": "Jhonata.png",
+			"bio": ""
 		},
 		"João Gabriel Viana Hirasawa": {
-			"img": "JoaoGVH.jpg",
-			"bio": "bio1"
+			"img": "JoaoGabriel.png",
+			"bio": ""
 		},
 		"João Victor Mendes Freire": {
-			"img": "JoaoVMF.jpg",
-			"bio": "bio1"
+			"img": "JoaoVictor.png",
+			"bio": ""
 		},
 		"Martin Heckmann": {
-			"img": "MartinH.png",
-			"bio": "bio1"
+			"img": "MartinH.jpg",
+			"bio": "lvl 2 halfling warlock chaotic neutral / gosta: invocar deuses antigos, doces / não gosta: clérigos / cozinha quando sobre estresse"
+		},
+		"Melissa Campelo Amora Fontenelle": {
+			"img": "Melissa.jpeg",
+			"bio": ""
+		},
+		"Sara Ferreira Bento da Silva": {
+			"img": "Sara.jpg",
+			"bio": "Membro da diretoria de Design e Marketing"
 		},
 		"Renan Dantas Pasquantonio": {
-			"img": "RenanDP.jpg",
-			"bio": "bio1"
-		}
-	},
-	"Diretoria de Patrocínio": {
-		"Nathaelly Boni": {
-			"img": "NathaellyB.jpg",
-			"bio": "bio1",
-			"email": "contato@secompufscar.com.br"
-		},
-		"Felipe Takeo Amano": {
-			"img": "FelipeTA.jpg",
-			"bio": "bio1"
-		},
-		"Guilherme Locca Salomão": {
-			"img": "GuilhermeLS.jpg",
-			"bio": "bio1"
-		},
-		"Lucas Martins de Almeida": {
-			"img": "LucasMA.jpg",
-			"bio": "bio1"
-		},
-		"Luís Felipe Corrêa Ortolan": {
-			"img": "LuisFCO.jpg",
-			"bio": "bio1"
-		},
-		"Thaís Oyamada Tanaka": {
-			"img": "ThaisOT.jpg",
-			"bio": "bio1"
+			"img": "Renan.png",
+			"bio": ""
 		}
 	},
 	"Diretoria de Conteúdo": {
 		"Bruna Fernandes Prates": {
-			"img": "BrunaFP.jpeg",
-			"bio": "bio1",
+			"img": "Bruna.jpg",
+			"bio": "Responsável por trazer o melhor do mundo da computação para todos os participantes da Semana! :)",
 			"email": "conteudo@secompufscar.com.br"
 		},
-		"Albert Franklin Boni": {
-			"img": "AlbertFB.jpg",
-			"bio": "bio1"
-		},
 		"Alisson Hayasi da Costa": {
-			"img": "AlissonHC.jpeg",
-			"bio": "bio1"
+			"img": "Alisson.jpg",
+			"bio": ""
+		},
+		"Guilherme Gomes Arcencio": {
+			"img": "GuilhermeG.png",
+			"bio": "Responsável por trazer o melhor do mundo da computação para todos os participantes da semana."
 		},
 		"João Augusto Leite": {
-			"img": "JoaoAL.jpeg",
-			"bio": "bio1"
+			"img": "JoaoAugusto.jpeg",
+			"bio": ""
 		},
 		"Murilo Batista do Carmo": {
-			"img": "MuriloBC.jpeg",
-			"bio": "bio1"
+			"img": "Murilo.jpeg",
+			"bio": "Responsável por trazer o melhor do mundo da computação para todos os participantes da Semana! :)"
 		},
 		"Paulo Henrique Dal Bello": {
-			"img": "PauloHDB.jpeg",
-			"bio": "bio1"
+			"img": "Paulo.jpg",
+			"bio": "Responsável por trazer o melhor do mundo da computação para todos os participantes da Semana!"
 		},
 		"Vinicius H. dos Santos Carvalho": {
-			"img": "ViniciusHSC.jpeg",
-			"bio": "bio1"
+			"img": "ViniciusC.png",
+			"bio": "Responsável por trazer o melhor do mundo da computação para todos os participantes da Semana! :)"
+		}
+	},
+	"Diretoria de Patrocínio": {
+		"Nathaelly Boni": {
+			"img": "Nathaelly.png",
+			"bio": "",
+			"email": "contato@secompufscar.com.br"
+		},
+		"Guilherme Locca Salomão": {
+			"img": "GuilhermeS.jpg",
+			"bio": ""
+		},
+		"Lucas Martins de Almeida": {
+			"img": "LucasM.jpg",
+			"bio": ""
+		},
+		"Luís Felipe Corrêa Ortolan": {
+			"img": "LuisFelipe.jpg",
+			"bio": ""
+		},
+		"Samara Morgana Marcelino da Silva": {
+			"img": "Samara.jpeg",
+			"bio": ""
+		},
+		"Thaís Oyamada Tanaka": {
+			"img": "Thais.jpg",
+			"bio": ""
 		}
 	},
 	"Diretoria Jurídico-Financeiro": {
-		"Julia Cinel": {
+		"Julia Cinel Chagas": {
 			"img": "JuliaC.jpg",
-			"bio": "bio1",
+			"bio": "",
 			"email": "financeiro@secompufscar.com.br"
 		},
 		"Amanda Peixoto Manso": {
-			"img": "AmandaPM.jpg",
-			"bio": "bio1"
+			"img": "Amanda.jpg",
+			"bio": ""
+		},
+		"Gabriel de Jesus Dantas": {
+			"img": "GabrielJD.jpg",
+			"bio": ""
 		},
 		"Gabriel Poggio Soneghet": {
-			"img": "GabrielPS.jpg",
-			"bio": "bio1"
+			"img": "GabrielS.jpg",
+			"bio": ""
 		},
-		"Samara M. M. da S. Almeida": {
-			"img": "SamaraMMSA.jpeg",
-			"bio": "bio1"
-		},
-		"Thiago Moraes": {
-			"img": "ThiagoM.jpg",
-			"bio": "bio1"
+		"Thiago de Moraes Teixeira": {
+			"img": "Thiago.jpg",
+			"bio": "Fiz parte da diretoria Jurídico-Financeiro elaborando contratos para apoiadores e editais para competiçôes que ocorreram na semana. Faço parte da SECOMP desde 2018/1."
 		}
 	},
 	"Diretoria Sócio-Cultural": {
-		"Philipe Bittencourt": {
-			"img": "PhilipeB.jpeg",
-			"bio": "bio1",
+		"Philipe Fonseca Bittencourt": {
+			"img": "Philipe.jpg",
+			"bio": "",
 			"email": "sociocultural@secompufscar.com.br"
 		},
 		"Emilia Silva de Sousa": {
-			"img": "EmiliaSS.jpg",
-			"bio": "bio1"
+			"img": "Emilia.jpg",
+			"bio": ""
+		},
+		"Clara Gruber Telles": {
+			"img": "Clara.jpg",
+			"bio": ""
 		},
 		"Gabriel Fernandes Roza": {
-			"img": "GabrielFR.jpeg",
-			"bio": "bio1"
+			"img": "GabrielRoza.jpeg",
+			"bio": ""
 		},
 		"João Gabriel Damasceno": {
-			"img": "JoaoGD.jpeg",
-			"bio": "bio1"
+			"img": "JoaoD.jpeg",
+			"bio": ""
 		}
 	}
 }

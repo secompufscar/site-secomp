@@ -2,74 +2,122 @@
 
 {% block content %}
 
-<div class="container-fluid px-0 d-none d-lg-block">
-	<div class="carousel-inner">
-		<div class="carousel-item active">
-				<img class="w-100 img-fluid" style="filter: blur(3px);" src="{{url_for('static', filename='images/ctf.jpg')}}">
-				<div class="carousel-caption d-none d-md-block">
-					<h1 style="font-weight: 600; font-size: 70px;">Capture The Flag da SECOMP X!</h1>
-					<h4>A SECOMP UFSCar conta com uma competição chamada Capture The Flag (CTF), constituída de desafios que envolvem engenharia reversa, criptografia, computação forense, networking, web hacking e outros temas presentes na área de segurança.</h4><br>
-					<button name="submit" type="submit" class="btn btn-primary"><i class="mr-2 fas fa-sign-in-alt"></i>Acesse o edital</button>
-				</div>
-			</div>
-			<p>Photo by David Rangel on Unsplash		</p>
-		</div>
-	</div>			
+<style>
+	.bg {
+		background-image: url("{{ url_for('static', filename='images/ctf.jpg') }}");
+		height: 85vh;
+		filter: blur(3px);
+		-webkit-filter: blur(3px);
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
 
+	.title {
+		background-color: #00000088;
+		color: white;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 100%;
+		padding: 3%;
+		text-align: center;
+	}
 
+	.t1 {
+		font-family: hacker;
+		font-weight: 800;
+		font-size: 350%;
+		text-shadow: 2px 2px #a0a0a044;
+	}
 
-<footer class="navbar small pt-5 text-white">
+	.t2 {
+		font-weight: 600;
+	}
+</style>
+
+<div class="container-fluid bg-dark pt-3">
+
+	<div class="bg"></div>
+
+	<div class="title">
+		<h1 class="t1">CAPTURE THE FLAG</h1>
+	</div>
+
+</div>
+
+<div class="pt-4 bg-dark" style="color: #e1e1ff;">
 	<div class="container">
+
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-calendar-alt"></i>
-					<h5 class="pt-2"><strong>QUANDO?</strong></h5>
-					<p><b>Início: a ser divulgado</b></p>
-					<p><b>Fim: a ser divulgado</b></p>
+					<h5 class="t2 pt-2">DATA</h5>
+					<h6>Início: Segunda (09/09) às 20h00</h6>
+					<h6>Fim: Quinta (12/09) às 19h59</h6>
 				</ul>
 			</div>
 
-			<div class="col-md-3">
+			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-users"></i>
-					<h5 class="pt-2"><strong>EQUIPES?</strong></h5>
-					<p><b>Até 4 participantes limitados à formação com mestrado incompleto</b></p>
+					<h5 class="t2 pt-2">EQUIPES</h5>
+					<h6>Até 4 participantes*</h6>
 				</ul>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-clipboard-check"></i>
-					<h5 class="pt-2"><strong>INSCRIÇÕES</strong></h5>
-					<p><b>Será feita através de plataforma própria disponível no GitHub. Todos
-						os participantes deverão ter conta no site.</b></p>
+					<h5 class="t2 pt-2">INSCRIÇÕES</h5>
+					<h6>Através do <a href="https://pombodemandsyour.faith/" target="_blank">link</a></h6>
 				</ul>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-3 mt-2">
 				<ul class="list-unstyled list-inline social text-center">
 					<i class="fas fa-4x fa-trophy"></i>
-					<h5 class="pt-2"><strong>PREMIAÇÃO</strong></h5>
-					<p><b>4 ingressos para o evento <a href="https://www.h2hc.com.br" target="_blank">H2HC</a></b></p>
-
+					<h5 class="t2 pt-2">PREMIAÇÃO</h5>
+					<h6>Ingressos para o evento <a href="https://www.h2hc.com.br" target="_blank">H2HC</a></h6>
 				</ul>
 			</div>
 		</div>
-	</div>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<hr style="background-color:white;">
-				<h4 class="text-center">Descrição:</h4>
-				<h5 style="font-size:17px;" class="text-center"> A competição ocorrerá do dia 11 de setembro de 2018 às 23h59 até dia 13 de setembro de 2018 às 23h59 e terá como formato o Jeopardy-style. Durante a competição as equipes deverão resolver os desafios propostos com a finalidade de obter pontos e também uma melhor classificação. Além dos desafios, haverá flags espalhados durante o evento que também poderão ser utilizados para se obter os pontos. <br><br>
-					Haverá um aquecimento presencial aberto ao público em geral no dia 11 de setembro, que contará com um coffee break opcional pelo valor de R$ 10,00 (e R$ 8,00 para aqueles que compraram o kit da IX SECOMP UFSCar). <br><br>
+
+		<div class="row mt-4">
+			<div class="col-md-12 text-center pb-2">
+				<h4 class="t2 pb-2">Descrição:</h4>
+
+				<h5 class="text-justify pb-2">A SECOMP UFSCar conta com uma competição chamada Capture The Flag (CTF), constituída de
+					desafios que envolvem engenharia reversa, criptografia, computação forense, networking, web hacking
+					e outros temas presentes na área de segurança.
 				</h5>
+				<h5 class="pb-3">
+					A competição ocorrerá do dia 09 de setembro de 2019 às 20h00 até dia 12 de setembro de
+					2019 às 19h59 e terá como formato o Jeopardy-style. Durante a competição as equipes deverão
+					resolver os desafios propostos com a finalidade de obter pontos e também uma melhor
+					classificação. Além dos desafios, haverá flags espalhados durante o evento que também poderão
+					ser utilizados para se obter os pontos.
+				</h5>
+
+				<h5 class="pb-2">
+					<b>Atenção: é expressamente proibido </b>o compartilhamento de flags, ataques à infraestrutura e
+					divulgar write-ups/resoluções antes do término da competição.
+				</h5>
+
+				<h6>*cada competidor pode participar de apenas uma equipe durante toda a competição</h6>
 			</div>
 		</div>
 
+		<div class="text-center">
+			<a href="{{ url_for('static', filename='juridic/edital_ctf.pdf') }}" target="_blank"
+				class="btn btn-primary m-3">
+				<i class="mr-2 fas fa-sign-in-alt"></i>Acesse o edital</a>
+			<a href="https://pombodemandsyour.faith/" target="_blank" class="btn btn-primary m-3">
+				<i class="mr-2 fas fa-sign-in-alt"></i>Inscreva-se!</a>
+		</div>
 	</div>
+</div>
 
-
-</footer>
 <div class="container">
 	<div class="row justify-content-center p-3">
 		<div class="col-md-12 text-center">
@@ -87,5 +135,4 @@
 	</div>
 </div>
 
-	{% endblock %}
-	
+{% endblock %}

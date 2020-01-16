@@ -8,20 +8,33 @@
     opacity: 0;
     top: 0;
     left: 0;
-    background: white;
-}   
+    /* background: white; */
+}
 
 .img-equipe {
     width: 10rem;
     height: 10rem;
-    object-fit: cover; 
+    object-fit: cover;
 }
 
-.card:hover .img-equipe {
+.card {
+    transition: 0.7s;
+    background-color: var(--bg-color);
+    border: solid 1px var(--border-equipe);
+}
+
+.card-info {
+    position: absolute;
+    margin-top: 3%;
+    right: 3%;
+    opacity: 0.2;
+}
+
+.card-dual:hover .img-equipe, .card:hover .card-info {
     display: none;
 }
 
-.card:hover .desc-membro {
+.card-dual:hover .desc-membro {
     -webkit-animation: fadeIn 0.7s;
     -moz-animation: fadeIn 0.7s;
     -o-animation: fadeIn 0.7s;
@@ -81,8 +94,4 @@
     width: 10rem;
     height: 10rem;
     border-radius: 50%;
-}
-
-.bg-diretor {
-    background-color: #000000;
 }

@@ -1,0 +1,197 @@
+{% extends "participantes/sidebar.html" %}
+{% import "wtf.html" as wtf %}
+
+{% block styles %}
+
+{{ super() }}
+
+<link href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css" />
+
+<style>
+  .border-cadastro {
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1rem 2rem 1rem 2rem;
+    margin: 1rem;
+  }
+
+  @media (max-width: 500px) {
+    .border-cadastro {
+      padding: 1rem;
+    }
+  }
+</style>
+
+{% endblock %}
+
+{% block sidebar_content %}
+
+<div class="container pb-2">
+  
+  <div class="col-sm-12 text-center p-2">
+    <h2>Edição de dados</h2>
+  </div>
+
+  <form method="POST" action="{{ url_for('participantes.alterar_usuario') }}" novalidate>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8 border-cadastro">
+        <h4>Usuário</h4>
+        {{ wtf.form_field(form.primeiro_nome) }}
+        {{ wtf.form_field(form.sobrenome) }}
+        {{ wtf.form_field(form.data_nasc) }}
+        {{ wtf.form_field(form.cidade) }}
+        {{ wtf.form_field(form.outra_cidade) }}
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8 border-cadastro">
+        <h4>Acadêmico</h4>
+        {{ wtf.form_field(form.curso) }}
+        {{ wtf.form_field(form.outro_curso) }}
+        {{ wtf.form_field(form.instituicao) }}
+        {{ wtf.form_field(form.outra_instituicao) }}
+      </div>
+    </div>
+
+
+    {% for error in form.recaptcha.errors %}
+    <span class="help-block">{{ error }}</span>
+    {% endfor %}
+
+    <div class="row justify-content-center mb-2">
+      <div class="col-md-8 text-center">
+        {{ wtf.form_field(form.recaptcha) }}
+        <button type="submit" class="btn btn-primary text-white w-75 pb-1">Confirmar</button>
+      </div>
+    </div>
+
+
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+{{ super() }}
+
+<script href="{{url_for('static', filename='js/cadastro.js')}}"></script>
+<script src="{{ url_for('static', filename='jquery/jquery.maskedinput.min.js') }}"></script>
+
+<script>
+  $(document).ready(function ($) {
+    $("label[for='outro_curso']").hide();
+    $("#outro_curso").hide();
+    $("label[for='outra_instituicao']").hide();
+    $("#outra_instituicao").hide();
+    $("label[for='outra_cidade']").hide();
+    $("#outra_cidade").hide();
+    $("#data_nasc").mask("99/99/9999");
+  });
+</script>
+
+<script>
+  $("#continuar").on("click", function () {
+    $("#secao1").css("display", "none");
+    $("#secao2").css("display", "inline");
+    $("#secao1").removeClass("slide-right").addClass("slide-left");
+    $("#secao2").removeClass("slide-right").addClass("slide-left");
+    $("#secondtab").css("background-color", "#1f7a7a");
+    $("#secondtab").css("width", "55%");
+    $("#firsttab").css("background-color", "#bfbfbf");
+    $("#firsttab").css("width", "45%");
+  });
+
+  $("#secondtab").on("click", function () {
+    $("#secao1").css("display", "none");
+    $("#secao2").css("display", "inline");
+    $("#secao1").removeClass("slide-right").addClass("slide-left");
+    $("#secao2").removeClass("slide-right").addClass("slide-left");
+    $("#secondtab").css("background-color", "#1f7a7a");
+    $("#secondtab").css("width", "55%");
+    $("#firsttab").css("background-color", "#bfbfbf");
+    $("#firsttab").css("width", "45%");
+  });
+
+  $("#voltar").on("click", function () {
+    $("#secao1").css("display", "inline");
+    $("#secao2").css("display", "none");
+    $("#secao1").removeClass("slide-left").addClass("slide-right");
+    $("#secao2").removeClass("slide-left").addClass("slide-right");
+    $("#firsttab").css("background-color", "#1f7a7a");
+    $("#firsttab").css("width", "55%");
+    $("#secondtab").css("background-color", "#bfbfbf");
+    $("#secondtab").css("width", "45%");
+  });
+
+  $("#firsttab").on("click", function () {
+    $("#secao1").css("display", "inline");
+    $("#secao2").css("display", "none");
+    $("#secao1").removeClass("slide-left").addClass("slide-right");
+    $("#secao2").removeClass("slide-left").addClass("slide-right");
+    $("#firsttab").css("background-color", "#1f7a7a");
+    $("#firsttab").css("width", "55%");
+    $("#secondtab").css("background-color", "#bfbfbf");
+    $("#secondtab").css("width", "45%");
+  });
+</script>
+
+<script>
+
+  function outroCurso() {
+
+    if ($("#curso :selected").text() == "Outro") {
+      $("label[for='outro_curso']").show();
+      $("#outro_curso").show();
+    } else {
+      $("label[for='outro_curso']").hide();
+      $("#outro_curso").hide();
+    }
+  }
+
+  function outraInstituicao() {
+
+    if ($("#instituicao :selected").text() == "Outra") {
+      $("label[for='outra_instituicao']").show();
+      $("#outra_instituicao").show();
+    } else {
+      $("label[for='outra_instituicao']").hide();
+      $("#outra_instituicao").hide();
+    }
+  }
+
+  function outraCidade() {
+
+    if ($("#cidade :selected").text() == "Outra") {
+      $("label[for='outra_cidade']").show();
+      $("#outra_cidade").show();
+    } else {
+      $("label[for='outra_cidade']").hide();
+      $("#outra_cidade").hide();
+    }
+  }
+
+  $("#curso").change(outroCurso);
+  $("#instituicao").change(outraInstituicao);
+  $("#cidade").change(outraCidade);
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var elements = document.getElementsByTagName("INPUT");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].oninvalid = function (e) {
+        e.target.setCustomValidity("");
+        if (!e.target.validity.valid) {
+          e.target.setCustomValidity("Preencha esse campo");
+        }
+      };
+      elements[i].oninput = function (e) {
+        e.target.setCustomValidity("");
+      };
+    }
+  });
+</script>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}

@@ -1,17 +1,49 @@
 // Variables
 $secomp1: #008cb5 !default; // little blue
 $secomp2: #00cfa1 !default; // light aqua
-$secomp3: #007b5e !default; // dark aqua
+$secomp3: #00242f !default; // dark blue
+$secomp4: #ff305e !default; // secomp2 inverted
 $white: #fff !default;
 $white70: rgba(255, 255, 255, 0.7) !default;
 $dark-gray: #212121 !default;
 
-$secomp-colors: () !default;
-$secomp-colors: map-merge(
-	(
-	"secomp1": $secomp1,
-	"secomp2": $secomp2,
-	"secomp3": $secomp3
-	),
-	$secomp-colors
-);
+:root {
+  --primary-color: #008cb5;
+  --secondary-color: #00cfa1;
+  --nav-color: #fff;
+  --card-color: #fff;
+  --sidebar-color: #f5f5f5;
+  --sidebar-border: #d4d4d4;
+  --sidebar-hover-color: #dfdfdf;
+  --font-color: #424242;
+  --font-gray: #444444;
+  --bg-color: #fff;
+  --bg-dark: #001014;
+  --bg-sobre: #001014;
+  --hover-color: #ddd;
+  --footer-color: #001014;
+  --selected-color: #00cfa1;
+  --border-color: #ced2d6;
+  --border-equipe: #00000020;
+}
+
+[data-theme="dark"] {
+  --primary-color: #00465c;
+  --secondary-color: #ff305d;
+  --nav-color: #ffffff11;
+  --card-color: #191e1f;
+  --sidebar-color: #090c0e;
+  --sidebar-border: #00465c;
+  --sidebar-hover-color: #202020;
+  --hover-font-color: #ffffff;
+  --font-color: #e1e1ff;
+  --font-gray: #c0c0c0;
+  --bg-color: #0d1314;
+  --bg-dark: #152125;
+  --bg-sobre: #00000066;
+  --hover-color: #333;
+  --footer-color: #00080a;
+  --selected-color: #ff205b;
+  --border-color: #646a70;
+  --border-equipe: #ffffff44;
+}

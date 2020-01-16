@@ -1,391 +1,139 @@
 {% extends "base.html" %}
 
+{% block styles %}
+
+{{ super() }}
+<link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='swiper/swiper.min.css') }}" rel="stylesheet" type="text/css" />
+
+<style>
+	#car1 {
+		background-image: url("{{ url_for('static', filename='images/bg.jpeg') }}");
+	}
+</style>
+{% endblock %}
+
+
 {% block content %}
-<div class="overlay">
-	<img class="opac img-responsive" src="{{url_for('static', filename='images/fundoctf.gif')}}">
-	<div class="text-center overlay-text">
-		<img style="width: 25vw;" class="pb-4" src="{{url_for('static', filename='images/logo-colorida.png')}}">
-		<h1>Bem vindo a X SECOMP!</h1>
-		<h2>Semana da Computação da UFSCar</h2>
-	</div>
-</div>
+<img id="car1" class="background">
+<div class="swiper-container">
+	<div class="swiper-wrapper">
 
-<div class="col-md-12 text-center pt-3 pb-3">
-	<div class="row counter">
-		<div class="col">
-			<h1 id="contador-dias">00</h1>
-			<h4>dias</h4>
-		</div>
-		<div class="col">
-			<h1 id="contador-horas">00</h1>
-			<h4>horas</h4>
-		</div>
-		<div class="col">
-			<h1 id="contador-min">00</h1>
-			<h4>min</h4>
-		</div>
-		<div class="col">
-			<h1 id="contador-seg">00</h1>
-			<h4>seg</h4>
-		</div>
-	</div>
-</div>
-
-<div class="col-md-12 bg-dark text-white pt-3 pb-3">
-	<div class="row justify-content-center text-center">
-		<h1 style="font-weight: 600;">O QUE ROLA NA SECOMP?</h1>
-	</div>
-	<div class="row justify-content-center align-items-center text-center">
-		<div class="col-md-4">
-			<i class="fas fa-microphone fa-4x pt-2"></i>
-			<h4>Palestras</h4>
-			<i class="fas fa-laptop-code fa-4x pt-2"></i>
-			<h4>Minicursos</h4>
-		</div>
-		<div class="col-md-4">
-			<i class="fas fa-code-branch fa-4x pt-2"></i>
-			<h4>Workshops</h4>
-			<i class="fas fa-comments fa-4x pt-2"></i>
-			<h4>Mesas-redondas</h4>
-		</div>
-		<div class="col-md-4">
-			<i class="fab fa-font-awesome-flag fa-4x pt-2"></i>
-			<h4>CTF</h4>
-			<i class="fas fa-terminal fa-4x pt-2"></i>
-			<h4>Desafio</h4>
-		</div>
-	</div>
-	<div class="row justify-content-center align-items-center text-center">
-		<div class="col-md-12">
-			<i class="fas fa-ellipsis-h fa-4x pt-2"></i>
-		</div>
-		<h4>E muito mais</h4>
-	</div>
-</div>
-
-<div class="container pt-4">
-	<div class="row">
-		<div class="col-md-7">
-			<div id="video" class="embed-responsive embed-responsive-21by9 ">
-				<video width="100%" height="100%" controls>
-					<source src="{{ url_for('static', filename='media/IX SECOMP UFSCar - Teaser.mp4') }}"
-						type="video/mp4" />
-				</video>
-			</div>
-			<h6 style="margin-top: 15px;"> Teaser - IX SECOMP</h6>
-		</div>
-
-		<div class="col-md-5 align-self-center">
-			{# Texto adicional para testar espaçamento #}
-
-			<h2 class="text-center pb-3"> Um pouco sobre a SECOMP</h2>
-			<p class="text-justify">
-				A Semana Acadêmica da Computação da Universidade Federal de São Carlos surgiu da necessidade de se
-				trazer
-				assuntos que fossem de interesse tanto da comunidade acadêmica quanto de entusiastas.
-
-				Desde a sua primeira edição, a SECOMP trabalha para que os assuntos sejam os mais atuais possíveis e que
-				sejam
-				transmitidos da maneira mais dinâmica tentando aproximar o participante de áreas que vão da academia até
-				o
-				mercado de trabalho através de minicursos, workshops, palestras técnicas, empresariais, mesas redondas,
-				feira de
-				recrutamento e muitos outros conteúdos que foram pensados ao longo do tempo em busca de um evento cada
-				vez
-				melhor.
-
-				Em prol disso, os estudos são constantes para que o modelo de evento sempre melhore e se torne
-				referência,
-				trazendo cada vez mais experiências únicas a quem nos acompanha e encurtando as relações para que todos
-				os
-				segmentos de público sejam beneficiados.
-			</p>
-		</div>
-	</div>
-</div>
-
-
-<!-- Portfolio Section -->
-<section id="portfolio">
-	<div class="container-fluid p-0">
-		<div class="row no-gutters">
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-ministrantes">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-
-						<h3 style="font-weight: 600;"> Ministrantes </h3>
-
+		<div class="swiper-slide">
+			<div class="col-md-12">
+				<div class="row align-items-center justify-content-center text-center text-white bg-fade pb-2 m-1">
+					<div class="col-md-12 mb-1">
+						<img class="logoL" src="{{ url_for('static', filename='images/logo-branca.png') }}">
+						<img class="logoP" src="{{ url_for('static', filename='images/logo-colorida.png') }}">
 					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-palestras">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-						<h3 style="font-weight: 600;"> Palestras </h3>
+					<div class="col-md-12 pb-5 pt-2">
+						<h4 id="texto1">Para saber o que vai rolar na SECOMP
+						<br>acesse nosso
+						<a href="{{ url_for('views.cronograma') }}"><b>cronograma</b></a></h4>
 					</div>
-				</a>
+				</div>
 			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-minicursos">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-						<h3 style="font-weight: 600;"> Minicursos </h3>
+		</div>
+
+		<div class="swiper-slide">
+
+			<div class="container text-center">
+				<div class="row justify-content-center align-items-center text-white bg-fade m-1">
+					<div class="col-md-12">
+						<h1 class="mt-5 mb-5">Baixe nosso aplicativo!</h1>
+
+						<a href="https://play.google.com/store/apps/details?id=br.com.secompufscar.app" target="_blank"
+							style="font-size: 4vh; padding: 2vh; text-decoration: none; background-color: #008cb5ee; color: #fff; border-radius: 1rem;">
+							Playstore</a>
+						<h5 class="mt-5 mb-5">Disponível apenas para Android</h5>
 					</div>
-				</a>
+				</div>
 			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-workshops">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-						<h3 style="font-weight: 600;"> Workshops </h3>
+		</div>
+
+		<div class="swiper-slide">
+
+			<div class="container-fluid text-center">
+				<div class="row justify-content-center align-items-center text-white bg-fade m-1">
+					<div class="col-md-12">
+						<h1 style="padding-top: 6vh; padding-bottom: 9vh; font-size: 6vh;">Quer participar?</h1>
+						<a href="{{ url_for('participantes.cadastro') }}"
+							style="font-size: 4vh; padding: 2vh; text-decoration: none; background-color: #008cb5ee; color: #fff; border-radius: 1rem;">
+							Faça seu cadastro!</a>
+						<h5 style="padding-top: 5vh; padding-bottom: 3vh;">Infelizmente, as inscrições estão encerradas.
+							<br>Porém, é possível realizar o cadastro no site e inscrever-se presencialmente, durante o
+							credenciamento do evento
+							(:</h5>
+						<h5 style="padding-top: 3vh; padding-bottom: 3vh;">O evento é gratuito e aberto para toda a
+							comunidade!</h5>
 					</div>
-				</a>
+				</div>
 			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-capture">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption">
-						<h3 style="font-weight: 600;"> Capture The Flag </h3>
+		</div>
+
+		<div class="swiper-slide">
+
+			<div class="container text-center">
+				<div class="row justify-content-center align-items-center text-white bg-fade m-1">
+					<div class="col-md-12">
+						<h1 class="mt-5 mb-5">Conheça nossas parcerias!</h1>
+
+						<a href="{{ url_for('views.patrocinadores') }}"
+							style="font-size: 4vh; padding: 2vh; text-decoration: none; background-color: #008cb5ee; color: #fff; border-radius: 1rem;">
+							Patrocinadores</a>
+
+						<h5 class="mt-5 mb-5">Sem elas, nosso evento não seria o mesmo.</h5>
 					</div>
-				</a>
+				</div>
 			</div>
-			<div class="col-lg-4 col-sm-6">
-				<a class="portfolio-box" href="_" data-toggle="modal" data-target="#modal-mesa">
-					<img class="img-fluid" src="{{url_for('static', filename='images/car1.jpg')}}" alt="">
-					<div class="portfolio-box-caption p-3">
-						<h3 style="font-weight: 600;"> Mesas Redondas </h3>
+		</div>
+
+		<div class="swiper-slide">
+
+			<div class="container text-center">
+				<div class="row justify-content-center align-items-center text-white bg-fade m-1">
+					<div class="col-md-12">
+						<h1 class="mt-5">Confira a pontuação</h1>
+						<h3 class="mb-5">dos 10 primeiros colocados</h3>
+
+						<a href="{{ url_for('views.pontuacao_compcases') }}"
+							style="font-size: 4vh; padding: 2vh; text-decoration: none; background-color: #008cb5ee; color: #fff; border-radius: 1rem;">
+							COMPCases</a>
+						<h5 class="mt-5 mb-5">Para verificar sua pontuação, basta fazer login e acessar a mesma página!
+						</h5>
 					</div>
-				</a>
+				</div>
 			</div>
 		</div>
+
 	</div>
-</section>
-
-<!-- MODAL DO MINISTRANTES-->
-<div class="modal fade" id="modal-ministrantes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Ministrantes</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO PALESTRAS-->
-<div class="modal fade" id="modal-palestras" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Palestras</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO MINICURSOS-->
-<div class="modal fade" id="modal-minicursos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Minicursos</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO WORKSHOPS-->
-<div class="modal fade" id="modal-workshops" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Workshops</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO CAPTURE THE FLAG-->
-<div class="modal fade" id="modal-capture" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Capture The Flag</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL DO MESA REDONDA-->
-<div class="modal fade" id="modal-mesa" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header" style="background-color: #343A40; color: white;">
-				<h5 class="modal-title" id="exampleModalLabel">Mesa Redonda</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true" style="color: white">&times;</span>
-				</button>
-			</div>
-			<div class="modal_portifolio">
-				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-				industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-				and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-				leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-				with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-				publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<div class="navbar bg-dark small pt-5 text-white">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-4">
-				<ul class="list-unstyled list-inline social text-center">
-					<i class="fas fa-4x fa-calendar-alt"></i>
-					<h5 class="pt-4"><strong>QUANDO?</strong></h5>
-					<p><b>09 a 13 de Setembro</b></p>
-				</ul>
-			</div>
-
-			<div class="col-md-4">
-				<ul class="list-unstyled list-inline social text-center">
-					<i class="fas fa-4x fa-map-marker-alt"></i>
-					<h5 class="pt-4"><strong>ONDE?</strong></h5>
-					<p><b>Anfiteatro Bento Prado Jr. e Departamento de Computação, na Universidade Federal de São
-							Carlos</b></p>
-				</ul>
-			</div>
-			<div class="col-md-4">
-				<ul class="list-unstyled list-inline social text-center">
-					<i class="fas fa-4x fa-question-circle"></i>
-					<h5 class="pt-4"><strong>DÚVIDAS?</strong></h5>
-					<p><b>Consulte mais informações no <a href="/2018/faq">FAQ</a> e, se necessário, entre em
-							contato
-							com a organização</b></p>
-				</ul>
-			</div>
-		</div>
-	</div>
-
-</div>
-<div class="container text-center mt-4 mb-4">
-	<div class="row justify-content-center">
-		<div class="col-md-12 text-center">
-			<h3>Realização</h3>
-		</div>
-		<div class="col-sm-3 align-self-center">
-			<img class="img-fluid" src="{{url_for('static', filename='images/logo-secomp.png')}}">
-		</div>
-		<div class="col-sm-3 align-self-center">
-			<img class="img-fluid" src="{{url_for('static', filename='images/logo-dc.png')}}">
-		</div>
-		<div class="col-sm-3 align-self-center">
-			<img class="img-fluid" src="{{url_for('static', filename='images/logo-ufscar.png')}}">
-		</div>
-	</div>
+	<div class="swiper-pagination"></div>
 </div>
 
 {% endblock %}
 
+{% block footer %}{% endblock %}
 
 {% block scripts %}
 
-<script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='popper/umd/popper.min.js') }}"></script>
-<script src="{{ url_for('static', filename='bs/js/bootstrap.min.js') }}"></script>
+{{ super() }}
+
+<script src="{{ url_for('static', filename='swiper/swiper.min.js') }}"></script>
 
 <script>
-	var countDownDate = new Date("Sep 09, 2019 08:00:00").getTime();
-	// Update the count down every 1 second
-	var x = setInterval(function () {
-		// Get todays date and time
-		var now = new Date().getTime();
-		// Find the distance between now and the count down date
-		var distance = countDownDate - now;
-		// Time calculations for days, hours, minutes and seconds
-		var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-		// Display the result in the element with id="demo"
-		document.getElementById("contador-dias").innerHTML = days;
-		document.getElementById("contador-horas").innerHTML = hours;
-		document.getElementById("contador-min").innerHTML = minutes;
-		document.getElementById("contador-seg").innerHTML = seconds;
-		// If the count down is finished, write some text 
-		if (distance < 0) {
-			clearInterval(x);
-			document.getElementById("contador").innerHTML = "Evento já realizado :P";
-		}
-	}, 1000);
-	$(document).ready(function () {
-		$('#content').css("padding-top", $('#navTop').height() * 1.2);
+
+	var body = document.body;
+	var slider = new Swiper('.swiper-container', {
+		pagination: '.swiper-pagination',
+		direction: 'horizontal',
+		loop: true,
+		slidesPerView: 1,
+		paginationClickable: true,
+		mousewheelControl: true,
+		onSlideChangeStart: function (swiper) {
+			var currentSlide = swiper.slides[swiper.activeIndex];
+		},
 	});
+
 </script>
 {% endblock %}
