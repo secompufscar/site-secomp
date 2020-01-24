@@ -12,7 +12,8 @@
             {% for membro in info_equipe[diretoria] %}
                 <div class="pb-3 pl-2 pr-2">
                     <div class="card text-center" style="width: 18rem; height: 17rem;">
-                        {% if info_equipe[diretoria][membro]['bio'] is not sameas "" %}
+                        {% if info_equipe[diretoria][membro]['bio'] is not sameas None and 
+                              info_equipe[diretoria][membro]['bio'] is not sameas "" %}
                             <i class="fas fa-info-circle fa-lg card-info"></i>
                             <div class="card-body card-dual">
                         {% else %}
