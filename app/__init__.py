@@ -19,7 +19,7 @@ def create_app(config=None):
     }
 
     if config not in configs:
-        config = getenv("FLASK_CONFIGURATION", "development")
+        config = getenv("FLASK_ENVIRONMENT", "development")
 
     config = 'app.config' + configs[config]
 

@@ -16,5 +16,5 @@ Antes de rodar o servidor, instalar as seguintes dependências:
 
 ## Configuração
 Antes de iniciar o servidor é necessário configurar as variáveis de ambiente a seguir:
-- `FLASK_CONFIGURATION` nome do arquivo de configuração `.py` usado em `app/config/`
-- `FLASK_APP` path para o construtor do objeto `Flask()`, setar para `app:create_app()`
+- `FLASK_ENVIRONMENT` nome do arquivo de configuração `.py` usado em `app/config/`
+- `FLASK_APP` path para o construtor do objeto `Flask()`, setar para `run:server`
