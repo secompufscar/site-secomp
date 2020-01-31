@@ -24,12 +24,12 @@ def populate():
                           data_hora_inicio='2019-09-09 08:30:00',
                           data_hora_fim='2019-09-13 18:30:00',
                           inicio_inscricoes_evento='2019-02-10 12:00:00',
-                          fim_inscricoes_evento='2019-08-10 23:59:00'),
+                          fim_inscricoes_evento='2019-08-10 23:59:00',
                           abertura_minicursos_1_etapa='2019-08-10 23:59:00',
                           fechamento_minicursos_1_etapa='2019-08-10 23:59:00',
                           abertura_minicursos_2_etapa='2019-08-10 23:59:00',
                           fechamento_minicursos_2_etapa='2019-08-10 23:59:00',
-                          preco_kit=40.00)
+                          preco_kit=40.00))
 
     id = 1
     for curso in valores['cursos']:

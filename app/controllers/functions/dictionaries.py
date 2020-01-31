@@ -211,7 +211,11 @@ def get_equipe(database=True):
                 for diretoria in diretorias:
                     info_equipe[diretoria.nome] = {}
                     for membro in diretoria.membros:
-                        info_equipe[diretoria.nome][membro.nome] = {'img': membro.foto}
+                        nome_membro = membro.usuario.primeiro_nome + " " + membro.usuario.sobrenome
+                        info_equipe[diretoria.nome][nome_membro] = {
+                            'img': membro.foto,
+                            'bio': membro.descricao
+                        }
         else:
             import json
             import os.path as op
