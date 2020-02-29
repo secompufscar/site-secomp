@@ -40,15 +40,6 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest
-        echo -e "[pytest]\npython_files = *.py" >> pytest.ini
-        echo "#!/bin/sh" >> startPytest.sh
-        echo "pytest \"\$@\"" >> startPytest.sh
-        echo "ret=\$?" >> startPytest.sh
-        echo "if [ \"\$ret\" = 5 ]; then" >> startPytest.sh
-        echo "  echo \"No tests collected.  Exiting with 0 (instead of 5).\"" >> startPytest.sh
-        echo "  exit 0" >> startPytest.sh
-        echo "fi" >> startPytest.sh
-        echo "exit \"\$ret\"" >> startPytest.sh
         chmod 700 startPytest.sh
         ./startPytest.sh         
 
