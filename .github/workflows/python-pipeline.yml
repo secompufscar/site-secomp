@@ -20,9 +20,9 @@ jobs:
         pip install -r requirements.txt
     
     - name: Test with Black
-      uses: jpetrucciani/black-check@19.10b0
-      with:
-          path: '.'
+      run: |
+        pip install black
+        black --diff --line-length=127 .
           
     - name: Test with flake8
       run: |
@@ -35,7 +35,7 @@ jobs:
     - name: Test with pydocstyle
       run: |
         pip install pydocstyle
-        pydocstyle -e -s # Mostra erros(e) e sources(s) 
+        pydocstyle . -e -s # Mostra erros(e) e sources(s) 
     
     - name: Test with pytest
       run: |
