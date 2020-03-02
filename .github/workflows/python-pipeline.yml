@@ -40,6 +40,5 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest
-        chmod 700 startPytest.sh
-        ./startPytest.sh         
+        ./start-pytest.sh         
 
