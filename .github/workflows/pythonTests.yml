@@ -23,7 +23,7 @@ jobs:
     - name: Test with Black
       run: |
         pip install black
-        black --diff --line-length=127 .
+        black --diff --check --line-length=127 .
           
     - name: Test with flake8
       run: |
