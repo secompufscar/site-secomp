@@ -1,6 +1,7 @@
 from app.models.models import *
 from app.controllers.functions.email import *
 
+
 def enviar():
     usuarios = db.session.query(Usuario).all()
     for usuario in usuarios:

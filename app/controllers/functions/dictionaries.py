@@ -9,7 +9,6 @@ from app.controllers.functions.helpers import get_score_evento, get_id_evento_at
 from app.models.models import *
 
 
-
 def get_dicionario_usuario(usuario):
     try:
         data = str(usuario.data_nascimento).split("-")
@@ -29,12 +28,11 @@ def get_dicionario_usuario(usuario):
 
 
 def get_dicionario_eventos_participante(base_url):
-    '''Função usada na dashboard do usuário'''
+    """Função usada na dashboard do usuário"""
     try:
         info_eventos = []
         agora = datetime.now()
-        participantes = db.session.query(Participante).filter_by(
-            id_usuario=current_user.id).all()
+        participantes = db.session.query(Participante).filter_by(id_usuario=current_user.id).all()
         ja_participa = False
         for participante in participantes:
             evento = participante.evento
@@ -44,13 +42,12 @@ def get_dicionario_eventos_participante(base_url):
                     "edicao": evento.edicao,
                     "participantes": len(evento.participantes),
                     "url": base_url + "/evento/" + str(evento.edicao),
-                    "inscricao": 0
+                    "inscricao": 0,
                 }
                 info_eventos.append(info)
             else:
                 ja_participa = True
-        evento = db.session.query(Evento).filter_by(
-            edicao=EDICAO_ATUAL).first()
+        evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
         if ja_participa == False:
             if agora >= evento.inicio_inscricoes_evento and agora < evento.fim_inscricoes_evento:
                 inscricao = 1
@@ -63,7 +60,7 @@ def get_dicionario_eventos_participante(base_url):
             "edicao": evento.edicao,
             "participantes": len(evento.participantes),
             "url": base_url + "/evento/" + str(evento.edicao),
-            "inscricao": inscricao
+            "inscricao": inscricao,
         }
         info_eventos.append(info)
         return info_eventos
@@ -73,17 +70,19 @@ def get_dicionario_eventos_participante(base_url):
 
 
 def get_dicionario_info_evento(edicao):
-    '''Função usada na página de informações de um determinado evento'''
+    """Função usada na página de informações de um determinado evento"""
     try:
         evento = db.session.query(Evento).filter_by(edicao=edicao).first()
-        participante = db.session.query(Participante).filter_by(
-            id_evento=evento.id, id_usuario=current_user.id).first()
+        participante = db.session.query(Participante).filter_by(id_evento=evento.id, id_usuario=current_user.id).first()
         presencas = participante.presencas
         atividades = []
         for presenca in presencas:
             atividades.append(presenca.atividades.titulo)
-        camisetas = db.session.query(Camiseta).filter(Camiseta.pagamento.efetuado == True,
-                                                      Camiseta.pagamento.id_participante == participante.id).all()
+        camisetas = (
+            db.session.query(Camiseta)
+            .filter(Camiseta.pagamento.efetuado == True, Camiseta.pagamento.id_participante == participante.id)
+            .all()
+        )
         tamanhos = []
         for camiseta in camisetas:
             tamanhos.append(camiseta.tamanho)
@@ -93,8 +92,8 @@ def get_dicionario_info_evento(edicao):
             "presencas": atividades,
             "kit_pago": kit_pago(participante),
             "camisetas": tamanhos,
-                "opcao_coffee": participante.opcao_coffee,
-                "score_geral": get_score_evento(edicao)
+            "opcao_coffee": participante.opcao_coffee,
+            "score_geral": get_score_evento(edicao),
         }
         return info
     except SQLAlchemyError:
@@ -112,7 +111,7 @@ def get_patrocinadores_ativos():
                 "cota": p.cota.nome,
                 "site": p.link_website,
                 "ordem_site": p.ordem_site,
-                "logo": p.logo
+                "logo": p.logo,
             }
             info.append(aux)
         return info
@@ -142,7 +141,7 @@ def get_atividades(edicao):
                 "descricao": a.descricao,
                 "area": a.areas.nome,
                 "observacoes": a.observacoes,
-                "ministrantes": ministrantes
+                "ministrantes": ministrantes,
             }
             ativ_json.append(info)
         return ativ_json
@@ -170,29 +169,42 @@ def get_url_tipo(tipo):
 
 def get_urls_conteudo(url_root):
     try:
-        atividades = db.session.query(Atividade).join(TipoAtividade).filter(Atividade.id_evento==get_id_evento_atual(), TipoAtividade.nome != "Outro").all()
+        atividades = (
+            db.session.query(Atividade)
+            .join(TipoAtividade)
+            .filter(Atividade.id_evento == get_id_evento_atual(), TipoAtividade.nome != "Outro")
+            .all()
+        )
         info_urls = []
-        
+
         for atividade in atividades:
             titulo = atividade.titulo
             emails = []
-            if atividade.titulo is None or atividade.titulo == '':
+            if atividade.titulo is None or atividade.titulo == "":
                 titulo = "-"
-                #emails = []
+                # emails = []
             for ministrante in atividade.ministrantes:
-                relacao = db.session.query(RelacaoAtividadeMinistrante).filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id).first()
+                relacao = (
+                    db.session.query(RelacaoAtividadeMinistrante)
+                    .filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id)
+                    .first()
+                )
                 if relacao.confirmado == True:
                     confirmado = True
                 else:
                     confirmado = False
-                emails.append({"email": ministrante.usuario.email, "confirmado": confirmado })
+                emails.append({"email": ministrante.usuario.email, "confirmado": confirmado})
                 info = {
-                        "id" : atividade.id,
-                        "tipo" : atividade.tipo.nome,
-                        "titulo_atividade": titulo,
-                        "codigo_url" : atividade.url_codigo,
-                        "url": str(url_root) + 'area-conteudo/cadastro-atividade/' + str(get_url_tipo(atividade.tipo.nome)) + '/' + str(atividade.url_codigo),
-                        "emails": emails
+                    "id": atividade.id,
+                    "tipo": atividade.tipo.nome,
+                    "titulo_atividade": titulo,
+                    "codigo_url": atividade.url_codigo,
+                    "url": str(url_root)
+                    + "area-conteudo/cadastro-atividade/"
+                    + str(get_url_tipo(atividade.tipo.nome))
+                    + "/"
+                    + str(atividade.url_codigo),
+                    "emails": emails,
                 }
             if info not in info_urls:
                 info_urls.append(info)
@@ -212,15 +224,13 @@ def get_equipe(database=True):
                     info_equipe[diretoria.nome] = {}
                     for membro in diretoria.membros:
                         nome_membro = membro.usuario.primeiro_nome + " " + membro.usuario.sobrenome
-                        info_equipe[diretoria.nome][nome_membro] = {
-                            'img': membro.foto,
-                            'bio': membro.descricao
-                        }
+                        info_equipe[diretoria.nome][nome_membro] = {"img": membro.foto, "bio": membro.descricao}
         else:
             import json
             import os.path as op
-            filename = op.join(current_app.root_path, 'config/membros_org.json')
-            with open(filename, 'r') as info_file:
+
+            filename = op.join(current_app.root_path, "config/membros_org.json")
+            with open(filename, "r") as info_file:
                 info_equipe = json.load(info_file)
         return info_equipe
     except SQLAlchemyError:
@@ -230,19 +240,68 @@ def get_equipe(database=True):
 
 def get_cronograma():
     try:
-        segunda = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-09 00:00:00', Atividade.data_hora_fim < '2019-09-09 23:59:00' , Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
-        terca = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-10 00:00:00', Atividade.data_hora_fim < '2019-09-10 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
-        quarta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-11 00:00:00', Atividade.data_hora_fim < '2019-09-11 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
-        quinta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-12 00:00:00', Atividade.data_hora_fim < '2019-09-12 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
-        sexta = db.session.query(Atividade).filter(Atividade.data_hora_inicio > '2019-09-13 00:00:00', Atividade.data_hora_fim < '2019-09-13 23:59:00', Atividade.id_evento==get_id_evento_atual(), Atividade.titulo!=None, Atividade.ativo==True).order_by(Atividade.data_hora_inicio).all()
+        segunda = (
+            db.session.query(Atividade)
+            .filter(
+                Atividade.data_hora_inicio > "2019-09-09 00:00:00",
+                Atividade.data_hora_fim < "2019-09-09 23:59:00",
+                Atividade.id_evento == get_id_evento_atual(),
+                Atividade.titulo != None,
+                Atividade.ativo == True,
+            )
+            .order_by(Atividade.data_hora_inicio)
+            .all()
+        )
+        terca = (
+            db.session.query(Atividade)
+            .filter(
+                Atividade.data_hora_inicio > "2019-09-10 00:00:00",
+                Atividade.data_hora_fim < "2019-09-10 23:59:00",
+                Atividade.id_evento == get_id_evento_atual(),
+                Atividade.titulo != None,
+                Atividade.ativo == True,
+            )
+            .order_by(Atividade.data_hora_inicio)
+            .all()
+        )
+        quarta = (
+            db.session.query(Atividade)
+            .filter(
+                Atividade.data_hora_inicio > "2019-09-11 00:00:00",
+                Atividade.data_hora_fim < "2019-09-11 23:59:00",
+                Atividade.id_evento == get_id_evento_atual(),
+                Atividade.titulo != None,
+                Atividade.ativo == True,
+            )
+            .order_by(Atividade.data_hora_inicio)
+            .all()
+        )
+        quinta = (
+            db.session.query(Atividade)
+            .filter(
+                Atividade.data_hora_inicio > "2019-09-12 00:00:00",
+                Atividade.data_hora_fim < "2019-09-12 23:59:00",
+                Atividade.id_evento == get_id_evento_atual(),
+                Atividade.titulo != None,
+                Atividade.ativo == True,
+            )
+            .order_by(Atividade.data_hora_inicio)
+            .all()
+        )
+        sexta = (
+            db.session.query(Atividade)
+            .filter(
+                Atividade.data_hora_inicio > "2019-09-13 00:00:00",
+                Atividade.data_hora_fim < "2019-09-13 23:59:00",
+                Atividade.id_evento == get_id_evento_atual(),
+                Atividade.titulo != None,
+                Atividade.ativo == True,
+            )
+            .order_by(Atividade.data_hora_inicio)
+            .all()
+        )
 
-        return {
-            "SEG" : segunda,
-            "TER": terca,
-            "QUA": quarta,
-            "QUI": quinta,
-            "SEX": sexta
-        }
+        return {"SEG": segunda, "TER": terca, "QUA": quarta, "QUI": quinta, "SEX": sexta}
     except SQLAlchemyError:
         db.session.rollback()
         return "Erro"
