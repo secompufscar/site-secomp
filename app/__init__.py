@@ -23,10 +23,10 @@ def create_app(config=None):
     app = Flask(__name__)
     app.config.from_object(config)
 
-    import sentry_sdk
-    from sentry_sdk.integrations.flask import FlaskIntegration
+    # import sentry_sdk
+    # from sentry_sdk.integrations.flask import FlaskIntegration
 
-    sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
+    # sentry_sdk.init(dsn=app.config["SENTRY_DSN"], integrations=[FlaskIntegration()])
 
     Bootstrap(app)
     QRCode(app)
@@ -37,22 +37,22 @@ def create_app(config=None):
     app.app_context().push()
     db.init_app(app)
 
-    from app.controllers.forms.forms import LoginForm
+    # from app.controllers.forms.forms import LoginForm
 
-    @app.errorhandler(400)
-    def bad_request(error):
-        form_login = LoginForm(request.form)
-        return render_template("400.html", form_login=form_login), 400
+    # @app.errorhandler(400)
+    # def bad_request(error):
+    #     form_login = LoginForm(request.form)
+    #     return render_template("400.html", form_login=form_login), 400
 
-    @app.errorhandler(404)
-    def page_not_found(error):
-        form_login = LoginForm(request.form)
-        return render_template("404.html", form_login=form_login), 404
+    # @app.errorhandler(404)
+    # def page_not_found(error):
+    #     form_login = LoginForm(request.form)
+    #     return render_template("404.html", form_login=form_login), 404
 
-    @app.errorhandler(500)
-    def internal_server_error(error):
-        form_login = LoginForm(request.form)
-        return render_template("500.html", form_login=form_login), 500
+    # @app.errorhandler(500)
+    # def internal_server_error(error):
+    #     form_login = LoginForm(request.form)
+    #     return render_template("500.html", form_login=form_login), 500
 
     migrate = Migrate(app, db)
 
@@ -76,17 +76,17 @@ def create_app(config=None):
             db.drop_all()
             db.session.commit()
 
-    from app.controllers.functions.email import mail
+    # from app.controllers.functions.email import mail
 
-    mail.init_app(app)
+    # mail.init_app(app)
 
-    from app.controllers.routes import admin, gerenciar, participantes, views, conteudo, api
+    from app.controllers.routes import admin#, gerenciar, participantes, views, conteudo, api
 
-    app.register_blueprint(gerenciar.gerenciar)
-    app.register_blueprint(participantes.participantes)
-    app.register_blueprint(views.views)
-    app.register_blueprint(conteudo.conteudo)
-    app.register_blueprint(api.api)
+    # app.register_blueprint(gerenciar.gerenciar)
+    # app.register_blueprint(participantes.participantes)
+    # app.register_blueprint(views.views)
+    # app.register_blueprint(conteudo.conteudo)
+    # app.register_blueprint(api.api)
 
     upload_path = path.join(path.dirname(__file__), "static")
     adm = admin.init_app(app, upload_path)

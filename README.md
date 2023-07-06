@@ -1,20 +1,65 @@
-# X SECOMP
+<h1 align="center">
+📄<br>Site Secomp
+</h1>
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b51e0e662bf840bfab9bcacb087cd670)](https://app.codacy.com/app/g4briel.4lves/site-secomp?utm_source=github.com&utm_medium=referral&utm_content=secompufscar/site-secomp&utm_campaign=Badge_Grade_Settings)
+<p  align="center">
+Site e principal sistema da Secomp
+</p>
 
-> Este é o repositório do código fonte usado no site da [Semana
-> da Computação da UFSCar](https://secompufscar.com.br/).
+---
 
-## Dependências
-Antes de rodar o servidor, instalar as seguintes dependências:
-### Debian Based
-- `sudo apt install mysql-server zlib1g-dev libffi-dev python3-dev python3-venv`
-### Arch Based
-- `sudo pacman -S mariadb zlib libffi`
-### Pip
-- `pip install -r requirements.txt`
+### Requisitos
 
-## Configuração
-Antes de iniciar o servidor é necessário configurar as variáveis de ambiente a seguir:
-- `FLASK_ENVIRONMENT` nome do arquivo de configuração `.py` usado em `app/config/`
-- `FLASK_APP` path para o construtor do objeto `Flask()`, setar para `run:server`
+-   [![git][git-logo]][git-url]
+-   [![mysql][mysql-logo]][mysql-url]
+-   [![python][python-logo]][python-url]
+
+### Como rodar
+
+1. Clone the repositório
+    ```sh
+    git clone https://github.com/secompufscar/site-secomp.git
+    ```
+2. Acesse a pasta clonada
+
+    ```sh
+    cd ./site-secomp
+    ```
+
+3. Instale as dependências
+
+    ```sh
+    pip install -r requirements.txt 
+    ```
+
+3. Crie um arquivo de configurações de desenvolvimento /app/config/development.py
+
+    ```sh
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:password@localhost/secomp"
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_ECHO = False
+    ```
+
+4. Execute o programa
+    ```sh
+    python run.py
+    ```
+
+<div align="center">
+  <br/>
+  <br/>
+  <br/>
+    <div>
+      <h1>SECOMP UFSCAR</h1>
+      <sub>Copyright © 2023 - <a href="https://github.com/secompufsca">secompufscar</sub></a>
+    </div>
+    <br/>
+    <img src="https://avatars.githubusercontent.com/u/26929251?s=48&v=4" width="40" height="40"/>
+</div>
+
+[git-url]: https://git-scm.com/
+[git-logo]: https://img.shields.io/badge/Git-f14e32?style=for-the-badge&logo=git&logoColor=white
+[mysql-url]: https://www.mysql.com/
+[mysql-logo]: https://img.shields.io/badge/Mysql-blue?style=for-the-badge&logo=mysql&logoColor=white
+[python-url]: https://www.python.org/
+[python-logo]: https://img.shields.io/badge/python-000000?style=for-the-badge&logo=python&logoColor=white
