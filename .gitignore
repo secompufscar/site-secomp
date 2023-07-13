@@ -136,3 +136,5 @@ production.py.*
 *.save.*
 uploads/
 
+# dependencias virtual
+gabrielp/
