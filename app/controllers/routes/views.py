@@ -2,12 +2,28 @@ import os
 
 from datetime import datetime
 from passlib.hash import pbkdf2_sha256
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 
-from flask import render_template, request, Blueprint, url_for, redirect, current_app, send_from_directory, abort, flash
-from flask_login import login_required, login_user, logout_user, current_user, confirm_login
+from flask import (
+    render_template,
+    request,
+    Blueprint,
+    url_for,
+    redirect,
+    current_app,
+    send_from_directory,
+    abort,
+    flash,
+)
+from flask_login import (
+    login_required,
+    login_user,
+    logout_user,
+    current_user,
+    confirm_login,
+)
 from flask_limiter import Limiter
-from flask_limiter.util import get_ipaddr
+from flask_limiter.util import get_remote_address
 
 from app.controllers.forms.forms import *
 from app.controllers.forms.options import opcoes_falha
@@ -16,8 +32,13 @@ from app.controllers.functions.helpers import *
 from app.controllers.constants import *
 from app.controllers.functions.dictionaries import *
 
-limiter = Limiter(current_app, key_func=get_ipaddr)
-views = Blueprint("views", __name__, static_folder="static", template_folder="templates")
+limiter = Limiter(
+    get_remote_address,
+    app=current_app,
+)
+views = Blueprint(
+    "views", __name__, static_folder="static", template_folder="templates"
+)
 
 
 @views.route("/", methods=["GET", "POST"])
@@ -50,7 +71,9 @@ def contato_dm():
         email = form.email.data
         mensagem = form.mensagem.data
         enviar_email_dm(nome, email, mensagem)
-        return render_template("views/contato.html", form=form, enviado=True, form_login=form_login)
+        return render_template(
+            "views/contato.html", form=form, enviado=True, form_login=form_login
+        )
     return render_template("views/contato.html", form=form, form_login=form_login)
 
 
@@ -88,7 +111,9 @@ def bug_report():
             for blob in blobs:
                 filename = secure_filename(blob.filename)
                 filename = f'{info["titulo"]}_{filename}'
-                upload_path = os.path.join(current_app.config["UPLOAD_FOLDER"], "reports")
+                upload_path = os.path.join(
+                    current_app.config["UPLOAD_FOLDER"], "reports"
+                )
                 if not os.path.exists(upload_path):
                     os.makedirs(upload_path)
                 abs_path = os.path.join(upload_path, filename)
@@ -97,40 +122,56 @@ def bug_report():
 
         enviar_email_generico(info=info, anexo=anexos)
         flash("Seu report foi enviado!")
-        return render_template("views/bug_report.html", form=form, form_login=form_login)
+        return render_template(
+            "views/bug_report.html", form=form, form_login=form_login
+        )
     return render_template("views/bug_report.html", form=form, form_login=form_login)
 
 
 @views.route("/constr", methods=["GET", "POST"])
 def constr():
     form_login = LoginForm(request.form)
-    return render_template("views/em_constr.html", title="Página em construção", form_login=form_login)
+    return render_template(
+        "views/em_constr.html", title="Página em construção", form_login=form_login
+    )
 
 
 @views.route("/sobre", methods=["GET", "POST"])
 def sobre():
     form_login = LoginForm(request.form)
-    return render_template("views/sobre.html", title="Sobre a Secomp", form_login=form_login)
+    return render_template(
+        "views/sobre.html", title="Sobre a Secomp", form_login=form_login
+    )
 
 
 @views.route("/descontos", methods=["GET", "POST"])
 def descontos():
     form_login = LoginForm(request.form)
-    return render_template("views/descontos.html", title="Descontos", form_login=form_login)
+    return render_template(
+        "views/descontos.html", title="Descontos", form_login=form_login
+    )
 
 
 @views.route("/cronograma", methods=["GET", "POST"])
 def cronograma():
     form_login = LoginForm(request.form)
     return render_template(
-        "views/cronograma.html", title="Cronograma", form_login=form_login, info_cronograma=get_cronograma()
+        "views/cronograma.html",
+        title="Cronograma",
+        form_login=form_login,
+        info_cronograma=get_cronograma(),
     )
 
 
 @views.route("/equipe", methods=["GET", "POST"])
 def equipe():
     form_login = LoginForm(request.form)
-    return render_template("views/equipe.html", title="Equipe", form_login=form_login, info_equipe=get_equipe(database=True))
+    return render_template(
+        "views/equipe.html",
+        title="Equipe",
+        form_login=form_login,
+        info_equipe=get_equipe(database=True),
+    )
 
 
 @views.route("/faq", methods=["GET", "POST"])
@@ -141,7 +182,6 @@ def faq():
 
 @views.route("/ctf", methods=["GET", "POST"])
 def ctf():
-
     form_login = LoginForm(request.form)
     return render_template("views/ctf.html", title="CTF", form_login=form_login)
 
@@ -166,8 +206,14 @@ def login():
     if form.validate_on_submit():
         user = db.session.query(Usuario).filter_by(email=form.email.data).first()
         if user:
-            atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(user)
-            if user.senha is not None and pbkdf2_sha256.verify(form.senha.data, user.senha):
+            (
+                atividade_confirmada,
+                atividade,
+                view_atividade,
+            ) = confirmacao_atividade_ministrante(user)
+            if user.senha is not None and pbkdf2_sha256.verify(
+                form.senha.data, user.senha
+            ):
                 user.autenticado = True
                 user.ultimo_login = datetime.now()
                 db.session.add(user)
@@ -176,7 +222,9 @@ def login():
                 if atividade_confirmada == False:
                     return redirect(url_for("conteudo.dados_hospedagem_transporte"))
                 return redirect(url_for("participantes.dashboard"))
-        return render_template("views/login.html", form_login=form, form=form, erro=True)
+        return render_template(
+            "views/login.html", form_login=form, form=form, erro=True
+        )
     return render_template("views/login.html", form_login=form, form=form)
 
 
@@ -187,14 +235,18 @@ def relogin():
     if form.validate_on_submit():
         user = db.session.query(Usuario).filter_by(email=form.email.data).first()
         if user:
-            if user.senha is not None and pbkdf2_sha256.verify(form.senha.data, user.senha):
+            if user.senha is not None and pbkdf2_sha256.verify(
+                form.senha.data, user.senha
+            ):
                 user.autenticado = True
                 user.ultimo_login = datetime.now()
                 db.session.add(user)
                 db.session.commit()
                 confirm_login()
                 return redirect(url_for("participantes.dashboard"))
-        return render_template("views/login.html", form_login=form, form=form, erro=True)
+        return render_template(
+            "views/login.html", form_login=form, form=form, erro=True
+        )
     return render_template("views/login.html", form_login=form, form=form)
 
 
@@ -224,8 +276,17 @@ def patrocinadores():
     """
 
     form = LoginForm(request.form)
-    patrocinadores = db.session.query(Patrocinador).filter_by(ativo_site=True).order_by(Patrocinador.id_cota)
-    return render_template("views/patrocinadores.html", patrocinadores=patrocinadores, form_login=form, edicao=EDICAO_ATUAL)
+    patrocinadores = (
+        db.session.query(Patrocinador)
+        .filter_by(ativo_site=True)
+        .order_by(Patrocinador.id_cota)
+    )
+    return render_template(
+        "views/patrocinadores.html",
+        patrocinadores=patrocinadores,
+        form_login=form,
+        edicao=EDICAO_ATUAL,
+    )
 
 
 @views.route("/pontuacao", methods=["GET"])
@@ -268,7 +329,9 @@ def pontuacao_compcases_day():
                 participantes[j] = aux"""
     participante_logado = None
     try:
-        participante_logado = db.session.query(Participante).filter_by(usuario=current_user).first()
+        participante_logado = (
+            db.session.query(Participante).filter_by(usuario=current_user).first()
+        )
     except:
         pass
     return render_template(
@@ -307,7 +370,10 @@ def uploads(filename):
     if current_user.is_authenticated:
         participante = (
             db.session.query(Participante)
-            .filter(Participante.id_usuario == current_user.id, Participante.id_evento == get_id_evento_atual())
+            .filter(
+                Participante.id_usuario == current_user.id,
+                Participante.id_evento == get_id_evento_atual(),
+            )
             .first()
         )
         if (

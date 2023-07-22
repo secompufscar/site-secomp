@@ -27,7 +27,7 @@ DEFAULT_MAIL_SENDER = ""
 FLASK_ADMIN_SWATCH = "darkly"
 
 # SQLALCHEMY
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost/secomp"
+SQLALCHEMY_DATABASE_URI = "mariadb+mariadbconnector://root:@localhost/secomp"
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SQLALCHEMY_ECHO = False
 

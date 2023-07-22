@@ -6,7 +6,7 @@ from flask import request, redirect, flash, Blueprint, current_app
 from flask_login import login_required, login_user, fresh_login_required
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from passlib.hash import pbkdf2_sha256
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 
 from app.controllers.forms.forms import *
 from app.controllers.functions.dictionaries import *
@@ -16,13 +16,20 @@ from app.models.models import *
 from sqlalchemy.orm import aliased
 from app.controllers.functions.paypal import *
 from flask_limiter import Limiter
-from flask_limiter.util import get_ipaddr
+from flask_limiter.util import get_remote_address
 
 
-limiter = Limiter(current_app, key_func=get_ipaddr)
+limiter = Limiter(
+    get_remote_address,
+    app=current_app,
+)
 
 participantes = Blueprint(
-    "participantes", __name__, static_folder="static", template_folder="templates", url_prefix="/participantes"
+    "participantes",
+    __name__,
+    static_folder="static",
+    template_folder="templates",
+    url_prefix="/participantes",
 )
 
 
@@ -61,15 +68,25 @@ def cadastro():
             data_cadastro=agora,
             primeiro_nome=form.primeiro_nome.data,
             sobrenome=form.sobrenome.data,
-            id_curso=verifica_outro_escolhido(form.curso, Curso(nome=form.outro_curso.data)),
-            id_instituicao=verifica_outro_escolhido(form.instituicao, Instituicao(nome=form.outra_instituicao.data)),
-            id_cidade=verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data)),
+            id_curso=verifica_outro_escolhido(
+                form.curso, Curso(nome=form.outro_curso.data)
+            ),
+            id_instituicao=verifica_outro_escolhido(
+                form.instituicao, Instituicao(nome=form.outra_instituicao.data)
+            ),
+            id_cidade=verifica_outro_escolhido(
+                form.cidade, Cidade(nome=form.outra_cidade.data)
+            ),
             data_nascimento=form.data_nasc.data,
             token_email=token,
             autenticado=True,
             salt=salt,
         )
-        como_conheceu = ComoConheceu(usuario=usuario, opcao=form.como_conheceu.data, outro=form.outro_como_conheceu.data)
+        como_conheceu = ComoConheceu(
+            usuario=usuario,
+            opcao=form.como_conheceu.data,
+            outro=form.outro_como_conheceu.data,
+        )
         db.session.add(usuario)
         db.session.add(como_conheceu)
         db.session.flush()
@@ -78,7 +95,9 @@ def cadastro():
         login_user(usuario, remember=True)
         return redirect(url_for(".verificar_email"))
 
-    return render_template("participantes/cadastro.html", form=form, form_login=form_login)
+    return render_template(
+        "participantes/cadastro.html", form=form, form_login=form_login
+    )
 
 
 @participantes.route("/verificar-email")
@@ -97,7 +116,11 @@ def verificar_email():
         msg = "Confirme o email de verificação que te enviamos!"
         status = False
     return render_template(
-        "participantes/confirma_email.html", resultado=msg, status=status, ministrante=ministrante, form_login=form_login
+        "participantes/confirma_email.html",
+        resultado=msg,
+        status=status,
+        ministrante=ministrante,
+        form_login=form_login,
     )
 
 
@@ -124,8 +147,17 @@ def reenviar_email():
             db.session.add(usuario)
             db.session.commit()
             enviar_email_confirmacao(usuario, token)
-            return render_template("participantes/email_reenviado.html", form_login=form_login, usuario=usuario)
-        return render_template("participantes/reenviar_email.html", form_login=form_login, usuario=usuario, form=form)
+            return render_template(
+                "participantes/email_reenviado.html",
+                form_login=form_login,
+                usuario=usuario,
+            )
+        return render_template(
+            "participantes/reenviar_email.html",
+            form_login=form_login,
+            usuario=usuario,
+            form=form,
+        )
     else:
         return redirect(url_for("participantes.verificar_email"))
 
@@ -157,7 +189,7 @@ def cadastro_participante():
             return redirect(url_for('.verificar_email'))
     except SQLAlchemyError:
         db.session.rollback()
-        """
+    """
     return redirect(url_for(".dashboard"))
 
 
@@ -169,9 +201,15 @@ def alterar_usuario():
     if form.validate_on_submit() and request.method == "POST":
         usuario.primeiro_nome = form.primeiro_nome.data
         usuario.sobrenome = form.sobrenome.data
-        usuario.id_curso = verifica_outro_escolhido(form.curso, Curso(nome=(form.outro_curso.data)))
-        usuario.id_instituicao = verifica_outro_escolhido(form.instituicao, Instituicao(nome=form.outra_instituicao.data))
-        usuario.id_cidade = verifica_outro_escolhido(form.cidade, Cidade(nome=form.outra_cidade.data))
+        usuario.id_curso = verifica_outro_escolhido(
+            form.curso, Curso(nome=(form.outro_curso.data))
+        )
+        usuario.id_instituicao = verifica_outro_escolhido(
+            form.instituicao, Instituicao(nome=form.outra_instituicao.data)
+        )
+        usuario.id_cidade = verifica_outro_escolhido(
+            form.cidade, Cidade(nome=form.outra_cidade.data)
+        )
         usuario.data_nascimento = form.data_nasc.data
         db.session.flush()
         db.session.commit()
@@ -187,7 +225,9 @@ def alterar_usuario():
             "participantes/alterar_usuario.html",
             usuario=current_user,
             form=form,
-            participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+            participante=db.session.query(Participante)
+            .filter_by(usuario=current_user)
+            .first(),
         )
 
 
@@ -196,9 +236,14 @@ def alterar_usuario():
 @email_verificado_required
 def dashboard():
     if email_confirmado():
-        participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+        participante = (
+            db.session.query(Participante).filter_by(usuario=current_user).first()
+        )
         return render_template(
-            "participantes/dashboard_usuario.html", title="Dashboard", usuario=current_user, participante=participante
+            "participantes/dashboard_usuario.html",
+            title="Dashboard",
+            usuario=current_user,
+            participante=participante,
         )
     else:
         db.session.add(current_user)
@@ -210,11 +255,17 @@ def dashboard():
 @login_required
 @email_verificado_required
 def cadastro_wifi():
-    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    participante = (
+        db.session.query(Participante).filter_by(usuario=current_user).first()
+    )
     if participante:
         form = WifiForm(request.form)
         if form.validate_on_submit():
-            data = {"cpf": form.cpf.data, "nome": form.nome.data, "email": form.email.data}
+            data = {
+                "cpf": form.cpf.data,
+                "nome": form.nome.data,
+                "email": form.email.data,
+            }
             res = cadastrar_wifi_visitante(data)
             if res:
                 flash("Usuário cadastrado com sucesso na rede WIFI-VISITANTE!")
@@ -229,7 +280,9 @@ def cadastro_wifi():
             form=form,
             cadastrado=participante.wifi,
             usuario=current_user,
-            participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+            participante=db.session.query(Participante)
+            .filter_by(usuario=current_user)
+            .first(),
         )
     else:
         flash("Faça sua inscrição na SECOMP para poder se cadastrar no WIFI-VISITANTE!")
@@ -244,7 +297,9 @@ def dados():
         "participantes/dados.html",
         title="Dados Pessoais",
         usuario=usuario,
-        participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+        participante=db.session.query(Participante)
+        .filter_by(usuario=current_user)
+        .first(),
     )
 
 
@@ -252,7 +307,9 @@ def dados():
 @login_required
 def dados_participante():
     usuario = db.session.query(Usuario).filter_by(id=current_user.id).first()
-    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    participante = (
+        db.session.query(Participante).filter_by(usuario=current_user).first()
+    )
     if participante is not None:
         restricao_alimentar = get_nome_restricao(participante.opcao_coffee)
     else:
@@ -313,13 +370,17 @@ def verificacao(token):
 @participantes.route("/reenvio-confirmacao-email")
 def reenvio_confirmacao_email():
     form_login = LoginForm(request.form)
-    return render_template("participantes/reenvio_confirmacao_email.html", form_login=form_login)
+    return render_template(
+        "participantes/reenvio_confirmacao_email.html", form_login=form_login
+    )
 
 
 @participantes.route("/erro-confirmacao-email")
 def erro_confirmacao_email():
     form_login = LoginForm(request.form)
-    return render_template("participantes/erro_confirmacao_email.html", form_login=form_login)
+    return render_template(
+        "participantes/erro_confirmacao_email.html", form_login=form_login
+    )
 
 
 @participantes.route("/inscricao-minicursos")
@@ -328,7 +389,9 @@ def erro_confirmacao_email():
 def inscricao_minicursos():
     agora = datetime.now()
     evento_atual = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
-    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    participante = (
+        db.session.query(Participante).filter_by(usuario=current_user).first()
+    )
     if (
         agora >= evento_atual.abertura_minicursos_1_etapa
         and agora <= evento_atual.fechamento_minicursos_1_etapa
@@ -338,7 +401,9 @@ def inscricao_minicursos():
         tipo_atividade = get_tipos_atividade()
         minicursos = (
             db.session.query(Atividade)
-            .filter_by(tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual())
+            .filter_by(
+                tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual()
+            )
             .filter(Atividade.titulo != None)
         )
         return render_template(
@@ -350,7 +415,10 @@ def inscricao_minicursos():
         )
     else:
         return render_template(
-            "participantes/inscricao_minicursos.html", participante=participante, usuario=current_user, inscricao_liberada=0
+            "participantes/inscricao_minicursos.html",
+            participante=participante,
+            usuario=current_user,
+            inscricao_liberada=0,
         )
 
 
@@ -366,7 +434,9 @@ def inscricao_workshops():
     )
     return render_template(
         "participantes/inscricao_workshops.html",
-        participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+        participante=db.session.query(Participante)
+        .filter_by(usuario=current_user)
+        .first(),
         usuario=current_user,
         workshops=workshops,
     )
@@ -378,8 +448,13 @@ def inscricao_workshops():
 def inscricao_minicursos_com_filtro(filtro):
     agora = datetime.now()
     evento_atual = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
-    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
-    if agora >= evento_atual.abertura_minicursos_1_etapa and agora <= evento_atual.fechamento_minicursos_1_etapa:
+    participante = (
+        db.session.query(Participante).filter_by(usuario=current_user).first()
+    )
+    if (
+        agora >= evento_atual.abertura_minicursos_1_etapa
+        and agora <= evento_atual.fechamento_minicursos_1_etapa
+    ):
         tipo_atividade = get_tipos_atividade()
         minicursos = db.session.query(Atividade).filter(
             Atividade.tipo == tipo_atividade["minicurso"],
@@ -397,7 +472,10 @@ def inscricao_minicursos_com_filtro(filtro):
         )
     else:
         return render_template(
-            "participantes/inscricao_minicursos.html", participante=participante, usuario=current_user, inscricao_liberada=0
+            "participantes/inscricao_minicursos.html",
+            participante=participante,
+            usuario=current_user,
+            inscricao_liberada=0,
         )
 
 
@@ -415,7 +493,9 @@ def inscricao_workshops_com_filtro(filtro):
 
     return render_template(
         "participantes/inscricao_workshops.html",
-        participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+        participante=db.session.query(Participante)
+        .filter_by(usuario=current_user)
+        .first(),
         usuario=current_user,
         workshops=workshops,
     )
@@ -427,20 +507,32 @@ def inscricao_workshops_com_filtro(filtro):
 def inscrever_minicurso(id):
     tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
-    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    participante = (
+        db.session.query(Participante).filter_by(usuario=current_user).first()
+    )
     agora = datetime.now()
     evento_atual = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first()
     if atv.vagas_disponiveis > 0:
-        if agora >= evento_atual.abertura_minicursos_1_etapa and agora <= evento_atual.fechamento_minicursos_1_etapa:
+        if (
+            agora >= evento_atual.abertura_minicursos_1_etapa
+            and agora <= evento_atual.fechamento_minicursos_1_etapa
+        ):
             if participante.minicurso_etapa_1 is None:
                 participante.minicurso_etapa_1 = atv.id
-                atv.participantes.append(db.session.query(Participante).filter_by(usuario=current_user).first())
+                atv.participantes.append(
+                    db.session.query(Participante)
+                    .filter_by(usuario=current_user)
+                    .first()
+                )
                 atv.vagas_disponiveis = atv.vagas_disponiveis - 1
                 db.session.flush()
                 db.session.commit()
                 minicursos = (
                     db.session.query(Atividade)
-                    .filter_by(tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual())
+                    .filter_by(
+                        tipo=tipo_atividade["minicurso"],
+                        id_evento=get_id_evento_atual(),
+                    )
                     .filter(Atividade.titulo != None)
                 )
 
@@ -455,7 +547,10 @@ def inscrever_minicurso(id):
             else:
                 minicursos = (
                     db.session.query(Atividade)
-                    .filter_by(tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual())
+                    .filter_by(
+                        tipo=tipo_atividade["minicurso"],
+                        id_evento=get_id_evento_atual(),
+                    )
                     .filter(Atividade.titulo != None)
                 )
                 return render_template(
@@ -466,16 +561,26 @@ def inscrever_minicurso(id):
                     acao="limite_excedido",
                     inscricao_liberada=1,
                 )
-        elif agora >= evento_atual.abertura_minicursos_2_etapa and agora <= evento_atual.fechamento_minicursos_2_etapa:
+        elif (
+            agora >= evento_atual.abertura_minicursos_2_etapa
+            and agora <= evento_atual.fechamento_minicursos_2_etapa
+        ):
             if participante.minicurso_etapa_2 is None:
                 participante.minicurso_etapa_2 = atv.id
-                atv.participantes.append(db.session.query(Participante).filter_by(usuario=current_user).first())
+                atv.participantes.append(
+                    db.session.query(Participante)
+                    .filter_by(usuario=current_user)
+                    .first()
+                )
                 atv.vagas_disponiveis = atv.vagas_disponiveis - 1
                 db.session.flush()
                 db.session.commit()
                 minicursos = (
                     db.session.query(Atividade)
-                    .filter_by(tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual())
+                    .filter_by(
+                        tipo=tipo_atividade["minicurso"],
+                        id_evento=get_id_evento_atual(),
+                    )
                     .filter(Atividade.titulo != None)
                 )
 
@@ -490,7 +595,10 @@ def inscrever_minicurso(id):
             else:
                 minicursos = (
                     db.session.query(Atividade)
-                    .filter_by(tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual())
+                    .filter_by(
+                        tipo=tipo_atividade["minicurso"],
+                        id_evento=get_id_evento_atual(),
+                    )
                     .filter(Atividade.titulo != None)
                 )
                 return render_template(
@@ -504,7 +612,9 @@ def inscrever_minicurso(id):
         else:
             minicursos = (
                 db.session.query(Atividade)
-                .filter_by(tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual())
+                .filter_by(
+                    tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual()
+                )
                 .filter(Atividade.titulo != None)
             )
             return render_template(
@@ -518,7 +628,9 @@ def inscrever_minicurso(id):
     else:
         minicursos = (
             db.session.query(Atividade)
-            .filter_by(tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual())
+            .filter_by(
+                tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual()
+            )
             .filter(Atividade.titulo != None)
         )
         return render_template(
@@ -538,7 +650,9 @@ def inscrever_workshop(id):
     tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
     if atv.vagas_disponiveis > 0:
-        atv.participantes.append(db.session.query(Participante).filter_by(usuario=current_user).first())
+        atv.participantes.append(
+            db.session.query(Participante).filter_by(usuario=current_user).first()
+        )
         atv.vagas_disponiveis = atv.vagas_disponiveis - 1
         db.session.flush()
         db.session.commit()
@@ -550,7 +664,9 @@ def inscrever_workshop(id):
 
         return render_template(
             "participantes/inscricao_workshops.html",
-            participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+            participante=db.session.query(Participante)
+            .filter_by(usuario=current_user)
+            .first(),
             usuario=current_user,
             workshops=workshops,
             acao="+",
@@ -565,7 +681,9 @@ def inscrever_workshop(id):
 def desinscrever_minicurso(id):
     tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
-    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    participante = (
+        db.session.query(Participante).filter_by(usuario=current_user).first()
+    )
     if participante in atv.participantes:
         if atv.id == participante.minicurso_etapa_1:
             participante.minicurso_etapa_1 = None
@@ -577,12 +695,16 @@ def desinscrever_minicurso(id):
         db.session.commit()
         minicursos = (
             db.session.query(Atividade)
-            .filter_by(tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual())
+            .filter_by(
+                tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual()
+            )
             .filter(Atividade.titulo != None)
         )
         return render_template(
             "participantes/inscricao_minicursos.html",
-            participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+            participante=db.session.query(Participante)
+            .filter_by(usuario=current_user)
+            .first(),
             usuario=current_user,
             minicursos=minicursos,
             acao="-",
@@ -591,12 +713,16 @@ def desinscrever_minicurso(id):
     else:
         minicursos = (
             db.session.query(Atividade)
-            .filter_by(tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual())
+            .filter_by(
+                tipo=tipo_atividade["minicurso"], id_evento=get_id_evento_atual()
+            )
             .filter(Atividade.titulo != None)
         )
         return render_template(
             "participantes/inscricao_minicursos.html",
-            participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+            participante=db.session.query(Participante)
+            .filter_by(usuario=current_user)
+            .first(),
             usuario=current_user,
             minicursos=minicursos,
             acao="nao_inscrito",
@@ -610,8 +736,13 @@ def desinscrever_minicurso(id):
 def desinscrever_workshop(id):
     tipo_atividade = get_tipos_atividade()
     atv = db.session.query(Atividade).filter_by(id=id).first()
-    if db.session.query(Participante).filter_by(usuario=current_user).first() in atv.participantes:
-        atv.participantes.remove(db.session.query(Participante).filter_by(usuario=current_user).first())
+    if (
+        db.session.query(Participante).filter_by(usuario=current_user).first()
+        in atv.participantes
+    ):
+        atv.participantes.remove(
+            db.session.query(Participante).filter_by(usuario=current_user).first()
+        )
         atv.vagas_disponiveis = atv.vagas_disponiveis + 1
         db.session.flush()
         db.session.commit()
@@ -622,7 +753,9 @@ def desinscrever_workshop(id):
         )
         return render_template(
             "participantes/inscricao_workshops.html",
-            participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+            participante=db.session.query(Participante)
+            .filter_by(usuario=current_user)
+            .first(),
             usuario=current_user,
             workshops=workshops,
             acao="-",
@@ -635,7 +768,9 @@ def desinscrever_workshop(id):
         )
         return render_template(
             "participantes/inscricao_workshops.html",
-            participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+            participante=db.session.query(Participante)
+            .filter_by(usuario=current_user)
+            .first(),
             usuario=current_user,
             workshops=workshops,
             acao="nao_inscrito",
@@ -649,11 +784,17 @@ def alterar_senha():
     form_login = LoginForm(request.form)
     form = AlterarSenhaForm(request.form)
     if email_confirmado():
-        participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+        participante = (
+            db.session.query(Participante).filter_by(usuario=current_user).first()
+        )
         if form.validate_on_submit():
-            usuario = db.session.query(Usuario).filter_by(email=current_user.email).first()
+            usuario = (
+                db.session.query(Usuario).filter_by(email=current_user.email).first()
+            )
             if pbkdf2_sha256.verify(form.senha_atual.data, usuario.senha):
-                nova_senha = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+                nova_senha = pbkdf2_sha256.encrypt(
+                    form.nova_senha.data, rounds=10000, salt_size=15
+                )
                 usuario.senha = nova_senha
                 db.session.add(usuario)
                 db.session.commit()
@@ -708,10 +849,18 @@ def esqueci_senha():
             db.session.commit()
             enviar_email_senha(usuario, token)
             return render_template(
-                "participantes/esqueci_senha.html", status_envio_email=True, form=form, form_login=form_login
+                "participantes/esqueci_senha.html",
+                status_envio_email=True,
+                form=form,
+                form_login=form_login,
             )
         flash("Este e-mail não está cadastrado no site.")
-    return render_template("participantes/esqueci_senha.html", status_envio_email=False, form=form, form_login=form_login)
+    return render_template(
+        "participantes/esqueci_senha.html",
+        status_envio_email=False,
+        form=form,
+        form_login=form_login,
+    )
 
 
 @limiter.limit("40/year")
@@ -726,8 +875,12 @@ def confirmar_alteracao_senha(token):
     if form.validate_on_submit():
         try:
             # Acha o usuário que possui o token
-            usuario = db.session.query(Usuario).filter_by(token_alteracao_senha=token).first()
-            hash = pbkdf2_sha256.encrypt(form.nova_senha.data, rounds=10000, salt_size=15)
+            usuario = (
+                db.session.query(Usuario).filter_by(token_alteracao_senha=token).first()
+            )
+            hash = pbkdf2_sha256.encrypt(
+                form.nova_senha.data, rounds=10000, salt_size=15
+            )
             usuario.senha = hash
             db.session.add(usuario)
             db.session.commit()
@@ -739,7 +892,11 @@ def confirmar_alteracao_senha(token):
             flash("Falha na confirmação de link do email.")
         return redirect(url_for("views.login"))
     return render_template(
-        "participantes/alterar_senha.html", form=form, action=request.base_url, form_login=form_login, status_envio_email=True
+        "participantes/alterar_senha.html",
+        form=form,
+        action=request.base_url,
+        form_login=form_login,
+        status_envio_email=True,
     )
 
 
@@ -749,7 +906,11 @@ def confirmar_alteracao_senha(token):
 def comprar_kit():
     id_evento = db.session.query(Evento).filter_by(edicao=EDICAO_ATUAL).first().id
     if current_user.email_verificado is True:
-        participante = db.session.query(Participante).filter_by(id_usuario=current_user.id, id_evento=id_evento).first()
+        participante = (
+            db.session.query(Participante)
+            .filter_by(id_usuario=current_user.id, id_evento=id_evento)
+            .first()
+        )
         if participante is not None:
             form = ComprarKitForm()
             form.camiseta.choices = get_opcoes_camisetas()
@@ -775,17 +936,25 @@ def comprar_kit():
                             )
                             .first()
                         )
-                        participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+                        participante = (
+                            db.session.query(Participante)
+                            .filter_by(usuario=current_user)
+                            .first()
+                        )
                         if pagamento is None:
                             valor_pagamento = get_preco_kit()
                             if form.uso_cupom_desconto.data is True:
                                 cupom_desconto = (
                                     db.session.query(CupomDesconto)
-                                    .filter_by(nome=form.cupom_desconto.data, usado=False)
+                                    .filter_by(
+                                        nome=form.cupom_desconto.data, usado=False
+                                    )
                                     .first()
                                 )
                                 if cupom_desconto is not None:
-                                    valor_pagamento = max(0.00, valor_pagamento - cupom_desconto.valor)
+                                    valor_pagamento = max(
+                                        0.00, valor_pagamento - cupom_desconto.valor
+                                    )
                                     payment = criar_pagamento(
                                         "Kit",
                                         "Este pagamento corresponde ao kit da X SECOMP UFSCar",
@@ -825,7 +994,9 @@ def comprar_kit():
                                 db.session.add(pagamento)
                                 db.session.commit()
                             if pagamento.camiseta.quantidade_restante > 0:
-                                pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
+                                pagamento.camiseta.quantidade_restante = (
+                                    pagamento.camiseta.quantidade_restante - 1
+                                )
                                 db.session.add(pagamento)
                                 db.session.commit()
                         else:
@@ -836,32 +1007,40 @@ def comprar_kit():
                                     approval_url = str(link.href)
                                     return redirect(approval_url)
 
-                        return render_template("participantes/pagamento_kit_efetuado.html")
+                        return render_template(
+                            "participantes/pagamento_kit_efetuado.html"
+                        )
                     elif form.forma_pagamento.data == 1:
                         participante = (
                             db.session.query(Participante)
-                            .filter_by(usuario=current_user, id_evento=get_id_evento_atual())
+                            .filter_by(
+                                usuario=current_user, id_evento=get_id_evento_atual()
+                            )
                             .first()
                         )
                         comprovante = form.comprovante.data
                         filename = secure_filename(comprovante.filename)
                         agora = strftime("%Y%m%d%H%M%S", localtime(time()))
-                        filename = (
-                            f"{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{agora}_{filename}"
-                        )
+                        filename = f"{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{agora}_{filename}"
                         filename = filename.replace(" ", "")
                         file_name = secure_filename(comprovante.filename)
-                        upload_path = path.join(current_app.config["UPLOAD_FOLDER"], "comprovantes")
+                        upload_path = path.join(
+                            current_app.config["UPLOAD_FOLDER"], "comprovantes"
+                        )
                         if not path.exists(upload_path):
                             makedirs(upload_path)
                         comprovante.save(path.join(upload_path, filename))
                         valor_pagamento = get_preco_kit()
                         if form.uso_cupom_desconto.data is True:
                             cupom_desconto = (
-                                db.session.query(CupomDesconto).filter_by(nome=form.cupom_desconto.data, usado=False).first()
+                                db.session.query(CupomDesconto)
+                                .filter_by(nome=form.cupom_desconto.data, usado=False)
+                                .first()
                             )
                             if cupom_desconto is not None:
-                                valor_pagamento = max(0.00, valor_pagamento - cupom_desconto.valor)
+                                valor_pagamento = max(
+                                    0.00, valor_pagamento - cupom_desconto.valor
+                                )
                                 pagamento = Pagamento(
                                     id_participante=participante.id,
                                     descricao="Kit",
@@ -891,7 +1070,9 @@ def comprar_kit():
                             db.session.add(pagamento)
                             db.session.commit()
                         if pagamento.camiseta.quantidade_restante > 0:
-                            pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante - 1
+                            pagamento.camiseta.quantidade_restante = (
+                                pagamento.camiseta.quantidade_restante - 1
+                            )
 
                         db.session.add(pagamento)
                         db.session.add(participante)
@@ -902,7 +1083,9 @@ def comprar_kit():
                 return render_template(
                     "participantes/comprar_kit.html",
                     usuario=current_user,
-                    participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                    participante=db.session.query(Participante)
+                    .filter_by(usuario=current_user)
+                    .first(),
                     form=form,
                     valor="{:2.2f}".format(get_preco_kit()).replace(".", ","),
                 )
@@ -934,7 +1117,11 @@ def executar_pagamento_kit():
         )
         .first()
     )
-    participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
+    participante = (
+        db.session.query(Participante)
+        .filter_by(usuario=current_user, id_evento=get_id_evento_atual())
+        .first()
+    )
     payer_id = request.args.get("PayerID")
     if pagamento is not None:
         if pagamento.efetuado is False:
@@ -942,12 +1129,16 @@ def executar_pagamento_kit():
                 payment = encontrar_pagamento(pagamento.payment_id)
                 if payment.execute({"payer_id": payer_id}):
                     pagamento.payer_id, pagamento.efetuado = payer_id, True
-                    pagamento.data_hora_pagamento = strftime("%Y-%m-%d %H:%M:%S", localtime(time()))
+                    pagamento.data_hora_pagamento = strftime(
+                        "%Y-%m-%d %H:%M:%S", localtime(time())
+                    )
                     db.session.add(current_user)
                     db.session.add(participante)
                     db.session.add(pagamento)
                     db.session.commit()
-                    enviar_email_aviso_sucesso_confirmacao_pagamento_paypal(pagamento.participante.usuario, pagamento)
+                    enviar_email_aviso_sucesso_confirmacao_pagamento_paypal(
+                        pagamento.participante.usuario, pagamento
+                    )
                     return render_template(
                         "participantes/sucesso_pagamento_kit.html",
                         usuario=current_user,
@@ -984,10 +1175,16 @@ def cancelar_pagamento_kit():
 @login_required
 @email_verificado_required
 def pagamentos():
-    participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
+    participante = (
+        db.session.query(Participante)
+        .filter_by(usuario=current_user, id_evento=get_id_evento_atual())
+        .first()
+    )
     if participante is not None:
         form = CancelarPagamentoForm(request.form)
-        pagamentos = db.session.query(Pagamento).filter(Pagamento.participante == participante)
+        pagamentos = db.session.query(Pagamento).filter(
+            Pagamento.participante == participante
+        )
         if form.validate_on_submit():
             pagamento = (
                 db.session.query(Pagamento)
@@ -1002,11 +1199,17 @@ def pagamentos():
             )
             if pagamento is not None:
                 pagamento.cancelado = True
-                pagamento.camiseta.quantidade_restante = pagamento.camiseta.quantidade_restante + 1
+                pagamento.camiseta.quantidade_restante = (
+                    pagamento.camiseta.quantidade_restante + 1
+                )
                 db.session.add(pagamento)
                 db.session.commit()
         return render_template(
-            "participantes/pagamentos.html", usuario=current_user, participante=participante, pagamentos=pagamentos, form=form
+            "participantes/pagamentos.html",
+            usuario=current_user,
+            participante=participante,
+            pagamentos=pagamentos,
+            form=form,
         )
     else:
         return redirect(url_for(".cadastro_participante"))
@@ -1016,11 +1219,18 @@ def pagamentos():
 @login_required
 @email_verificado_required
 def presencas():
-    participante = db.session.query(Participante).filter_by(usuario=current_user, id_evento=get_id_evento_atual()).first()
+    participante = (
+        db.session.query(Participante)
+        .filter_by(usuario=current_user, id_evento=get_id_evento_atual())
+        .first()
+    )
     if participante is not None:
         presencas = (
             db.session.query(Presenca)
-            .filter(Presenca.id_participante == participante.id, Presenca.id_evento == get_id_evento_atual())
+            .filter(
+                Presenca.id_participante == participante.id,
+                Presenca.id_evento == get_id_evento_atual(),
+            )
             .all()
         )
         limites = {
@@ -1051,9 +1261,13 @@ def presencas():
 def submeter_flag():
     form_login = LoginForm(request.form)
     form = SubmeterFlagForm(request.form)
-    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    participante = (
+        db.session.query(Participante).filter_by(usuario=current_user).first()
+    )
     if form.validate_on_submit():
-        flag = db.session.query(Flag).filter_by(codigo=form.flag.data, ativa=True).first()
+        flag = (
+            db.session.query(Flag).filter_by(codigo=form.flag.data, ativa=True).first()
+        )
         if flag != None and flag not in participante.flags_encontradas and flag.ativa:
             flag.quantidade_utilizada += 1
             participante.pontuacao += flag.pontos
@@ -1104,7 +1318,9 @@ def submeter_flag():
 def submeter_feedback(id_atividade):
     form_login = LoginForm(request.form)
     form = FeedbackForm(request.form)
-    participante = db.session.query(Participante).filter_by(usuario=current_user).first()
+    participante = (
+        db.session.query(Participante).filter_by(usuario=current_user).first()
+    )
     presenca = presenca_valida(id_atividade, participante.id)
     if presenca is not None:
         if presenca.id_feedback is None and atividade_aconteceu(id_atividade):
@@ -1131,7 +1347,9 @@ def submeter_feedback(id_atividade):
                     usuario=current_user,
                     form_login=form_login,
                     form=form,
-                    participante=db.session.query(Participante).filter_by(usuario=current_user).first(),
+                    participante=db.session.query(Participante)
+                    .filter_by(usuario=current_user)
+                    .first(),
                     id_atividade=id_atividade,
                 )
         return redirect(url_for(".presencas"))

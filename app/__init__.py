@@ -13,7 +13,11 @@ def create_app(config=None):
     Project app factory
     """
 
-    configs = {"development": ".development", "production": ".production", "default": ".default"}
+    configs = {
+        "development": ".development",
+        "production": ".production",
+        "default": ".default",
+    }
 
     if config not in configs:
         config = getenv("FLASK_ENVIRONMENT", "development")
@@ -80,7 +84,14 @@ def create_app(config=None):
 
     mail.init_app(app)
 
-    from app.controllers.routes import admin, gerenciar, participantes, views, conteudo, api
+    from app.controllers.routes import (
+        admin,
+        gerenciar,
+        participantes,
+        views,
+        conteudo,
+        api,
+    )
 
     app.register_blueprint(gerenciar.gerenciar)
     app.register_blueprint(participantes.participantes)
@@ -104,7 +115,9 @@ def create_app(config=None):
 
     @login_manager.needs_refresh_handler
     def refresh_callback():
-        flash(u"Para proteção da sua conta, faça login novamente para poder acessar esta página.")
+        flash(
+            "Para proteção da sua conta, faça login novamente para poder acessar esta página."
+        )
         return redirect("/confirm-login")
 
     babel = Babel(app)

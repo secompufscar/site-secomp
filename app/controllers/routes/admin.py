@@ -8,7 +8,7 @@ from flask_login import current_user
 import locale
 from datetime import datetime
 
-locale.setlocale(locale.LC_TIME, "pt_BR.utf8")
+# locale.setlocale(locale.LC_TIME, "pt_BR.utf8")
 
 from app.models.models import *
 
@@ -25,7 +25,13 @@ class AppIndexView(AdminIndexView):
 class AppModelView(ModelView):
     form_base_class = SecureForm
     can_view_details = True
-    column_exclude_list = ["senha", "token_email", "token_alteracao_senha", "salt_alteracao_senha", "salt"]
+    column_exclude_list = [
+        "senha",
+        "token_email",
+        "token_alteracao_senha",
+        "salt_alteracao_senha",
+        "salt",
+    ]
     #    column_searchable_list = ['primeiro_nome', 'sobrenome', 'email', 'empresa_universidade', 'cidade_origem', 'local', 'titulo', 'tipo', 'tamanho', 'acao']
 
     def after_model_change(self, form, model, is_created):
@@ -124,7 +130,9 @@ def init_app(service, path):
     admin.add_view(HistoryModelView(AdminModelHistory, db.session))
     admin.add_view(AppFileAdmin(path, "/static/", name="Arquivos Estáticos"))
     try:
-        admin.add_view(UploadsFileAdmin(base_path="/uploads", name="Arquivos de Upload"))
+        admin.add_view(
+            UploadsFileAdmin(base_path="/uploads", name="Arquivos de Upload")
+        )
     except:
         pass
     return admin

@@ -11,13 +11,22 @@ from app.controllers.functions.helpers import *
 from app.models.models import *
 from flask_wtf import FlaskForm
 from flask_limiter import Limiter
-from flask_limiter.util import get_ipaddr
-from werkzeug import secure_filename
+from flask_limiter.util import get_remote_address
+from werkzeug.utils import secure_filename
 
-limiter = Limiter(current_app, key_func=get_ipaddr)
+limiter = Limiter(
+    get_remote_address,
+    app=current_app,
+)
 
 
-conteudo = Blueprint("conteudo", __name__, static_folder="static", template_folder="templates", url_prefix="/area-conteudo")
+conteudo = Blueprint(
+    "conteudo",
+    __name__,
+    static_folder="static",
+    template_folder="templates",
+    url_prefix="/area-conteudo",
+)
 
 
 @limiter.limit("20/day")
@@ -36,7 +45,9 @@ def cadastro_ministrante(codigo):
             token = serializer.dumps(email, salt=salt)
             agora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             hash = pbkdf2_sha256.encrypt(form.senha.data, rounds=10000, salt_size=15)
-            permissao_ministrante = db.session.query(Permissao).filter_by(nome="MINISTRANTE").first()
+            permissao_ministrante = (
+                db.session.query(Permissao).filter_by(nome="MINISTRANTE").first()
+            )
 
             usuario = db.session.query(Usuario).filter_by(email=form.email.data).first()
             ministrante = usuario.ministrante
@@ -62,7 +73,9 @@ def cadastro_ministrante(codigo):
                 foto = form.foto.data
                 filename = secure_filename(foto.filename)
                 filename = f"{usuario.id}_{usuario.primeiro_nome}_{usuario.sobrenome}_{filename}"
-                upload_path = path.join(current_app.config["UPLOAD_FOLDER"], "fotos_ministrantes")
+                upload_path = path.join(
+                    current_app.config["UPLOAD_FOLDER"], "fotos_ministrantes"
+                )
                 if not path.exists(upload_path):
                     makedirs(upload_path)
 
@@ -86,7 +99,12 @@ def cadastro_ministrante(codigo):
             enviar_email_confirmacao(usuario, token)
             login_user(usuario, remember=True)
             return redirect(url_for("participantes.verificar_email"))
-        return render_template("conteudo/cadastro_ministrante.html", form=form, codigo=codigo, form_login=form_login)
+        return render_template(
+            "conteudo/cadastro_ministrante.html",
+            form=form,
+            codigo=codigo,
+            form_login=form_login,
+        )
     else:
         abort(404)
 
@@ -96,16 +114,29 @@ def cadastro_ministrante(codigo):
 @login_required
 def dados_hospedagem_transporte():
     permissoes = current_user.getPermissoes()
-    if "MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin():
+    if (
+        "MINISTRANTE" in permissoes
+        or "CONTEUDO" in permissoes
+        or current_user.is_admin()
+    ):
         form_login = LoginForm(request.form)
-        atividade_confirmada, atividade, view_atividade = confirmacao_atividade_ministrante(current_user)
+        (
+            atividade_confirmada,
+            atividade,
+            view_atividade,
+        ) = confirmacao_atividade_ministrante(current_user)
         dados_hospedagem_transporte = (
             db.session.query(DadosHospedagemTransporte)
-            .filter_by(id_evento=get_id_evento_atual(), id_ministrante=current_user.ministrante.id)
+            .filter_by(
+                id_evento=get_id_evento_atual(),
+                id_ministrante=current_user.ministrante.id,
+            )
             .first()
         )
         if dados_hospedagem_transporte is not None and atividade_confirmada == False:
-            return redirect(url_for("conteudo." + view_atividade, codigo=atividade.url_codigo))
+            return redirect(
+                url_for("conteudo." + view_atividade, codigo=atividade.url_codigo)
+            )
         form = CadastroInformacoesLocomocaoEstadia(request.form)
         if form.validate_on_submit():
             dados_hospedagem_transporte = DadosHospedagemTransporte(
@@ -121,13 +152,21 @@ def dados_hospedagem_transporte():
                 necessidades_hospedagem=form.necessidades_hospedagem.data,
                 observacoes=form.observacoes.data,
             )
-            current_user.ministrante.dados_hospedagem_transporte.append(dados_hospedagem_transporte)
+            current_user.ministrante.dados_hospedagem_transporte.append(
+                dados_hospedagem_transporte
+            )
             db.session.add(dados_hospedagem_transporte)
             db.session.add(current_user)
             db.session.commit()
             print(atividade.url_codigo)
-            return redirect(url_for("conteudo." + view_atividade, codigo=atividade.url_codigo))
-        return render_template("conteudo/dados_hospedagem_transporte.html", form=form, form_login=form_login)
+            return redirect(
+                url_for("conteudo." + view_atividade, codigo=atividade.url_codigo)
+            )
+        return render_template(
+            "conteudo/dados_hospedagem_transporte.html",
+            form=form,
+            form_login=form_login,
+        )
     abort(404)
 
 
@@ -136,7 +175,11 @@ def dados_hospedagem_transporte():
 @login_required
 def cadastro_minicurso(codigo):
     permissoes = current_user.getPermissoes()
-    if "MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin():
+    if (
+        "MINISTRANTE" in permissoes
+        or "CONTEUDO" in permissoes
+        or current_user.is_admin()
+    ):
         form_login = LoginForm()
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante
@@ -149,10 +192,12 @@ def cadastro_minicurso(codigo):
                 )
             else:
                 r_atividade_ministrante = None
-            if "CONTEUDO" in permissoes or r_atividade_ministrante.admin_atividade is not False:
+            if (
+                "CONTEUDO" in permissoes
+                or r_atividade_ministrante.admin_atividade is not False
+            ):
                 form = CadastroInformacoesMinicurso()
                 if form.validate_on_submit():
-
                     ae_filename = None
                     m_filename = None
 
@@ -160,7 +205,10 @@ def cadastro_minicurso(codigo):
                         apresentacao_extra = form.apresentacao_extra.data
                         ae_filename = secure_filename(apresentacao_extra.filename)
                         ae_filename = f"{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{ae_filename}"
-                        ae_path = path.join(current_app.config["UPLOAD_FOLDER"], "minicursos/apresentacoes_extra")
+                        ae_path = path.join(
+                            current_app.config["UPLOAD_FOLDER"],
+                            "minicursos/apresentacoes_extra",
+                        )
                         if not path.exists(ae_path):
                             makedirs(ae_path)
 
@@ -168,7 +216,9 @@ def cadastro_minicurso(codigo):
                         material = form.material.data
                         m_filename = secure_filename(material.filename)
                         m_filename = f"{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{m_filename}"
-                        m_path = path.join(current_app.config["UPLOAD_FOLDER"], "minicursos/materiais")
+                        m_path = path.join(
+                            current_app.config["UPLOAD_FOLDER"], "minicursos/materiais"
+                        )
                         if not path.exists(m_path):
                             makedirs(m_path)
 
@@ -189,7 +239,9 @@ def cadastro_minicurso(codigo):
                     for ministrante in atividade.ministrantes:
                         r = (
                             db.session.query(RelacaoAtividadeMinistrante)
-                            .filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id)
+                            .filter_by(
+                                id_ministrante=ministrante.id, id_atividade=atividade.id
+                            )
                             .first()
                         )
                         r.admin_atividade = False
@@ -212,7 +264,11 @@ def cadastro_minicurso(codigo):
                         material.save(path.join(m_path, m_filename))
                     return redirect(url_for("conteudo.cadastro_sucesso"))
                 return render_template(
-                    "conteudo/cadastro_minicurso.html", form=form, codigo=codigo, form_login=form_login, atividade=atividade
+                    "conteudo/cadastro_minicurso.html",
+                    form=form,
+                    codigo=codigo,
+                    form_login=form_login,
+                    atividade=atividade,
                 )
             else:
                 return redirect(url_for("conteudo.confirmar_atividade", codigo=codigo))
@@ -224,7 +280,11 @@ def cadastro_minicurso(codigo):
 @login_required
 def cadastro_palestra(codigo):
     permissoes = current_user.getPermissoes()
-    if "MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin():
+    if (
+        "MINISTRANTE" in permissoes
+        or "CONTEUDO" in permissoes
+        or current_user.is_admin()
+    ):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante
@@ -237,17 +297,21 @@ def cadastro_palestra(codigo):
                 )
             else:
                 r_atividade_ministrante = None
-            if "CONTEUDO" in permissoes or r_atividade_ministrante.admin_atividade is not False:
+            if (
+                "CONTEUDO" in permissoes
+                or r_atividade_ministrante.admin_atividade is not False
+            ):
                 form = CadastroInformacoesPalestra()
                 if form.validate_on_submit():
-
                     m_filename = None
 
                     if form.material.data:
                         material = form.material.data
                         m_filename = secure_filename(material.filename)
                         m_filename = f"{current_user.id}_{current_user.primeiro_nome}_{current_user.sobrenome}_{m_filename}"
-                        m_path = path.join(current_app.config["UPLOAD_FOLDER"], "palestras/materiais")
+                        m_path = path.join(
+                            current_app.config["UPLOAD_FOLDER"], "palestras/materiais"
+                        )
                         if not path.exists(m_path):
                             makedirs(m_path)
 
@@ -261,7 +325,9 @@ def cadastro_palestra(codigo):
                     for ministrante in atividade.ministrantes:
                         r = (
                             db.session.query(RelacaoAtividadeMinistrante)
-                            .filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id)
+                            .filter_by(
+                                id_ministrante=ministrante.id, id_atividade=atividade.id
+                            )
                             .first()
                         )
                         r.admin_atividade = False
@@ -282,7 +348,11 @@ def cadastro_palestra(codigo):
                         material.save(path.join(m_path, m_filename))
                     return redirect(url_for("conteudo.cadastro_sucesso"))
                 return render_template(
-                    "conteudo/cadastro_palestra.html", form=form, codigo=codigo, form_login=form_login, atividade=atividade
+                    "conteudo/cadastro_palestra.html",
+                    form=form,
+                    codigo=codigo,
+                    form_login=form_login,
+                    atividade=atividade,
                 )
             else:
                 return redirect(url_for("conteudo.confirmar_atividade", codigo=codigo))
@@ -302,7 +372,9 @@ def cadastro_mesa_redonda(codigo):
                 for ministrante in atividade.ministrantes:
                     r = (
                         db.session.query(RelacaoAtividadeMinistrante)
-                        .filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id)
+                        .filter_by(
+                            id_ministrante=ministrante.id, id_atividade=atividade.id
+                        )
                         .first()
                     )
                     r.admin_atividade = False
@@ -315,7 +387,11 @@ def cadastro_mesa_redonda(codigo):
                 db.session.commit()
                 return redirect(url_for("conteudo.cadastro_sucesso"))
             return render_template(
-                "conteudo/cadastro_mesa_redonda.html", codigo=codigo, form=form, form_login=form_login, atividade=atividade
+                "conteudo/cadastro_mesa_redonda.html",
+                codigo=codigo,
+                form=form,
+                form_login=form_login,
+                atividade=atividade,
             )
     else:
         return redirect(url_for("conteudo.confirmar_atividade", codigo=codigo))
@@ -326,7 +402,11 @@ def cadastro_mesa_redonda(codigo):
 @login_required
 def cadastro_feira_projetos(codigo):
     permissoes = current_user.getPermissoes()
-    if "MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin():
+    if (
+        "MINISTRANTE" in permissoes
+        or "CONTEUDO" in permissoes
+        or current_user.is_admin()
+    ):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante
@@ -339,16 +419,22 @@ def cadastro_feira_projetos(codigo):
                 )
             else:
                 r_atividade_ministrante = None
-            if "CONTEUDO" in permissoes or r_atividade_ministrante.admin_atividade is not False:
+            if (
+                "CONTEUDO" in permissoes
+                or r_atividade_ministrante.admin_atividade is not False
+            ):
                 form = CadastroFeiraDeProjetos(request.form)
                 if form.validate_on_submit():
                     info_feira_de_projetos = InfoFeiraDeProjetos(
-                        necessidades=form.necessidades.data, planejamento=form.planejamento.data
+                        necessidades=form.necessidades.data,
+                        planejamento=form.planejamento.data,
                     )
                     for ministrante in atividade.ministrantes:
                         r = (
                             db.session.query(RelacaoAtividadeMinistrante)
-                            .filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id)
+                            .filter_by(
+                                id_ministrante=ministrante.id, id_atividade=atividade.id
+                            )
                             .first()
                         )
                         r.admin_atividade = False
@@ -383,7 +469,11 @@ def cadastro_feira_projetos(codigo):
 @login_required
 def confirmar_atividade(codigo):
     permissoes = current_user.getPermissoes()
-    if "MINISTRANTE" in permissoes or "CONTEUDO" in permissoes or current_user.is_admin():
+    if (
+        "MINISTRANTE" in permissoes
+        or "CONTEUDO" in permissoes
+        or current_user.is_admin()
+    ):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         ministrante = current_user.ministrante
@@ -423,7 +513,9 @@ def cadastro_roda_conversa(codigo):
                 for ministrante in atividade.ministrantes:
                     r = (
                         db.session.query(RelacaoAtividadeMinistrante)
-                        .filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id)
+                        .filter_by(
+                            id_ministrante=ministrante.id, id_atividade=atividade.id
+                        )
                         .first()
                     )
                     r.admin_atividade = False
@@ -436,7 +528,11 @@ def cadastro_roda_conversa(codigo):
                 db.session.commit()
                 return redirect(url_for("conteudo.cadastro_sucesso"))
             return render_template(
-                "conteudo/cadastro_roda_conversa.html", codigo=codigo, form=form, form_login=form_login, atividade=atividade
+                "conteudo/cadastro_roda_conversa.html",
+                codigo=codigo,
+                form=form,
+                form_login=form_login,
+                atividade=atividade,
             )
     else:
         return redirect(url_for("conteudo.confirmar_atividade", codigo=codigo))
@@ -447,7 +543,11 @@ def cadastro_roda_conversa(codigo):
 @login_required
 def cadastro_workshop(codigo):
     permissoes = current_user.getPermissoes()
-    if "CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin():
+    if (
+        "CONTEUDO" in permissoes
+        or "PATROCINIO" in permissoes
+        or current_user.is_admin()
+    ):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         form = CadastroAtividadeGenerica(request.form)
@@ -456,7 +556,9 @@ def cadastro_workshop(codigo):
                 for ministrante in atividade.ministrantes:
                     r = (
                         db.session.query(RelacaoAtividadeMinistrante)
-                        .filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id)
+                        .filter_by(
+                            id_ministrante=ministrante.id, id_atividade=atividade.id
+                        )
                         .first()
                     )
                     r.admin_atividade = False
@@ -469,18 +571,28 @@ def cadastro_workshop(codigo):
                 db.session.commit()
                 return redirect(url_for("conteudo.cadastro_sucesso"))
             return render_template(
-                "conteudo/cadastro_workshop.html", codigo=codigo, form=form, form_login=form_login, atividade=atividade
+                "conteudo/cadastro_workshop.html",
+                codigo=codigo,
+                form=form,
+                form_login=form_login,
+                atividade=atividade,
             )
     else:
         return redirect(url_for("conteudo.confirmar_atividade", codigo=codigo))
     abort(404)
 
 
-@conteudo.route("/cadastro-atividade/palestra-empresarial/<codigo>", methods=["POST", "GET"])
+@conteudo.route(
+    "/cadastro-atividade/palestra-empresarial/<codigo>", methods=["POST", "GET"]
+)
 @login_required
 def cadastro_palestra_empresarial(codigo):
     permissoes = current_user.getPermissoes()
-    if "CONTEUDO" in permissoes or "PATROCINIO" in permissoes or current_user.is_admin():
+    if (
+        "CONTEUDO" in permissoes
+        or "PATROCINIO" in permissoes
+        or current_user.is_admin()
+    ):
         form_login = LoginForm(request.form)
         permitido, atividade, emails = valida_url_codigo(current_user, codigo)
         form = CadastroAtividadeGenerica(request.form)
@@ -489,7 +601,9 @@ def cadastro_palestra_empresarial(codigo):
                 for ministrante in atividade.ministrantes:
                     r = (
                         db.session.query(RelacaoAtividadeMinistrante)
-                        .filter_by(id_ministrante=ministrante.id, id_atividade=atividade.id)
+                        .filter_by(
+                            id_ministrante=ministrante.id, id_atividade=atividade.id
+                        )
                         .first()
                     )
                     r.admin_atividade = False
@@ -517,7 +631,12 @@ def cadastro_palestra_empresarial(codigo):
 @login_required
 def cadastro_sucesso():
     permissoes = current_user.getPermissoes()
-    if "CONTEUDO" in permissoes or "PATROCINIO" in permissoes or "MINISTRANTE" in permissoes or current_user.is_admin():
+    if (
+        "CONTEUDO" in permissoes
+        or "PATROCINIO" in permissoes
+        or "MINISTRANTE" in permissoes
+        or current_user.is_admin()
+    ):
         form_login = LoginForm(request.form)
         return render_template("conteudo/cadastro_sucesso.html", form_login=form_login)
     abort(404)
